@@ -1,0 +1,6 @@
+*.orig
+.tern-port
+node_modules/
+dist/
+npm-debug.log
+docs/build/

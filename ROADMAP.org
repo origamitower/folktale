@@ -1,0 +1,48 @@
+#+STARTUP: content indent
+
+* Documentation
+** TODO Add examples for all documented modules
+** TODO Add contributor documentation
+* Tooling
+** TODO Use semantic-release for package publishing
+* Chores
+** TODO Use Specify / JSVerify for testing
+** TODO Move all documentation to Dollphie / Sphinx
+* Packages
+** Data
+*** TODO Maybe
+
+*** TODO Either
+*** TODO Validation
+*** TODO Task
+*** TODO Vector
+*** TODO Map
+*** TODO Set
+*** TODO List
+*** TODO Stream
+*** TODO Array
+*** TODO Object
+** Core
+*** TODO Check
+*** TODO Inspect
+*** TODO Operators
+*** TODO Lambda
+*** TODO Arity
+** Control
+*** TODO Monads
+*** TODO Applicatives
+*** TODO Async
+** Net
+*** TODO URL
+*** TODO Http Client
+** Wrappers
+*** TODO Express
+** Text
+*** TODO Pretty Printing
+*** TODO Parsing
+** Test
+*** TODO Benchmark
+** Encoding
+*** TODO JSON
+** Database
+*** TODO Model
