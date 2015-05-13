@@ -1,48 +1,49 @@
 #+STARTUP: content indent
 
-* Documentation
-** TODO Add examples for all documented modules
-** TODO Add contributor documentation
-* Tooling
-** TODO Use semantic-release for package publishing
-* Chores
-** TODO Use Specify / JSVerify for testing
-** TODO Move all documentation to Dollphie / Sphinx
-* Packages
+* 1.0.0 - A Tasty Prelude
+** - Documentation
+*** TODO Add examples for all documented modules
+*** TODO Add contributor documentation
+** Integration
+*** TODO Add conversions between the provided data types
 ** Data
-*** TODO Maybe
-
-*** TODO Either
-*** TODO Validation
-*** TODO Task
-*** TODO Vector
-*** TODO Map
-*** TODO Set
-*** TODO List
-*** TODO Stream
-*** TODO Array
-*** TODO Object
+*** Maybe
+**** TODO Use semantic-release for package publishing
+**** TODO Move tests to using Specify / JSVerify
+**** TODO Move documentation to Dollphie / Sphinx
+*** Either
+**** TODO Use semantic-release for package publishing
+**** TODO Move tests to using Specify / JSVerify
+**** TODO Move documentation to Dollphie / Sphinx
+*** Validation
+**** TODO Use semantic-release for package publishing
+**** TODO Move tests to using Specify / JSVerify
+**** TODO Move documentation to Dollphie / Sphinx
+**** TODO Provide common validation routines
+*** Task
+**** TODO Use semantic-release for package publishing
+**** TODO Move tests to using Specify / JSVerify
+**** TODO Move documentation to Dollphie / Sphinx
 ** Core
-*** TODO Check
-*** TODO Inspect
-*** TODO Operators
-*** TODO Lambda
-*** TODO Arity
+*** Arity
+**** TODO Use semantic-release for package publishing
+**** TODO Move tests to using Specify / JSVerify
+**** TODO Move documentation to Dollphie / Sphinx
+*** Inspect
+**** TODO Use semantic-release for package publishing
+**** TODO Move tests to using Specify / JSVerify
+**** TODO Move documentation to Dollphie / Sphinx
+*** Lambda
+**** TODO Use semantic-release for package publishing
+**** TODO Move tests to using Specify / JSVerify
+**** TODO Move documentation to Dollphie / Sphinx
+*** Operators
+**** TODO Use semantic-release for package publishing
+**** TODO Move tests to using Specify / JSVerify
+**** TODO Move documentation to Dollphie / Sphinx
 ** Control
-*** TODO Monads
-*** TODO Applicatives
-*** TODO Async
-** Net
-*** TODO URL
-*** TODO Http Client
-** Wrappers
-*** TODO Express
-** Text
-*** TODO Pretty Printing
-*** TODO Parsing
-** Test
-*** TODO Benchmark
-** Encoding
-*** TODO JSON
-** Database
-*** TODO Model
+*** Monads
+**** TODO Use semantic-release for package publishing
+**** TODO Move tests to using Specify / JSVerify
+**** TODO Move documentation to Dollphie / Sphinx
+**** TODO Port remaining functions from Haskell's Control.Monads
