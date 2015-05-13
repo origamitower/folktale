@@ -1,25 +1,36 @@
 {
-    "name": "folktale",
-    "version": "1.0.0",
-    "description": "A suite of libraries for generic functional programming in JavaScript that allows you to write elegant modular applications with fewer bugs and more reuse.",
-    "main": "./index.js",
-    "scripts": {
-        "test": "make test"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/folktale/folktale"
-    },
-    "keywords": [
-        "functional",
-        "generic",
-        "fantasy-land",
-        "folktale",
-        "monads"
-    ],
-    "author": "Quildreen Motta",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/folktale/folktale/issues"
-    }
+  "name": "folktale",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "A suite of libraries for generic functional programming in JavaScript that allows you to write elegant modular applications with fewer bugs and more reuse.",
+  "main": "./index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/folktale/folktale"
+  },
+  "keywords": [
+    "functional",
+    "generic",
+    "fantasy-land",
+    "folktale",
+    "monads"
+  ],
+  "author": "Quildreen Motta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/folktale/folktale/issues"
+  },
+  "dependencies": {
+    "control.monads": "^0.6.0",
+    "core.arity": "^1.0.0",
+    "core.inspect": "^1.0.3",
+    "core.lambda": "^1.0.0",
+    "core.operators": "^1.0.0",
+    "data.either": "^1.2.0",
+    "data.maybe": "^1.2.0",
+    "data.task": "^3.0.0",
+    "data.validation": "^1.3.0"
+  }
 }
