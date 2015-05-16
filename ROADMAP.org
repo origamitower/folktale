@@ -1,4 +1,6 @@
-#+STARTUP: content indent
+#+STARTUP: content
+#+TODO: TODO WORKING | DONE DROPPED
+#+TYP_TODO: FEATURE BUG TODO | DONE
 
 * 1.0.0 - A Tasty Prelude
 ** - Documentation
@@ -19,7 +21,7 @@
 **** TODO Use semantic-release for package publishing
 **** TODO Move tests to using Specify / JSVerify
 **** TODO Move documentation to Dollphie / Sphinx
-**** TODO Provide common validation routines
+**** FEATURE Provide common validation routines
 *** Task
 **** TODO Use semantic-release for package publishing
 **** TODO Move tests to using Specify / JSVerify
@@ -33,6 +35,7 @@
 **** TODO Use semantic-release for package publishing
 **** TODO Move tests to using Specify / JSVerify
 **** TODO Move documentation to Dollphie / Sphinx
+**** FEATURE Support pretty-printing of data structures
 *** Lambda
 **** TODO Use semantic-release for package publishing
 **** TODO Move tests to using Specify / JSVerify
@@ -46,4 +49,18 @@
 **** TODO Use semantic-release for package publishing
 **** TODO Move tests to using Specify / JSVerify
 **** TODO Move documentation to Dollphie / Sphinx
-**** TODO Port remaining functions from Haskell's Control.Monads
+**** FEATURE Port remaining functions from Haskell's Control.Monads
+**** TODO Rename ~rightCompose~ → ~composeRight~
+
+* Future
+** Data.Task
+*** TODO Track memory usage with benchmarks
+*** FEATURE Co-monad instance with generators
+** Wrapper.Express
+*** FEATURE Support streams in response bodies
+** Net.URI
+*** TODO Provide a simpler, more functional API
+*** FEATURE fragments, user information and protocols in the macro
+** Net.Http Client
+*** TODO Make headers type safe
+*** FEATURE Common request body serialisation
