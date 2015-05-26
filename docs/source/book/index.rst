@@ -118,3 +118,12 @@ The book contains a heavy amount of examples, all of which can be found in the
 `Folktale GitHub repository`_, under the ``docs/examples`` folder.
 
 .. _Folktale GitHub repository: https://github.com/folktale/folktale
+
+
+Table of Contents
+-----------------
+
+.. toctree::
+   :maxdepth: 2
+
+   section1/index
