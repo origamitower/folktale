@@ -1,0 +1,3 @@
+[submodule "docs/source/caffeine-theme"]
+	path = docs/source/caffeine-theme
+	url = git://github.com/robotlolita/caffeine-theme
