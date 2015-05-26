@@ -1,7 +1,7 @@
 Folkale
 =======
 
-[![Documentation status](https://readthedocs.org/projects/folktalegithubio/badge/?version=latest&style=flat-square)](https://docs.folktalejs.org/)
+[![Documentation status](https://readthedocs.org/projects/folktalegithubio/badge/?version=latest&style=flat-square)](http://docs.folktalejs.org/)
 [![Build status](https://img.shields.io/travis/folktale/folktale/master.svg?style=flat-square)](https://travis-ci.org/folktale/folktale)
 [![NPM version](https://img.shields.io/npm/v/folktale.svg?style=flat-square)](https://npmjs.org/package/folktale)
 [![Dependencies status](https://img.shields.io/david/folktale/folktale.svg?style=flat-square)](https://david-dm.org/folktale/folktale)
