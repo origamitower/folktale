@@ -37,7 +37,7 @@ Module: ``data.task``
       A tutorial showing how ``Data.Task`` can be used to model time-dependent
       values.
 
-   .. _`A Monad in Practicality: Controlling Time`: robotlolita.me/2014/03/20/a-monad-in-practicality-controlling-time.html
+   .. _`A Monad in Practicality: Controlling Time`: http://robotlolita.me/2014/03/20/a-monad-in-practicality-controlling-time.html
 
 
 .. toctree::
