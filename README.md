@@ -1,4 +1,4 @@
-Folkale
+Folktale
 =======
 
 [![Documentation status](https://readthedocs.org/projects/folktalegithubio/badge/?version=latest&style=flat-square)](http://docs.folktalejs.org/)
