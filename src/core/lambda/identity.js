@@ -26,6 +26,7 @@ if (process.env.NODE_ENV !== "production") {
       signature: 'identity(value)',
       type: '(α) -> α',
       category: 'Combinators',
+      tags: ['Lambda Calculus'],
       stability: 'locked',
       platforms: ['ECMAScript'],
       authors: ['Quildreen Motta'],
@@ -36,7 +37,7 @@ if (process.env.NODE_ENV !== "production") {
         identity([3]);  // => [3]
       }],
       documentation: `
-The identity combinator; always returns the argument it's given.
+The identity combinator; always returns the argument given.
 
 Identity combinators may work as an NO-OP, since it's a pure operation.
 As such, they can be passed to any operation that expects a function
