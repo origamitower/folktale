@@ -22,7 +22,7 @@ if (process.env.NODE_ENV !== "production") {
     {
       name: 'compose',
       signature: 'compose(f, g)(value)',
-      type: '((β) -> γ, (α) -> β) -> α -> γ',
+      type: '((β) -> γ, (α) -> β) -> (α) -> γ',
       category: 'Combinators',
       tags: ['Lambda Calculus'],
       stability: 'stable',
