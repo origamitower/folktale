@@ -10,11 +10,8 @@
 //
 //----------------------------------------------------------------------
 
-function constant(value) {
-  return function(_) {
-    return value;
-  };
-}
+const constant = (value) => (_) => value;
+
 
 module.exports = constant;
 

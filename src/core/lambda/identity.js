@@ -10,9 +10,8 @@
 //
 //----------------------------------------------------------------------
 
-function identity(value) {
-  return value;
-}
+const identity = (value) => value;
+
 
 module.exports = identity;
 
