@@ -6,16 +6,11 @@ babel := $(bin)/babel
 
 # -- [ CONFIGURATION ] -------------------------------------------------
 SRC_DIR := src
-TGT_DIR := .
 SRC := $(shell find $(SRC_DIR)/ -name '*.js')
-TGT := ${SRC:$(SRC_DIR)/%=%}
+TGT := ${SRC:$(SRC_DIR)/%.js=%.js}
 
 
 # -- [ COMPILATION ] ---------------------------------------------------
-$(TGT_DIR)/%: $(SRC_DIR)/%
-	mkdir -p $(dir $@)
-	$(babel) --source-map inline --out-file $@ $<
-
 node_modules: package.json
 	npm install
 
@@ -31,10 +26,12 @@ help:
 	@echo ""
 
 
-compile: node_modules $(TGT)
+compile: node_modules
+	$(babel) src --source-map inline --out-dir .
 
 clean:
 	rm -f $(TGT)
+	rm -r core
 
 test:
 	exit 1
