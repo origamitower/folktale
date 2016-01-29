@@ -15,20 +15,19 @@ module.exports = {
   compose: require('./compose')
 };
 
+
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== "production") {
-  require('metamagical/decorators')(
-    module.exports,
-    {
-      name: 'module folktale/core/lambda/infix',
-      category: 'Convenience',
-      stability: 'experimental',
-      platforms: ['ECMAScript'],
-      tags: ['Free Methods', 'Infix'],
-      authors: ['Quildreen Motta'],
-      module: 'folktale/core/lambda/infix',
-      licence: 'MIT',
-      documentation: `
+  module.exports[Symbol.for('@@meta:magical')] = {
+    name: 'module folktale/core/lambda/infix',
+    category: 'Convenience',
+    stability: 'experimental',
+    platforms: ['ECMAScript'],
+    tags: ['Free Methods', 'Infix'],
+    authors: ['Quildreen Motta'],
+    module: 'folktale/core/lambda/infix',
+    licence: 'MIT',
+    documentation: `
 Core.Lambda operations as free methods.
 
 The proposed [This-Bind syntax](https://github.com/zenparsing/es-function-bind)
@@ -54,7 +53,6 @@ Core.Lambda module to be used in such a fashion.
 > This module is marked as experimental because This-Bind syntax is not
 > yet in the ECMAScript language. It might not get specified with its
 > current semantics.
-      `
-    }
-  );
+    `
+  };
 }

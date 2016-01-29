@@ -18,24 +18,18 @@ module.exports = identity;
 
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== "production") {
-  require('metamagical/decorators')(
-    identity,
-    {
-      name: 'identity',
-      signature: 'identity(value)',
-      type: '(α) -> α',
-      category: 'Combinators',
-      tags: ['Lambda Calculus'],
-      stability: 'locked',
-      platforms: ['ECMAScript'],
-      authors: ['Quildreen Motta'],
-      module: 'folktale/core/lambda/identity',
-      licence: 'MIT',
-      examples: [function() {
-        identity(2);    // => 2
-        identity([3]);  // => [3]
-      }],
-      documentation: `
+  module.exports[Symbol.for('@@meta:magical')] = {
+    name: 'identity',
+    signature: 'identity(value)',
+    type: '(α) -> α',
+    category: 'Combinators',
+    tags: ['Lambda Calculus'],
+    stability: 'locked',
+    platforms: ['ECMAScript'],
+    authors: ['Quildreen Motta'],
+    module: 'folktale/core/lambda/identity',
+    licence: 'MIT',
+    documentation: `
 The identity combinator; always returns the argument given.
 
 Identity combinators may work as an NO-OP, since it's a pure operation.
@@ -52,7 +46,6 @@ same value:
 
     Either.Left(2).bimap(identity, (x) => x + 1);
     // => Either.Left(2)
-      `
-    }
-  );
+    `
+  };
 }

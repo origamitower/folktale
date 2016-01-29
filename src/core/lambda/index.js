@@ -21,17 +21,15 @@ module.exports = {
 
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== "production") {
-  require('metamagical/decorators')(
-    module.exports,
-    {
-      name: 'module folktale/core/lambda',
-      category: 'Lambda Calculus',
-      stability: 'stable',
-      platforms: ['ECMAScript'],
-      authors: ['Quildreen Motta'],
-      module: 'folktale/core/lambda',
-      licence: 'MIT',
-      documentation: `
+  module.exports[Symbol.for('@@meta:magical')] = {
+    name: 'module folktale/core/lambda',
+    category: 'Lambda Calculus',
+    stability: 'stable',
+    platforms: ['ECMAScript'],
+    authors: ['Quildreen Motta'],
+    module: 'folktale/core/lambda',
+    licence: 'MIT',
+    documentation: `
 Essential functional combinators and higher-order functions derived from λ-calculus.
 
 ## Why?
@@ -42,7 +40,6 @@ functionality for composing and transforming functions in a composable
 way. The \`folktale.core.lambda\` module fills this gap by providing
 tools for composing functions, changing the shape of a function in
 order to compose them in different ways, and currying/uncurrying.
-      `
-    }
-  );
+    `
+  };
 }

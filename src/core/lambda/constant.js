@@ -17,24 +17,18 @@ module.exports = constant;
 
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== "production") {
-  require('metamagical/decorators')(
-    constant,
-    {
-      name: 'constant',
-      signature: 'constant(value)(_)',
-      type: '(α) -> (β) -> α',
-      category: 'Combinators',
-      tags: ['Lambda Calculus'],
-      stability: 'locked',
-      platforms: ['ECMAScript'],
-      authors: ['Quildreen Motta'],
-      module: 'folktale/core/lambda/constant',
-      licence: 'MIT',
-      examples: [function() {
-        constant(3)(2);              // => 3
-        [1, 2, 3].map(constant(0));  // => [0, 0, 0]
-      }],
-      documentation: `
+  module.exports[Symbol.for('@@meta:magical')] = {
+    name: 'constant',
+    signature: 'constant(value)(_)',
+    type: '(α) -> (β) -> α',
+    category: 'Combinators',
+    tags: ['Lambda Calculus'],
+    stability: 'locked',
+    platforms: ['ECMAScript'],
+    authors: ['Quildreen Motta'],
+    module: 'folktale/core/lambda/constant',
+    licence: 'MIT',
+    documentation: `
 The constant combinator; always returns the first argument given.
 
 Constant combinators can be passed to higher-order operations if you
@@ -48,7 +42,6 @@ But in most cases you should consider using an arrow function instead:
 
     [1, 2, 3].map(_ => 0)
     // => [0, 0, 0]
-      `
-    }
-  );
+    `
+  };
 }

@@ -48,32 +48,30 @@ module.exports = curry;
 
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== "production") {
-  require('metamagical/decorators')(
-    curry,
-    {
-      name: 'curry',
-      signature: 'curry(arity, fn)',
-      type: '(Number, (α₁, α₂, ..., αₙ) -> β) -> (α₁) -> (α₂) -> ... -> (αₙ) -> β',
-      category: 'Currying',
-      tags: ['Lambda Calculus'],
-      stability: 'stable',
-      platforms: ['ECMAScript'],
-      authors: ['Quildreen Motta'],
-      module: 'folktale/core/lambda/curry',
-      licence: 'MIT',
-      seeAlso: [
-        {
-          type: 'link',
-          title: 'Why Curry Helps',
-          url: 'https://hughfdjackson.com/javascript/why-curry-helps/'
-        },
-        {
-          type: 'link',
-          title: 'Does Curry Help?',
-          url: 'https://hughfdjackson.com/javascript/does-curry-help/'
-        }
-      ],
-      documentation: `
+  module.exports[Symbol.for('@@meta:magical')] = {
+    name: 'curry',
+    signature: 'curry(arity, fn)',
+    type: '(Number, (α₁, α₂, ..., αₙ) -> β) -> (α₁) -> (α₂) -> ... -> (αₙ) -> β',
+    category: 'Currying',
+    tags: ['Lambda Calculus'],
+    stability: 'stable',
+    platforms: ['ECMAScript'],
+    authors: ['Quildreen Motta'],
+    module: 'folktale/core/lambda/curry',
+    licence: 'MIT',
+    seeAlso: [
+      {
+        type: 'link',
+        title: 'Why Curry Helps',
+        url: 'https://hughfdjackson.com/javascript/why-curry-helps/'
+      },
+      {
+        type: 'link',
+        title: 'Does Curry Help?',
+        url: 'https://hughfdjackson.com/javascript/does-curry-help/'
+      }
+    ],
+    documentation: `
 Transforms functions on tuples into curried functions.
 
 
@@ -119,7 +117,6 @@ This ensures that curried functions can be properly composed,
 regardless of how you invoke them. But it also means that passing
 more arguments to a function than the number of arguments the
 whole composition takes will probably break your program.
-      `
-    }
-  );
+    `
+  };
 }

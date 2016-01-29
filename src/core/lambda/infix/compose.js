@@ -19,27 +19,25 @@ module.exports = function _compose(nextFunction) {
 
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== "production") {
-  require('metamagical/decorators')(
-    module.exports,
-    {
-      name: 'compose',
-      signature: '::compose(nextFunction)',
-      type: '((α) -> β) . ((β) -> γ) -> (α) -> γ',
-      category: 'Combinators',
-      tags: ['Lambda Calculus', 'Free Methods'],
-      stability: 'experimental',
-      platforms: ['ECMAScript.Next'],
-      authors: ['Quildreen Motta'],
-      module: 'folktale/core/lambda/infix/compose',
-      licence: 'MIT',
-      seeAlso: [
-        {
-          type: 'entity',
-          path: 'folktale/core/lambda/compose',
-          reason: 'The function counterpart of this free-method.'
-        }
-      ],
-      documentation: `
+  module.exports[Symbol.for('@@meta:magical')] = {
+    name: 'compose',
+    signature: '::compose(nextFunction)',
+    type: '((α) -> β) . ((β) -> γ) -> (α) -> γ',
+    category: 'Combinators',
+    tags: ['Lambda Calculus', 'Free Methods'],
+    stability: 'experimental',
+    platforms: ['ECMAScript.Next'],
+    authors: ['Quildreen Motta'],
+    module: 'folktale/core/lambda/infix/compose',
+    licence: 'MIT',
+    seeAlso: [
+      {
+        type: 'entity',
+        path: 'folktale/core/lambda/compose',
+        reason: 'The function counterpart of this free-method.'
+      }
+    ],
+    documentation: `
 Composes two functions.
 
 This is a wrapper over [[folktale/core/lambda/compose]], which allows
@@ -51,7 +49,6 @@ one to use compose with the proposed This-Bind syntax:
     // [equivalent to]:  compose(double, inc)
 
 See the original \`compose\` for more information.
-      `
-    }
-  );
+    `
+  };
 }

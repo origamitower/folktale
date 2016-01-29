@@ -18,20 +18,18 @@ module.exports = compose;
 
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== "production") {
-  require('metamagical/decorators')(
-    compose,
-    {
-      name: 'compose',
-      signature: 'compose(f, g)(value)',
-      type: '((β) -> γ, (α) -> β) -> (α) -> γ',
-      category: 'Combinators',
-      tags: ['Lambda Calculus'],
-      stability: 'stable',
-      platforms: ['ECMAScript'],
-      authors: ['Quildreen Motta'],
-      module: 'folktale/core/lambda/compose',
-      licence: 'MIT',
-      documentation: `
+  module.exports[Symbol.for('@@meta:magical')] = {
+    name: 'compose',
+    signature: 'compose(f, g)(value)',
+    type: '((β) -> γ, (α) -> β) -> (α) -> γ',
+    category: 'Combinators',
+    tags: ['Lambda Calculus'],
+    stability: 'stable',
+    platforms: ['ECMAScript'],
+    authors: ['Quildreen Motta'],
+    module: 'folktale/core/lambda/compose',
+    licence: 'MIT',
+    documentation: `
 Composes two functions.
 
 The compose operation allows function composition. Basically, if you
@@ -48,7 +46,6 @@ that you get a new function which has the characteristics of both:
 
 > **NOTE**  
 > Composition is done from right to left, rather than left to right.
-      `
-    }
-  );
+    `
+  };
 }
