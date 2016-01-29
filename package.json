@@ -1,6 +1,6 @@
 {
   "name": "folktale",
-  "version": "1.0.0-SNAPSHOT",
+  "version": "2.0.0",
   "description": "A suite of libraries for generic functional programming in JavaScript that allows you to write elegant modular applications with fewer bugs and more reuse.",
   "main": "./index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/folktale/folktale"
+    "url": "https://github.com/origamitower/folktale"
   },
   "keywords": [
     "functional",
@@ -20,17 +20,8 @@
   "author": "Quildreen Motta",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/folktale/folktale/issues"
+    "url": "https://github.com/origamitower/folktale/issues"
   },
   "dependencies": {
-    "control.monads": "^0.6.0",
-    "core.arity": "^1.0.0",
-    "core.inspect": "^1.0.3",
-    "core.lambda": "^1.0.0",
-    "core.operators": "^1.0.0",
-    "data.either": "^1.2.0",
-    "data.maybe": "^1.2.0",
-    "data.task": "^3.0.0",
-    "data.validation": "^1.3.0"
   }
 }
