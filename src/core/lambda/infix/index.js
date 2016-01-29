@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== "production") {
     module.exports,
     {
       name: 'module folktale/core/lambda/infix',
-      category: 'Lambda Calculus',
+      category: 'Convenience',
       stability: 'experimental',
       platforms: ['ECMAScript'],
       tags: ['Free Methods', 'Infix'],

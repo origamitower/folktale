@@ -19,6 +19,7 @@ module.exports = compose;
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== "production") {
   require('metamagical/decorators')(
+    compose,
     {
       name: 'compose',
       signature: 'compose(f, g)(value)',

@@ -14,7 +14,8 @@ module.exports = {
   identity: require('./identity'),
   constant: require('./constant'),
   curry: require('./curry'),
-  compose: require('./compose')
+  compose: require('./compose'),
+  infix: require('./infix')
 };
 
 

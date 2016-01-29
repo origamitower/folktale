@@ -43,6 +43,9 @@ const curry = (arity, fn) => {
 };
 
 
+module.exports = curry;
+
+
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== "production") {
   require('metamagical/decorators')(

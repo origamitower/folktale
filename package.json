@@ -23,7 +23,7 @@
     "url": "https://github.com/origamitower/folktale/issues"
   },
   "dependencies": {
-    "metamagical": "^0.1.0"
+    "metamagical": "^0.1.1"
   },
   "devDependencies": {
     "babel-cli": "^6.4.5",
