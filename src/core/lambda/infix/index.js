@@ -12,7 +12,8 @@
 
 module.exports = {
   curry: require('./curry'),
-  compose: require('./compose')
+  compose: require('./compose'),
+  on: require('./on')
 };
 
 
