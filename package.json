@@ -23,5 +23,6 @@
     "url": "https://github.com/origamitower/folktale/issues"
   },
   "dependencies": {
+    "metamagical": "^0.1.0"
   }
 }
