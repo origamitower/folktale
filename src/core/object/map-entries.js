@@ -115,6 +115,7 @@ different ECMAScript versions and VMs.
     platforms: ['ECMAScript 5'],
     authors: ['Quildreen Motta'],
     module: 'folktale/core/object/map-entries',
+    portability: 'Supported in older ES VMs with es5-shim',
     complexity: 'O(n), n is the number of own enumerable properties',
     documentation: `
 Transforms pairs of (key, value) own properties in a plain object.
@@ -131,7 +132,7 @@ transformed, but also its keys:
     );
     // => { X: 20, Y: 40 }
 
-> **NOTE**  
+> **NOTE**
 > The function expects you to provide a definition function, which will
 > determine how to handle the mapping of the returned pairs. This is
 > necessary because no single behaviour is always the right one for
@@ -140,14 +141,14 @@ transformed, but also its keys:
 > frorms of this function.
 
 
-> **NOTE**  
+> **NOTE**
 > The definition function may mutate the object.
 
 
-> **WARNING**  
-> [[mapEntries]] will not preserve the same shape of the original object.
+> **WARNING**
+> [[mapEntries]] will not preserve the shape of the original object.
 > It treats objects as plain maps from String to some value. It ignores
-> things like prototypical delegation, symbols, and non-own enumerable
+> things like prototypical delegation, symbols, and non-enumerable
 > properties.
     `
   };
