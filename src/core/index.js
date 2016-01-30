@@ -11,7 +11,8 @@
 //----------------------------------------------------------------------
 
 module.exports = {
-  lambda: require('./lambda')
+  lambda: require('./lambda'),
+  adt: require('./adt')
 };
 
 
