@@ -11,7 +11,8 @@
 //----------------------------------------------------------------------
 
 module.exports = {
-  core: require('./core')
+  core: require('./core'),
+  data: require('./data')
 };
 
 
