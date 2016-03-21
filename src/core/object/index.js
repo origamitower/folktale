@@ -12,10 +12,11 @@
 
 module.exports = {
   infix: require('./infix'),
-  entries: require('./entries'),
   mapEntries: require('./map-entries'),
   mapValues: require('./map-values'),
-  values: require('./values')
+  values: require('./values'),
+  toPairs: require('./to-pairs'),
+  fromPairs: require('./from-pairs')
 };
 
 

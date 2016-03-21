@@ -10,23 +10,23 @@
 //
 //----------------------------------------------------------------------
 
-const entries = (object) => Object.keys(object).map(k => [k, object[k]]);
+const toPairs = (object) => Object.keys(object).map(k => [k, object[k]]);
 
 
-module.exports = entries;
+module.exports = toPairs;
 
 
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== "production") {
   module.exports[Symbol.for('@@meta:magical')] = {
-    name: 'entries',
-    signature: 'entries(object)',
-    type: '({ String | Symbol -> α }) -> [α]',
-    category: 'Extracting information',
+    name: 'toPairs',
+    signature: 'toPairs(object)',
+    type: '({ String | Symbol -> Any }) -> [#[String | Symbol, Any]]',
+    category: 'Converting',
     stability: 'stable',
     platforms: ['ECMAScript 5'],
     authors: ['Quildreen Motta'],
-    module: 'folktale/core/object/entries',
+    module: 'folktale/core/object/toPairs',
     licence: 'MIT',
     complexity: 'O(n), n is the number of own enumerable properties',
     documentation: `
@@ -37,7 +37,7 @@ there are no operations to work with them in that way. This function
 allows one to extract the (key, value) pairs from an object:
 
     const pair = { x: 10, y: 20 };
-    entries(pair);
+    toPairs(pair);
     // => [['x', 10], ['y', 20]]  or  [['y', 20], ['x', 10]]
 
 Inherited properties, and those that are not marked as enumerable, are
@@ -47,13 +47,13 @@ not returned in the resulting array:
     const pair = Object.create(p1);
     pair.x = 10; pair.y = 20;
 
-    entries(pair);
+    toPairs(pair);
     // => [['x', 10], ['y', 20]]  or  [['y', 20], ['x', 10]]
 
     // non-enumerable property x
     Object.defineProperty(p1, 'x', { value: 1 });
 
-    entries(p1);
+    toPairs(p1);
     // => [['z', 2]]
 
 
