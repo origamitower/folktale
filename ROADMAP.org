@@ -1,0 +1,367 @@
+#+STARTUP: content
+
+* Folktale Redesign
+
+** Overview
+
+The next version of the Folktale library will be a major redesign,
+which among other things aims to make functional programming more
+accessible to programmers, and also make a better use features in
+newer versions of ECMAScript.
+
+** Principles
+
+It's guided by the following principles:
+
+- Replace currying-by-default with a heavier use of arrow functions ::
+  Curried functions can be composed in several ways. And this is a good
+  thing, because it means it's easier to create new functionality by
+  combining existing ones. However, in an untyped language, you have no
+  ways of enforcing a correct composition of functions, so currying in
+  JS tends to lead to silent or late errors. Coupled with JavaScript's
+  heavy use of variadic functions, and the VM's unhelpful error reporting,
+  these have the potential for being very frustrating, especially 
+  for people new to FP.
+
+  ES2015 lessens a bit the burden of being more explicit with your
+  composition, since arrow functions have less visual overhead, and
+  can enforce some compositional constraints syntactically. They also
+  side-step the problems with JavaScript's variadic functions to an
+  extent.
+
+
+- Provide separate free-method versions of functions ::
+  JavaScript's syntax is limited, but some of the proposed additions
+  to it lead to programs that are easy to read. One of them is the
+  This-Binding syntax, which allows using functions in infix position:
+
+  #+BEGIN_SRC js
+    const _groupBy = (xs, f) => ...;
+
+    function groupBy(f) {
+      return _groupBy(this, f);
+    }
+
+    [1, 2, 3, 4, 5]::groupBy(isOdd)
+
+    // Usage of other combinators also reads in a clearer way
+    list.sort(compare::on(first))
+  #+END_SRC
+  
+
+- Where possible, as long as laws aren't broken, reuse language's native methods ::
+  This makes it easier to combine Folktale with existing projects and
+  libraries, as they'd have similar expectations.
+
+
+- Monolithic packages over several micro-libraries ::
+  There are plenty of advantages of micro-libraries. They are more modular,
+  since they have to work with less expectations, they are easier to replace,
+  we can make a better use of semantic versioning, and they are easier 
+  to understand.
+
+  But there are plenty of drawbacks to them as well:
+
+  - *They're harder to use when you need to combine more than one module*.
+    For example, if you want an Either module to be able to convert its
+    values to a Maybe structure, you need to provide the Either module
+    with the Maybe structure to use. This, while modular, adds some
+    friction for people to use these features.
+
+  - *They're harder to maintain*. Keeping modules, tooling, and issues in
+    sync between the different modules takes a lot of effort.
+
+  - *They're less consistent*. Because each module is independent, exposes
+    its own API, and evolves at its own pace, it's easy to get inconsistent
+    behaviour across them. This is already the case with how methods work
+    in Maybe, Either, and Validation.
+
+
+- Better support for interactive (REPL) development ::
+  One of the long-term goals with Folktale is to have a really good support
+  for interactive development in the REPL. The first step for that is to 
+  be able to view documentation directly from the REPL, which is being done
+  by annotating objects for the [[https://github.com/origamitower/metamagical][Meta:Magical]] library.
+
+  As newer features get added to Meta:Magical (like searching functions by
+  examples, or by approximate type signature, like in Hoogle), Folktale and
+  its users will benefit from them without having to do anything.
+
+
+- Logically grouped, minimal modules ::
+  Each module should be entirely self-contained, and only provide the
+  absolute minimum necessary for that particular functionality. Most of
+  the time this will mean ~one function = one module~, but not always
+  (see the new ADT module, and [[https://github.com/siren-lang/siren/blob/master/documentation/platform-design.md][Siren's Platform Design document]] for
+  examples).
+
+  There are two reasons behind this:
+
+  1. Extracting a minimal application from a large framework/environment
+     requires full type inference in JavaScript, otherwise “tree-shaking”
+     is remove dynamic features from the resulting bundle[[http://bibliography.selflanguage.org/type-inference.html][¹]] [[http://www.cs.cmu.edu/~aldrich/FOOL/FOOL1/FOOL1-report.pdf][²]]
+
+  2. Because all modules are annotated, inline, for the Meta:Magical
+     library, even modules comprised of simple functions end up being
+     ~40 loc of documentation. We might be able to make this better by
+     compiling a superset of JS.
+
+
+- Modules are grouped in an hierarchy of categories ::
+  This is mostly to make using the libraries easier given the previous
+  point. Modules higher in the hierarchy should re-export all features
+  below it.
+
+** Libraries
+*** Core
+The ~Core~ category provides the baseline for all features
+built on top, by filling the gaps of the functionality needed
+for the standard data structures.
+
+The purpose of ~Core~ is to just provide enough functionality
+to make the other categories possible. The focus is on better
+data structures and composing those data structures.
+
+
+- Lambda ::
+  Provides common combinators for functions.
+
+- ADT ::
+  Definitions of algebraic data types.
+
+- Object ::
+  Handles working with objects-as-dictionaries.
+
+- String ::
+  Common operations on strings.
+
+- Comparison ::
+  Comparisons between built-in JS values.
+
+- Equality ::
+  Equality between built-in JS values.
+
+- Inspecting ::
+  Textual representations of built-in JS values.
+
+- Contracts ::
+  first and higher-order run-time contracts.
+
+- Iterables ::
+  Lazy sequences using JS's iterable protocol.
+
+**** [5/5] Core.Lambda
+
+- [X] ~compose :: (b -> c, a -> b) -> a -> c~ ::
+  Composes two functions.
+  
+- [X] ~constant :: a -> b -> c~ ::
+  Constant combinator.
+
+- [X] ~identity :: a -> a~ ::
+  Identity combinator.
+
+- [X] ~curry :: n:Number, (a1, a2, ..., an -> b) -> a1 -> a2 -> ... -> an -> b~ ::
+  Transforms a function on tuples into a curried function.
+
+- [X] ~infix/on :: (b, b -> c) . (a -> b) -> (a, a) -> c~ ::
+  Applies an unary function to both sides of a binary function.
+
+
+**** [1/4] Core.ADT
+
+- [X] ~(index) :: { String -> [String] } -> ADT~ ::
+  A function to create tagged unions that support late derivation.
+
+- [ ] ~ToJSON :: Variant, ADT -> Void  <mutates>~ ::
+  Adds an implementation of ~.toJSON~ to each variant.
+
+- [ ] ~ToString :: Variant, ADT -> Void  <mutates>~ ::
+  Adds an implementation of ~.toString~ to each variant.
+
+- [ ] ~Setoid :: (a, a -> Boolean) -> Variant, ADT -> Void <mutates>~ ::
+  Adds an implementation of Fantasy Land's ~.equals~ to each variant.
+  It requires a custom equality function for comparing non-ADTs.
+
+
+**** [4/5] Core.Object
+
+- [ ] ~fromPairs :: Iterable(String | Symbol, Any) -> { String | Symbol -> Any }~ ::
+  Converts an iterable of pairs to an object.
+
+- [X] ~toPairs :: { String | Symbol -> Any } -> Iterable(String | Symbol, Any)~ ::
+  Converts an object to an iterable of pairs.
+
+- [X] ~values :: { String | Symbol -> Any } -> Iterable(Any)~ ::
+  Returns the values in an object.
+
+- [X] ~mapValues :: { String | Symbol -> Any }, (Any -> Any) -> { String | Symbol -> Any }~ ::
+  Maps the values of an object.
+
+- [X] ~mapEntries :: { String | Symbol -> Any }, (#[String | Symbol, Any] -> #[String | Symbol, Any]), ({ String | Symbol -> Any }, String | Symbol, Any -> String | Symbol -> Any  <mutates>) -> { String | Symbol -> Any }~ ::
+  Transform pairs of key/value in an object. Supports a custom merging strategy.
+
+
+**** [/] Core.String
+
+TBD
+
+
+**** [/] Core.Comparison
+
+TBD
+
+
+**** [/] Core.Equality
+
+TBD
+
+
+**** [/] Core.Inspecting
+
+TBD
+
+
+**** [/] Core.Contracts
+
+TBD
+
+
+**** [0/30] Core.Iterables
+
+Building iterables:
+
+- [ ] ~cycle :: Iterable(a) -> Iterable(a)~ ::
+  Creates an infinite iterable by cycling through items in the input.
+
+- [ ] ~iterate :: a, (a -> a) -> Iterable(a)~ ::
+  iterate(0, inc) === (0, inc(0), inc(inc(0)), inc(inc(inc(0))), ...)
+
+- [ ] ~replicate :: a -> Iterable(a)~ ::
+  Equivalent to ~cycle(function*(){ yield a }())~
+
+
+Folds:
+
+- [ ] ~foldLeft :: Iterable(a), b, (b, a -> b) -> b~ ::
+  Left-associative fold over finite iterables.
+
+- [ ] ~foldRight :: Iterable(a), b, (a, b -> b) -> b~ ::
+  Right-associative fold over finite iterables.
+
+- [ ] ~scanLeft :: Iterable(a), b, (b, a -> b) -> Iterable(b)~ ::
+  Left-associative fold over finite iterables, collecting intermediate values.
+
+- [ ] ~scanRight :: Iterable(a), b, (a, b -> b) -> Iterable(b)~ ::
+  Right-associative fold over finite iterables, collecting intermediate values.
+
+- [ ] ~every :: Iterable(a), (a -> Boolean) -> Boolean~ ::
+  Tests if all values of an iterable pass a predicate test.
+
+- [ ] ~some :: Iterable(a), (a -> Boolean) -> Boolean~ ::
+  Tests if any value in an iterable pass a predicate test.
+
+- [ ] ~maximumBy :: Iterable(a), (a, a -> -1 | 0 | 1) -> Maybe(a)~ ::
+  Gets the highest element according to the custom ordering provided.
+
+- [ ] ~minimumBy :: Iterable(a), (a, a -> -1 | 0 | 1) -> Maybe(a)~ ::
+  Gets the lowest element according to the custom ordering provided.
+
+
+Transformations:
+
+- [ ] ~map :: Iterable(a), (a -> b) -> Iterable(b)~ ::
+
+- [ ] ~flatMap :: Iterable(a), (a -> Iterable(b)) -> Iterable(b)~ ::
+
+- [ ] ~filter :: Iterable(a), (a -> Boolean) -> Iterable(b)~ ::
+
+- [ ] ~groupBy :: Iterable(a), (a -> b) -> Map(b, [a])~ ::
+  Requires a finite iterable.
+
+- [ ] ~intersperse :: Iterable(a), a -> Iterable(a)~ ::
+  intersperse(",", "abc") => "a" "," "b" "," "c"
+
+- [ ] ~intercalate :: Iterable(a), Iterable(a) -> Iterable(a)~ ::
+  Like intersperse, but puts the whole iterable between each item.
+
+- [ ] ~partition :: Iterable(a), (a -> Boolean) -> #[Iterable(a), Iterable(a)]~ ::
+  Equivalent to ~[filter(p, xs), filter(not . p, xs)]~
+
+
+Slicing:
+
+- [ ] ~first :: Iterable(a) -> Maybe(a)~ ::
+
+- [ ] ~last :: Iterable(a) -> Maybe(a)~ ::
+
+- [ ] ~butFirst :: Iterable(a) -> Iterable(a)~ :: drop(1)
+
+- [ ] ~butLast :: Iterable(a) -> Iterable(a)~ :: take(length(xs) - 1)
+
+- [ ] ~take :: Iterable(a), Number -> Iterable(a)~ ::
+
+- [ ] ~drop :: Iterable(a), Number -> Iterable(a)~ ::
+
+- [ ] ~takeWhile :: Iterable(a), (a -> Boolean) -> Iterable(a)~ ::
+
+- [ ] ~dropWhile :: Iterable(a), (a -> Boolean) -> Iterable(a)~ ::
+
+
+Combining:
+
+- [ ] ~concat :: Iterable(a), Iterable(a) -> Iterable(a)~ ::
+
+- [ ] ~zipWith :: Iterable(a), Iterable(b), (a, b -> c) -> Iterable(c)~ ::
+
+- [ ] ~zipWithN :: [Iterable(a1), ..., Iterable(an)], (a1, ..., an -> b) -> Iterable(b)~ ::
+
+- [ ] ~zip :: Iterable(a), Iterable(b) -> Iterable(#[a, b])~ ::
+
+
+*** Data
+The ~Data~ category provides implementations of data structures
+that are common in functional programming.
+
+- Maybe ::
+  A structure for modelling the presence or absence of values.
+
+- Either ::
+  A structure for modelling a tagged disjunction between two values.
+
+- Validation ::
+  A structure similar to either, but designed for validations you can aggregate.
+
+- Task ::
+  A structure for modelling a potentially asynchronous action.
+
+- Channel ::
+
+- List ::
+
+- Vector ::
+
+- Map ::
+
+- Set ::
+
+
+**** Data.Maybe
+
+- [ ] ~data Maybe a = Just a | Nothing~ ::
+  Implements: Setoid, Functor, Apply, Applicative, Chain, Monad
+
+  
+**** Data.Either
+
+- [ ] ~data Either a b = Left a | Right b~ ::
+  Implements: Setoid, Functor, Apply, Applicative, Chain, Monad
+
+**** Data.Validation
+
+- [ ] ~data Validation a b = Failure a | Success b~ ::
+  Implements: Setoid, Functor, Apply, Applicative
+
+
+
+*** Control
