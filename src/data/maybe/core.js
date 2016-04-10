@@ -114,7 +114,7 @@ _Just.prototype[fl.ap] = function(aMaybe) {
 
 
 // -- Applicative ------------------------------------------------------
-Maybe.prototype[fl.of] = Just;
+Maybe[fl.of] = Just;
 
 
 // -- Chain ------------------------------------------------------------
@@ -138,12 +138,12 @@ _Just.prototype[fl.chain] = function(transformation) {
 // -- Show -------------------------------------------------------------
 
 // (for Object.prototype.toString)
-Maybe.prototype[Symbol.toStringTag]    = '(folktale) Maybe';
+Maybe[Symbol.toStringTag]    = '(folktale) Maybe';
 _Nothing.prototype[Symbol.toStringTag] = '(folktale) Maybe.Nothing';
 _Just.prototype[Symbol.toStringTag]    = '(folktale) Maybe.Just';
 
 // (regular JavaScript representations)
-Maybe.prototype.toString = () => '(folktale) Maybe';
+Maybe.toString = () => '(folktale) Maybe';
 _Nothing.prototype.toString = () => '(folktale) Maybe.Nothing()';
 
 _Just.prototype.toString = function() {
@@ -151,7 +151,7 @@ _Just.prototype.toString = function() {
 };
 
 // (Node REPL representations)
-Maybe.prototype.inspect = Maybe.prototype.toString;
+Maybe.inspect = Maybe.toString;
 _Nothing.prototype.inspect = Maybe.Nothing.prototype.toString;
 _Just.prototype.inspect = Maybe.Just.prototype.toString;
 
@@ -204,7 +204,7 @@ _Nothing.prototype.toJSON = function() {
   };
 };
 
-_Just.Prototype.toJSON = function() {
+_Just.prototype.toJSON = function() {
   return {
     '#type': 'folktale:Maybe.Just',
     value:   this.value
