@@ -81,7 +81,7 @@ const data = (patterns) => {
   const ADT_Namespace = Object.create(ADT);
   const variants      = defineVariants(patterns, ADT_Namespace);
 
-  Object.assign(ADT_Namespace, { variants});
+  Object.assign(ADT_Namespace, variants);
 
   return ADT_Namespace;
 };
