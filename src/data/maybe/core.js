@@ -24,7 +24,7 @@ const _Just    = Maybe.Just;
 
 // -- Assertions -------------------------------------------------------
 const assertMaybe = (method, value) => {
-  if (process.env.NODE_ENV !== "production" && !(value instanceof Maybe)) {
+  if (process.env.NODE_ENV !== 'production' && !(value instanceof Maybe)) {
     console.warn(`
 ${method} expects a value of the same type, but was given ${value}.
 
@@ -67,25 +67,25 @@ documentation for more information.
 
 
 // -- Constructors -----------------------------------------------------
-const Nothing = ()    => new Maybe.Nothing({});
-const Just    = value => new Maybe.Just({ value });
+const Nothing = ()      => new Maybe.Nothing({});
+const Just    = (value) => new Maybe.Just({ value });
 
 
 // -- Setoid -----------------------------------------------------------
 _Nothing.prototype[fl.equals] = function(aMaybe) {
-  assertMaybe("Maybe.Nothing#equals", aMaybe);
+  assertMaybe('Maybe.Nothing#equals', aMaybe);
   return aMaybe.isNothing;
 };
 
 _Just.prototype[fl.equals] = function(aMaybe) {
-  assertMaybe("Maybe.Just#equals", aMaybe);
+  assertMaybe('Maybe.Just#equals', aMaybe);
   return aMaybe.isJust && aMaybe.value === this.value;
 };
 
 
 // -- Functor ----------------------------------------------------------
 _Nothing.prototype[fl.map] = function(transformation) {
-  if (typeof transformation !== "function") {
+  if (typeof transformation !== 'function') {
     throw new TypeError(`Maybe.Nothing#map expects a function, but was given ${transformation}.`);
   }
 
@@ -93,7 +93,7 @@ _Nothing.prototype[fl.map] = function(transformation) {
 };
 
 _Just.prototype[fl.map] = function(transformation) {
-  if (typeof transformation !== "function") {
+  if (typeof transformation !== 'function') {
     throw new TypeError(`Maybe.Just#map expects a function, but was given ${transformation}.`);
   }
 
@@ -103,12 +103,12 @@ _Just.prototype[fl.map] = function(transformation) {
 
 // -- Apply ------------------------------------------------------------
 _Nothing.prototype[fl.ap] = function(aMaybe) {
-  assertMaybe("Maybe.Nothing#ap", aMaybe);
+  assertMaybe('Maybe.Nothing#ap', aMaybe);
   return this;
 };
 
 _Just.prototype[fl.ap] = function(aMaybe) {
-  assertMaybe("Maybe.Just#ap", aMaybe);
+  assertMaybe('Maybe.Just#ap', aMaybe);
   return aMaybe.map(this.value);
 };
 
@@ -119,7 +119,7 @@ Maybe.prototype[fl.of] = Just;
 
 // -- Chain ------------------------------------------------------------
 _Nothing.prototype[fl.chain] = function(transformation) {
-  if (typeof transformation !== "function") {
+  if (typeof transformation !== 'function') {
     throw new TypeError(`Maybe.Nothing#chain expects a function, but was given ${transformation}.`);
   }
 
@@ -127,7 +127,7 @@ _Nothing.prototype[fl.chain] = function(transformation) {
 };
 
 _Just.prototype[fl.chain] = function(transformation) {
-  if (typeof transformation !== "function") {
+  if (typeof transformation !== 'function') {
     throw new TypeError(`Maybe.Just#chain expects a function, but was given ${transformation}.`);
   }
 
@@ -138,13 +138,13 @@ _Just.prototype[fl.chain] = function(transformation) {
 // -- Show -------------------------------------------------------------
 
 // (for Object.prototype.toString)
-Maybe.prototype   [Symbol.toStringTag] = "(folktale) Maybe";
-_Nothing.prototype[Symbol.toStringTag] = "(folktale) Maybe.Nothing";
-_Just.prototype   [Symbol.toStringTag] = "(folktale) Maybe.Just";
+Maybe.prototype[Symbol.toStringTag]    = '(folktale) Maybe';
+_Nothing.prototype[Symbol.toStringTag] = '(folktale) Maybe.Nothing';
+_Just.prototype[Symbol.toStringTag]    = '(folktale) Maybe.Just';
 
 // (regular JavaScript representations)
-Maybe.prototype.toString = () => "(folktale) Maybe";
-_Nothing.prototype.toString = () => "(folktale) Maybe.Nothing()";
+Maybe.prototype.toString = () => '(folktale) Maybe';
+_Nothing.prototype.toString = () => '(folktale) Maybe.Nothing()';
 
 _Just.prototype.toString = function() {
   return `(folktale) Maybe.Just(${this.value})`;
@@ -178,11 +178,11 @@ _Just.prototype.get = function() {
 
 
 
-_Nothing.prototype.getOrElse = function(default_){
+_Nothing.prototype.getOrElse = function(default_) {
   return default_;
 };
 
-_Just.prototype.getOrElse = function(default_) {
+_Just.prototype.getOrElse = function(_default_) {
   return this.value;
 };
 
@@ -221,7 +221,7 @@ module.exports = {
 
 
 // -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   module.exports[Symbol.for('@@meta:magical')] = {
     name: 'Maybe',
     category: 'Data Structures',

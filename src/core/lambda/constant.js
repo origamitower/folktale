@@ -16,7 +16,7 @@ const constant = (value) => (_) => value;
 module.exports = constant;
 
 // -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   module.exports[Symbol.for('@@meta:magical')] = {
     name: 'constant',
     signature: 'constant(value)(_)',

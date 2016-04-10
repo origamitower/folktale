@@ -92,7 +92,7 @@ module.exports = data;
 
 
 // -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   ADT[Symbol.for('@@meta:magical')] = {
     name: 'ADT',
     category: 'Data Structures',

@@ -18,7 +18,7 @@ module.exports = function _mapValues(transformation) {
 
 
 // -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   module.exports[Symbol.for('@@meta:magical')] = {
     name: 'mapValues',
     signature: '::mapValues(transformation)',

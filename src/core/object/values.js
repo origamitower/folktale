@@ -17,7 +17,7 @@ module.exports = values;
 
 
 // -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   module.exports[Symbol.for('@@meta:magical')] = {
     name: 'values',
     signature: 'values(object)',

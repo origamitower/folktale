@@ -3,6 +3,6 @@
     "plugins": ["transform-function-bind",
                 "transform-object-rest-spread",
                 ["babel-plugin-module-alias", [
-                  { "src": "./", "expose": "folktale" }
+                  { "src": "./src", "expose": "folktale" }
                 ]]]
 }

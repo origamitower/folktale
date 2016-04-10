@@ -40,7 +40,7 @@ module.exports = mapEntries;
 
 
 // -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   mapEntries.overwrite[Symbol.for('@@meta:magical')] = {
     name: 'overwrite',
     signature: 'overwrite(object, transform)',

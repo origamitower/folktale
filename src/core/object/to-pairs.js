@@ -17,7 +17,7 @@ module.exports = toPairs;
 
 
 // -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   module.exports[Symbol.for('@@meta:magical')] = {
     name: 'toPairs',
     signature: 'toPairs(object)',

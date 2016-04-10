@@ -12,9 +12,9 @@
 
 const mapValues = (object, transformation) => {
   const keys = Object.keys(object);
-  var result = {};
+  const result = {};
 
-  for (var i = 0; i < keys.length; ++i) {
+  for (let i = 0; i < keys.length; ++i) {
     const key = keys[i];
     result[key] = transformation(object[key]);
   }
@@ -27,7 +27,7 @@ module.exports = mapValues;
 
 
 // -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   mapValues[Symbol.for('@@meta:magical')] = {
     name: 'mapValues',
     signature: 'mapValues(object, transformation)',

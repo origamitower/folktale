@@ -16,7 +16,7 @@ module.exports = function(transform) {
 
 
 // -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   module.exports[Symbol.for('@@meta:magical')] = {
     name: 'on',
     signature: '::on(transform)(x, y)',

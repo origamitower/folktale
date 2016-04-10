@@ -16,7 +16,7 @@ module.exports = {
 
 
 // -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   module.exports[Symbol.for('@@meta:magical')] = {
     name: 'module folktale/core/object/infix',
     category: 'Convenience',

@@ -13,18 +13,18 @@
 const define = Object.defineProperty;
 
 const fromPairs = (pairs) =>
-        pairs.reduce( (r, [k, v]) => define(r, k, { value: v
-                                                  , writable: true
-                                                  , enumerable: true
-                                                  , configurable: true
-                                                  })
-                    , {});
+        pairs.reduce((r, [k, v]) => define(r, k, { value: v,
+                                                   writable: true,
+                                                   enumerable: true,
+                                                   configurable: true
+                                                  }),
+                     {});
 
 module.exports = fromPairs;
 
 
 // -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   module.exports[Symbol.for('@@meta:magical')] = {
     name: 'fromPairs',
     signature: 'fromPairs(pairs)',

@@ -1,7 +1,8 @@
 .DEFAULT_GOAL = help
 
-bin := $(shell npm bin)
-babel := $(bin)/babel
+bin    := $(shell npm bin)
+babel  := $(bin)/babel
+eslint := $(bin)/eslint
 
 
 # -- [ CONFIGURATION ] -------------------------------------------------
@@ -23,6 +24,7 @@ help:
 	@echo "  compile ................ Compiles the project."
 	@echo "  clean .................. Removes build artifacts."
 	@echo "  test ................... Runs the tests for the project."
+	@echo "  lint ................... Lints all source files."
 	@echo ""
 
 
@@ -35,6 +37,9 @@ clean:
 
 test:
 	exit 1
+
+lint:
+	$(eslint) .
 
 
 .PHONY: help compile clean test
