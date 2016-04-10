@@ -5,3 +5,4 @@ npm-debug.log
 /index.js
 /core/
 /data/
+/test/**/*.js
