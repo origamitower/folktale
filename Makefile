@@ -43,10 +43,10 @@ clean:
 	rm -f $(TGT) $(TEST_TGT)
 	rm -r core
 
-test: compile-test
+test: compile compile-test
 	$(mocha) --reporter spec --ui bdd
 
-test-watch:
+test-watch: compile
 	$(babel) test --source-map inline --out-dir test --watch &
 	$(mocha) --reporter min --ui bdd --watch
 
