@@ -1,4 +1,5 @@
 /core/
 /data/
 /node_modules/
+/test/
 index.js

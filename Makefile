@@ -3,12 +3,17 @@
 bin    := $(shell npm bin)
 babel  := $(bin)/babel
 eslint := $(bin)/eslint
+mocha  := $(bin)/mocha
 
 
 # -- [ CONFIGURATION ] -------------------------------------------------
 SRC_DIR := src
 SRC := $(shell find $(SRC_DIR)/ -name '*.js')
 TGT := ${SRC:$(SRC_DIR)/%.js=%.js}
+
+TEST_DIR := test
+TEST_SRC := $(shell find $(TEST_DIR)/ -name '*.es6')
+TEST_TGT := ${TEST_SRC:$(TEST_DIR)/%.es6=%.js}
 
 
 # -- [ COMPILATION ] ---------------------------------------------------
@@ -28,18 +33,25 @@ help:
 	@echo ""
 
 
-compile: node_modules
+compile: node_modules $(SRC)
 	$(babel) src --source-map inline --out-dir .
 
+compile-test: $(TEST_SRC)
+	$(babel) test --source-map inline --out-dir test
+
 clean:
-	rm -f $(TGT)
+	rm -f $(TGT) $(TEST_TGT)
 	rm -r core
 
-test:
-	exit 1
+test: compile-test
+	$(mocha) --reporter spec --ui bdd
+
+test-watch:
+	$(babel) test --source-map inline --out-dir test --watch &
+	$(mocha) --reporter min --ui bdd --watch
 
 lint:
 	$(eslint) .
 
 
-.PHONY: help compile clean test
+.PHONY: help compile clean test lint test-watch
