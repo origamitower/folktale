@@ -20,76 +20,76 @@ describe('Data.Either', function() {
         return _.fromNullable(null).equals(_.Left(null))
     });
 
-    property('fromNullable#Right', 'integer', function(a) {
+    property('fromNullable#Right', 'json', function(a) {
         return _.fromNullable(a).equals(_.Right(a))
     }); 
 
-    property('try#Left', 'integer', function(a) {
+    property('try#Left', 'json', function(a) {
         return _.try((a) => {throw a })(a).equals(_.Left(a))
     });
 
-    property('try#Right', 'integer', function(a) {
+    property('try#Right', 'json', function(a) {
         return _.try(() => (a))(a).equals(_.Right(a))
     }); 
   });
 
   describe('Setoid', function () {
-    property('Left#equals', 'integer', 'integer', function(a, b) {
+    property('Left#equals', 'json', 'json', function(a, b) {
       return (a === b) === (_.Left(a).equals(_.Left(b)))
     });
 
-    property('Right#equals', 'integer', 'integer', function(a, b) {
+    property('Right#equals', 'json', 'json', function(a, b) {
       return (a === b) === (_.Right(a).equals(_.Right(b)))
     });
 
-    property('Left#equals and Right#equals', 'integer', function(a) {
+    property('Left#equals and Right#equals', 'json', function(a) {
       return !(_.Left(a).equals(_.Right(a)))
     });
   });
 
   describe('Functor', function () {
-    property('map', 'integer', 'integer -> integer', function(a, f) {
+    property('map', 'json', 'json -> json', function(a, f) {
       return _.of(f(a)).equals(_.of(a).map(f))
     });
     
-    property('Left#map', 'integer', 'integer -> integer', function(a, f) {
+    property('Left#map', 'json', 'json -> json', function(a, f) {
       return _.Left(a).map(f).equals(_.Left(a))
     });
   });
 
   describe('Applicative', function () {
-    property('of', 'integer', 'integer', function(a, b) {
+    property('of', 'json', 'json', function(a, b) {
       return (a === b) === (_.of(a).equals(_.of(b)))
     });
 
-    property('ap', 'integer', 'integer -> integer', function(a, f) {
+    property('ap', 'json', 'json -> json', function(a, f) {
       return _.of(f).ap(_.of(a)).equals(_.of(f(a)))
     });
   });
 
   describe('Chain', function () {
     const lift = (f) => a => _.of(f(a))
-    property('chain', 'integer', 'integer -> integer', function(a, f) {
+    property('chain', 'json', 'json -> json', function(a, f) {
       return  _.of(a).chain(lift(f)).equals(lift(f)(a))
     });
 
-    property('Left#chain', 'integer', 'integer -> integer', function(a, f) {
+    property('Left#chain', 'json', 'json -> json', function(a, f) {
       return _.Left(a).chain(lift(f)).equals(_.Left(a))
     });
   });
 
   describe('extracting/recovering', function () {
-    property('Left#getOrElse', 'integer', 'integer', function(a, b) {
+    property('Left#getOrElse', 'json', 'json', function(a, b) {
       return _.Left(b).getOrElse(a) === a
     });
-    property('Right#getOrElse', 'integer', 'integer', function(a, b) {
+    property('Right#getOrElse', 'json', 'json', function(a, b) {
       return _.Right(b).getOrElse(a) === b
     });
 
-    property('Left#orElse', 'integer', 'integer', function(a, b) {
+    property('Left#orElse', 'json', 'json', function(a, b) {
       return _.Left(b).orElse(() => a) === a
     });
-    property('Right#orElse', 'integer', 'integer', function(a, b) {
+    property('Right#orElse', 'json', 'json', function(a, b) {
       return _.Right(b).orElse(() => b).equals(_.Right(b))
     });
   });
