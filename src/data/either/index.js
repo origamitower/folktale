@@ -10,8 +10,4 @@
 //
 //----------------------------------------------------------------------
 
-module.exports = {
-  maybe: require('./maybe'),
-  either: require('./either')
-};
-
+module.exports = require('./core');
