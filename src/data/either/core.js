@@ -8,7 +8,7 @@ const Either = data({
 
 const _Left  = Either.Left;
 const _Right = Either.Right;
-const _Either = Either
+const _Either = Either;
 
  //TODO place in a separate file for other modules to use.
 const assertType = (typeName, type) => (method, value) => {
@@ -57,29 +57,28 @@ const assertFunction = (method, transformation) => {
   if (typeof transformation !== 'function') {
     throw new TypeError(`${method} expects a function, but was given ${transformation}.`);
   }
-}
+};
 
-const assertEither = assertType('Either', Either)
+const assertEither = assertType('Either', Either);
 
 // -- Constructors -----------------------------------------------------
 const Left  = (value) => new Either.Left.constructor({ value });
 const Right = (value) => new Either.Right.constructor({ value });
 
 Either.fromNullable = function(a) {
-  return a != null
-    ? Right(a)
-    : Left(a);
-}
+  return a != null ?  Right(a)
+  :      /*else*/     Left(a);
+};
 
 Either.try = function(f) {
   return function(...args) {
     try {
       return Right(f(...args));
-    } catch(e) {
+    } catch (e) {
       return Left(e);
     }
-  }
-}
+  };
+};
 
 // -- Setoid -----------------------------------------------------------
 _Left.prototype[fl.equals] = function(anEither) {
@@ -94,13 +93,13 @@ _Right.prototype[fl.equals] = function(anEither) {
 
 // -- Functor ----------------------------------------------------------
 _Left.prototype[fl.map] = function(transformation) {
-  assertFunction('Either.Left#map', transformation)
-  return this
+  assertFunction('Either.Left#map', transformation);
+  return this;
 };
 
 _Right.prototype[fl.map] = function(transformation) {
-  assertFunction('Either.Right#map', transformation)
-  return Right(transformation(this.value))
+  assertFunction('Either.Right#map', transformation);
+  return Right(transformation(this.value));
 };
 
 // -- Apply ------------------------------------------------------------
@@ -120,12 +119,12 @@ Either[fl.of] = Right;
 
 // -- Chain ------------------------------------------------------------
 _Left.prototype[fl.chain] = function(transformation) {
-  assertFunction('Either.Left#chain', transformation)
+  assertFunction('Either.Left#chain', transformation);
   return this;
 };
 
 _Right.prototype[fl.chain] = function(transformation) {
-  assertFunction('Either.Right#chain', transformation)
+  assertFunction('Either.Right#chain', transformation);
   return transformation(this.value);
 };
 
@@ -149,8 +148,8 @@ _Right.prototype.toString = function() {
 
 // (Node REPL representations)
 Either.inspect = Either.toString;
-_Left.prototype.inspect  = _Left.prototype.toString
-_Right.prototype.inspect = _Right.prototype.toString
+_Left.prototype.inspect  = _Left.prototype.toString;
+_Right.prototype.inspect = _Right.prototype.toString;
 
 
 // -- Extracting values and recovering ---------------------------------
@@ -193,34 +192,34 @@ _Right.prototype.orElse = function(_) {
 
 _Either.fold = function(f, g) {
   return this.cata({
-    Left:({value}) => f(value),
-    Right: ({value}) => g(value)
+    Left: ({ value }) => f(value),
+    Right: ({ value }) => g(value)
   });
 };
 
 _Either.merge = function() {
   return this.value;
-}
+};
 
 _Either.swap = function() {
-  return this.fold(Right, Left)
+  return this.fold(Right, Left);
 };
 
 _Either.bimap = function(f, g) {
   return this.cata({
-    Left: ({value})=> Left(f(value)),
-    Right: ({value})=> Right(g(value))
+    Left: ({ value }) => Left(f(value)),
+    Right: ({ value }) => Right(g(value))
   });
 };
 
 _Left.prototype.leftMap = function(transformation) {
-  assertFunction('Either.Left#leftMap', transformation)
-  return Left(transformation(this.value))
+  assertFunction('Either.Left#leftMap', transformation);
+  return Left(transformation(this.value));
 };
 
 _Right.prototype.leftMap = function(transformation) {
-  assertFunction('Either.Right#leftMap', transformation)
-  return this
+  assertFunction('Either.Right#leftMap', transformation);
+  return this;
 };
 
 // -- JSON conversions -------------------------------------------------
@@ -242,8 +241,8 @@ _Right.prototype.toJSON = function() {
 module.exports = {
   Left,
   Right,
-  type:Either,
-  of:Either.of,
+  type: Either,
+  of: Either.of,
   fromNullable: Either.fromNullable,
   try: Either.try
-}
+};
