@@ -10,28 +10,25 @@
 //
 //----------------------------------------------------------------------
 
+/*~
+ * Essential building blocks and compositional operations which are
+ * likely to be used by most programs are provided by this module.
+ *
+ * These operations usually don't fit in more specific categories,
+ * like `data`, or provide a better alternative to functionality
+ * that's already provided by the language itself.
+ *
+ * ---
+ * name: module folktale/core
+ * category: Functional Programming
+ * stability: experimental
+ * platforms:
+ *   - ECMAScript 2015
+ * module: folktale/core
+ * licence: MIT
+ */
 module.exports = {
   lambda: require('./lambda'),
   adt: require('./adt'),
   object: require('./object')
 };
-
-
-// -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== 'production') {
-  module.exports[Symbol.for('@@meta:magical')] = {
-    name: 'module folktale/core',
-    category: 'Functional Programming',
-    stability: 'stable',
-    platforms: ['ECMAScript'],
-    authors: ['Quildreen Motta'],
-    module: 'folktale/core',
-    licence: 'MIT',
-    documentation: `
-The \`folktale.core\` module provides essential building blocks and
-compositional operations which are likely to be used by most programs,
-and which don't quite fit in more specific categories (like the \`data\`
-module).
-    `
-  };
-}

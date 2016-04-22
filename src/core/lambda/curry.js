@@ -10,6 +10,75 @@
 //
 //----------------------------------------------------------------------
 
+/*~
+ * Transforms functions on tuples into curried functions.
+ *
+ * ## Why?
+ *
+ * Sometimes you want to specify part of the arguments of a function, and
+ * leave the other arguments to be specified later. For this you could use
+ * an arrow function:
+ *
+ *     const property = (key, object) => object[key]
+ *     people.map(person => property('name', person));
+ *
+ * Currying allows you to construct functions that support partial application
+ * naturally:
+ *
+ *     const property = curry(2, (key, object) => object[key]);
+ *     people.map(property('name'))
+ *
+ * In essence, currying transforms a function that takes N arguments into
+ * N functions that each take 1 argument. In the example above we'd have:
+ *
+ *     const property = (key, object) => object[key]
+ *     curry(2, property)
+ *     // => (key) => (object) => object[key]
+ *
+ *
+ * ## Particularities of Folktale's `curry`
+ *
+ * Because JavaScript is a language where everything is variadic,
+ * currying doesn't always fit. To try reducing the problems and
+ * work with common JS idioms, currying functions *auto-unroll*
+ * application. That is, something like:
+ *
+ *     const sum = curry(2, (x, y) => x + y)
+ *     sum(1, 2, 3)
+ *
+ * Is handled as:
+ *
+ *     sum(1, 2)(3)
+ *
+ * This ensures that curried functions can be properly composed,
+ * regardless of how you invoke them. But it also means that
+ * passing more arguments to a function than the number of arguments
+ * the whole composition takes will probably break your program.
+ *
+ * ---
+ * name: curry
+ * signature: curry(arity, fn)
+ * type: |
+ *   forall a. (Number, Any... -> a) -> Any... -> (Any... -> a) | a
+ * category: Currying
+ * tags:
+ *   - Lambda Calculus
+ * stability: stable
+ * platforms:
+ *   - ECMAScript
+ * authors:
+ *   - Quildreen Motta
+ * module: folktale/core/lambda/curry
+ * licence: MIT
+ * seeAlso:
+ *   - type: link
+ *     title: Why Curry Helps
+ *     url: https://hughfdjackson.com/javascript/why-curry-helps/
+ *
+ *   - type: link
+ *     title: Does Curry Help?
+ *     url: https://hughfdjackson.com/javascript/does-curry-help/
+ */
 const curry = (arity, fn) => {
   // A curried function; accepts arguments until the number of given
   // arguments is greater or equal to the function's arity.
@@ -44,79 +113,3 @@ const curry = (arity, fn) => {
 
 
 module.exports = curry;
-
-
-// -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== 'production') {
-  module.exports[Symbol.for('@@meta:magical')] = {
-    name: 'curry',
-    signature: 'curry(arity, fn)',
-    type: '(Number, (α₁, α₂, ..., αₙ) -> β) -> (α₁) -> (α₂) -> ... -> (αₙ) -> β',
-    category: 'Currying',
-    tags: ['Lambda Calculus'],
-    stability: 'stable',
-    platforms: ['ECMAScript'],
-    authors: ['Quildreen Motta'],
-    module: 'folktale/core/lambda/curry',
-    licence: 'MIT',
-    seeAlso: [
-      {
-        type: 'link',
-        title: 'Why Curry Helps',
-        url: 'https://hughfdjackson.com/javascript/why-curry-helps/'
-      },
-      {
-        type: 'link',
-        title: 'Does Curry Help?',
-        url: 'https://hughfdjackson.com/javascript/does-curry-help/'
-      }
-    ],
-    documentation: `
-Transforms functions on tuples into curried functions.
-
-
-## Why?
-
-Sometimes you want to specify part of the arguments of a function, and
-leave the other arguments to be specified later. For this, you could
-use an arrow function:
-
-    const property = (key, object) => object[key];
-    people.map(person => property('name', person));
-
-Currying allows you to construct functions that support partial
-application naturally:
-
-    const property = curry(2, (key, object) => object[key]);
-    people.map(property('name'));
-
-In essence, currying transforms a function that takes N arguments
-into N functions whose each take 1 argument. So, in the example
-above, we'd have:
-
-    const property = (key, object) => object[key];
-    curry(2, property)
-    // => (key) => (object) => object[key];
-
-
-## Particularities of Folktale's Curry
-
-Because JavaScript is a language where everything is variadic,
-currying doesn't always fit. To try to reduce the problems and
-work with common JS idioms, currying functions auto-unroll
-application. That is, something like:
-
-    const sum = curry(2, (x, y) => x + y);
-    sum(1, 2, 3)
-
-Is handled as:
-
-    sum(1, 2)(3)
-
-This ensures that curried functions can be properly composed,
-regardless of how you invoke them. But it also means that passing
-more arguments to a function than the number of arguments the
-whole composition takes will probably break your program.
-    `
-  };
-}
