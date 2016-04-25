@@ -99,7 +99,6 @@
                                "afterColon": true,
                                "mode": "minimum" }],
     "keyword-spacing": "error",
-    "linebreak-style": ["error", "unix"],
     "lines-around-comment": ["error", { "beforeBlockComment": true,
                                         "beforeLineComment": true,
                                         "allowBlockStart": true }],
