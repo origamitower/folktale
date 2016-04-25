@@ -65,21 +65,6 @@ const assertEither = assertType('Either', Either);
 const Left  = (value) => new Either.Left.constructor({ value });
 const Right = (value) => new Either.Right.constructor({ value });
 
-Either.fromNullable = function(a) {
-  return a != null ?  Right(a)
-  :      /*else*/     Left(a);
-};
-
-Either.try = function(f) {
-  return function(...args) {
-    try {
-      return Right(f(...args));
-    } catch (e) {
-      return Left(e);
-    }
-  };
-};
-
 // -- Setoid -----------------------------------------------------------
 _Left.prototype[fl.equals] = function(anEither) {
   assertEither('Either.Left#equals', anEither);
@@ -243,6 +228,4 @@ module.exports = {
   Right,
   type: Either,
   of: Either.of,
-  fromNullable: Either.fromNullable,
-  try: Either.try
 };
