@@ -2,27 +2,36 @@
 //
 // This source file is part of the Folktale project.
 //
-// Copyright (C) 2015-2016 Quildreen Motta.
-// Licensed under the MIT licence.
-//
 // See LICENCE for licence information.
 // See CONTRIBUTORS for the list of contributors to the project.
 //
 //----------------------------------------------------------------------
 
 /*~
- * Folktale is a library for functional programming in JavaScript.
+ * Folktale is a library for functional programming in JavaScript. It provides
+ * combinators and data structures that make it easier to write programs by
+ * composing existing features to build bigger things, which can be further
+ * composed.
+ *
+ * > **TODO**  
+ * > This documentation is a stub and needs to be improved. It should give
+ * > pointers on where to start on functional programming and Folktale.
  *
  * ---
- * name: module Folktale
- * category: Functional Programming
- * stability: experimental
+ *
+ * name        : module folktale
+ * module      : folktale
+ * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
+ * licence     : MIT
+ * repository  : https://github.com/origamitower/folktale
+ *
+ * category    : Functional Programming
+ *
+ * maintainers:
+ *   - Quildreen Motta <queen@robotlolita.me>
+ *
  * platforms:
  *   - ECMAScript 2015
- * portability: portable
- * module: folktale
- * licence: MIT
- * repository: https://github.com/origamitower/folktale
  */
 module.exports = {
   core: require('./core'),

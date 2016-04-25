@@ -2,9 +2,6 @@
 //
 // This source file is part of the Folktale project.
 //
-// Copyright (C) 2015-2016 Quildreen Motta.
-// Licensed under the MIT licence.
-//
 // See LICENCE for licence information.
 // See CONTRIBUTORS for the list of contributors to the project.
 //
@@ -30,20 +27,27 @@
  * > Composition is done from right to left, rather than left to right.
  *
  * ---
- * name: compose
- * signature: compose(f, g)(value)
- * type: |
- *   forall a, b, c. (b -> c, a -> b) -> (a -> c)
- * category: Combinators
- * tags:
- *   - Lambda Calculus
- * stability: stable
+ * name        : compose
+ * module      : folktale/core/lambda/compose
+ * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
+ * licence     : MIT
+ * repository  : https://github.com/origamitower/folktale
+ *
+ * category    : Combining
+ * stability   : stable
+ * portability : portable
  * platforms:
  *   - ECMAScript
+ *
+ * maintainers:
+ *   - Quildreen Motta <queen@robotlolita.me>
+ *
  * authors:
  *   - Quildreen Motta
- * module: folktale/core/lambda/compose
- * licence: MIT
+ *
+ * signature: compose(f, g)(value)
+ * type: |
+ *   (('b) => 'c, ('a) => 'b) => (('a) => 'c)
  */
 const compose = (f, g) => (value) => f(g(value));
 

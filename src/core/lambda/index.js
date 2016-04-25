@@ -2,9 +2,6 @@
 //
 // This source file is part of the Folktale project.
 //
-// Copyright (C) 2015-2016 Quildreen Motta.
-// Licensed under the MIT licence.
-//
 // See LICENCE for licence information.
 // See CONTRIBUTORS for the list of contributors to the project.
 //
@@ -25,13 +22,19 @@
  * support.
  *
  * ---
- * name: module folktale/core/lambda
- * category: Lambda Calculus
- * stability: stable
+ * name       : module folktale/core/lambda
+ * module     : folktale/core/lambda
+ * copyright  : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
+ * licence    : MIT
+ * repository : https://github.com/origamitower/folktale
+ *
+ * category   : Lambda Calculus
+ *
+ * maintainers:
+ *   - Quildreen Motta <queen@robotlolita.me>
+ *
  * platforms:
- *   - ECMAScript
- * module: folktale/core/lambda
- * licence: MIT
+ *   - ECMAScript 2015
  */
 module.exports = {
   identity: require('./identity'),

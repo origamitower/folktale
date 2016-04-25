@@ -2,9 +2,6 @@
 //
 // This source file is part of the Folktale project.
 //
-// Copyright (C) 2015-2016 Quildreen Motta.
-// Licensed under the MIT licence.
-//
 // See LICENCE for licence information.
 // See CONTRIBUTORS for the list of contributors to the project.
 //
@@ -31,19 +28,27 @@
  * In most cases, an arrow function is preferred.
  *
  * ---
- * name: identity
- * signature: identity(value)
- * type: forall a. a -> a
- * category: Combinators
- * tags:
- *   - Lambda Calculus
- * stability: stable
+ * name        : identity
+ * module      : folktale/core/lambda/identity
+ * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
+ * licence     : MIT
+ * repository  : https://github.com/origamitower/folktale
+ *
+ * category    : Combining
+ * stability   : stable
+ * portability : portable
  * platforms:
  *   - ECMAScript
+ *
+ * maintainers:
+ *   - Quildreen Motta <queen@robotlolita.me>
+ *
  * authors:
  *   - Quildreen Motta
- * module: folktale/core/lambda/identity
- * licence: MIT
+ *
+ * signature: identity(value)
+ * type: |
+ *   ('a) => 'a
  */
 const identity = (value) => value;
 

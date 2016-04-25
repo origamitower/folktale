@@ -2,9 +2,6 @@
 //
 // This source file is part of the Folktale project.
 //
-// Copyright (C) 2015-2016 Quildreen Motta.
-// Licensed under the MIT licence.
-//
 // See LICENCE for licence information.
 // See CONTRIBUTORS for the list of contributors to the project.
 //
@@ -26,19 +23,27 @@
  *     // => [0, 0, 0]
  *
  * ---
- * name: constant
- * signature: constant(value)(_)
- * type: forall a, b. a -> b -> a
- * category: Combinators
- * tags:
- *   - Lambda Calculus
- * stability: stable
+ * name        : constant
+ * module      : folktale/core/lambda/constant
+ * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
+ * licence     : MIT
+ * repository  : https://github.com/origamitower/folktale
+ *
+ * category    : Combining
+ * stability   : stable
+ * portability : portable
  * platforms:
  *   - ECMAScript
+ *
+ * maintainers:
+ *   - Quildreen Motta <queen@robotlolita.me>
+ *
  * authors:
  *   - Quildreen Motta
- * module: folktale/core/lambda/constant
- * licence: MIT
+ *
+ * signature: constant(value)(_)
+ * type: |
+ *   ('a) => ('b) => 'a
  */
 const constant = (value) => (_) => value;
 

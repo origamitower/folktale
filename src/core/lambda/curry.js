@@ -2,9 +2,6 @@
 //
 // This source file is part of the Folktale project.
 //
-// Copyright (C) 2015-2016 Quildreen Motta.
-// Licensed under the MIT licence.
-//
 // See LICENCE for licence information.
 // See CONTRIBUTORS for the list of contributors to the project.
 //
@@ -56,20 +53,24 @@
  * the whole composition takes will probably break your program.
  *
  * ---
- * name: curry
- * signature: curry(arity, fn)
- * type: |
- *   forall a. (Number, Any... -> a) -> Any... -> (Any... -> a) | a
- * category: Currying
- * tags:
- *   - Lambda Calculus
- * stability: stable
+ * name        : curry
+ * module      : folktale/core/lambda/curry
+ * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
+ * licence     : MIT
+ * repository  : https://github.com/origamitower/folktale
+ *
+ * category    : Currying
+ * stability   : stable
+ * portability : portable
  * platforms:
  *   - ECMAScript
+ *
+ * maintainers:
+ *   - Quildreen Motta <queen@robotlolita.me>
+ *
  * authors:
  *   - Quildreen Motta
- * module: folktale/core/lambda/curry
- * licence: MIT
+ *
  * seeAlso:
  *   - type: link
  *     title: Why Curry Helps
@@ -78,6 +79,10 @@
  *   - type: link
  *     title: Does Curry Help?
  *     url: https://hughfdjackson.com/javascript/does-curry-help/
+ *
+ * signature: curry(arity, fn)
+ * type: |
+ *   (Number, (Any...) => 'a) => Any... => 'a or ((Any...) => 'a)
  */
 const curry = (arity, fn) => {
   // A curried function; accepts arguments until the number of given
