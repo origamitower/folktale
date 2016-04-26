@@ -199,7 +199,7 @@
  *
  * seeAlso:
  *   - type  : link
- *     title : Designing with types: Making illegal states unrepresentable
+ *     title : "Designing with types: Making illegal states unrepresentable"
  *     url   : http://fsharpforfunandprofit.com/posts/designing-with-types-making-illegal-states-unrepresentable/
  *
  * signature: data(patterns)
@@ -225,7 +225,7 @@ const data = (patterns) => {
  * ---------------------------------------------------------------------
  * name       : ADT
  * category   : Data Structures
- * @belongsTo : data
+ * ~belongsTo : data
  */
 const ADT = {
 
