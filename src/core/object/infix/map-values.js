@@ -33,7 +33,8 @@ const mapValues = require('../map-values');
  * stability   : experimental
  * portability : portable
  * platforms:
- *   - ECMAScript
+ *   - ECMAScript 5
+ *   - ECMAScript 3, with es5-shim
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>

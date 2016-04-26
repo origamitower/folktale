@@ -22,7 +22,7 @@ const compose = require('../compose');
  *
  * See the original `compose` for more information.
  *
- * ---
+ * --------------------------------------------------------------------
  * name        : compose
  * module      : folktale/core/lambda/compose
  * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
@@ -33,7 +33,7 @@ const compose = require('../compose');
  * stability   : experimental
  * portability : portable
  * platforms:
- *   - ECMAScript
+ *   - ECMAScript 3
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>
@@ -53,29 +53,3 @@ const compose = require('../compose');
 module.exports = function _compose(nextFunction) {
   return compose(nextFunction, this);
 };
-
-
-// -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== 'production') {
-  module.exports[Symbol.for('@@meta:magical')] = {
-    name: 'compose',
-    signature: '::compose(nextFunction)',
-    type: '((α) -> β) . ((β) -> γ) -> (α) -> γ',
-    category: 'Combinators',
-    tags: ['Lambda Calculus', 'Free Methods'],
-    stability: 'experimental',
-    platforms: ['ECMAScript.Next'],
-    authors: ['Quildreen Motta'],
-    module: 'folktale/core/lambda/infix/compose',
-    licence: 'MIT',
-    seeAlso: [
-      {
-        type: 'entity',
-        path: 'folktale/core/lambda/compose',
-        reason: 'The function counterpart of this free-method.'
-      }
-    ],
-    documentation: `
-    `
-  };
-}

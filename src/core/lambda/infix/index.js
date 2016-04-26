@@ -34,16 +34,14 @@
  * > yet in the ECMAScript language. It might not get specified with its
  * > current semantics.
  *
- * ---
- * name: module folktale/core/lambda/infix
- * module: folktale/core/lambda/infix
+ * --------------------------------------------------------------------
+ * name        : module folktale/core/lambda/infix
+ * module      : folktale/core/lambda/infix
  * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
  * licence     : MIT
  * repository  : https://github.com/origamitower/folktale
  *
  * category    : Convenience
- * platforms:
- *   - ECMAScript.Next
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>

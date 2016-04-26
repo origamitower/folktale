@@ -21,9 +21,9 @@ const curry = require('../curry');
  *
  * See the original `curry` function for more information.
  *
- * ---
- * name: curry
- * module: folktale/core/lambda/infix/curry
+ * --------------------------------------------------------------------
+ * name        : curry
+ * module      : folktale/core/lambda/infix/curry
  * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
  * licence     : MIT
  * repository  : https://github.com/origamitower/folktale
@@ -32,7 +32,7 @@ const curry = require('../curry');
  * stability   : experimental
  * portability : portable
  * platforms:
- *   - ECMAScript.Next
+ *   - ECMAScript 3
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>

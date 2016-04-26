@@ -15,7 +15,7 @@
  * like `data`, or provide a better alternative to functionality
  * that's already provided by the language itself.
  *
- * ---
+ * --------------------------------------------------------------------
  * name        : module folktale/core
  * module      : folktale/core
  * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
@@ -26,9 +26,6 @@
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>
- *
- * platforms:
- *   - ECMAScript 2015
  */
 module.exports = {
   lambda: require('./lambda'),

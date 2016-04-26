@@ -28,9 +28,6 @@
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>
- *
- * platforms:
- *   - ECMAScript 2015
  */
 module.exports = {
   infix: require('./infix'),

@@ -30,18 +30,18 @@
  *     sortBy(compare::on(first), xs)
  *     // => [[-2, 4], [1, 2], [3, 1]]
  *
- * ---
- * name: on
- * module: folktale/core/lambda/infix/on
+ * --------------------------------------------------------------------
+ * name        : on
+ * module      : folktale/core/lambda/infix/on
  * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
  * licence     : MIT
  * repository  : https://github.com/origamitower/folktale
  *
- * category : Combining
- * stability : experimental
+ * category    : Combining
+ * stability   : experimental
  * portability : portable
  * platforms:
- *   - ECMAScript.Next
+ *   - ECMAScript 3
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>

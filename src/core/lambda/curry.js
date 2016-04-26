@@ -52,7 +52,7 @@
  * passing more arguments to a function than the number of arguments
  * the whole composition takes will probably break your program.
  *
- * ---
+ * --------------------------------------------------------------------
  * name        : curry
  * module      : folktale/core/lambda/curry
  * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
@@ -63,7 +63,7 @@
  * stability   : stable
  * portability : portable
  * platforms:
- *   - ECMAScript
+ *   - ECMAScript 3
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>

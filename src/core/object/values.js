@@ -50,9 +50,10 @@
  *
  * category    : Combining
  * stability   : stable
- * portability : Supported in older ES VMs with es5-shim
+ * portability : portable
  * platforms:
  *   - ECMAScript 5
+ *   - ECMAScript 3, with es5-shim
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>

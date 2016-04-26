@@ -22,7 +22,7 @@
  *     [1, 2, 3].map(_ => 0)
  *     // => [0, 0, 0]
  *
- * ---
+ * --------------------------------------------------------------------
  * name        : constant
  * module      : folktale/core/lambda/constant
  * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
@@ -33,7 +33,7 @@
  * stability   : stable
  * portability : portable
  * platforms:
- *   - ECMAScript
+ *   - ECMAScript 3
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>

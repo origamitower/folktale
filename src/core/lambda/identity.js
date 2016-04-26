@@ -27,7 +27,7 @@
  *
  * In most cases, an arrow function is preferred.
  *
- * ---
+ * --------------------------------------------------------------------
  * name        : identity
  * module      : folktale/core/lambda/identity
  * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
@@ -38,7 +38,7 @@
  * stability   : stable
  * portability : portable
  * platforms:
- *   - ECMAScript
+ *   - ECMAScript 3
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>

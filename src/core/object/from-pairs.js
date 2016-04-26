@@ -17,10 +17,10 @@ const define = Object.defineProperty;
  *     // => { x: 10, y: 20 }
  *
  * The resulting object is a plain JavaScript object, inheriting from
- * \`Object.prototype\`.
+ * `Object.prototype`.
  *
- * The pairs are added to the object with \`Object.defineProperty\`, so no setters
- * defined in \`Object.prototype\` will be triggered during the process. All
+ * The pairs are added to the object with `Object.defineProperty`, so no setters
+ * defined in `Object.prototype` will be triggered during the process. All
  * properties are enumerable, writable, and configurable.
  *
  * Properties are inserted in the object in the same order of the array. In an
@@ -38,9 +38,10 @@ const define = Object.defineProperty;
  *
  * category    : Converting
  * stability   : stable
- * portability : Supported in older ES VMs with es5-shim
+ * portability : portable
  * platforms:
- *   - ECMAScript
+ *   - ECMAScript 5
+ *   - ECMAScript 3, with es5-shim
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>

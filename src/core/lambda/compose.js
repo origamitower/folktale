@@ -26,7 +26,7 @@
  * > **NOTE**  
  * > Composition is done from right to left, rather than left to right.
  *
- * ---
+ * --------------------------------------------------------------------
  * name        : compose
  * module      : folktale/core/lambda/compose
  * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
@@ -37,7 +37,7 @@
  * stability   : stable
  * portability : portable
  * platforms:
- *   - ECMAScript
+ *   - ECMAScript 3
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>

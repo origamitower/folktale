@@ -21,7 +21,7 @@
  * to compose them in different ways, and providing currying/uncurrying
  * support.
  *
- * ---
+ * --------------------------------------------------------------------
  * name       : module folktale/core/lambda
  * module     : folktale/core/lambda
  * copyright  : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
@@ -32,9 +32,6 @@
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>
- *
- * platforms:
- *   - ECMAScript 2015
  */
 module.exports = {
   identity: require('./identity'),

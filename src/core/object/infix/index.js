@@ -45,9 +45,6 @@
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>
- *
- * platforms:
- *   - ECMAScript.Next
  */
 module.exports = {
   mapValues: require('./map-values')

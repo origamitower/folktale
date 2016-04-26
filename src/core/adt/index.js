@@ -61,12 +61,12 @@
  *
  * Because of this, the ADT module approaches the problem in a structural-type-ish
  * way, which happens to be very similar to how different values are handled in
- * unityped languages to begin with. In essence, calling \`data\` with a set
+ * unityped languages to begin with. In essence, calling `data` with a set
  * of patterns results in the creation of N constructors, each with a distinct
  * **tag**. The constructors accept an object as their only argument, and will
  * extract the fields that are relevant to that variant to initialise its state.
  *
- * Revisiting the previous \`List\` ADT example, we can see this by just looking
+ * Revisiting the previous `List` ADT example, we can see this by just looking
  * at its return value:
  *
  *     const List = data({
@@ -91,7 +91,7 @@
  *     List.Cons.prototype.tag = 'Cons';
  *     List.Cons.prototype.fields = ['head', 'tail'];
  *
- * Furthermore, each variant gets a \`cata\` method for free. This method
+ * Furthermore, each variant gets a `cata` method for free. This method
  * implements a kind of structural transformation (*catamorphism*) that
  * is similar to a limited form of pattern matching:
  *
@@ -109,8 +109,8 @@
  * Structures created by the ADT module are reflective, so one can use the
  * exposed information for meta-programming at runtime. One of the uses for
  * this is providing a particular set of behaviours automatically for the
- * structure — a process we call “derivation”. Things like \`equality\` or
- * \`serialisation\` become pretty simple to do automatically, and relieve
+ * structure — a process we call “derivation”. Things like `equality` or
+ * `serialisation` become pretty simple to do automatically, and relieve
  * the burden on the user.
  *
  * Each ADT comes with a [[derive]] method, which will take one or more
@@ -120,7 +120,7 @@
  *
  * Another approach is to attach methods to the ADT namespace itself, since
  * all variants inherit from it. If you were to implement something like
- * the \`cata\` operation, for example, you could do so as follows:
+ * the `cata` operation, for example, you could do so as follows:
  *
  *     const List = data({
  *       Nil: [],
@@ -146,7 +146,7 @@
  * ## Membership testing
  *
  * Most of the time, it's a good idea to use structural equivalence and
- * the \`catamorphism\` operation to deal with transformations on ADT
+ * the `catamorphism` operation to deal with transformations on ADT
  * structures. The dynamic dispatch in JavaScript will make sure that
  * the right operations are invoked for you, with no work necessary
  * in your part, and you don't risk any problems with Realms and other
@@ -155,7 +155,7 @@
  * Sometimes, however, it might be desirable to test if a variant
  * belongs to a particular tagged union. ADT itself doesn't provide
  * any method for this, but since variants inherit from the ADT
- * namespace, you can use JavaScript's native \`.isPrototypeOf\`
+ * namespace, you can use JavaScript's native `.isPrototypeOf`
  * operation to test for this:
  *
  *     const ListA = data({
@@ -185,9 +185,11 @@
  *
  * category    : Data Structures
  * stability   : experimental
- * portability : Older ES versions supported through es6-shim and es5-shim
+ * portability : portable
  * platforms:
  *   - ECMAScript 2015
+ *   - ECMAScript 5, with es6-shim
+ *   - ECMAScript 3, with es5-shim and es6-shim
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>
@@ -221,20 +223,21 @@ const data = (patterns) => {
  * created by this module, derivation being one of them.
  *
  * ---------------------------------------------------------------------
- * name     : ADT
- * category : Data Structures
+ * name       : ADT
+ * category   : Data Structures
+ * @belongsTo : data
  */
 const ADT = {
 
   /*~
    * Allows a function to provide functionality to variants in an ADT.
    *
-   * The \`derive\` method exists to support meta-programming on ADT objects,
+   * The `derive` method exists to support meta-programming on ADT objects,
    * such that additional functionality (implementation of interfaces or
    * protocols, for example) may be provided by libraries instead of having
    * to be hand-coded by the user.
    *
-   * The operation accepts many \`derivation\` functions, which will be invoked
+   * The operation accepts many `derivation` functions, which will be invoked
    * for each variant in the ADT, where a Variant is just an object with the
    * following attributes:
    *
@@ -273,8 +276,13 @@ const ADT = {
    *     // => { tag: 'Cons', head: 1, tail: { tag: 'Nil' }}
    *
    * -------------------------------------------------------------------
-   * name     : derive
-   * category : Refinement
+   * name        : derive
+   * category    : Refinement
+   * stability   : experimental
+   * portability : portable
+   * platforms:
+   *   - ECMAScript 5
+   *   - ECMAScript 3, with es5-shim
    *
    * signature: .derive(...derivation)
    * type: |

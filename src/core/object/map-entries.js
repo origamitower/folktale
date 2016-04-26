@@ -28,8 +28,8 @@ const hasOwnProperty = Object.prototype.hasOwnProperty;
  * > The function expects you to provide a definition function, which will
  * > determine how to handle the mapping of the returned pairs. This is
  * > necessary because no single behaviour is always the right one for
- * > this. Common behaviours, such as \`overwrite\` older properties,
- * > and enforcing \`unique\` properties are provided as specialised
+ * > this. Common behaviours, such as `overwrite` older properties,
+ * > and enforcing `unique` properties are provided as specialised
  * > frorms of this function.
  *
  *
@@ -52,9 +52,10 @@ const hasOwnProperty = Object.prototype.hasOwnProperty;
  *
  * category    : Transforming
  * stability   : stable
- * portability : Supported in older ES VMs with es5-shim
+ * portability : portable
  * platforms:
  *   - ECMAScript 5
+ *   - ECMAScript 3, with es5-shim
  *
  * maintainers:
  *   - Quildreen Motta <queen@robotlolita.me>
