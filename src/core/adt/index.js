@@ -1,3 +1,4 @@
+
 //----------------------------------------------------------------------
 //
 // This source file is part of the Folktale project.
@@ -15,7 +16,7 @@
 const ADT = {
   derive(...derivations) {
     derivations.forEach(derivation => {
-      this.variants.forEach(variant => derivation(variant, this));
+      Object.keys(this).forEach(variant => derivation(this[variant], this));
     });
     return this;
   }
