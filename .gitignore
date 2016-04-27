@@ -6,3 +6,4 @@ npm-debug.log
 /core/
 /data/
 /test/**/*.js
+*.un~
