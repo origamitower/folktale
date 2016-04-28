@@ -1,6 +1,7 @@
 Folktale
 =======
 
+[![Chat on Gitter](https://img.shields.io/gitter/room/folktale/discussion.svg?style=flat-square)](https://gitter.im/folktale/discussion)
 [![Documentation status](https://readthedocs.org/projects/folktalegithubio/badge/?version=latest&style=flat-square)](http://docs.folktalejs.org/)
 [![Build status](https://img.shields.io/travis/origamitower/folktale/master.svg?style=flat-square)](https://travis-ci.org/origamitower/folktale)
 [![NPM version](https://img.shields.io/npm/v/folktale.svg?style=flat-square)](https://npmjs.org/package/folktale)
@@ -22,12 +23,13 @@ The officially supported way of getting Folktale is through [npm][]:
 
 > **NOTE**
 >
-> If you don't have npm, you'll need to install Node.js and npm in your
+> If you don't have npm, you'll need to install [Node.js][] in your
 > system before installing Folktale.
 
 A tool like [Browserify][] or [Webpack][] can be used to run Folktale in
 platforms that don't implement Node-style modules, like the Browser.
 
+[Node.js]: https://nodejs.org/
 [npm]: https://www.npmjs.com
 [Browserify]: http://browserify.org/
 [Webpack]: https://webpack.github.io/
@@ -60,13 +62,15 @@ it takes too much effort to use?), feel free to open a new issue in the
 Pull Requests are welcome. By submitting a Pull Request you agree with releasing
 your code under the MIT licence.
 
-You can contact the author over [email](mailto:queen@robotlolita.me), or
+You can join the [Gitter Channel](https://gitter.im/folktale/discussion) for
+quick support. You may also contact the author directly through
+[email](mailto:queen@robotlolita.me), or
 [Twitter](https://twitter.com/robotlolita).
 
 Note that all interactions in this project are subject to Origami Tower's
-[Code of Conduct](https://github.com/origamitower/conventions/blob/master/code-of-conduct.md).
+[Code of Conduct](https://github.com/origamitower/folktale/blob/master/CODE_OF_CONDUCT.md).
 
 
 ## Licence
 
-Specify is copyright (c) Quildreen Motta 2015-2016, and released under the MIT licence. See the `LICENCE` file in this repository for detailed information.
+Folktale is copyright (c) Quildreen Motta 2015-2016, and released under the MIT licence. See the `LICENCE` file in this repository for detailed information.
