@@ -1,13 +1,12 @@
-const assertType = require('../../helpers/assertType')
+const assertType = require('../../helpers/assertType');
 const data = require('folktale/core/adt');
-const { toJSON, setoid } = require('folktale/core/adt/derive');
+const { setoid } = require('folktale/core/adt/derive');
 const fl   = require('fantasy-land');
 
 const Either = data({
-  name:  'Either',
   Left:  ['value'],
   Right: ['value']
-}).derive(setoid)
+}).derive(setoid);
 
 const _Left  = Either.Left;
 const _Right = Either.Right;
@@ -20,7 +19,7 @@ const assertFunction = (method, transformation) => {
   }
 };
 
-const assertEither = assertType('Either', Either);
+const assertEither = assertType(Either, 'Either');
 
 // -- Constructors -----------------------------------------------------
 const Left  = (value) => new Either.Left.constructor({ value });

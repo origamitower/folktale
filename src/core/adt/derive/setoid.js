@@ -1,21 +1,24 @@
-const assertType = require('../../../helpers/assertType')
+const assertType = require('../../../helpers/assertType');
 const fl = require('fantasy-land');
 
-const compareObjects = (one, two, keys) =>
-  keys.reduce((eq, key)=> {
-    if(one[key] === two[key]) {
-      return eq
-    } else if (one[fl.equals] === 'function' && two[fl.equals] === 'function' && one.equals(two)) {
-      return eq
-    } else {
-      return false
+const equal = (a, b) =>
+  typeof a[fl.equals] === 'function' && typeof b[fl.equals] === 'function' && a[fl.equals](b);
+
+const compareObjects = (a, b, keys) => {
+  for (let i = 0, len = keys.length; i < len; i++) {
+    const keyA = a[keys[i]];
+    const keyB = b[keys[i]];
+    if (!((keyA === keyB) || equal(keyA, keyB))) {
+      return false;
     }
-  }, true)
+  }
+  return true;
+};
 
 module.exports = (variant, adt) => {
   variant.prototype[fl.equals] = function(value) {
-    assertType(variant.prototype, adt.name)(`${adt.name}.{variant.name}#equals`, value)
-    return value[`is${variant.name}`] === true && compareObjects(this, value, Object.keys(this))
+    assertType(adt)(`${variant.name}#equals`, value);
+    return value[`is${variant.name}`] === true && compareObjects(this, value, Object.keys(this));
   };
-  return variant
+  return variant;
 };
