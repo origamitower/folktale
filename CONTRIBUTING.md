@@ -33,6 +33,10 @@ so that we can support you.
               - [Fedora / Enterprise Linux](#fedora--enterprise-linux)
               - [Windows](#windows)
       - [Working with Git and GitHub](#working-with-git-and-github)
+      - [Git commit guidelines](#git-commit-guidelines)
+          - [Commit types](#commit-types)
+          - [Referencing issues](#referencing-issues)
+          - [Breaking changes](#breaking-changes)
       - [The design principles behind Folktale](#the-design-principles-behind-folktale)
       - [How is Folktale organised?](#how-is-folktale-organised)
           - [Source hierarchy](#source-hierarchy)
@@ -406,6 +410,126 @@ From here on, development pretty much follows the process below:
  7. We review your code, and may ask you to make some changes.
  8. Finally, we accept or reject the pull request, and merge it into the master
     branch.
+
+
+### Git commit guidelines
+
+Folktale uses a convention similar to
+[Angular.js](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines)
+for Git commits. These aim to make it easier to follow the history of the
+project, and for tools to extract information from them.
+
+The following commit format is used:
+
+```
+<type>(<category?>): <summary>
+
+<body>
+
+<footer>
+```
+
+Where:
+
+  - `type`: The kind of change this commit introduces;
+  - `category`: The category this commit applies to, like `Core.Lambda`, if it refers to only one of them.
+  - `summary`: A very short description of the change.
+  - `body`: A detailed description of the change.
+  - `footer`: contains information about issue references and breaking changes.
+
+All text should be formatted using Markdown, and use the active, present
+tense. It's "changes", rather than "change" or "changed".
+
+For example, a commit that adds tests to the `folktale/core/lambda` module would
+look like:
+
+```
+test(Core.Lambda): Adds tests for compose
+
+`compose` was the only function in the module that didn't have tests.
+This provides a few example based tests, and property-based tests for
+common mathematical laws expected of function composition, such as
+associativity.
+
+Fixes #12
+```
+
+A commit that doesn't have a particular scope would look like:
+
+```
+docs: Improves coding style section in contributor guide
+
+Expands the current rules with examples.
+```
+
+
+#### Commit types
+
+The following commit types are accepted:
+
+  - **feat**: A new feature;
+  - **fix**: A bug fix;
+  - **docs**: Introduces or improves documentation;
+  - **style**: Purely stylistic changes, such as formatting, indentation, getting rid of linter warnings, etc.
+  - **refactor**: Refactoring existing features;
+  - **perf**: Performance optimisations;
+  - **test**: Introduces or improves test cases;
+  - **other**: Every other maintenance aspect that isn't better captured by the types above.
+
+
+#### Referencing issues
+
+Issues may be referenced through the body of the commit, where relevant, by
+providing `(see #N)`, where `N` is the number of the issue. For example:
+
+```
+This is a first step in providing better documentation tools (see #91),
+but does not implement type searching and type summaries.
+```
+
+Issues should be closed when the commit fully fixes the problem in that
+issue. This is done by listing these issues in the footer, using
+[GitHub's issue keywords](https://help.github.com/articles/closing-issues-via-commit-messages/). For example:
+
+```
+Fixes #12, fixes #43, and fixes #46
+```
+
+
+#### Breaking changes
+
+All breaking changes should be detailed in the footer of the commit message. It
+should contain `BREAKING CHANGE:` followed by a short summary of what was
+broken, and a detailed justification of why it was broken, along with a
+migration path from the old feature to the new one. For example:
+
+```
+BREAKING CHANGE: makes `data` return an object with constructors,
+instead of the old interface.
+
+This makes creating new algebraic data structures a simpler task,
+and aligns better with the aim of making Folktale a welcoming
+library to people new to functional programming.
+
+Where one used to write:
+
+    const List = data({
+      Nil: [],
+      Cons: ['value', 'rest']
+    });
+
+    const Nil = () => new List.Nil.constructor({});
+    const Cons = (value, rest) => new List.Cons.constructor({ value, rest })
+
+One would write:
+
+    const List = data({
+      Nil: [],
+      Cons: ['value', 'rest']
+    });
+
+    const { Nil, Cons } = List;
+```
 
 
 ### The design principles behind Folktale
