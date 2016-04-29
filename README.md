@@ -2,7 +2,6 @@ Folktale
 =======
 
 [![Chat on Gitter](https://img.shields.io/gitter/room/folktale/discussion.svg?style=flat-square)](https://gitter.im/folktale/discussion)
-[![Documentation status](https://readthedocs.org/projects/folktalegithubio/badge/?version=latest&style=flat-square)](http://docs.folktalejs.org/)
 [![Build status](https://img.shields.io/travis/origamitower/folktale/master.svg?style=flat-square)](https://travis-ci.org/origamitower/folktale)
 [![NPM version](https://img.shields.io/npm/v/folktale.svg?style=flat-square)](https://npmjs.org/package/folktale)
 [![Dependencies status](https://img.shields.io/david/origamitower/folktale.svg?style=flat-square)](https://david-dm.org/origamitower/folktale)
