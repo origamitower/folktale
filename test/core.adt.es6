@@ -11,15 +11,14 @@
 //----------------------------------------------------------------------
 
 const { property, forall} = require('jsverify');
-const data = require('../').core.adt
-const {setoid} = require('../core/adt/derive')
+const {data, setoid} = require('../core/adt/')
 
 describe('Data.ADT.derive', function() {
   describe('Setoid', function() {
     const _ = data({
       one: ['value'],
       two: ['value']
-    }).derive(setoid)
+    }).derive(setoid())
     
     const one = (value) => new _.one.constructor({ value })
     const two = (value) => new _.two.constructor({ value })

@@ -1,12 +1,11 @@
 const assertType = require('../../helpers/assertType');
-const data = require('folktale/core/adt');
-const { setoid } = require('folktale/core/adt/derive');
+const { data, setoid } = require('folktale/core/adt/');
 const fl   = require('fantasy-land');
 
 const Either = data({
   Left:  ['value'],
   Right: ['value']
-}).derive(setoid);
+}).derive(setoid());
 
 const _Left  = Either.Left;
 const _Right = Either.Right;
