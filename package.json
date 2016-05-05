@@ -29,7 +29,7 @@
     "babel-cli": "^6.4.5",
     "babel-eslint": "^6.0.2",
     "babel-plugin-module-alias": "^1.2.0",
-    "babel-plugin-transform-assertion-comments": "^0.1.0",
+    "babel-plugin-transform-assertion-comments": "^0.2.0",
     "babel-plugin-transform-function-bind": "^6.3.13",
     "babel-plugin-transform-metamagical-comments": "^0.4.2",
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
