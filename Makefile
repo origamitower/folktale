@@ -33,7 +33,7 @@ help:
 	@echo ""
 
 
-compile: node_modules $(SRC)
+compile: $(SRC)
 	$(babel) src --source-map inline --out-dir .
 
 compile-test: $(TEST_SRC)
