@@ -27,45 +27,27 @@ function mapObject(object, transform) {
 }
 
 
-function defineVariants(patterns, namespace) {
+function defineVariants(typeId, patterns, adt) {
   return mapObject(patterns, (name, constructor) => {
     function InternalConstructor() { }
-    InternalConstructor.prototype = Object.create(namespace);
+    InternalConstructor.prototype = Object.create(adt);
 
     Object.assign(InternalConstructor.prototype, {
       [`is${name}`]: true,
-      TAG:           name,
+      [TAG]:         name,
       constructor:   constructor,
 
       /*~
-       * Checks if a value belongs to this Variant.
+       * Selects an operation based on this Variant's tag.
        *
-       * This is similar to the ADT.hasInstance check, with the
-       * exception that we also check if the value is of the same
-       * variant (has the same tag) as this variant.
-       *
-       * ---
-       * name      : hasInstance
-       * signature : hasInstance(value)
-       * category  : Comparing and Testing
-       * type: |
-       *   (Variant) => Boolean
-       *
-       * ~belongsTo: constructor
-       */
-      hasInstance(value) {
-        return namespace.hasInstance(value) && value[TAG] === name;
-      },
-
-      /*~
-       * Dispatches based on this variant's tag.
-       *
-       * Selects an operation based on this variant's tag. This is
-       * similar to a very limited form of pattern matching.
+       * The `cata`morphism operation allows a very limited form of
+       * pattern matching, by selecting an operation depending on this
+       * value's tag.
        *
        * ---
        * name      : cata
        * signature : .cata(pattern)
+       * stability : experimental
        * category  : Extracting Information
        * type: |
        *   ('a is Variant).({ 'b: (Object Any) => 'c }) => 'c
@@ -86,8 +68,29 @@ function defineVariants(patterns, namespace) {
 
     Object.assign(makeInstance, {
       tag:         name,
+      type:        typeId,
       constructor: constructor,
-      prototype:   InternalConstructor.prototype
+      prototype:   InternalConstructor.prototype,
+
+      /*~
+       * Checks if a value belongs to this Variant.
+       *
+       * This is similar to the ADT.hasInstance check, with the
+       * exception that we also check if the value is of the same
+       * variant (has the same tag) as this variant.
+       *
+       * ---
+       * name      : hasInstance
+       * signature : hasInstance(value)
+       * category  : Comparing and Testing
+       * type: |
+       *   (Variant) => Boolean
+       *
+       * ~belongsTo: constructor
+       */
+      hasInstance(value) {
+        return adt.hasInstance(value) && value[TAG] === name;
+      },
     });
 
 
@@ -99,20 +102,22 @@ function defineVariants(patterns, namespace) {
 
 // -- IMPLEMENTATION ---------------------------------------------------
 
-
 /*~
- * Constructs a sum data structure.
+ * Constructs a union data structure.
  *
- * ## Example
+ * ## Using the ADT module::
  *
  *     const List = data('List', {
  *       Nil(){ },
- *       Cons(head, tail) { return { head, tail } }
+ *       Cons(value, rest) {
+ *         return { value, rest };
+ *       }
  *     });
  *
  *     const { Nil, Cons } = List;
  *
- *     let abc = Cons('a', Cons('b', Cons('c', Nil())));
+ *     Cons('a', Cons('b', Cons('c', Nil())));
+ *     // ==> { value: 'a', rest: { value: 'b', ..._ }}
  *
  *
  * ## Why?
@@ -131,130 +136,176 @@ function defineVariants(patterns, namespace) {
  *
  * ## Architecture
  *
- * In most cases, one would ideally want a closed union type (that is, once you
- * construct an ADT, there's no way of changing the variants that are part
- * of it). JavaScript is an untyped language, however, so that doesn't make
- * much of a sense to begin with.
+ * The ADT module approaches this problem in a structural-type-ish way, which
+ * happens to be very similar to how OCaml's polymorphic variants work, and
+ * how different values are handled in untyped languages.
  *
- * Because of this, the ADT module approaches the problem in a structural-type-ish
- * way, which happens to be very similar to how different values are handled in
- * unityped languages. In essence, calling `data` with a set of patterns results
- * in the creation of N constructors, each with a distinct **tag**.
+ * In essence, calling `data` with a set of patterns results in the creation
+ * of N constructors, each with a distinct **tag**.
  *
- * Revisiting the previous `List` ADT example, we can see this by just looking
- * at its return value:
+ * Revisiting the previous `List` ADT example, when one writes:
  *
  *     const List = data('List', {
- *       Nil: [],
- *       Cons: ['head', 'tail']
+ *       Nil:  () => {},
+ *       Cons: (value, rest) => ({ value, rest })
+ *     })
+ *
+ * That's roughly equivalent to the idiomatic:
+ *
+ *     const List = {};
+ *
+ *     function Nil() { }
+ *     Nil.prototype = Object.create(List);
+ *
+ *     function Cons(value, rest) {
+ *       this.value = value;
+ *       this.rest  = rest;
+ *     }
+ *     Cons.prototype = Object.create(List);
+ *
+ * The `data` function takes as arguments a type identifier (which can be any
+ * object, if you want it to be unique), and an object with the variants. Each
+ * property in this object is expected to be a function that returns the
+ * properties that'll be provided for the instance of that variant.
+ *
+ * The given variants are not returned directly. Instead, we return a wrapper
+ * that will construct a proper value of this type, and augment it with the
+ * properties provided by that variant initialiser.
+ *
+ *
+ * ## Reflection
+ *
+ * The ADT module relies on JavaScript's built-in reflective features first,
+ * and adds a couple of additional fields to this.
+ *
+ *
+ * ### Types and Tags
+ *
+ * The provided type for the ADT, and the tag provided for the variant
+ * are both reified in the ADT structure and the constructed values. These
+ * allow checking the compatibility of different values structurally, which
+ * sidesteps the problems with realms.
+ *
+ * The type of the ADT is provided by the global symbol `@@folktale:adt:type`::
+ *
+ *     const Id = data('Identity', { Id: () => {} });
+ *     Id[Symbol.for('@@folktale:adt:type')]
+ *     // ==> 'Identity'
+ *
+ * The tag of the value is provided by the global symbol `@@folktale:adt:tag`::
+ *
+ *     const List = data('List', {
+ *       Nil: () => {},
+ *       Cons: (h, t) => ({ h, t })
+ *     });
+ *     List.Nil()[Symbol.for('@@folktale:adt:tag')]
+ *     // ==> 'Nil'
+ *
+ * These symbols are also exported as properties of the `data` function
+ * itself, so you can use `data.typeSymbol` and `data.tagSymbol` instead
+ * of retrieving a symbol instance with the `Symbol.for` function.
+ *
+ *
+ * ### `is-a` tests
+ *
+ * Sometimes it's desirable to test if a value belongs to an ADT or
+ * to a variant. Out of the box, the structures constructed by ADT
+ * provide a `hasInstance` check that verify if a value is structurally
+ * part of an ADT structure, by checking the Type and Tag of that value.
+ *
+ * ###### checking if a value belongs to an ADT::
+ *
+ *     const IdA = data('IdA', { Id: (x) => ({ x }) });
+ *     const IdB = data('IdB', { Id: (x) => ({ x }) });
+ *
+ *     IdA.hasInstance(IdA.Id(1))  // ==> true
+ *     IdA.hasInstance(IdB.Id(1))  // ==> false
+ *
+ *
+ * ###### checking if a value belongs to a variant::
+ *
+ *     const Either = data('Either', {
+ *       Left:  value => ({ value }),
+ *       Right: value => ({ value })
+ *     });
+ *     const { Left, Right } = Either;
+ *
+ *     Left.hasInstance(Left(1));  // ==> true
+ *     Left.hasInstance(Right(1)); // ==> false
+ *
+ *
+ * Note that if two ADTs have the same type ID, they'll be considered
+ * equivalent by `hasInstance`. You may pass an object (like
+ * `Symbol('type name')`) to `data` to avoid this, however reference
+ * equality does not work across realms in JavaScript.
+ *
+ * Since all instances inherit from the ADT and the variant's prototype
+ * it's also possible to use `proto.isPrototypeOf(instance)` to check
+ * if an instance belongs to an ADT by reference equality, rather than
+ * structural equality.
+ *
+ *
+ * ## Extending ADTs
+ *
+ * Because all variants inherit from the ADT namespace, it's possible
+ * to provide new functionality to all variants by simply adding new
+ * properties to the ADT::
+ *
+ *     const List = data('List', {
+ *       Nil:  () => {},
+ *       Cons: (value, rest) => ({ value, rest })
  *     });
  *
- * Would expand to:
+ *     const { Nil, Cons } = List;
  *
- *     const List = Object.create(ADT);
- *     List.type = 'List';
- *
- *     List.Nil = function Nil() {
- *       if (!(this instanceof Nil))  return new Nil();
- *     };
- *     List.Nil.prototype = Object.create(List);
- *     List.Nil.prototype.tag = 'Nil';
- *     List.Nil.prototype.fields = [];
- *
- *     List.Cons = function Cons(head, tail) {
- *       if (!(this instanceof Cons))  return new Cons(head, tail);
- *
- *       this.head = head;
- *       this.tail = tail;
- *     }
- *     List.Cons.prototype = Object.create(List);
- *     List.Cons.prototype.tag = 'Cons';
- *     List.Cons.prototype.fields = ['head', 'tail'];
- *
- * Furthermore, each variant gets a `cata` method for free. This method
- * implements a kind of structural transformation (*catamorphism*) that
- * is similar to a limited form of pattern matching:
- *
- *     const list = Cons(1, Nil())
- *
- *     const sum = (list) =>
- *       list.cata({
- *         Nil : _                => 0,
- *         Cons: ({ head, tail }) => head + sum(tail)
+ *     List.sum = function() {
+ *       return this.cata({
+ *         Nil:  () => 0,
+ *         Cons: ({ value, rest }) => value + rest.sum()
  *       });
+ *     };
  *
+ *     Cons(1, Cons(2, Nil())).sum();
+ *     // ==> 3
  *
- * ## Reflection and extension
+ * A better approach, however, may be to use the `derive` function from
+ * the ADT to provide new functionality to every variant. `derive` accepts
+ * many derivation functions, which are just functions taking a variant and
+ * and ADT, and providing new functionality for that variant.
  *
- * Structures created by the ADT module are reflective, so one can use the
- * exposed information for meta-programming at runtime. One of the uses for
- * this is providing a particular set of behaviours automatically for the
- * structure — a process we call “derivation”. Things like `equality` or
- * `serialisation` become pretty simple to do automatically, and relieve
- * the burden on the user.
+ * If one wanted to define a JSON serialisation for each variant, for example,
+ * they could do so by using the `derive` functionality::
  *
- * Each ADT comes with a [[derive]] method, which will take one or more
- * derivation functions and apply them to each variant in the structure.
- * This makes it easy to implement derivations that work across all of
- * the variants at once.
- *
- * Another approach is to attach methods to the ADT namespace itself, since
- * all variants inherit from it. If you were to implement something like
- * the `cata` operation, for example, you could do so as follows:
- *
- *     const List = data({
- *       Nil: [],
- *       Cons: ['head', 'tail']
- *     });
- *
- *     List.match = function(pattern) {
- *       pattern[this.tag](this)
+ *     function ToJSON(variant, adt) {
+ *       const { tag, type } = variant;
+ *       variant.prototype.toJSON = function() {
+ *         const json = { tag: `${type}:${tag}` };
+ *         Object.keys(this).forEach(key => {
+ *           const value = this[key];
+ *           if (value && typeof value.toJSON === "function") {
+ *             json[key] = value.toJSON();
+ *           } else {
+ *             json[key] = value;
+ *           }
+ *         });
+ *         return json;
+ *       }
  *     }
  *
- *     const head = (list) => list.match({
- *       Nil : _          => 'Nils have no head',
- *       Cons: ({ head }) => head
- *     });
+ *     const List = data('List', {
+ *       Nil:  () => {},
+ *       Cons: (value, rest) => ({ value, rest })
+ *     }).derive(ToJSON);
  *
- *     head(Nil());
- *     // => 'Nils have no head'
+ *     const { Nil, Cons } = List;
  *
- *     head(Cons(1, Nil()));
- *     // => 1
+ *     Nil().toJSON()
+ *     // ==> { tag: "List:Nil" }
+ *
+ *     Cons(1, Nil()).toJSON()
+ *     // ==> { tag: "List:Cons", value: 1, rest: { "tag": "List:Nil" }}
  *
  *
- * ## Membership testing
- *
- * Most of the time, it's a good idea to use structural equivalence and
- * the `catamorphism` operation to deal with transformations on ADT
- * structures. The dynamic dispatch in JavaScript will make sure that
- * the right operations are invoked for you, with no work necessary
- * in your part, and you don't risk any problems with Realms and other
- * concepts that might give you different instances of the same object.
- *
- * Sometimes, however, it might be desirable to test if a variant
- * belongs to a particular tagged union. ADT itself doesn't provide
- * any method for this, but since variants inherit from the ADT
- * namespace, you can use JavaScript's native `.isPrototypeOf`
- * operation to test for this:
- *
- *     const ListA = data({
- *       Nil: [],
- *       Cons: ['head', 'tail']
- *     });
- *
- *     const ListB = data({
- *       Nil: [],
- *       Cons: ['head', 'tail']
- *     });
- *
- *     const b = ListB.Nil();
- *
- *     ListA.isPrototypeOf(b);
- *     // => false
- *
- *     ListB.isPrototypeOf(b);
- *     // => true
  *
  * ---------------------------------------------------------------------
  * name        : data
@@ -288,11 +339,10 @@ function defineVariants(patterns, namespace) {
  */
 const data = (typeId, patterns) => {
   const ADTNamespace = Object.create(ADT);
-  const variants     = defineVariants(patterns, ADTNamespace);
+  const variants     = defineVariants(typeId, patterns, ADTNamespace);
 
   Object.assign(ADTNamespace, variants, {
     [TYPE]: typeId,
-    type:   typeId,
 
     /*~
      * The variants present in this ADT.
@@ -358,37 +408,10 @@ const ADT = {
    *
    *     interface Variant(Any...) -> 'a <: self.prototype {
    *       tag         : String,
+   *       type        : Any,
    *       constructor : Constructor,
    *       prototype   : Object
-   *       fields      : [String]
    *     }
-   *
-   * A derivation function can then use this information to include new
-   * operations on the variant. For example, a JSON derivation could be
-   * implemented as follows:
-   *
-   *     const ToJSON = (variant, adt) => {
-   *       const fields = variant.fields;
-   *       const tag = variant.name;
-   *       variant['toJSON'] = function() {
-   *         const json = { tag: tag };
-   *         fields.forEach(k => json[k] = this[k]);
-   *         return json;
-   *       }
-   *     }
-   *
-   * And used as such:
-   *
-   *     const List = data({
-   *       Nil: [],
-   *       Cons: ['head', 'tail']
-   *     }).derive(ToJSON);
-   *
-   *     List.Nil().toJSON()
-   *     // => { tag: 'Nil' }
-   *
-   *     List.Cons(1, List.Nile())
-   *     // => { tag: 'Cons', head: 1, tail: { tag: 'Nil' }}
    *
    * -------------------------------------------------------------------
    * name        : derive
@@ -413,5 +436,8 @@ const ADT = {
 
 
 // -- Exports ----------------------------------------------------------
-data.ADT = ADT;
+data.ADT        = ADT;
+data.typeSymbol = TYPE;
+data.tagSymbol  = TAG;
+
 module.exports = data;

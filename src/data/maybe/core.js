@@ -10,16 +10,15 @@
 //
 //----------------------------------------------------------------------
 
-const data = require('folktale/core/adt');
+const data = require('folktale/core/adt').data;
 const fl   = require('fantasy-land');
 
-const Maybe = data({
-  Nothing: [],
-  Just:    ['value']
+const Maybe = data('folktale:Data.Maybe', {
+  Nothing()   { },
+  Just(value) { return { value } }
 });
 
-const _Nothing = Maybe.Nothing;
-const _Just    = Maybe.Just;
+const { Nothing, Just } = Maybe;
 
 
 // -- Assertions -------------------------------------------------------
@@ -66,25 +65,20 @@ documentation for more information.
 };
 
 
-// -- Constructors -----------------------------------------------------
-const Nothing = ()      => new Maybe.Nothing({});
-const Just    = (value) => new Maybe.Just({ value });
-
-
 // -- Setoid -----------------------------------------------------------
-_Nothing.prototype[fl.equals] = function(aMaybe) {
+Nothing.prototype[fl.equals] = function(aMaybe) {
   assertMaybe('Maybe.Nothing#equals', aMaybe);
   return aMaybe.isNothing;
 };
 
-_Just.prototype[fl.equals] = function(aMaybe) {
+Just.prototype[fl.equals] = function(aMaybe) {
   assertMaybe('Maybe.Just#equals', aMaybe);
   return aMaybe.isJust && aMaybe.value === this.value;
 };
 
 
 // -- Functor ----------------------------------------------------------
-_Nothing.prototype[fl.map] = function(transformation) {
+Nothing.prototype[fl.map] = function(transformation) {
   if (typeof transformation !== 'function') {
     throw new TypeError(`Maybe.Nothing#map expects a function, but was given ${transformation}.`);
   }
@@ -92,7 +86,7 @@ _Nothing.prototype[fl.map] = function(transformation) {
   return this;
 };
 
-_Just.prototype[fl.map] = function(transformation) {
+Just.prototype[fl.map] = function(transformation) {
   if (typeof transformation !== 'function') {
     throw new TypeError(`Maybe.Just#map expects a function, but was given ${transformation}.`);
   }
@@ -102,12 +96,12 @@ _Just.prototype[fl.map] = function(transformation) {
 
 
 // -- Apply ------------------------------------------------------------
-_Nothing.prototype[fl.ap] = function(aMaybe) {
+Nothing.prototype[fl.ap] = function(aMaybe) {
   assertMaybe('Maybe.Nothing#ap', aMaybe);
   return this;
 };
 
-_Just.prototype[fl.ap] = function(aMaybe) {
+Just.prototype[fl.ap] = function(aMaybe) {
   assertMaybe('Maybe.Just#ap', aMaybe);
   return aMaybe.map(this.value);
 };
@@ -118,7 +112,7 @@ Maybe[fl.of] = Just;
 
 
 // -- Chain ------------------------------------------------------------
-_Nothing.prototype[fl.chain] = function(transformation) {
+Nothing.prototype[fl.chain] = function(transformation) {
   if (typeof transformation !== 'function') {
     throw new TypeError(`Maybe.Nothing#chain expects a function, but was given ${transformation}.`);
   }
@@ -126,7 +120,7 @@ _Nothing.prototype[fl.chain] = function(transformation) {
   return this;
 };
 
-_Just.prototype[fl.chain] = function(transformation) {
+Just.prototype[fl.chain] = function(transformation) {
   if (typeof transformation !== 'function') {
     throw new TypeError(`Maybe.Just#chain expects a function, but was given ${transformation}.`);
   }
@@ -139,21 +133,21 @@ _Just.prototype[fl.chain] = function(transformation) {
 
 // (for Object.prototype.toString)
 Maybe[Symbol.toStringTag]    = '(folktale) Maybe';
-_Nothing.prototype[Symbol.toStringTag] = '(folktale) Maybe.Nothing';
-_Just.prototype[Symbol.toStringTag]    = '(folktale) Maybe.Just';
+Nothing.prototype[Symbol.toStringTag] = '(folktale) Maybe.Nothing';
+Just.prototype[Symbol.toStringTag]    = '(folktale) Maybe.Just';
 
 // (regular JavaScript representations)
 Maybe.toString = () => '(folktale) Maybe';
-_Nothing.prototype.toString = () => '(folktale) Maybe.Nothing()';
+Nothing.prototype.toString = () => '(folktale) Maybe.Nothing()';
 
-_Just.prototype.toString = function() {
+Just.prototype.toString = function() {
   return `(folktale) Maybe.Just(${this.value})`;
 };
 
 // (Node REPL representations)
 Maybe.inspect = Maybe.toString;
-_Nothing.prototype.inspect = Maybe.Nothing.prototype.toString;
-_Just.prototype.inspect = Maybe.Just.prototype.toString;
+Nothing.prototype.inspect = Maybe.Nothing.prototype.toString;
+Just.prototype.inspect = Maybe.Just.prototype.toString;
 
 
 // -- Extracting values and recovering ---------------------------------
@@ -163,7 +157,7 @@ _Just.prototype.inspect = Maybe.Just.prototype.toString;
 // Comonad here is that `get` is partial, and not defined for Nothing
 // values.
 
-_Nothing.prototype.get = function() {
+Nothing.prototype.get = function() {
   throw new TypeError(`Can't extract the value of a Nothing.
 
 Since Nothing holds no values, it's not possible to extract one from them.
@@ -172,39 +166,39 @@ that is not partial.
   `);
 };
 
-_Just.prototype.get = function() {
+Just.prototype.get = function() {
   return this.value;
 };
 
 
 
-_Nothing.prototype.getOrElse = function(default_) {
+Nothing.prototype.getOrElse = function(default_) {
   return default_;
 };
 
-_Just.prototype.getOrElse = function(_default_) {
+Just.prototype.getOrElse = function(_default_) {
   return this.value;
 };
 
 
 
-_Nothing.prototype.orElse = function(handler) {
+Nothing.prototype.orElse = function(handler) {
   return handler();
 };
 
-_Just.prototype.orElse = function() {
+Just.prototype.orElse = function() {
   return this;
 };
 
 
 // -- JSON conversions -------------------------------------------------
-_Nothing.prototype.toJSON = function() {
+Nothing.prototype.toJSON = function() {
   return {
     '#type': 'folktale:Maybe.Nothing'
   };
 };
 
-_Just.prototype.toJSON = function() {
+Just.prototype.toJSON = function() {
   return {
     '#type': 'folktale:Maybe.Just',
     value:   this.value

@@ -1,16 +1,14 @@
-const data = require('folktale/core/adt');
+const data = require('folktale/core/adt').data;
 const fl   = require('fantasy-land');
 
-const Either = data({
-  Left:  ['value'],
-  Right: ['value']
+const Either = data('folktale:Data.Either', {
+  Left(value)  { return { value } },
+  Right(value) { return { value } }
 });
 
-const _Left  = Either.Left;
-const _Right = Either.Right;
-const _Either = Either;
+const { Left, Right } = Either;
 
- //TODO place in a separate file for other modules to use.
+//TODO place in a separate file for other modules to use.
 const assertType = (typeName, type) => (method, value) => {
   if (process.env.NODE_ENV !== 'production' && !(type.isPrototypeOf(value))) {
     console.warn(`
@@ -61,39 +59,36 @@ const assertFunction = (method, transformation) => {
 
 const assertEither = assertType('Either', Either);
 
-// -- Constructors -----------------------------------------------------
-const Left  = (value) => new Either.Left.constructor({ value });
-const Right = (value) => new Either.Right.constructor({ value });
 
 // -- Setoid -----------------------------------------------------------
-_Left.prototype[fl.equals] = function(anEither) {
+Left.prototype[fl.equals] = function(anEither) {
   assertEither('Either.Left#equals', anEither);
   return anEither.isLeft === true && anEither.value === this.value;
 };
 
-_Right.prototype[fl.equals] = function(anEither) {
+Right.prototype[fl.equals] = function(anEither) {
   assertEither('Either.Right#equals', anEither);
   return anEither.isRight && anEither.value === this.value;
 };
 
 // -- Functor ----------------------------------------------------------
-_Left.prototype[fl.map] = function(transformation) {
+Left.prototype[fl.map] = function(transformation) {
   assertFunction('Either.Left#map', transformation);
   return this;
 };
 
-_Right.prototype[fl.map] = function(transformation) {
+Right.prototype[fl.map] = function(transformation) {
   assertFunction('Either.Right#map', transformation);
   return Right(transformation(this.value));
 };
 
 // -- Apply ------------------------------------------------------------
-_Left.prototype[fl.ap] = function(anEither) {
+Left.prototype[fl.ap] = function(anEither) {
   assertEither('Either.Left#ap', anEither);
   return this;
 };
 
-_Right.prototype[fl.ap] = function(anEither) {
+Right.prototype[fl.ap] = function(anEither) {
   assertEither('Either.Right#ap', anEither);
   return anEither.map(this.value);
 };
@@ -103,12 +98,12 @@ _Right.prototype[fl.ap] = function(anEither) {
 Either[fl.of] = Right;
 
 // -- Chain ------------------------------------------------------------
-_Left.prototype[fl.chain] = function(transformation) {
+Left.prototype[fl.chain] = function(transformation) {
   assertFunction('Either.Left#chain', transformation);
   return this;
 };
 
-_Right.prototype[fl.chain] = function(transformation) {
+Right.prototype[fl.chain] = function(transformation) {
   assertFunction('Either.Right#chain', transformation);
   return transformation(this.value);
 };
@@ -118,23 +113,23 @@ _Right.prototype[fl.chain] = function(transformation) {
 
 // (for Object.prototype.toString)
 Either[Symbol.toStringTag]    = '(folktale) Either';
-_Left.prototype[Symbol.toStringTag]  = '(folktale) Either.Left';
-_Right.prototype[Symbol.toStringTag] = '(folktale) Either.Right';
+Left.prototype[Symbol.toStringTag]  = '(folktale) Either.Left';
+Right.prototype[Symbol.toStringTag] = '(folktale) Either.Right';
 
 // (regular JavaScript representations)
 Either.toString = () => '(folktale) Either';
-_Left.prototype.toString = function() {
+Left.prototype.toString = function() {
   return `(folktale) Either.Left(${this.value})`;
 };
 
-_Right.prototype.toString = function() {
+Right.prototype.toString = function() {
   return `(folktale) Either.Right(${this.value})`;
 };
 
 // (Node REPL representations)
 Either.inspect = Either.toString;
-_Left.prototype.inspect  = _Left.prototype.toString;
-_Right.prototype.inspect = _Right.prototype.toString;
+Left.prototype.inspect  = Left.prototype.toString;
+Right.prototype.inspect = Right.prototype.toString;
 
 
 // -- Extracting values and recovering ---------------------------------
@@ -144,7 +139,7 @@ _Right.prototype.inspect = _Right.prototype.toString;
 // Comonad here is that `get` is partial, and not defined for Nothing
 // values.
 
-_Left.prototype.get = function() {
+Left.prototype.get = function() {
   throw new TypeError(`Can't extract the value of a Left.
 
 Left does not contain a normal value - it contains an error.
@@ -153,69 +148,69 @@ that is not partial.
   `);
 };
 
-_Right.prototype.get = function() {
+Right.prototype.get = function() {
   return this.value;
 };
 
-_Left.prototype.getOrElse = function(default_) {
+Left.prototype.getOrElse = function(default_) {
   return default_;
 };
 
-_Right.prototype.getOrElse = function(_default_) {
+Right.prototype.getOrElse = function(_default_) {
   return this.value;
 };
 
-_Left.prototype.orElse = function(handler) {
+Left.prototype.orElse = function(handler) {
   return handler(this.value);
 };
 
-_Right.prototype.orElse = function(_) {
+Right.prototype.orElse = function(_) {
   return this;
 };
 
 // -- Folds and extended transformations--------------------------------
 
-_Either.fold = function(f, g) {
+Either.fold = function(f, g) {
   return this.cata({
     Left: ({ value }) => f(value),
     Right: ({ value }) => g(value)
   });
 };
 
-_Either.merge = function() {
+Either.merge = function() {
   return this.value;
 };
 
-_Either.swap = function() {
+Either.swap = function() {
   return this.fold(Right, Left);
 };
 
-_Either.bimap = function(f, g) {
+Either.bimap = function(f, g) {
   return this.cata({
     Left: ({ value }) => Left(f(value)),
     Right: ({ value }) => Right(g(value))
   });
 };
 
-_Left.prototype.leftMap = function(transformation) {
+Left.prototype.leftMap = function(transformation) {
   assertFunction('Either.Left#leftMap', transformation);
   return Left(transformation(this.value));
 };
 
-_Right.prototype.leftMap = function(transformation) {
+Right.prototype.leftMap = function(transformation) {
   assertFunction('Either.Right#leftMap', transformation);
   return this;
 };
 
 // -- JSON conversions -------------------------------------------------
-_Left.prototype.toJSON = function() {
+Left.prototype.toJSON = function() {
   return {
     '#type': 'folktale:Either.Left',
     value:   this.value
   };
 };
 
-_Right.prototype.toJSON = function() {
+Right.prototype.toJSON = function() {
   return {
     '#type': 'folktale:Either.Right',
     value:   this.value
