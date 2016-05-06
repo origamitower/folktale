@@ -14,4 +14,4 @@ module.exports = {
   ...require('./core'),
   try: require('./try'),
   fromNullable: require('./fromNullable')
-}
+};
