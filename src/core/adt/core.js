@@ -7,18 +7,111 @@
 //
 //----------------------------------------------------------------------
 
+// -- CONSTANTS AND ALIASES --------------------------------------------
+const TYPE = Symbol.for('@@folktale:adt:type');
+const TAG  = Symbol.for('@@folktale:adt:tag');
+const keys = Object.keys;
+
+
+// -- HELPERS ----------------------------------------------------------
+function values(object) {
+  return keys(object).map(key => object[key]);
+}
+
+
+function mapObject(object, transform) {
+  return keys(object).reduce((result, key) => {
+    result[key] = transform(key, object[key]);
+    return result;
+  }, {});
+}
+
+
+function defineVariants(patterns, namespace) {
+  return mapObject(patterns, (name, constructor) => {
+    function InternalConstructor() { }
+    InternalConstructor.prototype = Object.create(namespace);
+
+    Object.assign(InternalConstructor.prototype, {
+      [`is${name}`]: true,
+      TAG:           name,
+      constructor:   constructor,
+
+      /*~
+       * Checks if a value belongs to this Variant.
+       *
+       * This is similar to the ADT.hasInstance check, with the
+       * exception that we also check if the value is of the same
+       * variant (has the same tag) as this variant.
+       *
+       * ---
+       * name      : hasInstance
+       * signature : hasInstance(value)
+       * category  : Comparing and Testing
+       * type: |
+       *   (Variant) => Boolean
+       *
+       * ~belongsTo: constructor
+       */
+      hasInstance(value) {
+        return namespace.hasInstance(value) && value[TAG] === name;
+      },
+
+      /*~
+       * Dispatches based on this variant's tag.
+       *
+       * Selects an operation based on this variant's tag. This is
+       * similar to a very limited form of pattern matching.
+       *
+       * ---
+       * name      : cata
+       * signature : .cata(pattern)
+       * category  : Extracting Information
+       * type: |
+       *   ('a is Variant).({ 'b: (Object Any) => 'c }) => 'c
+       *   where 'b = 'a[`@@folktale:adt:tag]
+       *
+       * ~belongsTo: constructor
+       */
+      cata(pattern) {
+        return pattern[name](this);
+      }
+    });
+
+    function makeInstance(...args) {
+      let result = new InternalConstructor();
+      Object.assign(result, constructor(...args));
+      return result;
+    }
+
+    Object.assign(makeInstance, {
+      tag:         name,
+      constructor: constructor,
+      prototype:   InternalConstructor.prototype
+    });
+
+
+    return makeInstance;
+  });
+}
+
+
+
+// -- IMPLEMENTATION ---------------------------------------------------
+
+
 /*~
  * Constructs a sum data structure.
  *
  * ## Example
  *
  *     const List = data('List', {
- *       Nil: [],
- *       Cons: ['head', 'tail']
+ *       Nil(){ },
+ *       Cons(head, tail) { return { head, tail } }
  *     });
  *
  *     const { Nil, Cons } = List;
- * 
+ *
  *     let abc = Cons('a', Cons('b', Cons('c', Nil())));
  *
  *
@@ -29,7 +122,7 @@
  * things that are a composition of several independent pieces of data, but it's
  * hard to model things where the information they represent vary depending on
  * its "type".
- * 
+ *
  * For correctly modelling something, we usually want to have both record
  * (the composition of independent pieces of data) and union (a choice between
  * one of many possibilities) types. This module provides the missing *union type*
@@ -70,7 +163,7 @@
  *
  *     List.Cons = function Cons(head, tail) {
  *       if (!(this instanceof Cons))  return new Cons(head, tail);
- * 
+ *
  *       this.head = head;
  *       this.tail = tail;
  *     }
@@ -194,13 +287,47 @@
  *   (String, Object (Array String)) => ADT
  */
 const data = (typeId, patterns) => {
-  const ADT_Namespace = Object.create(ADT);
-  const variants      = defineVariants(patterns, ADT_Namespace);
+  const ADTNamespace = Object.create(ADT);
+  const variants     = defineVariants(patterns, ADTNamespace);
 
-  ADT_Namespace.type = typeId;
-  Object.assign(ADT_Namespace, variants, { variants: values(variants) });
+  Object.assign(ADTNamespace, variants, {
+    [TYPE]: typeId,
+    type:   typeId,
 
-  return ADT_Namespace;
+    /*~
+     * The variants present in this ADT.
+     * ---
+     * name: variants
+     * type: Array Variant
+     * ~belongsTo: ADTNamespace
+     */
+    variants: values(variants),
+
+    /*~
+     * Checks if a value belongs to this ADT.
+     *
+     * Values are considered to belong to an ADT if they have the same
+     * `Symbol.for('@@folktale:adt:type')` property as the ADT's.
+     *
+     * If you don't want a structural check, you can test whether the
+     * ADT is in the prototype chain of the value, but keep in mind that
+     * this does not work cross-realm.
+     *
+     * ---
+     * name      : hasInstance
+     * category  : Comparing and Testing
+     * signature : .hasInstance(value)
+     * type: |
+     *   ADT.(Variant) -> Boolean
+     *
+     * ~belongsTo: ADTNamespace
+     */
+    hasInstance(value) {
+      return value[TYPE] === this[TYPE];
+    }
+  });
+
+  return ADTNamespace;
 };
 
 
@@ -288,97 +415,3 @@ const ADT = {
 // -- Exports ----------------------------------------------------------
 data.ADT = ADT;
 module.exports = data;
-
-
-// -- Helpers -----------------------------------------------------------------
-
-const identity = (x) => x;
-
-const values = (object) => Object.keys(object).map(k => object[k]);
-
-const fieldToSpec = (field) => {
-  const keys = Object.keys(field);
-  if (keys.length !== 1) {
-    throw new TypeError(`Invalid field spec ${field}`);
-  }
-  
-  return { name: keys[0], transform: field[keys[0]] }
-}
-
-const toFieldSpec = (field) =>
-  typeof field === "string" ?  { name: field, transform: identity }
-  :      /* otherwise */       fieldToSpec(field);
-  
-  
-
-// Maps values in objects
-const mapObject = (object, transform) =>
-        Object.keys(object).reduce((result, key) => {
-          result[key] = transform(key, object[key]);
-          return result;
-        }, {});
-
-
-// Constructs variants given an object with the variant patterns.
-//
-// A pattern is an object in the form of `{ String -> [String] }`,
-// and this function returns an object of the form:
-//
-//     interface Variant(Any...) -> 'a <: self.prototype {
-//       tag         : String,
-//       constructor : Constructor,
-//       prototype   : Object
-//       fields      : [String]
-//     }
-//
-// All constructors inherit from the `namespace` constructor's
-// prototype.
-//
-// Each Variant includes a few reflective methods, and a pattern
-// matching/catamorphism method.
-const defineVariants = (patterns, namespace) => {
-  return mapObject(patterns, (name, fields) => {
-    //: Normalise fields
-    const fieldSpec  = fields.map(toFieldSpec);
-    const fieldNames = fieldSpec.map(field => field.name);
-
-
-    //: Defines the constructor for the variant type
-    function VariantConstructor() {}
-    VariantConstructor.prototype = Object.create(namespace);
-    Object.assign(VariantConstructor.prototype, {
-      ['is' + name]: true,
-      cata(pattern) {
-        return pattern[name](this);
-      }
-    });
-
-
-    //: A convenient way of constructing values of this type
-    function variant(...args) {
-      if (args.length !== fieldSpec.length) {
-        throw new TypeError(`Invalid arguments provided for ${name}.
-        
-${name} requires ${fieldNames.length} arguments (${fieldNames.join(", ")}),
-but was given ${args.length} arguments.`)
-      }
-      
-      var result = new VariantConstructor();
-      for (var i = 0; i < fieldSpec.length; ++i) {
-        const field = fieldSpec[i];
-        result[field.name] = field.transform(args[i]);
-      }
-      return result;
-    }
-    
-    Object.assign(variant, {
-      tag         : name,
-      fields      : fieldNames,
-      constructor : VariantConstructor,
-      prototype   : VariantConstructor.prototype
-    });
-
-
-    return variant
-  });
-};
