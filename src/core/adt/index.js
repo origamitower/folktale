@@ -207,12 +207,12 @@
  *   (Object (Array String)) => ADT
  */
 const data = (patterns) => {
-  const ADT_Namespace = Object.create(ADT);
-  const variants      = defineVariants(patterns, ADT_Namespace);
+  const ADTNamespace = Object.create(ADT);
+  const variants      = defineVariants(patterns, ADTNamespace);
 
-  Object.assign(ADT_Namespace, variants);
+  Object.assign(ADTNamespace, variants);
 
-  return ADT_Namespace;
+  return ADTNamespace;
 };
 
 
@@ -331,15 +331,15 @@ const mapObject = (object, transform) =>
 // matching/catamorphism method.
 const defineVariants = (patterns, namespace) => {
   return mapObject(patterns, (name, fields) => {
-    function ADT_Variant(data) {
-      for (var i = 0; i < fields.length; ++i) {
-        var key = fields[i];
+    function ADTVariant(data) {
+      for (let i = 0; i < fields.length; ++i) {
+        const key = fields[i];
         this[key] = data[key];
       }
-    };
-    ADT_Variant.prototype = Object.create(namespace);
-    Object.assign(ADT_Variant.prototype, {
-      ['is' + name]: true,
+    }
+    ADTVariant.prototype = Object.create(namespace);
+    Object.assign(ADTVariant.prototype, {
+      [`is${name}`]: true,
       tag: name,
       fields: fields,
       cata(pattern) {
@@ -349,8 +349,8 @@ const defineVariants = (patterns, namespace) => {
 
     return {
       name: name,
-      constructor: ADT_Variant,
-      prototype: ADT_Variant.prototype,
+      constructor: ADTVariant,
+      prototype: ADTVariant.prototype,
       fields: fields
     };
   });
