@@ -15,13 +15,12 @@ const {data, setoid} = require('../core/adt/')
 
 describe('Data.ADT.derive', function() {
   describe('Setoid', function() {
-    const _ = data({
-      one: ['value'],
-      two: ['value']
+    const _ = data('Type', {
+      one: (value) => ({ value }),
+      two: (value) => ({ value })
     }).derive(setoid())
     
-    const one = (value) => new _.one.constructor({ value })
-    const two = (value) => new _.two.constructor({ value })
+    const { one, two} = _ 
 
     property('Different simple values are NOT equal', 'json', function(a) {
       return !one(a).equals(two(a))

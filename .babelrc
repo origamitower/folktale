@@ -2,6 +2,8 @@
     "presets": ["es2015"],
     "plugins": ["transform-function-bind",
                 "transform-object-rest-spread",
+                "transform-metamagical-comments",
+                "transform-assertion-comments",
                 ["babel-plugin-module-alias", [
                   { "src": "./src", "expose": "folktale" }
                 ]]]

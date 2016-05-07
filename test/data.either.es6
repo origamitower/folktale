@@ -17,6 +17,7 @@ describe('Data.Either', function() {
 
   describe('constructors', function () {
     property('fromNullable#Left', function() {
+        debugger
         return _.fromNullable(null).equals(_.Left(null))
     });
 

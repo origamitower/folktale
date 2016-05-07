@@ -29,11 +29,16 @@
     "babel-cli": "^6.4.5",
     "babel-eslint": "^6.0.2",
     "babel-plugin-module-alias": "^1.2.0",
+    "babel-plugin-transform-assertion-comments": "^0.2.1",
     "babel-plugin-transform-function-bind": "^6.3.13",
+    "babel-plugin-transform-metamagical-comments": "^0.4.2",
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
     "babel-preset-es2015": "^6.3.13",
     "eslint": "^2.7.0",
+    "eslint-config-origamitower": "^1.2.0",
     "jsverify": "^0.7.1",
+    "metamagical-interface": "^2.0.0",
+    "metamagical-mocha-bridge": "^0.1.0",
     "mocha": "^2.4.5"
   }
 }
