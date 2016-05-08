@@ -41,7 +41,7 @@ compile-test: $(TEST_SRC)
 
 clean:
 	rm -f $(TGT) $(TEST_TGT)
-	rm -r core
+	rm -r core helpers data
 
 test: compile compile-test
 	$(mocha) --reporter spec --ui bdd

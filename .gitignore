@@ -4,6 +4,7 @@ node_modules/
 npm-debug.log
 /index.js
 /core/
+/helpers/
 /data/
 /test/**/*.js
 *.un~
