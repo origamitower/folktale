@@ -17,7 +17,6 @@ describe('Data.Either', function() {
 
   describe('constructors', function () {
     property('fromNullable#Left', function() {
-        debugger
         return _.fromNullable(null).equals(_.Left(null))
     });
 
@@ -111,7 +110,6 @@ describe('Data.Either', function() {
     });
 
     property('Left#leftMap', 'json', 'json -> json', function(a, f) {
-      debugger
       return _.Left(f(a)).equals(_.Left(a).leftMap(f))
     });
     

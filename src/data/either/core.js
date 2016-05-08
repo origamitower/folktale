@@ -30,12 +30,12 @@ Right.prototype[fl.map] = function(transformation) {
 
 // -- Apply ------------------------------------------------------------
 Left.prototype[fl.ap] = function(anEither) {
-  assertEither('Either.Left#ap', anEither);
+  assertEither('Left#ap', anEither);
   return this;
 };
 
 Right.prototype[fl.ap] = function(anEither) {
-  assertEither('Either.Right#ap', anEither);
+  assertEither('Right#ap', anEither);
   return anEither.map(this.value);
 };
 
@@ -163,10 +163,4 @@ Right.prototype.toJSON = function() {
   };
 };
 
-
-module.exports = {
-  Left,
-  Right,
-  type: Either,
-  of: Either.of,
-};
+module.exports = Either;

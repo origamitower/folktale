@@ -1,10 +1,10 @@
 const assertType = require('folktale/helpers/assertType');
 const fl = require('fantasy-land');
-const { tagSymbol, typeSymbol } = require('./core')
+const { tagSymbol, typeSymbol } = require('./core');
 
 const isSetoid = (value) => value != null &&  typeof value[fl.equals] === 'function';
 
-const sameType = (a,b) => a[typeSymbol] === b[typeSymbol] && a[tagSymbol] === b[tagSymbol]
+const sameType = (a, b) => a[typeSymbol] === b[typeSymbol] && a[tagSymbol] === b[tagSymbol];
 
 
 const createDerivation = (valuesEqual) => {
@@ -23,13 +23,13 @@ const createDerivation = (valuesEqual) => {
   };
   const derivation = (variant, adt) => {
     variant.prototype[fl.equals] = function(value) {
-      assertType(adt)(`${variant.name}#equals`, value);
+      assertType(adt)(`${this[tagSymbol]}#equals`, value);
       return sameType(this, value) && compositesEqual(this, value, Object.keys(this));
     };
     return variant;
   };
-  derivation.withEquality = createDerivation
-  return derivation
+  derivation.withEquality = createDerivation;
+  return derivation;
 };
 
-module.exports = createDerivation((a, b) => a === b)
+module.exports = createDerivation((a, b) => a === b);

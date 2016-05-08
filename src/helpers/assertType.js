@@ -1,7 +1,7 @@
-const { tagSymbol, typeSymbol } = require('folktale/core/adt/core')
+const { typeSymbol } = require('folktale/core/adt/core');
 
 module.exports = (type) => (method, value) => {
-  const typeName = type[typeSymbol]
+  const typeName = type[typeSymbol];
   if (process.env.NODE_ENV !== 'production' && !(type.isPrototypeOf(value))) {
     console.warn(`
 ${typeName}.${method} expects a value of the same type, but was given ${value}.
