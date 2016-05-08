@@ -5,7 +5,7 @@ const fl   = require('fantasy-land');
 const Either = data('folktale:Data.Either', {
   Left(value)  { return { value } },
   Right(value) { return { value } }
-}).derive(setoid());
+}).derive(setoid);
 
 const { Left, Right } = Either;
 
@@ -15,7 +15,7 @@ const assertFunction = (method, transformation) => {
   }
 };
 
-const assertEither = assertType(Either, 'Either');
+const assertEither = assertType(Either);
 
 // -- Functor ----------------------------------------------------------
 Left.prototype[fl.map] = function(transformation) {

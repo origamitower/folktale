@@ -1,7 +1,10 @@
-module.exports = (type, typeName = 'Folktale ADT') => (method, value) => {
+const { tagSymbol, typeSymbol } = require('folktale/core/adt/core')
+
+module.exports = (type) => (method, value) => {
+  const typeName = type[typeSymbol]
   if (process.env.NODE_ENV !== 'production' && !(type.isPrototypeOf(value))) {
     console.warn(`
-${method} expects a value of the same type, but was given ${value}.
+${typeName}.${method} expects a value of the same type, but was given ${value}.
 
 This could mean that you've provided the wrong value to the method, in
 which case this is a bug in your program, and you should try to track

@@ -6,12 +6,12 @@ const isSetoid = (value) => value != null &&  typeof value[fl.equals] === 'funct
 
 const sameType = (a,b) => a[typeSymbol] === b[typeSymbol] && a[tagSymbol] === b[tagSymbol]
 
-module.exports = (compareValues = ((a, b) => a === b)) => {
 
+const createDerivation = (valuesEqual) => {
   const equals = (a, b) =>
     isSetoid(a) && isSetoid(b) ? a.equals(b)
-    : /*otherwise */             compareValues(a, b);
-  const compareObjects = (a, b, keys) => {
+    : /*otherwise */             valuesEqual(a, b);
+  const compositesEqual = (a, b, keys) => {
     for (let i = 0, len = keys.length; i < len; i++) {
       const keyA = a[keys[i]];
       const keyB = b[keys[i]];
@@ -21,11 +21,15 @@ module.exports = (compareValues = ((a, b) => a === b)) => {
     }
     return true;
   };
-  return (variant, adt) => {
+  const derivation = (variant, adt) => {
     variant.prototype[fl.equals] = function(value) {
       assertType(adt)(`${variant.name}#equals`, value);
-      return sameType(this, value) && compareObjects(this, value, Object.keys(this));
+      return sameType(this, value) && compositesEqual(this, value, Object.keys(this));
     };
     return variant;
   };
+  derivation.withEquality = createDerivation
+  return derivation
 };
+
+module.exports = createDerivation((a, b) => a === b)
