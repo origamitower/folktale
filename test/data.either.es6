@@ -33,20 +33,6 @@ describe('Data.Either', function() {
     }); 
   });
 
-  describe('Setoid', function () {
-    property('Left#equals', 'json', 'json', function(a, b) {
-      return (a === b) === (_.Left(a).equals(_.Left(b)))
-    });
-
-    property('Right#equals', 'json', 'json', function(a, b) {
-      return (a === b) === (_.Right(a).equals(_.Right(b)))
-    });
-
-    property('Left#equals and Right#equals', 'json', function(a) {
-      return !(_.Left(a).equals(_.Right(a)))
-    });
-  });
-
   describe('Functor', function () {
     property('map', 'json', 'json -> json', function(a, f) {
       return _.of(f(a)).equals(_.of(a).map(f))
@@ -124,7 +110,6 @@ describe('Data.Either', function() {
     });
 
     property('Left#leftMap', 'json', 'json -> json', function(a, f) {
-      debugger
       return _.Left(f(a)).equals(_.Left(a).leftMap(f))
     });
     

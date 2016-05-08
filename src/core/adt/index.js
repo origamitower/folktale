@@ -23,5 +23,6 @@
  *   - Quildreen Motta <queen@robotlolita.me>
  */
 module.exports = {
-  data: require('./core')
+  data: require('./core'),
+  setoid: require('./setoid')
 };

@@ -10,7 +10,8 @@
 //
 //----------------------------------------------------------------------
 
-const data = require('folktale/core/adt').data;
+const { data } = require('folktale/core/adt');
+
 const fl   = require('fantasy-land');
 
 const Maybe = data('folktale:Data.Maybe', {
