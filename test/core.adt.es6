@@ -58,8 +58,14 @@ describe('Data.ADT.derive', function() {
     property('Variants have a string representation', function() {
       return AB.A.toString()  === 'AB.A';
     })
-    property('Values have a string representation', function() {
-      return AB.A(1).toString()  === 'AB.A(1)';
+    property('Primitive Values have a string representation', function() {
+      return AB.A(1).toString()  === 'AB.A({ value: 1 })';
+    })
+    property('Complex Values have a string representation', function() {
+      return AB.A({foo: "bar"}).toString()  === 'AB.A({ value: { foo: "bar" } })';
+    })
+    property('Recursive Values have a string representation', function() {
+      return AB.A({rec:AB.A(1)}).toString()  ===  'AB.A({ value: { rec: AB.A({ value: 1 }) } })'
     })
   });
 });
