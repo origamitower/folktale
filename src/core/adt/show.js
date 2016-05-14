@@ -14,14 +14,17 @@ const arrayToString = function() {
 const nullToString = () => 'null';
 
 const objectToString = (object) => {
-  return object === null                                ?  nullToString
-  :      object.toString === Array.prototype.toString   ?  arrayToString
-  :      object.toString === Object.prototype.toString  ?  plainObjectToString
-  :      /* otherwise */                                   object.toString;
+  return object === null                        ? nullToString
+  :      Array.isArray(object)                  ? arrayToString
+  :      object.toString() === ({}).toString()  ? plainObjectToString
+  :      /* otherwise */                          object.toString;
 };
 
-const showValue = (value) =>
-  typeof value !== 'object' ? JSON.stringify(value) : objectToString(value).call(value);
+const showValue = (value) => {
+  return typeof value === 'undefined' ? 'undefined'
+  :      typeof value !== 'object'    ? JSON.stringify(value)
+  :      /* otherwise */                objectToString(value).call(value);
+};
 
 module.exports = (variant, adt) => {
   const typeName = adt[typeSymbol];
@@ -42,3 +45,4 @@ module.exports = (variant, adt) => {
   variant.prototype.inspect  = variant.prototype.toString;
   return variant;
 };
+
