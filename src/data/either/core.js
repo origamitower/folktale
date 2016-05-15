@@ -1,11 +1,11 @@
 const assertType = require('../../helpers/assertType');
-const { data, setoid } = require('folktale/core/adt/');
+const { data, setoid, show } = require('folktale/core/adt/');
 const fl   = require('fantasy-land');
 
 const Either = data('folktale:Data.Either', {
   Left(value)  { return { value } },
   Right(value) { return { value } }
-}).derive(setoid);
+}).derive(setoid, show);
 
 const { Left, Right } = Either;
 
@@ -55,27 +55,6 @@ Right.prototype[fl.chain] = function(transformation) {
 };
 
 
-// -- Show -------------------------------------------------------------
-
-// (for Object.prototype.toString)
-Either[Symbol.toStringTag]    = '(folktale) Either';
-Left.prototype[Symbol.toStringTag]  = '(folktale) Either.Left';
-Right.prototype[Symbol.toStringTag] = '(folktale) Either.Right';
-
-// (regular JavaScript representations)
-Either.toString = () => '(folktale) Either';
-Left.prototype.toString = function() {
-  return `(folktale) Either.Left(${this.value})`;
-};
-
-Right.prototype.toString = function() {
-  return `(folktale) Either.Right(${this.value})`;
-};
-
-// (Node REPL representations)
-Either.inspect = Either.toString;
-Left.prototype.inspect  = Left.prototype.toString;
-Right.prototype.inspect = Right.prototype.toString;
 
 
 // -- Extracting values and recovering ---------------------------------

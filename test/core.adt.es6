@@ -11,7 +11,7 @@
 //----------------------------------------------------------------------
 
 const { property, forall} = require('jsverify');
-const {data, setoid} = require('../core/adt/')
+const {data, setoid, show} = require('../core/adt/')
 
 describe('Data.ADT.derive', function() {
   describe('Setoid', function() {
@@ -43,5 +43,29 @@ describe('Data.ADT.derive', function() {
         return A({id:1, _irrelevantValue:a}).equals(A({id:1, _irrelevantValue: b}))
       });
     });
+  });
+  describe('Show', function() {
+    const AB = data('AB', {
+      A: (value) => ({ value }),
+      B: (value) => ({ value })
+    }).derive(show)
+
+    property('Types have a string representation', function() {
+      debugger
+      return AB.toString()  === 'AB';
+    })
+
+    property('Variants have a string representation', function() {
+      return AB.A.toString()  === 'AB.A';
+    })
+    property('Primitive Values have a string representation', function() {
+      return AB.A(1).toString()  === 'AB.A({ value: 1 })';
+    })
+    property('Complex Values have a string representation', function() {
+      return AB.A({foo: "bar"}).toString()  === 'AB.A({ value: { foo: "bar" } })';
+    })
+    property('Recursive Values have a string representation', function() {
+      return AB.A({rec:AB.A(1)}).toString()  ===  'AB.A({ value: { rec: AB.A({ value: 1 }) } })'
+    })
   });
 });

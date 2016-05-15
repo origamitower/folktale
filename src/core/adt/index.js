@@ -24,5 +24,6 @@
  */
 module.exports = {
   data: require('./core'),
-  setoid: require('./setoid')
+  setoid: require('./setoid'),
+  show: require('./show')
 };
