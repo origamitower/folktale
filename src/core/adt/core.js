@@ -89,7 +89,7 @@ function defineVariants(typeId, patterns, adt) {
        * ~belongsTo: constructor
        */
       hasInstance(value) {
-        return adt.hasInstance(value) && value[TAG] === name;
+        return !!value && adt.hasInstance(value) && value[TAG] === name;
       },
     });
 
@@ -373,7 +373,7 @@ const data = (typeId, patterns) => {
      * ~belongsTo: ADTNamespace
      */
     hasInstance(value) {
-      return value[TYPE] === this[TYPE];
+      return !!value && value[TYPE] === this[TYPE];
     }
   });
 
