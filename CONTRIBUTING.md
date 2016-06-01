@@ -344,7 +344,7 @@ development environment for Windows.
 
 Below are instructions to install Make on common systems:
 
-> **TODO**  
+> **TODO**
 > Provide instructions for OS/X and *BSD systems.
 
 ##### Debian/Ubuntu (Linux):
@@ -366,7 +366,7 @@ Below are instructions to install Make on common systems:
  3. Select a folder to extract the components to;
  4. Run `download.bat` from the folder you extracted the components to;
  5. Finally, run `install.bat` from that folder.
-        
+
 
 ### Working with Git and GitHub
 
@@ -414,15 +414,14 @@ From here on, development pretty much follows the process below:
 
 ### Git commit guidelines
 
-Folktale uses a convention similar to
-[Angular.js](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines)
-for Git commits. These aim to make it easier to follow the history of the
-project, and for tools to extract information from them.
+Folktale uses [.gitlabels](https://github.com/ELLIOTTCABLE/.gitlabels) to
+tag commits so humans can better understand the scope of changes, and tools
+can help visualising changes.
 
-The following commit format is used:
+Commits often follow this format:
 
 ```
-<type>(<category?>): <summary>
+(<tags>) <summary>
 
 <body>
 
@@ -431,8 +430,7 @@ The following commit format is used:
 
 Where:
 
-  - `type`: The kind of change this commit introduces;
-  - `category`: The category this commit applies to, like `Core.Lambda`, if it refers to only one of them.
+  - `tags`: The `.gitlabels` tags defining the scope of changes. See the `.gitlabels` file for documentation;
   - `summary`: A very short description of the change.
   - `body`: A detailed description of the change.
   - `footer`: contains information about issue references and breaking changes.
@@ -444,7 +442,7 @@ For example, a commit that adds tests to the `folktale/core/lambda` module would
 look like:
 
 ```
-test(Core.Lambda): Adds tests for compose
+(test lambda) Adds tests for compose
 
 `compose` was the only function in the module that didn't have tests.
 This provides a few example based tests, and property-based tests for
@@ -453,28 +451,6 @@ associativity.
 
 Fixes #12
 ```
-
-A commit that doesn't have a particular scope would look like:
-
-```
-docs: Improves coding style section in contributor guide
-
-Expands the current rules with examples.
-```
-
-
-#### Commit types
-
-The following commit types are accepted:
-
-  - **feat**: A new feature;
-  - **fix**: A bug fix;
-  - **docs**: Introduces or improves documentation;
-  - **style**: Purely stylistic changes, such as formatting, indentation, getting rid of linter warnings, etc.
-  - **refactor**: Refactoring existing features;
-  - **perf**: Performance optimisations;
-  - **test**: Introduces or improves test cases;
-  - **other**: Every other maintenance aspect that isn't better captured by the types above.
 
 
 #### Referencing issues
@@ -536,7 +512,7 @@ One would write:
 
 The design of the Folktale library is guided by the following principles:
 
-  - **Favour a heavier use of arrow functions over currying**  
+  - **Favour a heavier use of arrow functions over currying**
     — Curried functions can be composed in several ways. And this is a good
     thing, because it means it's easier to create new functionality by combining
     existing ones. However, in an untyped language, you have no ways of
@@ -550,7 +526,7 @@ The design of the Folktale library is guided by the following principles:
     enforce some compositional constraints syntactically. They also side-step
     the problems with JavaScript's variadic functions to an extent.
 
-  - **Provide separate free-method versions of functions**  
+  - **Provide separate free-method versions of functions**
     — JavaScript's syntax is limited, but some of the proposed additions to it
     lead to programs that are easier to read. One of them is the
     [This-Binding syntax](https://github.com/zenparsing/es-function-bind), which
@@ -571,16 +547,16 @@ The design of the Folktale library is guided by the following principles:
     // => list.sort(on(compare, first))
     ```
 
-  - **Where possible, as long as laws aren't broken, reuse the language's native methods**  
+  - **Where possible, as long as laws aren't broken, reuse the language's native methods**
     — This makes it easier to combine Folktale with existing projects and
     libraries, as they'd have similar expectations.
 
-  - **Monolithic package over several micro-libraries**  
+  - **Monolithic package over several micro-libraries**
     — There are plenty of advantages of micro-libraries. They are more modular,
     since they have to work with less expectations; they are easier to replace;
     we can make a better use of semantic versioning; and they are easier to
     understand.
-    
+
     But there are plenty of drawbacks to them as well:
 
     - **They're harder to use when you need to combine more than one
@@ -600,7 +576,7 @@ The design of the Folktale library is guided by the following principles:
       behaviour across them. This was the case with how methods worked in the
       old versions of Maybe, Either, and Validation.
 
-  - **Better support for interactive (REPL) development**  
+  - **Better support for interactive (REPL) development**
     — One of the long-term goals with Folktale is to have a really good support
     for interactive development in the REPL. The first step for that is to be
     able to view documentation directly from the REPL, which is being done by
@@ -611,7 +587,7 @@ The design of the Folktale library is guided by the following principles:
     approximate type signature, Folktale and its users will benefit from them
     without having to do anything.
 
-  - **Logically grouped, minimal modules**  
+  - **Logically grouped, minimal modules**
     — Each module should be entirely self-contained, and only provide the
     absolute minimum necessary for that particular functionality. Most of the
     time this will mean `one function = one module`, but not always. See the
@@ -633,7 +609,7 @@ The design of the Folktale library is guided by the following principles:
         even modules comprised of simple, one line functions end up being more
         than 40 lines of code when you consider documentation.
 
-  - **Modules are grouped in an hierarchy of categories**  
+  - **Modules are grouped in an hierarchy of categories**
     — This is mostly to make using the libraries easier given the previous
     point. Modules that are higher in the hierarchy should re-export all
     features below it. This allows people to require a bag of things, like
@@ -815,7 +791,7 @@ Here's an example of documentation for the `core/lambda/compose` function:
  *     // => double(inc(3))
  *     // => 8
  *
- * > **NOTE**  
+ * > **NOTE**
  * > Composition is done from right to left, rather than left to right.
  *
  * ---
@@ -923,7 +899,7 @@ for changes on the test files, and recompile/re-run them when they happen.
 
 ### Coding style
 
-> **TODO**  
+> **TODO**
 > This section is a stub and needs to be improved.
 
 The ESLint rules will catch most of the style issues, so you might just want to

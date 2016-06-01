@@ -1,0 +1,41 @@
+# This file describes meta-data associated with Git commits
+# that can be processed by tools.
+#
+# See <https://github.com/elliottcable/.gitlabels>
+
+# --[ Nature of the change ]-------------------------------------------
+# These labels give a summary of the kind of change that was made.
+# They may be combined, although it's usually better to have separated
+# commits introducing them.
+
+- (new)               Introduces new functionality or features.
+- (fix)               Fixes the behaviour of exiting features.
+- (doc documentation) Introduces documentation.
+- (test)              Introduces new tests or improves existing ones.
+- (perf performance)  Introduces performance optimisations.
+- (re refactor)       Changes structure, but doesn't introduce new features nor fixes bugs.
+- (build)             Changes to the build scripts
+
+# --[ Qualifiers ]-----------------------------------------------------
+# Changes may be qualified
+
+- (!! important)  The commit introduces substantial changes.
+- (break)         The change breaks an existing feature
+- (- minor)       The change is rather minor and may be ignored in most cases
+- (release)       A new public release
+
+# --[ Scopes ]---------------------------------------------------------
+# Because this is a multi-package repository, sometimes changes apply
+# to only a few of these scopes. These labels exist for that reason
+
+- (scoped) The scope of changes.
+  - (core)              The Core package
+    - (adt)               The ADT package
+    - (lambda)            The Lambda package
+    - (object)            The Object package
+  - (data)              The Data package
+    - (either)            The Either structure
+    - (maybe)             The Maybe structure
+    - (val validation)    The Validation structure
+    - (task)              The Task structure
+  - (helpers)           The Helpers package
