@@ -295,9 +295,6 @@ All JavaScript files in the project should start with the following preamble:
 //
 // This source file is part of the Folktale project.
 //
-// Copyright (C) 2015-2016 Quildreen Motta and CONTRIBUTORS.
-// Licensed under the MIT licence.
-//
 // See LICENCE for licence information.
 // See CONTRIBUTORS for the list of contributors to the project.
 //
