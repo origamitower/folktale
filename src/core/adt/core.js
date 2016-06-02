@@ -107,14 +107,14 @@ function defineVariants(typeId, patterns, adt) {
  *
  * ## Using the ADT module::
  *
- *     const List = data('List', {
+ *     var List = data('List', {
  *       Nil(){ },
  *       Cons(value, rest) {
  *         return { value, rest };
  *       }
  *     });
  *
- *     const { Nil, Cons } = List;
+ *     var { Nil, Cons } = List;
  *
  *     Cons('a', Cons('b', Cons('c', Nil())));
  *     // ==> { value: 'a', rest: { value: 'b', ..._ }}
@@ -145,14 +145,14 @@ function defineVariants(typeId, patterns, adt) {
  *
  * Revisiting the previous `List` ADT example, when one writes:
  *
- *     const List = data('List', {
+ *     var List = data('List', {
  *       Nil:  () => {},
  *       Cons: (value, rest) => ({ value, rest })
  *     })
  *
  * That's roughly equivalent to the idiomatic:
  *
- *     const List = {};
+ *     var List = {};
  *
  *     function Nil() { }
  *     Nil.prototype = Object.create(List);
@@ -188,13 +188,13 @@ function defineVariants(typeId, patterns, adt) {
  *
  * The type of the ADT is provided by the global symbol `@@folktale:adt:type`::
  *
- *     const Id = data('Identity', { Id: () => {} });
+ *     var Id = data('Identity', { Id: () => {} });
  *     Id[Symbol.for('@@folktale:adt:type')]
  *     // ==> 'Identity'
  *
  * The tag of the value is provided by the global symbol `@@folktale:adt:tag`::
  *
- *     const List = data('List', {
+ *     var List = data('List', {
  *       Nil: () => {},
  *       Cons: (h, t) => ({ h, t })
  *     });
@@ -215,8 +215,8 @@ function defineVariants(typeId, patterns, adt) {
  *
  * ###### checking if a value belongs to an ADT::
  *
- *     const IdA = data('IdA', { Id: (x) => ({ x }) });
- *     const IdB = data('IdB', { Id: (x) => ({ x }) });
+ *     var IdA = data('IdA', { Id: (x) => ({ x }) });
+ *     var IdB = data('IdB', { Id: (x) => ({ x }) });
  *
  *     IdA.hasInstance(IdA.Id(1))  // ==> true
  *     IdA.hasInstance(IdB.Id(1))  // ==> false
@@ -224,11 +224,11 @@ function defineVariants(typeId, patterns, adt) {
  *
  * ###### checking if a value belongs to a variant::
  *
- *     const Either = data('Either', {
+ *     var Either = data('Either', {
  *       Left:  value => ({ value }),
  *       Right: value => ({ value })
  *     });
- *     const { Left, Right } = Either;
+ *     var { Left, Right } = Either;
  *
  *     Left.hasInstance(Left(1));  // ==> true
  *     Left.hasInstance(Right(1)); // ==> false
@@ -251,12 +251,12 @@ function defineVariants(typeId, patterns, adt) {
  * to provide new functionality to all variants by simply adding new
  * properties to the ADT::
  *
- *     const List = data('List', {
+ *     var List = data('List', {
  *       Nil:  () => {},
  *       Cons: (value, rest) => ({ value, rest })
  *     });
  *
- *     const { Nil, Cons } = List;
+ *     var { Nil, Cons } = List;
  *
  *     List.sum = function() {
  *       return this.cata({
@@ -277,11 +277,11 @@ function defineVariants(typeId, patterns, adt) {
  * they could do so by using the `derive` functionality::
  *
  *     function ToJSON(variant, adt) {
- *       const { tag, type } = variant;
+ *       var { tag, type } = variant;
  *       variant.prototype.toJSON = function() {
- *         const json = { tag: `${type}:${tag}` };
+ *         var json = { tag: `${type}:${tag}` };
  *         Object.keys(this).forEach(key => {
- *           const value = this[key];
+ *           var value = this[key];
  *           if (value && typeof value.toJSON === "function") {
  *             json[key] = value.toJSON();
  *           } else {
@@ -292,12 +292,12 @@ function defineVariants(typeId, patterns, adt) {
  *       }
  *     }
  *
- *     const List = data('List', {
+ *     var List = data('List', {
  *       Nil:  () => {},
  *       Cons: (value, rest) => ({ value, rest })
  *     }).derive(ToJSON);
  *
- *     const { Nil, Cons } = List;
+ *     var { Nil, Cons } = List;
  *
  *     Nil().toJSON()
  *     // ==> { tag: "List:Nil" }
