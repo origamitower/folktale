@@ -38,5 +38,6 @@ module.exports = {
   constant: require('./constant'),
   curry: require('./curry'),
   compose: require('./compose'),
+  partialise: require('./partialise'),
   infix: require('./infix')
 };
