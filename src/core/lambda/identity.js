@@ -10,43 +10,42 @@
 /*~
  * The identity combinator; always returns the argument given.
  *
- * Identify combinators may work as a NO-OP, since they're a
- * pure operation. As such, they can be passed to any operation that
- * expects a function when you don't want the operation to do anything
- * special with that function.
  *
- * A simple example is a `bimap` operation in an Either structure. You
- * might want to transform one side of the data structure, but leave the
- * other side with the same value:
+ * ## Example::
  *
- *     Either.Right(2).bimap(identity, (x) => x + 1)
- *     // => Either.Right(3)
+ *     identity(1);
+ *     // ==> 1
  *
- *     Either.Left(2).bimap(identity, (x) => x + 1)
- *     // => Either.Left(2)
+ *     [1, 2, 3].map(identity);
+ *     // ==> [1, 2, 3]
  *
- * In most cases, an arrow function is preferred.
  *
- * --------------------------------------------------------------------
- * name        : identity
- * module      : folktale/core/lambda/identity
- * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
- * licence     : MIT
- * repository  : https://github.com/origamitower/folktale
+ * ## Why?
  *
- * category    : Combining
- * stability   : stable
- * portability : portable
- * platforms:
- *   - ECMAScript 3
+ * There aren't many reasons to use the `identity` combinator in real
+ * JavaScript code. Readability is the only compelling one. Figuring
+ * out the concept of `identity` from reading the word `identity` is
+ * easier than working your way through its implementation.
  *
- * maintainers:
- *   - Quildreen Motta <queen@robotlolita.me>
+ * Compare:
+ *
+ *     either.bimap(identity, (counter) => counter + 1);
+ *
+ * With:
+ *
+ *     either.bimap(
+ *       (failure) => failure,
+ *       (counter) => counter + 1
+ *     )
+ *
+ *
+ * ---
+ * category  : Combinators
+ * stability : stable
  *
  * authors:
  *   - Quildreen Motta
  *
- * signature: identity(value)
  * type: |
  *   ('a) => 'a
  */
