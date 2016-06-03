@@ -186,17 +186,18 @@
  *
  * Another way to work around this problem is by using the `partialise`
  * function provided by Folktale. This function creates a new function
- * that specifies only parts of the argument for the original function:
+ * that specifies only parts of the argument for the original function::
  *
- *     const _ = require('folktale/core/lambda/partialise');
+ *     const partialise = require('folktale/core/lambda/partialise');
+ *     const _          = partialise.hole;
  *
  *     const upcase3 = (name) => name.toUpperCase();
- *     const map3    = (transform, items) => items.map(transform);
- *     const join3   = (separator, items) => items.join(separator);
+ *     const map3    = partialise(2, (transform, items) => items.map(transform));
+ *     const join3   = partialise(2, (separator, items) => items.join(separator));
  *
  *     const showNames3 = compose(
- *       _(join3(', ', _)),
- *       _(map3(upcase, _))
+ *       join3(', ', _),
+ *       map3(upcase, _)
  *     );
  *
  * See `folktale/core/lambda/partialise` for more information on how the
