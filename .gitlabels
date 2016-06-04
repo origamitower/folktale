@@ -9,6 +9,7 @@
 # commits introducing them.
 
 - (new)               Introduces new functionality or features.
+- (rm remove)         Removes previous functionality.
 - (fix)               Fixes the behaviour of exiting features.
 - (doc documentation) Introduces documentation.
 - (test)              Introduces new tests or improves existing ones.
