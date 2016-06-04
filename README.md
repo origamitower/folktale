@@ -36,7 +36,53 @@ platforms that don't implement Node-style modules, like the Browser.
 
 ## Documentation
 
-( TBD )
+Folktale is annotated with [Meta:Magical](https://github.com/origamitower/metamagical),
+so every runtime Folktale object contains documentation annotation that you
+can retrieve interactively.
+
+Currently the only way of doing that is through the [REPL browser](https://github.com/origamitower/metamagical/tree/master/packages/repl),
+however.
+
+To look at Folktale's documentation you need to install `metamagical-interface`
+and `metamagical-repl`:
+
+```shell
+npm install metamagical-interface@3.3.x
+npm install metamagical-repl@0.2.x
+```
+
+Once that's taken care of, you can look at documentation by loading the `documentation`
+submodule:
+
+```js
+var docs = require('folktale/documentation');  
+```
+
+`docs` is a browser pointing to the root of the Folktale library. From there
+you can invoke the following methods:
+
+  - `.forProperty(name)` — returns a new Browser for the object you can reach
+    at that property in the current object. `docs.forProperty("core")` returns
+    a Browser for the `core` module, for example.
+    
+  - `.source()` — returns the original source code of the current object. This
+    is the source code before the Babel compilation pass, so it's actual,
+    human-written ES6 code! — and for objects too, not only functions.
+    
+  - `.stability()` — returns the stability of the current object, considering
+    all of the objects below it. So if an object is made out of experimental
+    objects, it'll also be considered experimental.
+    
+  - `.documentation()` — returns the full documentation of the object. This
+    is usually a huge chunk of (formatted for TTY) markdown, containing
+    examples, explanations of why a feature exists, when you would use it,
+    how it works under the hood, and others. The new version of Folktale
+    places a heavy emphasis on documentation.
+    
+  - `.summary()` — returns a summary of the object. Its signature, type,
+    where it's defined, a short summary of its documentation, the properties
+    in the object, and some other meta-data.
+  
 
 
 ## Supported platforms

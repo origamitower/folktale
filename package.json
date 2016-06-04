@@ -41,6 +41,10 @@
     "metamagical-mocha-bridge": "^0.3.0",
     "mocha": "^2.4.5"
   },
+  "peerDependencies": {
+    "metamagical-interface": "3.x",
+    "metamagical-repl": "0.2.x"
+  },
   "meta:magical": {
     "copyright": "(c) 2015-2016 Quildreen Motta, and CONTRIBUTORS",
     "maintainers": [
