@@ -64,7 +64,7 @@ describe('Core.Lambda', function() {
     });
 
     it('invoking with more arguments passes the remaining arguments to the result of the operation', function() {
-      assert.equal(_.curry(2, f)(h, g, 1), 3);
+      assert.equal(_.curry(2, f)(h, g)(1), 3);
     });
 
     property('should support any kind of arguments grouping', 'nat & nat & nat & nat', ([a, b, c, d]) => {
