@@ -150,7 +150,6 @@ const hole = {};
  * throws:
  *   TypeError: when the number of arguments given doesn't match the arity.
  *
- * complexity: O(`arity`)
  * type: |
  *   (Number, (Any... => Any)) => ((hole | Any)...) => Any :: (throw TypeError)
  */
