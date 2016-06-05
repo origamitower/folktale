@@ -25,5 +25,6 @@
 module.exports = {
   data: require('./core'),
   setoid: require('./setoid'),
-  show: require('./show')
+  show: require('./show'),
+  serialize: require('./serialize')
 };
