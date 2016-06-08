@@ -1,6 +1,7 @@
 Folktale
 =======
 
+[![Ready to work on~!](https://img.shields.io/waffle/label/origamitower/folktale/ready.svg?style=flat-square)](http://waffle.io/origamitower/folktale)
 [![Chat on Gitter](https://img.shields.io/gitter/room/folktale/discussion.svg?style=flat-square)](https://gitter.im/folktale/discussion)
 [![Build status](https://img.shields.io/travis/origamitower/folktale/master.svg?style=flat-square)](https://travis-ci.org/origamitower/folktale)
 [![NPM version](https://img.shields.io/npm/v/folktale.svg?style=flat-square)](https://npmjs.org/package/folktale)
