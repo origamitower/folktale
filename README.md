@@ -21,8 +21,7 @@ The officially supported way of getting Folktale is through [npm][]:
 
     $ npm install folktale
 
-> **NOTE**
->
+> **NOTE**  
 > If you don't have npm, you'll need to install [Node.js][] in your
 > system before installing Folktale.
 

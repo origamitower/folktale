@@ -341,7 +341,7 @@ development environment for Windows.
 
 Below are instructions to install Make on common systems:
 
-> **TODO**
+> **TODO**  
 > Provide instructions for OS/X and *BSD systems.
 
 ##### Debian/Ubuntu (Linux):
@@ -896,7 +896,7 @@ for changes on the test files, and recompile/re-run them when they happen.
 
 ### Coding style
 
-> **TODO**
+> **TODO**  
 > This section is a stub and needs to be improved.
 
 The ESLint rules will catch most of the style issues, so you might just want to
