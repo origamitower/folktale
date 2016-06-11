@@ -23,6 +23,7 @@ so that we can support you.
   - [Reporting bugs](#reporting-bugs)
   - [Requesting features](#requesting-features)
   - [Contributing code](#contributing-code)
+      - [Task Organisation](#task-organisation)
       - [Copyright, Licence, and Contributors](#copyright-licence-and-contributors)
       - [Pre-requisites](#pre-requisites)
           - [Git](#git)
