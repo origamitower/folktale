@@ -1,32 +1,51 @@
 const { tagSymbol, typeSymbol } = require('./core');
 const mapValues = require('folktale/core/object/map-values');
 
+const typeJsonKey = '@@type';
+const tagJsonKey = '@@tag';
+const valueJsonKey = '@@value';
+
+
 const assertType = (given, expected) => {
   if (expected !== given) {
     throw new TypeError(`
        The JSON structure was generated from ${expected}.
-       You are trying to serialize it into ${given}. 
+       You are trying to parse it as ${given}. 
     `);
   }
 };
-const parseValue = (parsers) => (value) =>
-  parsers[value.typeName] ? parsers[value.typeName].fromJSON(value, parsers)
-  : /* else */              value;
+const parseValue = (parsers) => (value) => {
+  if (value !== null && typeof value[typeJsonKey] === 'string') {
+    const type = value[typeJsonKey];
+    if (parsers[type]) {
+      return parsers[type].fromJSON(value, parsers);
+    } else {
+      return value;
+    }
+  } else {
+    return value;
+  }
+};
 
 const serializeValue = (value) =>
-  typeof value.toJSON === 'function' ? value.toJSON() : value;
+  value !== null && typeof value.toJSON === 'function' ? value.toJSON()
+  : /* else */                                           value;
 
 module.exports = (variant, adt) => {
   const typeName = adt[typeSymbol];
   const tagName = variant.prototype[tagSymbol];
 
   variant.prototype.toJSON = function() {
-    return { typeName, tagName, value: mapValues(this, serializeValue) };
+    return { [typeJsonKey]: typeName, [tagJsonKey]: tagName, [valueJsonKey]: mapValues(this, serializeValue) };
   };
 
   adt.fromJSON = function(value, parsers = { [typeName]: adt }) {
-    assertType(typeName, value.typeName);
-    const parsedValue = mapValues(value.value, parseValue(parsers));
-    return Object.assign(Object.create(adt[value.tagName].prototype), parsedValue);
+    const valueTypeName = value[typeJsonKey];
+    const valueTagName = value[tagJsonKey];
+    const valueContents = value[valueJsonKey];
+
+    assertType(typeName, valueTypeName);
+    const parsedValue = mapValues(valueContents, parseValue(parsers));
+    return Object.assign(Object.create(adt[valueTagName].prototype), parsedValue);
   };
 };
