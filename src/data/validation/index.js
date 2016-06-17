@@ -11,8 +11,6 @@
 //----------------------------------------------------------------------
 
 module.exports = {
-  maybe: require('./maybe'),
-  either: require('./either'),
-  validation: require('./validation')
+  ...require('./core'),
+  fromNullable: require('./fromNullable')
 };
-

@@ -61,7 +61,7 @@ Right.prototype[fl.chain] = function(transformation) {
 
 // NOTE:
 // `get` is similar to Comonad's `extract`. The reason we don't implement
-// Comonad here is that `get` is partial, and not defined for Nothing
+// Comonad here is that `get` is partial, and not defined for Left
 // values.
 
 Left.prototype.get = function() {

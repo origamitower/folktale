@@ -51,7 +51,6 @@ describe('Data.ADT.derive', function() {
     }).derive(show)
 
     property('Types have a string representation', function() {
-      debugger
       return AB.toString()  === 'AB';
     })
 
