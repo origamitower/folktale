@@ -1,7 +1,3 @@
 {
-  "extends": "origamitower",
-
-  "rules": {
-      "linebreak-style": ["warn", "windows"]
-  }
+  "extends": "origamitower"
 }
