@@ -68,12 +68,12 @@ describe('Data.ADT.derive', function() {
     })
   });
   describe('Serialize', function() {
-    const AB = data('AB', {
+    const AB = data('folktale:AB', {
       A: (value) => ({ value }),
       B: (value) => ({ value })
     }).derive(serialize, setoid);
     
-    const CD = data('CD', {
+    const CD = data('folktale:CD', {
       C: (value) => ({value}),
       D: (value) => ({value})
     }).derive(serialize, setoid);
