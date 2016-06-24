@@ -11,7 +11,7 @@
 //----------------------------------------------------------------------
 
 const { property, forall} = require('jsverify');
-const {data, setoid, show} = require('../core/adt/')
+const {data, setoid, show, serialize} = require('../core/adt/')
 
 describe('Data.ADT.derive', function() {
   describe('Setoid', function() {
@@ -51,7 +51,6 @@ describe('Data.ADT.derive', function() {
     }).derive(show)
 
     property('Types have a string representation', function() {
-      debugger
       return AB.toString()  === 'AB';
     })
 
@@ -66,6 +65,31 @@ describe('Data.ADT.derive', function() {
     })
     property('Recursive Values have a string representation', function() {
       return AB.A({rec:AB.A(1)}).toString()  ===  'AB.A({ value: { rec: AB.A({ value: 1 }) } })'
+    })
+  });
+  describe('Serialize', function() {
+    const AB = data('folktale:AB', {
+      A: (value) => ({ value }),
+      B: (value) => ({ value })
+    }).derive(serialize, setoid);
+    
+    const CD = data('folktale:CD', {
+      C: (value) => ({value}),
+      D: (value) => ({value})
+    }).derive(serialize, setoid);
+
+    const {A, B} = AB;
+    const {C, D} = CD;
+
+    property('Serializing a value and deserializing it yields a similar value', 'json', function(a) {
+      return AB.fromJSON(A(a).toJSON()).equals(A(a))
+    })
+    property('Serializing a *recursive* value and deserializing it yields a similar value', 'json', function(a) {
+      return AB.fromJSON(A(B(a)).toJSON()).equals(A(B(a)))
+    })
+
+    property('Serializing a *composite* value and deserializing it yields a similar value (when the proper parsers are provided).', 'json', function(a) {
+      return AB.fromJSON(A(B(C(a))).toJSON(), {AB, CD}).equals(A(B(C(a))))
     })
   });
 });
