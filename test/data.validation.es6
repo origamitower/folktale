@@ -41,20 +41,19 @@ describe('Data.Validation', function() {
       return (a === b) === (_.of(a).equals(_.of(b)))
     });
     property('Success#ap', 'string', 'string', 'string -> string -> string', function(a, b, f) {
-      debugger
       return _.Success(f)
                 .ap(_.Success(a))
                 .ap(_.Success(b))
                 .equals(_.Success(f(a)(b)))
     });
     property('Success/Failure#ap', 'string', 'string','string -> string -> string', function(a, b, f) {
-      return _.Success((a) => (b) => f(a,b))
+      return _.Success(f)
                 .ap(_.Success(a))
                 .ap(_.Failure(b))
                 .equals(_.Failure(b))
     });
     property('Failure#ap', 'string', 'string','string -> string -> string', function(a, b, f) {
-      return _.Success((a) => (b) => f(a,b))
+      return _.Success(f)
                 .ap(_.Failure(a))
                 .ap(_.Failure(b))
                 .equals(_.Failure(a.concat(b)))
