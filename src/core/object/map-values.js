@@ -61,5 +61,8 @@ const mapValues = (object, transformation) => {
   return result;
 };
 
+mapValues.infix = function(transformation) {
+  return mapValues(this, transformation);
+};
 
 module.exports = mapValues;

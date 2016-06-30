@@ -30,7 +30,6 @@
  *   - Quildreen Motta <queen@robotlolita.me>
  */
 module.exports = {
-  infix: require('./infix'),
   mapEntries: require('./map-entries'),
   mapValues: require('./map-values'),
   values: require('./values'),
