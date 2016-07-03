@@ -14,57 +14,57 @@ const hasOwnProperty = Object.prototype.hasOwnProperty;
  *
  * The transformation takes a [key, value] pair, and is expected to return
  * a new [key, value] pair. The resulting object has not only its values
- * transformed, but also its keys:
+ * transformed, but also its keys.
+ * 
+ * 
+ * ## Example::
  *
  *     const pair = { x: 10, y: 20 };
  *     mapEntries(
  *       pair,
- *       ([k, v]) => [k.toUpperCase(), v * 2],
- *       (r, k, v) => Object.assign(r, { [k]: v })
+ *       ([key, value]) => [key.toUpperCase(), value * 2],
+ *       (result, key, value) => {
+ *         result[key] = value;
+ *         return result;
+ *       }
  *     );
- *     // => { X: 20, Y: 40 }
+ *     // ==> { X: 20, Y: 40 }
  *
- * > **NOTE**  
- * > The function expects you to provide a definition function, which will
- * > determine how to handle the mapping of the returned pairs. This is
- * > necessary because no single behaviour is always the right one for
- * > this. Common behaviours, such as `overwrite` older properties,
- * > and enforcing `unique` properties are provided as specialised
- * > frorms of this function.
+ * 
+ * ## Handling collisions
+ * 
+ * Since the mapping function returns a `[key, value]` pair, it's possible
+ * that some of the returned keys collide with another. Since there's no
+ * single answer that is correct for all cases when handling these collisions,
+ * mapEntries expects an additional function that's used to define the 
+ * properties in the resulting object, and this function is expected to
+ * deal with the collisions.
+ * 
+ * A definition function takes the result object, a property name, and
+ * a value, and is expected to return a new object containing the provided
+ * key/value pair, if it can be attached to the result object. This function
+ * may mutate the object, but pure functions are also supported.
+ * 
+ * Specialised forms of this function exist to cover common cases.
+ * `mapEntries.overwrite` will have later key/value pairs overwrite earlier
+ * ones with the same key, while `mapEntries.unique` will throw whenever
+ * a collision happens.
+ * 
+ * 
+ * ## Caveats
+ *  
+ * [[mapEntries]] will not preserve the shape of the original object.
+ * It treats objects as plain maps from String to some value. It ignores
+ * things like prototypical delegation, symbols, and non-enumerable
+ * properties.
  *
- *
- * > **NOTE**  
- * > The definition function may mutate the object.
- *
- *
- * > **WARNING**  
- * > [[mapEntries]] will not preserve the shape of the original object.
- * > It treats objects as plain maps from String to some value. It ignores
- * > things like prototypical delegation, symbols, and non-enumerable
- * > properties.
- *
- * ---------------------------------------------------------------------
- * name        : mapEntries
- * module      : folktale/core/object
- * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
- * licence     : MIT
- * repository  : https://github.com/origamitower/folktale
- *
+ * ---
  * category    : Transforming
  * stability   : stable
- * portability : portable
- * platforms:
- *   - ECMAScript 5
- *   - ECMAScript 3, with es5-shim
- *
- * maintainers:
- *   - Quildreen Motta <queen@robotlolita.me>
- *
  * authors:
  *   - Quildreen Motta
  *
  * complexity : O(n), n is the number of own enumerable properties
- * signature  : mapEntries(object, transform, define)
  * type: |
  *   (
  *     object    : Object 'a,
@@ -79,27 +79,29 @@ const mapEntries = (object, transform, define) =>
         }, {});
 
 
+// --[ Convenience ]---------------------------------------------------
 /*~
  * Transforms pairs of (key, value) own properties in a plain object.
  *
- * This function is a specialised form of [[mapEntries]] that overwrites
- * duplicated keys when a collision happens. Because of this, the result
- * of a transformation where keys collide is not defined in ECMAScript 5
- * and older, but in ECMAScript 2015 properties that were inserted later
- * will win over properties that were inserted earlier.
+ * This function is a specialised form of `mapEntries` that overwrites
+ * duplicated keys when a collision happens. 
+ * 
+ * 
+ * ## Caveats
+ * 
+ * Because this function takes an object and maps over it, the result of a
+ * transformation where keys collide is not defined in ECMAScript 5 and older,
+ * as those engines don't define an ordering for key/value pairs in objects.
+ * In ECMAScript 2015 properties that were inserted later will win over
+ * properties that were inserted earlier.
  *
- * ---------------------------------------------------------------------
- * name      : overwrite
+ * ---
  * category  : Transforming
  * stability : stable
- *
- * seeAlso:
- *   - type: entity
- *     path: folktale/core/object/map-entries .unique
- *     reason: Consistently throws when a collision happens.
+ * authors:
+ *   - Quildreen Motta
  *
  * complexity : O(n), n is the number of own enumerable properties
- * signature  : overwrite(object, transform)
  * type: |
  *   (Object 'a, ((String, 'a)) => (String, 'b)) => Object 'b
  */
@@ -113,26 +115,21 @@ mapEntries.overwrite = (object, transform) =>
 /*~
  * Transforms pairs of (key, value) own properties in a plain object.
  *
- * This function is a specialised form of [[mapEntries]] that throws
+ * This function is a specialised form of `mapEntries` that throws
  * when a key collision happens. Throwing makes this function potentially
  * unsafe to use, however it guarantees a consistent behaviour across
  * different ECMAScript versions and VMs.
  *
- * ---------------------------------------------------------------------
- * name      : unique
+ * ---
  * category  : Transforming
  * stability : stable
- *
- * seeAlso:
- *   - type: entity
- *     path: folktale/core/object/map-entries .overwrite
- *     reason: Overwrite keys when a collision happens.
+ * authors:
+ *   - Quildreen Motta
  *
  * throws:
  *   Error: when the transform returns duplicate property names.
  *
  * complexity : O(n), n is the number of own enumerable properties
- * signature  : unique(object, transform)
  * type: |
  *   (Object 'a, ((String, 'a)) => (String, 'b)) => Object 'b :: throws Error
  */
@@ -146,4 +143,5 @@ mapEntries.unique = (object, transform) =>
   });
 
 
+// --[ Exports ]-------------------------------------------------------
 module.exports = mapEntries;
