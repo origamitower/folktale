@@ -10,10 +10,10 @@
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 /*~
- * Transforms pairs of (key, value) own properties in a plain object.
+ * Transforms own properties of an object using a mapping function.
  *
- * The transformation takes a [key, value] pair, and is expected to return
- * a new [key, value] pair. The resulting object has not only its values
+ * The transformation takes a `[key, value]` pair, and is expected to return
+ * a new `[key, value]` pair. The resulting object has not only its values
  * transformed, but also its keys.
  * 
  * 
@@ -53,7 +53,7 @@ const hasOwnProperty = Object.prototype.hasOwnProperty;
  * 
  * ## Caveats
  *  
- * [[mapEntries]] will not preserve the shape of the original object.
+ * `mapEntries` will not preserve the shape of the original object.
  * It treats objects as plain maps from String to some value. It ignores
  * things like prototypical delegation, symbols, and non-enumerable
  * properties.
@@ -81,7 +81,7 @@ const mapEntries = (object, transform, define) =>
 
 // --[ Convenience ]---------------------------------------------------
 /*~
- * Transforms pairs of (key, value) own properties in a plain object.
+ * Transforms own properties of an object using a mapping function.
  *
  * This function is a specialised form of `mapEntries` that overwrites
  * duplicated keys when a collision happens. 
@@ -113,7 +113,7 @@ mapEntries.overwrite = (object, transform) =>
 
 
 /*~
- * Transforms pairs of (key, value) own properties in a plain object.
+ * Transforms own properties of an object using a mapping function.
  *
  * This function is a specialised form of `mapEntries` that throws
  * when a key collision happens. Throwing makes this function potentially
