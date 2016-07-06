@@ -60,6 +60,18 @@ describe('Data.Validation', function() {
     });
   });
 
+  describe('Semigroup', function () {
+    property('Failure#concat', 'string', 'string', function(a, b, f) {
+      return _.Failure(a).concat(_.Failure(b)).equals(_.Failure(a.concat(b)))
+    });
+    property('Success#concat', 'string', 'string', function(a, b, f) {
+      return _.Success(a).concat(_.Success(b)).equals(_.Success(b))
+    });
+    property('Success/Failure#concat', 'string', 'string', function(a, b, f) {
+      return _.Success(a).concat(_.Failure(b)).equals(_.Failure(b))
+    });
+  })
+
   describe('extracting/recovering', function () {
     property('Failure#getOrElse', 'json', 'json', function(a, b) {
       return _.Failure(b).getOrElse(a) === a

@@ -58,6 +58,16 @@ that is not partial.
   `);
 };
 
+// -- Semigroup -------------------------------------------------------
+Validation[fl.concat] = function(aValidation) {
+  assertValidation('Validation#concat', aValidation);
+  return this.cata({
+    Success: (_) => aValidation,
+    Failure: ({ value }) => Failure.hasInstance(aValidation) ? Failure(value.concat(aValidation.value))
+                            :     /* otherwise */              this
+  });
+};
+
 
 Success.prototype.getOrElse = function(_default_) {
   return this.value;
