@@ -35,10 +35,10 @@
  * not returned in the resulting array::
  *
  *     const p1 = { z: 2 };
- *     const pair = Object.create(p1);
- *     pair.x = 10; pair.y = 20;
+ *     const pair2 = Object.create(p1);
+ *     pair2.x = 10; pair2.y = 20;
  *
- *     toPairs(pair);
+ *     toPairs(pair2);
  *     // ==> [['x', 10], ['y', 20]]
  *     // or  [['y', 20], ['x', 10]]
  *
