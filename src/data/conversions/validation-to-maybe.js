@@ -10,8 +10,10 @@
 //
 //----------------------------------------------------------------------
 
-module.exports = {
-  ...require('./core'),
-  fromEither: require('folktale/data/conversions/either-to-maybe'),
-  fromValidation: require('folktale/data/conversions/validation-to-maybe')
-}
+const { Just, Nothing } = require('folktale/data/maybe/core');
+
+module.exports = (anEither) => 
+  anEither.cata({
+    Failure:  ({value}) => Nothing,
+    Success:  ({value}) => Just(value)
+  });

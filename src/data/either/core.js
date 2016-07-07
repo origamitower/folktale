@@ -122,7 +122,10 @@ Right.prototype.leftMap = function(transformation) {
   return this;
 };
 
-// -- JSON conversions -------------------------------------------------
+
+
+// -- Conversions ----------------------------------------------------
+
 Left.prototype.toJSON = function() {
   return {
     '#type': 'folktale:Either.Left',
