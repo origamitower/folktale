@@ -10,10 +10,11 @@
 //
 //----------------------------------------------------------------------
 
+module.exports = (anEither) =>
+  anEither.cata({
+    Left:  () => Nothing(),
+    Right: ({ value }) => Just(value)
+  });
+
 const { Just, Nothing } = require('folktale/data/maybe/core');
 
-module.exports = (anEither) => 
-  anEither.cata({
-    Left:  ({value}) => Nothing,
-    Right: ({value}) => Just(value)
-  });

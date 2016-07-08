@@ -125,4 +125,15 @@ describe('Data.Validation', function() {
       return _.Success(a).failureMap(f).equals(_.Success(a))
     });
   });
+  describe('Conversions', function () {
+    property('Validation#fromEither', 'json', function(a) {
+      return _.fromEither(_.Success(a).toEither()).equals(_.Success(a));
+    });
+    property('Success#fromMaybe', 'json', 'json', function(a, b) {
+      return _.fromMaybe(_.Success(a).toMaybe(), b).equals(_.Success(a));
+    });
+    property('Failure#fromMaybe', 'json', 'json', function(a, b) {
+      return _.fromMaybe(_.Failure(b).toMaybe(), b).equals(_.Failure(b));
+    });
+  })
 });

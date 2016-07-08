@@ -117,4 +117,15 @@ describe('Data.Either', function() {
       return _.Right(a).leftMap(f).equals(_.Right(a))
     });
   });
+  describe('Conversions', function () {
+    property('Either#fromValidation', 'json', function(a) {
+      return _.fromValidation(_.Left(a).toValidation()).equals(_.Left(a));
+    });
+    property('Left#fromMaybe', 'string', 'string', function(a, b) {
+      return _.fromMaybe(_.Left(b).toMaybe(), b).equals(_.Left(b));
+    });
+    property('Right#fromMaybe', 'json', 'json', function(a, b) {
+      return _.fromMaybe(_.Right(a).toMaybe(), b).equals(_.Right(a));
+    });
+  })
 });
