@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------
+//
+// This source file is part of the Folktale project.
+//
+// Copyright (C) 2015-2016 Quildreen Motta.
+// Licensed under the MIT licence.
+//
+// See LICENCE for licence information.
+// See CONTRIBUTORS for the list of contributors to the project.
+//
+//----------------------------------------------------------------------
+
 const assertType = require('folktale/helpers/assertType');
 const assertFunction = require('folktale/helpers/assertFunction');
 const { data, setoid, show } = require('folktale/core/adt/');
@@ -126,6 +138,14 @@ Right.prototype.leftMap = function(transformation) {
 
 // -- Conversions ----------------------------------------------------
 
+
+Either.toValidation = function(...args) {
+  return toValidation(this, ...args);
+};
+
+Either.toMaybe = function(...args) {
+  return toMaybe(this, ...args);
+};
 Left.prototype.toJSON = function() {
   return {
     '#type': 'folktale:Either.Left',
@@ -141,3 +161,6 @@ Right.prototype.toJSON = function() {
 };
 
 module.exports = Either;
+
+const toValidation = require('folktale/data/conversions/either-to-validation');
+const toMaybe = require('folktale/data/conversions/either-to-maybe');

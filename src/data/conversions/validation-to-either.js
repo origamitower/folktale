@@ -13,8 +13,8 @@
 
 const { Left, Right } = require('folktale/data/either/core');
 
-module.exports = (aValidation) => 
+module.exports = (aValidation) =>
   aValidation.cata({
-    Failure: ({value}) => Left(value),
-    Success: ({value}) => Right(value)
+    Failure: ({ value }) => Left(value),
+    Success: ({ value }) => Right(value)
   });

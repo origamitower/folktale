@@ -10,10 +10,10 @@
 //
 //----------------------------------------------------------------------
 
-const { Just, Nothing } = require('folktale/data/maybe/core');
 
-module.exports = (anEither) => 
+module.exports = (anEither) =>
   anEither.cata({
-    Failure:  ({value}) => Nothing,
-    Success:  ({value}) => Just(value)
+    Failure:  () => Nothing(),
+    Success:  ({ value }) => Just(value)
   });
+const { Just, Nothing } = require('folktale/data/maybe/core');

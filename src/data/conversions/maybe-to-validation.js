@@ -10,10 +10,10 @@
 //
 //----------------------------------------------------------------------
 
-const { Success, Failure } = require('folktale/data/validation/core');
 
-module.exports = (aMaybe, failureValue) => 
+module.exports = (aMaybe, failureValue) =>
   aMaybe.cata({
     Nothing: () => Failure(failureValue),
-    Just:    ({value}) => Success(value)
+    Just:    ({ value }) => Success(value)
   });
+const { Success, Failure } = require('folktale/data/validation/core');

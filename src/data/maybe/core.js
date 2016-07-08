@@ -10,9 +10,10 @@
 //
 //----------------------------------------------------------------------
 
+const assertType = require('folktale/helpers/assertType');
+const assertFunction = require('folktale/helpers/assertFunction');
 const { data } = require('folktale/core/adt');
-
-const fl   = require('fantasy-land');
+const fl = require('fantasy-land');
 
 const Maybe = data('folktale:Data.Maybe', {
   Nothing()   { },
@@ -21,50 +22,7 @@ const Maybe = data('folktale:Data.Maybe', {
 
 const { Nothing, Just } = Maybe;
 
-
-// -- Assertions -------------------------------------------------------
-const assertMaybe = (method, value) => {
-  if (process.env.NODE_ENV !== 'production' && !(value instanceof Maybe)) {
-    console.warn(`
-${method} expects a value of the same type, but was given ${value}.
-
-This could mean that you've provided the wrong value to the method, in
-which case this is a bug in your program, and you should try to track
-down why the wrong value is getting here.
-
-But this could also mean that you have more than one Maybe library
-instantiated in your program. This is not **necessarily** a bug, it
-could happen for several reasons:
-
- 1) You're loading the library in Node, and Node's cache didn't give
-    you back the same instance you had previously requested.
-
- 2) You have more than one Code Realm in your program, and objects
-    created from the same library, in different realms, are interacting.
-
- 3) You have a version conflict of folktale libraries, and objects
-    created from different versions of the library are interacting.
-
-If your situation fits the cases (1) or (2), you are okay, as long as
-the objects originate from the same version of the library. Folktale
-does not rely on reference checking, only structural checking. However
-you'll want to watch out if you're modifying the Maybe's prototype,
-because you'll have more than one of them, and you'll want to make
-sure you do the same change in all of them — ideally you shouldn't
-be modifying the object, though.
-
-If your situation fits the case (3), you are *probably* okay if the
-version difference isn't a major one. However, at this point the
-behaviour of your program using Maybe is undefined, and you should
-try looking into why the version conflict is happening.
-
-Parametric modules can help ensuring your program only has a single
-instance of the folktale library. Check out the Folktale Architecture
-documentation for more information.
-    `);
-  }
-};
-
+const assertMaybe = assertType(Maybe);
 
 // -- Setoid -----------------------------------------------------------
 Nothing.prototype[fl.equals] = function(aMaybe) {
@@ -80,18 +38,12 @@ Just.prototype[fl.equals] = function(aMaybe) {
 
 // -- Functor ----------------------------------------------------------
 Nothing.prototype[fl.map] = function(transformation) {
-  if (typeof transformation !== 'function') {
-    throw new TypeError(`Maybe.Nothing#map expects a function, but was given ${transformation}.`);
-  }
-
+  assertFunction('Maybe.Nothing#map', transformation);
   return this;
 };
 
 Just.prototype[fl.map] = function(transformation) {
-  if (typeof transformation !== 'function') {
-    throw new TypeError(`Maybe.Just#map expects a function, but was given ${transformation}.`);
-  }
-
+  assertFunction('Maybe.Just#map', transformation);
   return Just(transformation(this.value));
 };
 
@@ -114,18 +66,12 @@ Maybe[fl.of] = Just;
 
 // -- Chain ------------------------------------------------------------
 Nothing.prototype[fl.chain] = function(transformation) {
-  if (typeof transformation !== 'function') {
-    throw new TypeError(`Maybe.Nothing#chain expects a function, but was given ${transformation}.`);
-  }
-
+  assertFunction('Maybe.Nothing#chain', transformation);
   return this;
 };
 
 Just.prototype[fl.chain] = function(transformation) {
-  if (typeof transformation !== 'function') {
-    throw new TypeError(`Maybe.Just#chain expects a function, but was given ${transformation}.`);
-  }
-
+  assertFunction('Maybe.Just#chain', transformation);
   return transformation(this.value);
 };
 
@@ -193,6 +139,16 @@ Just.prototype.orElse = function() {
 
 
 // -- JSON conversions -------------------------------------------------
+
+
+Maybe.toEither = function(...args) {
+  return toEither(this, ...args);
+};
+
+Maybe.toValidation = function(...args) {
+  return toValidation(this, ...args);
+};
+
 Nothing.prototype.toJSON = function() {
   return {
     '#type': 'folktale:Maybe.Nothing'
@@ -214,6 +170,8 @@ module.exports = {
   type: Maybe
 };
 
+const toEither = require('folktale/data/conversions/maybe-to-either');
+const toValidation = require('folktale/data/conversions/maybe-to-validation');
 
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== 'production') {
