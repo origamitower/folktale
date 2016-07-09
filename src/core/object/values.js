@@ -56,7 +56,7 @@
  * the result of this operation as an unordered collection.
  *
  * ---
- * category  : Combining
+ * category  : Converting
  * stability : stable
  * authors:
  *   - Quildreen Motta
