@@ -7,18 +7,34 @@
 //
 //----------------------------------------------------------------------
 
-// -- CONSTANTS AND ALIASES --------------------------------------------
+// --[ Dependencies ]---------------------------------------------------
+const warnDeprecation = require('folktale/helpers/warnDeprecation');
+
+
+// --[ Constants and Aliases ]------------------------------------------
 const TYPE = Symbol.for('@@folktale:adt:type');
 const TAG  = Symbol.for('@@folktale:adt:tag');
-const keys = Object.keys;
+const META = Symbol.for('@@meta:magical');
+
+const keys           = Object.keys;
+const symbols        = Object.getOwnPropertySymbols;
+const defineProperty = Object.defineProperty;
+const property       = Object.getOwnPropertyDescriptor;
 
 
-// -- HELPERS ----------------------------------------------------------
+// --[ Helpers ]--------------------------------------------------------
+
+/*~
+ * Returns an array of own enumerable values in an object.
+ */
 function values(object) {
   return keys(object).map(key => object[key]);
 }
 
 
+/*~
+ * Transforms own enumerable key/value pairs.
+ */
 function mapObject(object, transform) {
   return keys(object).reduce((result, key) => {
     result[key] = transform(key, object[key]);
@@ -27,15 +43,80 @@ function mapObject(object, transform) {
 }
 
 
+/*~
+ * Extends an objects with own enumerable key/value pairs from other sources.
+ * 
+ * This is used to define objects for the ADTs througout this file, and there
+ * are some important differences from Object.assign:
+ * 
+ *   - This code is only concerned with own enumerable property *names*.
+ *   - Additionally this code copies all own symbols (important for tags).
+ * 
+ * When copying, this function copies **whole property descriptors**, which
+ * means getters/setters are not executed during the copying. The only
+ * exception is when the property name is `prototype`, which is not
+ * configurable in functions by default.
+ * 
+ * This code only special cases `prototype` because any other non-configurable
+ * property is considered an error, and should crash the program so it can be
+ * fixed.
+ */
+function extend(target, ...sources) {
+  sources.forEach(source => {
+    keys(source).forEach(key => {
+      if (key === 'prototype') {
+        target[key] = source[key];
+      } else {
+        defineProperty(target, key, property(source, key));
+      }
+    });
+    symbols(source).forEach(symbol => {
+      defineProperty(target, symbol, property(source, symbol));
+    })
+  });
+  return target;
+}
+
+
+// --[ Variant implementation ]-----------------------------------------
+
+/*~
+ * Defines the variants given a set of patterns and an ADT namespace.
+ */
 function defineVariants(typeId, patterns, adt) {
   return mapObject(patterns, (name, constructor) => {
+    // ---[ Variant Internals ]-----------------------------------------
     function InternalConstructor() { }
     InternalConstructor.prototype = Object.create(adt);
 
-    Object.assign(InternalConstructor.prototype, {
-      [`is${name}`]: true,
-      [TAG]:         name,
-      constructor:   constructor,
+    extend(InternalConstructor.prototype, {
+      // This is internal, and we don't want the user to be messing with this.
+      [TAG]: name,
+
+      // This is documented by the user, so we don't re-document it.
+      constructor: constructor,
+
+      /*~
+       * True if a value belongs to the ADT variant.
+       * 
+       * ---
+       * category: Testing and Comparing
+       * deprecated:
+       *   version: 2.0.0
+       *   replacedBy: .hasInstance(value)
+       *   reason: |
+       *     Having a `value.isFoo` property doesn't allow people to
+       *     differentiate two variants from different ADTs that have the
+       *     same name. So, instead, now variants and ADTs come with a
+       *     static `.hasInstance(value)` method.
+       * 
+       * ~belongsTo: constructor
+       */
+      get [`is${name}`]() {
+        warnDeprecation(`.is${name} is deprecated. Use ${name}.hasInstance(value)
+instead to check if a value belongs to the ADT variant.`);
+        return true;
+      },
 
       /*~
        * Selects an operation based on this Variant's tag.
@@ -45,19 +126,61 @@ function defineVariants(typeId, patterns, adt) {
        * value's tag.
        *
        * ---
-       * name      : cata
-       * signature : .cata(pattern)
-       * stability : experimental
-       * category  : Extracting Information
+       * category : Transforming
+       * type: |
+       *   ('a is Variant).({ 'b: (Object Any) => 'c }) => 'c
+       *   where 'b = 'a[`@@folktale:adt:tag]
+       *
+       * deprecated:
+       *   version: 2.0.0
+       *   replacedBy: .matchWith(pattern)
+       *   reason: |
+       *     `.cata()` is not a very intuitive name, and most people are
+       *     not familiar with the term `catamorphism` either. `.matchWith()`
+       *     is more familiar and conveys more information to more people.
+       * 
+       * ~belongsTo: constructor
+       */
+      cata(pattern) {
+        warnDeprecation('`.cata(pattern)` is deprecated. Use `.matchWith(pattern)` instead.');
+        return this.matchWith(pattern);
+      },
+      
+      /*~
+       * Selects an operation based on this Variant's tag.
+       *
+       * The `matchWith` operation allows a very limited form of
+       * pattern matching, by selecting an operation depending on this
+       * value's tag.
+       * 
+       * 
+       * ## Example::
+       * 
+       *     const List = data('List', {
+       *       Nil:  ()           => ({}),
+       *       Cons: (head, tail) => ({ head, tail })
+       *     });
+       * 
+       *     const { Nil, Cons } = List;
+       * 
+       *     const sum = (list) => list.matchWith({
+       *       Nil:  ()               => 0,
+       *       Cons: ({ head, tail }) => head + sum(tail)  
+       *     });
+       * 
+       *     sum(Cons(1, Cons(2, Nil()))); // ==> 3
+       *
+       * ---
+       * category : Transforming
        * type: |
        *   ('a is Variant).({ 'b: (Object Any) => 'c }) => 'c
        *   where 'b = 'a[`@@folktale:adt:tag]
        *
        * ~belongsTo: constructor
        */
-      cata(pattern) {
+      matchWith(pattern) {
         return pattern[name](this);
-      }
+      } 
     });
 
     function makeInstance(...args) {
@@ -66,27 +189,81 @@ function defineVariants(typeId, patterns, adt) {
       return result;
     }
 
-    Object.assign(makeInstance, {
-      tag:         name,
-      type:        typeId,
-      constructor: constructor,
-      prototype:   InternalConstructor.prototype,
+    extend(makeInstance, {
+      // We propagate the original metadata for the constructor to our
+      // wrapper, which is what the user will interact with most of the time.
+      [META]: constructor[META],
+
+      /*~
+       * The unique tag for this variant within the ADT.
+       * 
+       * ---
+       * category: State and Configuration
+       * ~belongsTo: makeInstance
+       */
+      get tag() {
+        return name;
+      },
+
+      /*~
+       * The (ideally unique) type for the ADT. This is provided by the user
+       * creating the ADT, so we can't actually guarantee uniqueness.
+       * 
+       * ---
+       * category: State and Configuration
+       * ~belongsTo: makeInstance 
+       */
+      get type() {
+        return typeId;
+      },
+
+      /*~
+       * The internal constructor provided by the user, which transforms and
+       * validates the properties attached to objects constructed in this ADT.
+       * 
+       * ---
+       * category: Internal
+       * ~belongsTo: makeInstance 
+       */
+      get constructor() {
+        constructor
+      },
+
+      /*~
+       * The object that provides common behaviours for instances of this variant.
+       * 
+       * ---
+       * category: Internal
+       * ~belongsTo: makeInstance
+       */
+      prototype: InternalConstructor.prototype,
 
       /*~
        * Checks if a value belongs to this Variant.
        *
-       * This is similar to the ADT.hasInstance check, with the
+       * This is similar to the `ADT.hasInstance` check, with the
        * exception that we also check if the value is of the same
        * variant (has the same tag) as this variant.
+       * 
+       * 
+       * ## Example::
+       * 
+       *     const Either = data('Either', {
+       *       Left:  (value) => ({ value }),
+       *       Right: (value) => ({ value })
+       *     });
+       * 
+       *     const { Left, Right } = Either;
+       *  
+       *     Left.hasInstance(Left(1));  // ==> true
+       *     Left.hasInstance(Right(1)); // ==> false
        *
        * ---
-       * name      : hasInstance
-       * signature : hasInstance(value)
-       * category  : Comparing and Testing
+       * category : Comparing and Testing
        * type: |
        *   (Variant) => Boolean
        *
-       * ~belongsTo: constructor
+       * ~belongsTo: makeInstance
        */
       hasInstance(value) {
         return !!value && adt.hasInstance(value) && value[TAG] === name;
@@ -100,7 +277,7 @@ function defineVariants(typeId, patterns, adt) {
 
 
 
-// -- IMPLEMENTATION ---------------------------------------------------
+// --[ ADT Implementation ]--------------------------------------------
 
 /*~
  * Constructs a union data structure.
@@ -125,12 +302,12 @@ function defineVariants(typeId, patterns, adt) {
  * JavaScript, like most languages, doesn't have a good support for modelling
  * choices as data structures out of the box. In JavaScript, it's easy to model
  * things that are a composition of several independent pieces of data, but it's
- * hard to model things where the information they represent vary depending on
+ * hard to model things where the information they represent varies depending on
  * its "type".
  *
- * For correctly modelling something, we usually want to have both record
- * (the composition of independent pieces of data) and union (a choice between
- * one of many possibilities) types. This module provides the missing *union type*
+ * For correctly modelling something, we usually want to have both records
+ * (the composition of independent pieces of data) and unions (a choice between
+ * one of many possibilities). This module provides the missing *union type*
  * support for JavaScript.
  *
  *
@@ -209,7 +386,7 @@ function defineVariants(typeId, patterns, adt) {
  * ### `is-a` tests
  *
  * Sometimes it's desirable to test if a value belongs to an ADT or
- * to a variant. Out of the box, the structures constructed by ADT
+ * to a variant. Out of the box the structures constructed by ADT
  * provide a `hasInstance` check that verify if a value is structurally
  * part of an ADT structure, by checking the Type and Tag of that value.
  *
@@ -259,7 +436,7 @@ function defineVariants(typeId, patterns, adt) {
  *     var { Nil, Cons } = List;
  *
  *     List.sum = function() {
- *       return this.cata({
+ *       return this.matchWith({
  *         Nil:  () => 0,
  *         Cons: ({ value, rest }) => value + rest.sum()
  *       });
@@ -307,24 +484,9 @@ function defineVariants(typeId, patterns, adt) {
  *
  *
  *
- * ---------------------------------------------------------------------
- * name        : data
- * module      : folktale/core/adt/core
- * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
- * licence     : MIT
- * repository  : https://github.com/origamitower/folktale
- *
+ * ---
  * category    : Data Structures
  * stability   : experimental
- * portability : portable
- * platforms:
- *   - ECMAScript 2015
- *   - ECMAScript 5, with es6-shim
- *   - ECMAScript 3, with es5-shim and es6-shim
- *
- * maintainers:
- *   - Quildreen Motta <queen@robotlolita.me>
- *
  * authors:
  *   - Quildreen Motta
  *
@@ -333,7 +495,6 @@ function defineVariants(typeId, patterns, adt) {
  *     title : "Designing with types: Making illegal states unrepresentable"
  *     url   : http://fsharpforfunandprofit.com/posts/designing-with-types-making-illegal-states-unrepresentable/
  *
- * signature: data(typeId, patterns)
  * type: |
  *   (String, Object (Array String)) => ADT
  */
@@ -341,13 +502,15 @@ const data = (typeId, patterns) => {
   const ADTNamespace = Object.create(ADT);
   const variants     = defineVariants(typeId, patterns, ADTNamespace);
 
-  Object.assign(ADTNamespace, variants, {
+  extend(ADTNamespace, variants, {
+    // This is internal, and we don't really document it to the user
     [TYPE]: typeId,
 
     /*~
      * The variants present in this ADT.
+     * 
      * ---
-     * name: variants
+     * category: Members
      * type: Array Variant
      * ~belongsTo: ADTNamespace
      */
@@ -364,9 +527,7 @@ const data = (typeId, patterns) => {
      * this does not work cross-realm.
      *
      * ---
-     * name      : hasInstance
      * category  : Comparing and Testing
-     * signature : .hasInstance(value)
      * type: |
      *   ADT.(Variant) -> Boolean
      *
@@ -387,8 +548,7 @@ const data = (typeId, patterns) => {
  * ADT is used basically to share some methods for refining data structures
  * created by this module, derivation being one of them.
  *
- * ---------------------------------------------------------------------
- * name       : ADT
+ * ---
  * category   : Data Structures
  * ~belongsTo : data
  */
@@ -413,16 +573,8 @@ const ADT = {
    *       prototype   : Object
    *     }
    *
-   * -------------------------------------------------------------------
-   * name        : derive
-   * category    : Refinement
-   * stability   : experimental
-   * portability : portable
-   * platforms:
-   *   - ECMAScript 5
-   *   - ECMAScript 3, with es5-shim
-   *
-   * signature: .derive(...derivation)
+   * ---
+   * category : Extending ADTs
    * type: |
    *   ADT . (...(Variant, ADT) => Any) => ADT
    */
@@ -435,7 +587,7 @@ const ADT = {
 };
 
 
-// -- Exports ----------------------------------------------------------
+// --[ Exports ]--------------------------------------------------------
 data.ADT        = ADT;
 data.typeSymbol = TYPE;
 data.tagSymbol  = TAG;

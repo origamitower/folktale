@@ -91,7 +91,7 @@ Right.prototype.orElse = function(_) {
 // -- Folds and extended transformations--------------------------------
 
 Either.fold = function(f, g) {
-  return this.cata({
+  return this.matchWith({
     Left: ({ value }) => f(value),
     Right: ({ value }) => g(value)
   });
@@ -106,7 +106,7 @@ Either.swap = function() {
 };
 
 Either.bimap = function(f, g) {
-  return this.cata({
+  return this.matchWith({
     Left: ({ value }) => Left(f(value)),
     Right: ({ value }) => Right(g(value))
   });
