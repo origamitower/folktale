@@ -37,6 +37,7 @@
     "eslint": "^2.7.0",
     "eslint-config-origamitower": "^1.2.0",
     "jsverify": "^0.7.1",
+    "metamagical-interface": "^3.4.0",
     "metamagical-mocha-bridge": "^0.3.0",
     "mocha": "^2.4.5"
   },
