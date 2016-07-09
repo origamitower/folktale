@@ -59,7 +59,7 @@ const mapValues = (object, transformation) => {
  * 
  * This is a free-method version of `mapValues` that applies the `this`
  * argument first, then the function it takes as argument. It's meant to
- * be used with the [This-Binding Syntax][es-bind] proposal.
+ * be used with the [This-Binding Syntax][es-bind] proposal::
  * 
  *     const map = mapValues.infix;
  *     const pair = { x: 10, y: 20 };
