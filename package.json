@@ -31,19 +31,18 @@
     "babel-plugin-module-alias": "^1.2.0",
     "babel-plugin-transform-assertion-comments": "^0.2.3",
     "babel-plugin-transform-function-bind": "^6.3.13",
-    "babel-plugin-transform-metamagical-comments": "^0.11.1",
+    "babel-plugin-transform-metamagical-comments": "^0.12.0",
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
     "babel-preset-es2015": "^6.3.13",
     "eslint": "^2.7.0",
     "eslint-config-origamitower": "^1.2.0",
     "jsverify": "^0.7.1",
-    "metamagical-interface": "^3.3.0",
     "metamagical-mocha-bridge": "^0.3.0",
     "mocha": "^2.4.5"
   },
   "peerDependencies": {
-    "metamagical-interface": "3.x",
-    "metamagical-repl": "0.2.x"
+    "metamagical-interface": "^3.4.0",
+    "metamagical-repl": "0.3.x"
   },
   "meta:magical": {
     "copyright": "(c) 2015-2016 Quildreen Motta, and CONTRIBUTORS",

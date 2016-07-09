@@ -47,8 +47,8 @@ To look at Folktale's documentation you need to install `metamagical-interface`
 and `metamagical-repl`:
 
 ```shell
-npm install metamagical-interface@3.3.x
-npm install metamagical-repl@0.2.x
+npm install metamagical-interface@3.4.x
+npm install metamagical-repl@0.3.x
 ```
 
 Once that's taken care of, you can look at documentation by loading the `documentation`
