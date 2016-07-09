@@ -349,4 +349,5 @@ const curry = (arity, fn) => {
 };
 
 
+// --[ Exports ]-------------------------------------------------------
 module.exports = curry;

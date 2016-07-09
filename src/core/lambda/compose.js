@@ -245,7 +245,7 @@
  * ### Composition With The Infix Syntax
  *
  * With the [This-Binding syntax][es-bind] proposed for JavaScript, it's
- * possible to compose multiple functions in an, arguably, more natural way:
+ * possible to compose multiple functions in an, arguably, more natural way::
  *
  *      const then  = compose.infix;
  *      const inc   = (x) => x + 1;
@@ -337,7 +337,14 @@ compose.infix = function(that) {
  *     incDoubleSquare2(3);
  *     // ==> 19
  *
+ * ---
+ * category  : Convenience
+ * stability : experimental
+ * authors:
+ *   - Quildreen Motta
  * 
+ * type: |
+ *   (Function...) -> Function 
  */
 compose.all = function(...fns) {
   if (fns.length < 1) {

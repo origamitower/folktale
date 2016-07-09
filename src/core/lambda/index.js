@@ -78,11 +78,8 @@
  *   executing the function before the rest is provided.
  * 
  * ---
- * name       : module folktale/core/lambda
- * category   : Lambda Calculus
- *
- * maintainers:
- *   - Quildreen Motta <queen@robotlolita.me>
+ * name     : module folktale/core/lambda
+ * category : Lambda Calculus
  */
 module.exports = {
   identity: require('./identity'),

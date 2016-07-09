@@ -68,4 +68,5 @@
 const constant = (value) => (_) => value;
 
 
+// --[ Exports ]-------------------------------------------------------
 module.exports = constant;

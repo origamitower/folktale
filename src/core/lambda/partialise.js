@@ -190,10 +190,15 @@ const partialise = (arity, fn) => (...args) => {
 };
 
 
+// ---[ Special Values ]-----------------------------------------------
 /*~
  * Represents a place in an argument list that needs to be filled.
+ * 
+ * ---
+ * category: Special Values
  */
 partialise.hole = hole;
 
 
+// --[ Exports ]-------------------------------------------------------
 module.exports = partialise;
