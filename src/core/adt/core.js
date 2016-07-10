@@ -280,8 +280,9 @@ instead to check if a value belongs to the ADT variant.`);
 // --[ ADT Implementation ]--------------------------------------------
 
 /*~
- * Constructs a union data structure.
+ * Constructs a tagged union data structure.
  *
+ * 
  * ## Using the ADT module::
  *
  *     var List = data('List', {
@@ -297,19 +298,288 @@ instead to check if a value belongs to the ADT variant.`);
  *     // ==> { value: 'a', rest: { value: 'b', ..._ }}
  *
  *
- * ## Why?
- *
- * JavaScript, like most languages, doesn't have a good support for modelling
- * choices as data structures out of the box. In JavaScript, it's easy to model
- * things that are a composition of several independent pieces of data, but it's
- * hard to model things where the information they represent varies depending on
- * its "type".
- *
- * For correctly modelling something, we usually want to have both records
- * (the composition of independent pieces of data) and unions (a choice between
- * one of many possibilities). This module provides the missing *union type*
- * support for JavaScript.
- *
+ * 
+ * ## Why use tagged unions?
+ * 
+ * Data modelling is a very important part of programming, directly
+ * affecting things like correctness and performance. Folktale is
+ * in general mostly interested in correctness, and providing tools
+ * for achieving that.
+ * 
+ * When modelling data in a program, there are several different
+ * choices that one must make in an attempt to capture the rules of
+ * how that data is manipulated and what they represent. Data modeling
+ * tends to come in three different concepts:
+ * 
+ *   - **Scalars** represent concepts that have only one atomic
+ *     value at a time. This value makes sense on its own, and can't
+ *     be divided into further concepts. Examples of this are numers,
+ *     strings, etc.
+ * 
+ *   - **Product** represent bigger concepts that are made out of
+ *     possibly several smaller concepts, each of which is independent
+ *     of each other, and always present. An object that contains a
+ *     person's `name` and `age` is an example of a product, arrays
+ *     are another example.
+ * 
+ *   - **Unions** represent one of out of many concepts, at any given
+ *     time. JS doesn't have many data structure that captures the idea
+ *     of an union, but there are many cases where this happens in a
+ *     codebase: 
+ * 
+ *       - Reading a file may either give you the data in that
+ *         file or an error object; 
+ * 
+ *       - Accessing a property in an object may either give you the
+ *         value or undefined;
+ * 
+ *       - Querying a database may give you a connection error (maybe
+ *         we weren't able to contact the database), a query error
+ *         (maybe the query wasn't well formed), a "this value isn't
+ *         here" response, or the value you want.
+ * 
+ * Out of these, you're probably already familiar with products and scalars,
+ * because they're used everywhere in JavaScript, but maybe you're not
+ * familiar with unions, since JavaScript doesn't have many of them built-in.
+ * 
+ * For example, when reading a file in Node, you have this:
+ * 
+ *     fs.readFile(filename, (error, value) => {
+ *       if (error != null) {
+ *         handleError(error);
+ *       } else {
+ *         handleSuccess(value);
+ *       }
+ *     });
+ * 
+ * The callback function receives two arguments, `error` and `value`, but
+ * only one of them may ever be present at any given time. If you have a
+ * value, then `error` must be null, and if you have an error, then `value`
+ * must be null. Nothing in the representation of this data tells you
+ * that, or forces you to deal with it like that.
+ * 
+ * If you compare it with an API like `fetch`, where you get a Promise
+ * instead, many of these problems are solved:
+ * 
+ *     fetch(url).then(
+ *       (response) => handleSuccess(response),
+ *       (error)    => handleError(error)
+ *     );
+ * 
+ * Here the result of `fetch` can be either a response or an error, like in
+ * the `readFile` exammple, but the only way of getting to that value is
+ * through the `then` function, which requires you to define separate branches
+ * for handling each case. This way it's not possible to forget to deal with
+ * one of the cases, or make mistakes in the branching condition, such as
+ * `if (error == null) { handleError(...) }` — which the first version of
+ * this documentation had, in fact.
+ * 
+ * 
+ * ## Modelling data with Core.ADT
+ * 
+ * So, properly modelling your data helps making sure that a series of errors
+ * can't ever occurr in your program, which is great as you have to deal with
+ * less problems, but how does Core.ADT help you in that?
+ * 
+ * 
+ * ### A simple failure case
+ * 
+ * To answer this question let's consider a very simple, everyday problem: you
+ * have a function that can return any value, but it can also fail. How do you
+ * differentiate failure from regular values?
+ * 
+ * ::
+ * 
+ *     const find = (predicate, items) => {
+ *       for (let i = 0; i < items.length; ++i) {
+ *         const item = items[i];
+ *         if (predicate(item))  return item;
+ *       }
+ *       return null;
+ *     };
+ * 
+ * The example above returns the item if the predicate matches anything, or `null`
+ * if it doesn't. But `null` is also a valid JavaScript value::
+ * 
+ *     find(x => true, [1, 2, 3]);    // ==> 1
+ *     find(x => false, [1, 2, 3]);   // ==> null
+ *     find(x => true, [null, 1, 2]); // ==> null
+ * 
+ * Now, there isn't a way of differentiating failure from success if your arrays
+ * have a `null` value. One could say "this function works for arrays without
+ * nulls", but there isn't a separate type that can enforce those guarantees
+ * either. This confusing behaviour opens the door for bugs that are very
+ * difficult to find, since they're created way before they hit the `find`
+ * function.
+ * 
+ * A more practical approach is to return something that can't be in the array.
+ * For example, if we return an object like: `{ found: Bool, value: Any }`, then
+ * we don't run into this issue::
+ * 
+ *     const find2 = (predicate, items) => {
+ *       for (let i = 0; i < items.length; ++i) {
+ *         const item = items[i];
+ *         if (predicate(item))  return { found: true, value: item };
+ *       }
+ *       return { found: false };
+ *     };
+ * 
+ *     find2(x => true, [1, 2, 3]);    // ==> { found: true, value: 1 }
+ *     find2(x => false, [1, 2, 3]);   // ==> { found: false }
+ *     find2(x => true, [null, 1, 2]); // ==> { found: true, value: null }
+ * 
+ * We can differentiate between successes and failures now, but in order to
+ * use the value we need to unpack it. Now we have two problems: `found` and
+ * `value` aren't entirely related, and we have to create this ad-hoc relationship
+ * through an `if` statement. That's very easy to get wrong. Another problem is
+ * that nothing forces people to check `found` before looking at `value`.
+ * 
+ * So, a better solution for this is to use tagged unions and pattern matching::
+ * 
+ *     const Maybe = data('Maybe', {
+ *       None() { return {} },
+ *       Some(value) { return { value } }
+ *     });
+ * 
+ *     const find3 = (predicate, items) => {
+ *       for (let i = 0; i < items.length; ++i) {
+ *         const item = items[i];
+ *         if (predicate(item))  return Maybe.Some(item);
+ *       }
+ *       return Maybe.None();
+ *     };
+ * 
+ *     find3(x => true, [1, 2, 3]);    // ==> Maybe.Some(1)
+ *     find3(x => false, [1, 2, 3]);   // ==> Maybe.None()
+ *     find3(x => true, [null, 1, 2]); // ==> Maybe.Some(null)
+ * 
+ *     find3(x => true, [1, 2, 3]).matchWith({
+ *       None: ()          => "Not found",
+ *       Some: ({ value }) => "Found " + value
+ *     }); // ==> "Found 1"
+ * 
+ * 
+ * ### Modelling complex cases
+ * 
+ * Let's consider a more complex case. Imagine you're writing a function to
+ * handle communicating with some HTTP API. Like in the case presented in
+ * the previous section, a call to the API may succeed or fail. Unlike the
+ * previous example, here a failure has more information associated with it,
+ * and we can have different kinds of failures:
+ * 
+ *   - The operation may succeed, and return a value;
+ *   - The operation may fail:
+ *     - Because it wasn't possible to reach the API (due to a network error, for example);
+ *     - Because the return value of the API wasn't in the expected format (unable to parse);
+ *     - Because the API itself returned an error (e.g.: if the request had bad data in it).
+ * 
+ * A common way of writing this in Node would be like this:
+ * 
+ *     api.method((error, response) => {
+ *       if (error != null) {
+ *         if (error.code === "http") {
+ *           // handle network failures here
+ *         }
+ *         if (error.code === "service") {
+ *           // handle service failures here
+ *         } 
+ *       } else {
+ *         try {
+ *           var data = normalise(response);
+ *           // handle success here 
+ *         } catch(e) { 
+ *           // handle invalid responses here
+ *         }
+ *       }
+ *     });
+ * 
+ * But again, in this style of programming it's easier to make mistakes that are hard
+ * to catch, since we're assigning meaning through control flow in an ad-hoc manner,
+ * and there's nothing to tell us if we've got it wrong. It's also harder to abstract,
+ * because we can't capture these rules as data, so we have to add even more special
+ * control flow structures to handle the abstractions.
+ * 
+ * Let's model it as a tagged union instead. We could make a single data structure
+ * that captures all 4 possible results, and that would be a reasonable way of modelling
+ * this. But on the other hand, we wouldn't be able to talk about failures *in general*,
+ * because this forces us to handle each failure case independently. Instead we'll have
+ * two tagged unions::
+ * 
+ *     const Result = data('Result', {
+ *       Ok(value) {
+ *         return { value }; 
+ *       },
+ *       Error(reason) {
+ *         return { reason };
+ *       }
+ *     });
+ * 
+ *     const APIError = data('APIError', {
+ *       NetworkError(error){
+ *         return { error };
+ *       },
+ *       ServiceError(code, message) {
+ *         return { code, message };
+ *       },
+ *       ParsingError(error, data) {
+ *         return { error, data };
+ *       }
+ *     });
+ * 
+ * Then we can construct these values in the API, and make sure people will handle
+ * all cases when using it:
+ * 
+ *     function handleError(error) {
+ *       error.matchWith({
+ *         NetworkError: ({ error }) => { ... },
+ *         ServiceError: ({ code, message }) => { ... },
+ *         ParsingError: ({ error, data }) => { ... }
+ *       })
+ *     }
+ * 
+ *     api.method(response => {
+ *       response.matchWith({
+ *         Error: ({ reason }) => handleError(reason),
+ *         Ok:    ({ value })  => { ... }
+ *       })
+ *     });
+ * 
+ * 
+ * ## Providing common functionality
+ * 
+ * When you're modelling data with ADTs it's tempting to create a lot of
+ * very specific objects to capture correctly all of the choices that may
+ * exist in a particular domain, but Core.ADT only gives you construction
+ * and pattern matching, so what if you want your types to have a notion
+ * of equality?
+ * 
+ * That's where the concept of *derivation* comes in. A derivation is a
+ * function that provides a set of common functionality for an ADT and
+ * its variants. For example, if one wanted to add the notion of equality
+ * to an ADT, they could `derive` `Setoid` as follows::
+ * 
+ *     const Setoid = require('folktale/core/adt/setoid');
+ * 
+ *     const Either = data('Either', {
+ *       Left(value) { return { value } },
+ *       Right(value){ return { value } }
+ *     }).derive(Setoid);
+ * 
+ * Note the `.derive(Setoid)` invocation. `derive` is a method that can
+ * be called at any time on the ADT to provide new common functionality
+ * to it. In this case, the `Setoid` derivation gives all variants an
+ * `equals()` method::
+ * 
+ *     Either.Left(1).equals(Either.Left(1));   // ==> true
+ *     Either.Left(1).equals(Either.Right(1));  // ==> false
+ *     Either.Right(1).equals(Either.Right(2)); // ==> false
+ *     Either.Right(2).equals(Either.Right(2)); // ==> true
+ *     
+ * While Core.ADT provides a set of common derivations (categorised
+ * `Derivation` in the documentation), one may create their own derivation
+ * functions to use with Folktale's ADTs. See the [Extending ADTs](#extending-adts)
+ * section for details.
+ *  
  *
  * ## Architecture
  *
@@ -485,7 +755,7 @@ instead to check if a value belongs to the ADT variant.`);
  *
  *
  * ---
- * category    : Data Structures
+ * category    : Constructing Data Structures
  * stability   : experimental
  * authors:
  *   - Quildreen Motta
