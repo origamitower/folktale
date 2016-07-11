@@ -2,6 +2,7 @@ const assertType = require('folktale/helpers/assertType');
 const assertFunction = require('folktale/helpers/assertFunction');
 const { data, setoid, show } = require('folktale/core/adt/');
 const fl   = require('fantasy-land');
+const constant = require('folktale/core/lambda/constant');
 
 const Validation = data('folktale:Data.Validation', {
   Success(value) { return { value } },
@@ -58,7 +59,7 @@ that is not partial.
   `);
 };
 
-// -- Semigroup -------------------------------------------------------
+// -- Semigroup --------------------------------------------------------
 Validation[fl.concat] = function(aValidation) {
   assertValidation('Validation#concat', aValidation);
   return this.cata({
@@ -68,6 +69,9 @@ Validation[fl.concat] = function(aValidation) {
   });
 };
 
+
+// -- Monoid -----------------------------------------------------------
+Validation[fl.empty] = constant(Success(x => x));
 
 Success.prototype.getOrElse = function(_default_) {
   return this.value;

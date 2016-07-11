@@ -61,16 +61,24 @@ describe('Data.Validation', function() {
   });
 
   describe('Semigroup', function () {
-    property('Failure#concat', 'string', 'string', function(a, b, f) {
+    property('Failure#concat', 'string', 'string', function(a, b) {
       return _.Failure(a).concat(_.Failure(b)).equals(_.Failure(a.concat(b)))
     });
-    property('Success#concat', 'string', 'string', function(a, b, f) {
+    property('Success#concat', 'string', 'string', function(a, b) {
       return _.Success(a).concat(_.Success(b)).equals(_.Success(b))
     });
     property('Success/Failure#concat', 'string', 'string', function(a, b, f) {
       return _.Success(a).concat(_.Failure(b)).equals(_.Failure(b))
     });
   })
+  describe('Monoid', function () {
+    property('Validation#empty', 'string', 'string', function(a, b) {
+      return _.empty().concat(_.Failure(a)).equals(_.Failure(a))
+    });
+    property('Validation#empty and Validation#concat' , 'string', 'string', function(a, b) {
+      return [_.Failure(a), _.Failure(b)].reduce((a, b) => a.concat(b), _.empty()).equals(_.Failure(a.concat(b)))
+    });
+  });
 
   describe('extracting/recovering', function () {
     property('Failure#getOrElse', 'json', 'json', function(a, b) {
