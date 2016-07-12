@@ -140,11 +140,11 @@ Right.prototype.leftMap = function(transformation) {
 
 
 Either.toValidation = function(...args) {
-  return toValidation(this, ...args);
+  return require('folktale/data/conversions/either-to-validation')(this, ...args);
 };
 
 Either.toMaybe = function(...args) {
-  return toMaybe(this, ...args);
+  return require('folktale/data/conversions/either-to-maybe')(this, ...args);
 };
 Left.prototype.toJSON = function() {
   return {
@@ -161,6 +161,3 @@ Right.prototype.toJSON = function() {
 };
 
 module.exports = Either;
-
-const toValidation = require('folktale/data/conversions/either-to-validation');
-const toMaybe = require('folktale/data/conversions/either-to-maybe');

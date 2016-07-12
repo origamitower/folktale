@@ -123,11 +123,11 @@ Failure.prototype.failureMap = function(transformation) {
 // -- JSON conversions -------------------------------------------------
 
 Validation.toEither = function(...args) {
-  return toEither(this, ...args);
+  return require('folktale/data/conversions/validation-to-either')(this, ...args);
 };
 
 Validation.toMaybe = function(...args) {
-  return toMaybe(this, ...args);
+  return require('folktale/data/conversions/validation-to-maybe')(this, ...args);
 };
 
 Success.prototype.toJSON = function() {
@@ -145,6 +145,3 @@ Failure.prototype.toJSON = function() {
 };
 
 module.exports = Validation;
-
-const toEither = require('folktale/data/conversions/validation-to-either');
-const toMaybe = require('folktale/data/conversions/validation-to-maybe');

@@ -142,11 +142,11 @@ Just.prototype.orElse = function() {
 
 
 Maybe.toEither = function(...args) {
-  return toEither(this, ...args);
+  return require('folktale/data/conversions/maybe-to-either')(this, ...args);
 };
 
 Maybe.toValidation = function(...args) {
-  return toValidation(this, ...args);
+  return require('folktale/data/conversions/maybe-to-validation')(this, ...args);
 };
 
 Nothing.prototype.toJSON = function() {
@@ -169,9 +169,6 @@ module.exports = {
   Just: Just,
   type: Maybe
 };
-
-const toEither = require('folktale/data/conversions/maybe-to-either');
-const toValidation = require('folktale/data/conversions/maybe-to-validation');
 
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== 'production') {
