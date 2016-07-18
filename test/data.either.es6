@@ -16,13 +16,6 @@ const _ = require('../').data.either;
 describe('Data.Either', function() {
 
   describe('constructors', function () {
-    property('fromNullable#Left', function() {
-        return _.fromNullable(null).equals(_.Left(null))
-    });
-
-    property('fromNullable#Right', 'json', function(a) {
-        return _.fromNullable(a).equals(_.Right(a))
-    }); 
 
     property('try#Left', 'json', function(a) {
         return _.try((a) => {throw a })(a).equals(_.Left(a))
@@ -118,6 +111,13 @@ describe('Data.Either', function() {
     });
   });
   describe('Conversions', function () {
+    property('Left#fromNullable', function () {
+      return _.fromNullable(null).equals(_.Left(null));
+    });
+
+    property('Right#fromNullable', 'json', function (a) {
+      return _.fromNullable(a).equals(_.Right(a));
+    });
     property('Either#fromValidation', 'json', function(a) {
       return _.fromValidation(_.Left(a).toValidation()).equals(_.Left(a));
     });
