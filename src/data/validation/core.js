@@ -5,8 +5,8 @@ const fl   = require('fantasy-land');
 const constant = require('folktale/core/lambda/constant');
 
 const Validation = data('folktale:Data.Validation', {
-  Success(value) { return { value } },
-  Failure(value) { return { value } }
+  Failure(value) { return { value } },
+  Success(value) { return { value } }
 }).derive(setoid, show);
 
 const { Success, Failure } = Validation;
@@ -14,25 +14,25 @@ const { Success, Failure } = Validation;
 const assertValidation = assertType(Validation);
 
 // -- Functor ----------------------------------------------------------
-Success.prototype[fl.map] = function(transformation) {
-  assertFunction('Validation.Success#map', transformation);
-  return Success(transformation(this.value));
-};
 Failure.prototype[fl.map] = function(transformation) {
   assertFunction('Validation.Failure#map', transformation);
   return this;
 };
-
-// -- Apply ------------------------------------------------------------
-Success.prototype[fl.ap]  = function(aValidation) {
-  assertValidation('Success#ap', aValidation);
-  return Failure.hasInstance(aValidation) ? aValidation
-  :      /* otherwise */                    aValidation.map(this.value);
+Success.prototype[fl.map] = function(transformation) {
+  assertFunction('Validation.Success#map', transformation);
+  return Success(transformation(this.value));
 };
 
+// -- Apply ------------------------------------------------------------
 Failure.prototype[fl.ap]  = function(aValidation) {
   assertValidation('Failure#ap', aValidation);
   return Failure.hasInstance(aValidation) ? Failure(this.value.concat(aValidation.value))
+  :      /* otherwise */                    this;
+};
+
+Success.prototype[fl.ap]  = function(aValidation) {
+  assertValidation('Success#ap', aValidation);
+  return Failure.hasInstance(aValidation) ? aValidation
   :      /* otherwise */                    aValidation.map(this.value);
 };
 
@@ -46,10 +46,6 @@ Validation[fl.of] = Success;
 // Comonad here is that `get` is partial, and not defined for Failure
 // values.
 
-Success.prototype.get = function() {
-  return this.value;
-};
-
 Failure.prototype.get = function() {
   throw new TypeError(`Can't extract the value of a Failure.
 
@@ -59,43 +55,46 @@ that is not partial.
   `);
 };
 
+Success.prototype.get = function() {
+  return this.value;
+};
+
+
 // -- Semigroup --------------------------------------------------------
 Validation[fl.concat] = function(aValidation) {
   assertValidation('Validation#concat', aValidation);
   return this.cata({
-    Success: (_) => aValidation,
     Failure: ({ value }) => Failure.hasInstance(aValidation) ? Failure(value.concat(aValidation.value))
-                            :     /* otherwise */              this
+                            :     /* otherwise */              this,
+    Success: (_) => aValidation.equals(aValidation.empty()) ? this : aValidation
   });
 };
 
-
 // -- Monoid -----------------------------------------------------------
 Validation[fl.empty] = constant(Success(x => x));
-
-Success.prototype.getOrElse = function(_default_) {
-  return this.value;
-};
 
 Failure.prototype.getOrElse = function(default_) {
   return default_;
 };
 
-Success.prototype.orElse = function(_) {
-  return this;
+Success.prototype.getOrElse = function(_default_) {
+  return this.value;
 };
 
 Failure.prototype.orElse = function(handler) {
   return handler(this.value);
 };
 
+Success.prototype.orElse = function(_) {
+  return this;
+};
 
 // -- Folds and extended transformations--------------------------------
 
 Validation.fold = function(f, g) {
   return this.cata({
-    Success: ({ value }) => f(value),
-    Failure: ({ value }) => g(value)
+    Failure: ({ value }) => f(value),
+    Success: ({ value }) => g(value)
   });
 };
 
@@ -104,13 +103,13 @@ Validation.merge = function() {
 };
 
 Validation.swap = function() {
-  return this.fold(Failure, Success);
+  return this.fold(Success, Failure);
 };
 
 Validation.bimap = function(f, g) {
   return this.cata({
-    Success: ({ value }) => Success(f(value)),
-    Failure: ({ value }) => Failure(g(value))
+    Failure: ({ value }) => Failure(f(value)),
+    Success: ({ value }) => Success(g(value))
   });
 };
 
@@ -125,6 +124,12 @@ Failure.prototype.failureMap = function(transformation) {
 
 
 // -- JSON conversions -------------------------------------------------
+Failure.prototype.toJSON = function() {
+  return {
+    '#type': 'folktale:Validation.Failure',
+    value:   this.value
+  };
+};
 Success.prototype.toJSON = function() {
   return {
     '#type': 'folktale:Validation.Success',
@@ -132,11 +137,5 @@ Success.prototype.toJSON = function() {
   };
 };
 
-Failure.prototype.toJSON = function() {
-  return {
-    '#type': 'folktale:Validation.Failure',
-    value:   this.value
-  };
-};
 
 module.exports = Validation;

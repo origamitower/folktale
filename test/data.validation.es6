@@ -72,10 +72,13 @@ describe('Data.Validation', function() {
     });
   })
   describe('Monoid', function () {
-    property('Validation#empty', 'string', 'string', function(a, b) {
-      return _.empty().concat(_.Failure(a)).equals(_.Failure(a))
+    property('Failure#empty', 'string', 'string', function(a, b) {
+      return _.empty().concat(_.Failure(a)).equals(_.Failure(a).concat(_.empty())) && _.Failure(a).concat(_.empty()).equals(_.Failure(a))
     });
-    property('Validation#empty and Validation#concat' , 'string', 'string', function(a, b) {
+    property('Success#empty' , 'string', 'string', function(a, b) {
+      return _.empty().concat(_.Success(a)).equals(_.Success(a).concat(_.empty())) && _.Success(a).concat(_.empty()).equals(_.Success(a))
+    });
+    property('Validation#empty/Validation#concat' , 'string', 'string', function(a, b) {
       return [_.Failure(a), _.Failure(b)].reduce((a, b) => a.concat(b), _.empty()).equals(_.Failure(a.concat(b)))
     });
   });
@@ -98,10 +101,10 @@ describe('Data.Validation', function() {
   describe('folds', function () {
     const id = (a) => a
     property('Failure#fold', 'json', 'json -> json', function(a, f) {
-      return _.Success(a).fold(f, id) === f(a)
+      return _.Success(a).fold(id, f) === f(a)
     });
     property('Success#fold', 'json', 'json -> json', function(a, f) {
-      return _.Failure(a).fold(id, f) === f(a)
+      return _.Failure(a).fold(f, id) === f(a)
     });
 
     property('Failure#merge', 'json', function(a) {
@@ -119,10 +122,10 @@ describe('Data.Validation', function() {
     });
 
     property('Success#bimap', 'json', 'json -> json', function(a, f) {
-      return _.Success(a).bimap(f, id).equals(_.Success(f(a)))
+      return _.Success(a).bimap(id, f).equals(_.Success(f(a)))
     });
     property('Failure#bimap', 'json', 'json -> json', function(a, f) {
-      return _.Failure(a).bimap(id, f).equals(_.Failure(f(a)))
+      return _.Failure(a).bimap(f, id).equals(_.Failure(f(a)))
     });
 
     property('Failure#failureMap', 'json', 'json -> json', function(a, f) {
