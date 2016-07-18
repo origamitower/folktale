@@ -10,4 +10,8 @@
 //
 //----------------------------------------------------------------------
 
-module.exports = require('./core');
+module.exports = {
+  ...require('./core'),
+  fromEither: require('folktale/data/conversions/either-to-maybe'),
+  fromValidation: require('folktale/data/conversions/validation-to-maybe')
+};

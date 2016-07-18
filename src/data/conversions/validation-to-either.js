@@ -1,3 +1,4 @@
+
 //----------------------------------------------------------------------
 //
 // This source file is part of the Folktale project.
@@ -10,10 +11,10 @@
 //
 //----------------------------------------------------------------------
 
-module.exports = {
-  ...require('./core'),
-  try: require('./try'),
-  fromNullable: require('folktale/data/conversions/nullable-to-either'),
-  fromValidation: require('folktale/data/conversions/validation-to-either'),
-  fromMaybe: require('folktale/data/conversions/maybe-to-either')
-};
+const { Left, Right } = require('folktale/data/either/core');
+
+module.exports = (aValidation) =>
+  aValidation.cata({
+    Failure: ({ value }) => Left(value),
+    Success: ({ value }) => Right(value)
+  });

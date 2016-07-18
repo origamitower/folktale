@@ -10,10 +10,11 @@
 //
 //----------------------------------------------------------------------
 
-module.exports = {
-  ...require('./core'),
-  try: require('./try'),
-  fromNullable: require('folktale/data/conversions/nullable-to-either'),
-  fromValidation: require('folktale/data/conversions/validation-to-either'),
-  fromMaybe: require('folktale/data/conversions/maybe-to-either')
-};
+
+module.exports = (anEither) =>
+  anEither.cata({
+    Left:  ({ value }) => Failure(value),
+    Right: ({ value }) => Success(value)
+  });
+
+const { Success, Failure } = require('folktale/data/validation/core');

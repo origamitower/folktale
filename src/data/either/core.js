@@ -1,4 +1,17 @@
-const assertType = require('../../helpers/assertType');
+//----------------------------------------------------------------------
+//
+// This source file is part of the Folktale project.
+//
+// Copyright (C) 2015-2016 Quildreen Motta.
+// Licensed under the MIT licence.
+//
+// See LICENCE for licence information.
+// See CONTRIBUTORS for the list of contributors to the project.
+//
+//----------------------------------------------------------------------
+
+const assertType = require('folktale/helpers/assertType');
+const assertFunction = require('folktale/helpers/assertFunction');
 const { data, setoid, show } = require('folktale/core/adt/');
 const fl   = require('fantasy-land');
 
@@ -8,12 +21,6 @@ const Either = data('folktale:Data.Either', {
 }).derive(setoid, show);
 
 const { Left, Right } = Either;
-
-const assertFunction = (method, transformation) => {
-  if (typeof transformation !== 'function') {
-    throw new TypeError(`${method} expects a function, but was given ${transformation}.`);
-  }
-};
 
 const assertEither = assertType(Either);
 
@@ -61,7 +68,7 @@ Right.prototype[fl.chain] = function(transformation) {
 
 // NOTE:
 // `get` is similar to Comonad's `extract`. The reason we don't implement
-// Comonad here is that `get` is partial, and not defined for Nothing
+// Comonad here is that `get` is partial, and not defined for Left
 // values.
 
 Left.prototype.get = function() {
@@ -127,7 +134,18 @@ Right.prototype.leftMap = function(transformation) {
   return this;
 };
 
-// -- JSON conversions -------------------------------------------------
+
+
+// -- Conversions ----------------------------------------------------
+
+
+Either.toValidation = function(...args) {
+  return require('folktale/data/conversions/either-to-validation')(this, ...args);
+};
+
+Either.toMaybe = function(...args) {
+  return require('folktale/data/conversions/either-to-maybe')(this, ...args);
+};
 Left.prototype.toJSON = function() {
   return {
     '#type': 'folktale:Either.Left',
