@@ -9,11 +9,10 @@
 // See CONTRIBUTORS for the list of contributors to the project.
 //
 //----------------------------------------------------------------------
-
+const { Success, Failure } = require('folktale/data/validation/core');
 
 module.exports = (aMaybe, failureValue) =>
   aMaybe.cata({
     Nothing: () => Failure(failureValue),
     Just:    ({ value }) => Success(value)
   });
-const { Success, Failure } = require('folktale/data/validation/core');

@@ -15,16 +15,6 @@ const _ = require('../').data.validation;
 
 describe('Data.Validation', function() {
 
-  describe('constructors', function () {
-    property('fromNullable#Failure', function() {
-        return _.fromNullable(null).equals(_.Failure(null))
-    });
-
-    property('fromNullable#Success', 'json', function(a) {
-        return _.fromNullable(a).equals(_.Success(a))
-    }); 
-  });
-
   describe('Functor', function () {
     property('map', 'json', 'json -> json', function(a, f) {
       return _.of(f(a)).equals(_.of(a).map(f))
@@ -126,6 +116,13 @@ describe('Data.Validation', function() {
     });
   });
   describe('Conversions', function () {
+    property('Failure#fromNullable', function() {
+        return _.fromNullable(null).equals(_.Failure(null))
+    });
+
+    property('Success#fromNullable', 'json', function(a) {
+        return _.fromNullable(a).equals(_.Success(a))
+    }); 
     property('Validation#fromEither', 'json', function(a) {
       return _.fromEither(_.Success(a).toEither()).equals(_.Success(a));
     });
