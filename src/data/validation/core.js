@@ -66,12 +66,16 @@ Validation[fl.concat] = function(aValidation) {
   return this.cata({
     Failure: ({ value }) => Failure.hasInstance(aValidation) ? Failure(value.concat(aValidation.value))
                             :     /* otherwise */              this,
-    Success: (_) => aValidation.equals(aValidation.empty()) ? this : aValidation
+    Success: (_) => aValidation
   });
 };
 
-// -- Monoid -----------------------------------------------------------
-Validation[fl.empty] = constant(Success(x => x));
+// -- Extracting values and recovering ---------------------------------
+
+// NOTE:
+// `get` is similar to Comonad's `extract`. The reason we don't implement
+// Comonad here is that `get` is partial, and not defined for Left
+// values.
 
 Failure.prototype.getOrElse = function(default_) {
   return default_;

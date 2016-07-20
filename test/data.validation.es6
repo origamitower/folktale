@@ -71,17 +71,6 @@ describe('Data.Validation', function() {
       return _.Success(a).concat(_.Failure(b)).equals(_.Failure(b))
     });
   })
-  describe('Monoid', function () {
-    property('Failure#empty', 'string', 'string', function(a, b) {
-      return _.empty().concat(_.Failure(a)).equals(_.Failure(a).concat(_.empty())) && _.Failure(a).concat(_.empty()).equals(_.Failure(a))
-    });
-    property('Success#empty' , 'string', 'string', function(a, b) {
-      return _.empty().concat(_.Success(a)).equals(_.Success(a).concat(_.empty())) && _.Success(a).concat(_.empty()).equals(_.Success(a))
-    });
-    property('Validation#empty/Validation#concat' , 'string', 'string', function(a, b) {
-      return [_.Failure(a), _.Failure(b)].reduce((a, b) => a.concat(b), _.empty()).equals(_.Failure(a.concat(b)))
-    });
-  });
 
   describe('extracting/recovering', function () {
     property('Failure#getOrElse', 'json', 'json', function(a, b) {
