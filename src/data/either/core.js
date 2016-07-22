@@ -1,4 +1,5 @@
-const assertType = require('../../helpers/assertType');
+const assertType = require('folktale/helpers/assertType');
+const assertFunction = require('folktale/helpers/assertFunction');
 const { data, setoid, show } = require('folktale/core/adt/');
 const fl   = require('fantasy-land');
 
@@ -8,12 +9,6 @@ const Either = data('folktale:Data.Either', {
 }).derive(setoid, show);
 
 const { Left, Right } = Either;
-
-const assertFunction = (method, transformation) => {
-  if (typeof transformation !== 'function') {
-    throw new TypeError(`${method} expects a function, but was given ${transformation}.`);
-  }
-};
 
 const assertEither = assertType(Either);
 
@@ -61,7 +56,7 @@ Right.prototype[fl.chain] = function(transformation) {
 
 // NOTE:
 // `get` is similar to Comonad's `extract`. The reason we don't implement
-// Comonad here is that `get` is partial, and not defined for Nothing
+// Comonad here is that `get` is partial, and not defined for Left
 // values.
 
 Left.prototype.get = function() {
