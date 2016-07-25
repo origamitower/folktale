@@ -122,7 +122,7 @@ Right.prototype.leftMap = function(transformation) {
   return this;
 };
 
-// -- JSON conversions -------------------------------------------------
+// -- Conversions -------------------------------------------------
 Left.prototype.toJSON = function() {
   return {
     '#type': 'folktale:Either.Left',
@@ -135,6 +135,14 @@ Right.prototype.toJSON = function() {
     '#type': 'folktale:Either.Right',
     value:   this.value
   };
+};
+
+Either.toValidation = function(...args) {
+  return require('folktale/data/conversions/either-to-validation')(this, ...args);
+};
+
+Either.toMaybe = function(...args) {
+  return require('folktale/data/conversions/either-to-maybe')(this, ...args);
 };
 
 module.exports = Either;

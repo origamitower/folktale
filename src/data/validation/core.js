@@ -127,7 +127,7 @@ Failure.prototype.failureMap = function(transformation) {
 };
 
 
-// -- JSON conversions -------------------------------------------------
+// -- Conversions -------------------------------------------------
 Failure.prototype.toJSON = function() {
   return {
     '#type': 'folktale:Validation.Failure',
@@ -141,5 +141,12 @@ Success.prototype.toJSON = function() {
   };
 };
 
+Validation.toEither = function(...args) {
+  return require('folktale/data/conversions/validation-to-either')(this, ...args);
+};
+
+Validation.toMaybe = function(...args) {
+  return require('folktale/data/conversions/validation-to-maybe')(this, ...args);
+};
 
 module.exports = Validation;
