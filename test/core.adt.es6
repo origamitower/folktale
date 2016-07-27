@@ -63,6 +63,16 @@ describe('Data.ADT.derive', function() {
     property('Complex Values have a string representation', function() {
       return AB.A({foo: "bar"}).toString()  === 'AB.A({ value: { foo: "bar" } })';
     })
+    property('Functions have a string representation', function() {
+      return AB.A((a) => a ).toString()  === 'AB.A({ value: [Function] })';
+    })
+    property('Named functions have a string representation', function() {
+      return AB.A(function foo(){ }).toString()  === 'AB.A({ value: [Function: foo] })';
+    })
+    property('Symbols have a string representation', function() {
+      console.log(AB.A(Symbol('foo')).toString())
+      return AB.A(Symbol('foo')).toString()  === 'AB.A({ value: Symbol(foo) })';
+    })
     property('Recursive Values have a string representation', function() {
       return AB.A({rec:AB.A(1)}).toString()  ===  'AB.A({ value: { rec: AB.A({ value: 1 }) } })'
     })

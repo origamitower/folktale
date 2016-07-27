@@ -11,6 +11,9 @@ const arrayToString = function() {
   return `[${this.map(showValue).join(', ')}]`;
 };
 
+const functionNameToString = (fn) => fn.name !== '' ? `: ${fn.name}` : '';
+const functionToString = (fn) => `[Function${functionNameToString(fn)}]`;
+
 const nullToString = () => 'null';
 
 const objectToString = (object) => {
@@ -22,8 +25,10 @@ const objectToString = (object) => {
 
 const showValue = (value) => {
   return typeof value === 'undefined' ? 'undefined'
-  :      typeof value !== 'object'    ? JSON.stringify(value)
-  :      /* otherwise */                objectToString(value).call(value);
+  :      typeof value === 'function'  ? functionToString(value)
+  :      typeof value === 'symbol'    ? value.toString()
+  :      typeof value === 'object'    ? objectToString(value).call(value)
+  :      /* otherwise */                JSON.stringify(value)
 };
 
 module.exports = (variant, adt) => {
