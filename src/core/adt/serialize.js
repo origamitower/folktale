@@ -246,6 +246,9 @@ const serialize = (variant, adt) => {
    * ---
    * category: Serialisation
    * stability: experimental
+   * authors:
+   *   - "@boris-marinov"
+   * 
    * type: |
    *   type JSONSerialisation = {
    *     "@@type":  String,
@@ -282,6 +285,8 @@ const serialize = (variant, adt) => {
    * ---
    * category: Serialisation
    * stability: experimental
+   * authors:
+   *   - "@boris-marinov"
    * 
    * type: |
    *   type JSONSerialisation = {
