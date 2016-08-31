@@ -16,7 +16,7 @@ function warnDeprecation(reason) {
   }
 
   if (offender) {
-    console.warn(`${reason}\n    Blame: ${offender.trim()}`)
+    console.warn(`${reason}\n    Blame: ${offender.trim()}`);
   } else {
     console.warn(reason);
   }

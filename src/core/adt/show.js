@@ -67,25 +67,24 @@ const nullToString = () => 'null';
  * ---
  * type: (Null | Object Any) => String
  */
-const objectToString = (object) => {
-  return object === null                        ? nullToString
-  :      Array.isArray(object)                  ? arrayToString
-  :      object.toString() === ({}).toString()  ? plainObjectToString
-  :      /* otherwise */                          object.toString;
-};
+const objectToString = (object) =>
+    object === null                       ?  nullToString
+  : Array.isArray(object)                 ?  arrayToString
+  : object.toString() === ({}).toString() ?  plainObjectToString
+  : /* otherwise */                          object.toString;
+
 
 /*~
  * Returns a representation of any JS value.
  * ---
  * type: (Any) => String
  */
-const showValue = (value) => {
-  return typeof value === 'undefined' ? 'undefined'
-  :      typeof value === 'function'  ? functionToString(value)
-  :      typeof value === 'symbol'    ? value.toString()
-  :      typeof value === 'object'    ? objectToString(value).call(value)
-  :      /* otherwise */                JSON.stringify(value)
-};
+const showValue = (value) =>
+    typeof value === 'undefined' ?  'undefined'
+  : typeof value === 'function'  ?  functionToString(value)
+  : typeof value === 'symbol'    ?  value.toString()
+  : typeof value === 'object'    ?  objectToString(value).call(value)
+  : /* otherwise */                 JSON.stringify(value);
 
 // --[ Implementation ]------------------------------------------------
 
@@ -202,7 +201,6 @@ const show = (variant, adt) => {
    */
   variant.prototype.toString = function() {
     return `${variantName}(${plainObjectToString.call(this)})`;
-
   };
 
   // (Node REPL representations)

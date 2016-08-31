@@ -346,7 +346,6 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  *   (('a, 'a) => Boolean) => (Variant, ADT) => Void
  */
 const createDerivation = (valuesEqual) => {
-
   /*~
    * Tests if two objects are equal.
    * ---

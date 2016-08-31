@@ -1,3 +1,8 @@
 {
-  "extends": "origamitower"
+  "extends": "origamitower",
+  "rules": {
+    "no-trailing-spaces": "off",
+    "new-cap": "off",
+    "max-len": ["warn", 120]
+  }
 }

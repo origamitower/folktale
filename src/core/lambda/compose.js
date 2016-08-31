@@ -347,7 +347,7 @@ compose.infix = function(that) {
  *   (Function...) -> Function 
  */
 compose.all = function(...fns) {
-  if (fns.length < 1) {
+  if (fns.length < 1) { // eslint-disable-next-line prefer-rest-params
     throw new TypeError(`compose.all requires at least one argument, ${arguments.length} given.`);
   }
   return fns.reduce(compose);

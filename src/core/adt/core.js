@@ -72,7 +72,7 @@ function extend(target, ...sources) {
     });
     symbols(source).forEach(symbol => {
       defineProperty(target, symbol, property(source, symbol));
-    })
+    });
   });
   return target;
 }
@@ -226,7 +226,7 @@ instead to check if a value belongs to the ADT variant.`);
        * ~belongsTo: makeInstance 
        */
       get constructor() {
-        constructor
+        return constructor;
       },
 
       /*~
@@ -266,7 +266,9 @@ instead to check if a value belongs to the ADT variant.`);
        * ~belongsTo: makeInstance
        */
       hasInstance(value) {
-        return !!value && adt.hasInstance(value) && value[TAG] === name;
+        return Boolean(value) 
+        &&     adt.hasInstance(value) 
+        &&     value[TAG] === name;
       },
     });
 
@@ -804,7 +806,8 @@ const data = (typeId, patterns) => {
      * ~belongsTo: ADTNamespace
      */
     hasInstance(value) {
-      return !!value && value[TYPE] === this[TYPE];
+      return Boolean(value)
+      &&     value[TYPE] === this[TYPE];
     }
   });
 
