@@ -12,7 +12,7 @@
 const { Success, Failure } = require('folktale/data/validation/core');
 
 module.exports = (aMaybe, failureValue) =>
-  aMaybe.cata({
+  aMaybe.matchWith({
     Nothing: () => Failure(failureValue),
     Just:    ({ value }) => Success(value)
   });

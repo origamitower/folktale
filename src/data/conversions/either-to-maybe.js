@@ -11,7 +11,7 @@
 //----------------------------------------------------------------------
 
 module.exports = (anEither) =>
-  anEither.cata({
+  anEither.matchWith({
     Left:  () => Nothing(),
     Right: ({ value }) => Just(value)
   });

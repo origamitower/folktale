@@ -28,12 +28,12 @@ const assertMaybe = assertType(Maybe);
 // -- Setoid -----------------------------------------------------------
 Nothing.prototype[fl.equals] = function(aMaybe) {
   assertMaybe('Maybe.Nothing#equals', aMaybe);
-  return aMaybe.isNothing;
+  return Nothing.hasInstance(aMaybe);
 };
 
 Just.prototype[fl.equals] = function(aMaybe) {
   assertMaybe('Maybe.Just#equals', aMaybe);
-  return aMaybe.isJust && aMaybe.value === this.value;
+  return Just.hasInstance(aMaybe) && aMaybe.value === this.value;
 };
 
 
