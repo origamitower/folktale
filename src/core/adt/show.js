@@ -104,7 +104,7 @@ const showValue = (value) =>
  *     }).derive(show);
  * 
  *     Object.prototype.toString.call(Id(1));
- *     // ==> '[object Id.Id]'
+ *     // => '[object Id.Id]'
  * 
  *     Id(1).toString();
  *     // ==> 'Id.Id({ value: 1 })'
