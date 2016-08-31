@@ -12,7 +12,7 @@
 
 
 module.exports = (anEither) =>
-  anEither.cata({
+  anEither.matchWith({
     Failure:  () => Nothing(),
     Success:  ({ value }) => Just(value)
   });

@@ -63,7 +63,7 @@ Success.prototype.get = function() {
 // -- Semigroup --------------------------------------------------------
 Validation[fl.concat] = function(aValidation) {
   assertValidation('Validation#concat', aValidation);
-  return this.cata({
+  return this.matchWith({
     Failure: ({ value }) => Failure.hasInstance(aValidation) ? Failure(value.concat(aValidation.value))
                             :     /* otherwise */              this,
     Success: (_) => aValidation
@@ -96,7 +96,7 @@ Success.prototype.orElse = function(_) {
 // -- Folds and extended transformations--------------------------------
 
 Validation.fold = function(f, g) {
-  return this.cata({
+  return this.matchWith({
     Failure: ({ value }) => f(value),
     Success: ({ value }) => g(value)
   });
@@ -111,7 +111,7 @@ Validation.swap = function() {
 };
 
 Validation.bimap = function(f, g) {
-  return this.cata({
+  return this.matchWith({
     Failure: ({ value }) => Failure(f(value)),
     Success: ({ value }) => Success(g(value))
   });

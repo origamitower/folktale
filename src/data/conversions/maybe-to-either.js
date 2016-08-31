@@ -13,7 +13,7 @@
 const { Left, Right } = require('folktale/data/either/core');
 
 module.exports = (aMaybe, failureValue) =>
-  aMaybe.cata({
+  aMaybe.matchWith({
     Nothing: () => Left(failureValue),
     Just:    ({ value }) => Right(value)
   });

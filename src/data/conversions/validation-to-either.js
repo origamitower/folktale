@@ -14,7 +14,7 @@
 const { Left, Right } = require('folktale/data/either/core');
 
 module.exports = (aValidation) =>
-  aValidation.cata({
+  aValidation.matchWith({
     Failure: ({ value }) => Left(value),
     Success: ({ value }) => Right(value)
   });
