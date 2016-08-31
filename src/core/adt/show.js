@@ -41,7 +41,18 @@ const arrayToString = function() {
   return `[${this.map(showValue).join(', ')}]`;
 };
 
+/*~
+ * Returns a representation of a function's name.
+ * ---
+ * type: (Function) => String
+ */
 const functionNameToString = (fn) => fn.name !== '' ? `: ${fn.name}` : '';
+
+/*~
+ * Returns a representation of a function.
+ * ---
+ * type: (Function) => String
+ */
 const functionToString = (fn) => `[Function${functionNameToString(fn)}]`;
 
 /*~
