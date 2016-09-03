@@ -36,7 +36,7 @@ platforms that don't implement Node-style modules, like the Browser.
 
 ## Documentation
 
-Folktale has [Comprehensive HTML docs](http://origamitower.github.io/folktale).
+Folktale has [comprehensive HTML docs](http://origamitower.github.io/folktale).
 If you find any functionality that's not documented, please [report a bug on
 our issue tracker](https://github.com/origamitower/folktale/issues).
 
