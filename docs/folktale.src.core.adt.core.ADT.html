@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ADT</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha1</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">ADT</h1><div class="highlight-summary"><div><p>The basis of all algebraic data types.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>The basis of all algebraic data types.</p>
+<p>ADT is used basically to share some methods for refining data structures
+created by this module, derivation being one of them.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-extending-adts">Extending ADTs</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.core.adt.core.derive.html">derive(...derivations)</a><div class="doc-summary"><div><p>Allows a function to provide functionality to variants in an ADT.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/core.js at line 828, column 0</div><pre class="source-code"><code class="language-javascript">{
+
+  /*~
+   * Allows a function to provide functionality to variants in an ADT.
+   *
+   * The `derive` method exists to support meta-programming on ADT objects,
+   * such that additional functionality (implementation of interfaces or
+   * protocols, for example) may be provided by libraries instead of having
+   * to be hand-coded by the user.
+   *
+   * The operation accepts many `derivation` functions, which will be invoked
+   * for each variant in the ADT, where a Variant is just an object with the
+   * following attributes:
+   *
+   *     interface Variant(Any...) -&gt; 'a &lt;: self.prototype {
+   *       tag         : String,
+   *       type        : Any,
+   *       constructor : Constructor,
+   *       prototype   : Object
+   *     }
+   *
+   * ---
+   * category : Extending ADTs
+   * type: |
+   *   ADT . (...(Variant, ADT) =&gt; Any) =&gt; ADT
+   */
+  derive(...derivations) {
+    derivations.forEach(derivation =&gt; {
+      this.variants.forEach(variant =&gt; derivation(variant, this));
+    });
+    return this;
+  }
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/src/core/adt/core</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-extending-adts">Extending ADTs</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>infix</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha1</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">infix</h1><div class="highlight-summary"><div><p>Conveniently composes function with the This-Binding syntax.</p>
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">infix(that)</div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">(('b) =&gt; 'c) . (('a) =&gt; 'b) =&gt; (('a) =&gt; 'c)</code></pre></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Conveniently composes function with the This-Binding syntax.</p>
+<p>This is a free-method version of <code>compose</code> that applies the <code>this</code>
+argument first, then the function it takes as argument. It&#39;s meant
+to be used with the <a href="https://github.com/zenparsing/es-function-bind">This-Binding Syntax</a> proposal.</p>
+<pre><code>const then   = compose.infix;
+const inc    = (x) =&gt; x + 1;
+const double = (x) =&gt; x * 2;
+
+inc::then(double)(2);  // ==&gt; 6
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">length</div><div class="doc-summary"><div><p>A Number.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location"></div><pre class="source-code"><code class="language-javascript">function(that) {
+  return compose(that, this);
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/src/core/lambda/compose</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat--uncategorised-">(Uncategorised)</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

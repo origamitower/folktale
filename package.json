@@ -33,12 +33,16 @@
     "babel-plugin-transform-function-bind": "^6.3.13",
     "babel-plugin-transform-metamagical-comments": "^0.12.0",
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
+    "babel-polyfill": "^6.13.0",
     "babel-preset-es2015": "^6.3.13",
+    "babel-runtime": "^6.11.6",
     "eslint": "^2.7.0",
     "eslint-config-origamitower": "^1.2.0",
+    "hyperscript": "^2.0.2",
     "jsverify": "^0.7.1",
     "metamagical-interface": "^3.4.0",
     "metamagical-mocha-bridge": "^0.3.0",
+    "metamagical-static-docs": "^0.1.0",
     "mocha": "^2.4.5"
   },
   "peerDependencies": {
