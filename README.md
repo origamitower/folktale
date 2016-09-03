@@ -36,12 +36,18 @@ platforms that don't implement Node-style modules, like the Browser.
 
 ## Documentation
 
+Folktale has [Comprehensive HTML docs](http://origamitower.github.io/folktale).
+If you find any functionality that's not documented, please [report a bug on
+our issue tracker](https://github.com/origamitower/folktale/issues).
+
+
+### Interactive documentation
+
 Folktale is annotated with [Meta:Magical](https://github.com/origamitower/metamagical),
 so every runtime Folktale object contains documentation annotation that you
 can retrieve interactively.
 
-Currently the only way of doing that is through the [REPL browser](https://github.com/origamitower/metamagical/tree/master/packages/repl),
-however.
+You can look at the documentation in the REPL using the [REPL browser](https://github.com/origamitower/metamagical/tree/master/packages/repl).
 
 To look at Folktale's documentation you need to install `metamagical-interface`
 and `metamagical-repl`:
