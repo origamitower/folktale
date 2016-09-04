@@ -610,6 +610,7 @@ module Data.Task where
     state     :: ExecutionState 'failure 'success
     listeners :: Array (DeferredListener 'failure 'success) 
   }
+  implements Show
 
   -- Deferred.prototype.resolve(value)
   (Deferred 'f 's).resolve :: ('s) => Void
@@ -636,6 +637,9 @@ module Data.Task where
     listeners :: Array (DeferredListener 'failure 'success)
   }
   implements Functor 'success, Monad 'success, Applicative 'success, Show
+
+  -- Future.prototype.listen(listener)
+  (Future 'f 's).listen :: (DeferredListener 'f 's) => Void
 
   -- Future.prototype.bimap(onFailure, onSuccess)
   (Future 'f 's).bimap :: (('f) => 'f2, ('s) => 's2) => Future 'f2 's2
