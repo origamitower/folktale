@@ -3,6 +3,7 @@
   "plugins": [
     "transform-function-bind",
     "transform-object-rest-spread",
+    "transform-async-to-generator",
     ["transform-metamagical-comments", {
       "babel": {
         "plugins": [
