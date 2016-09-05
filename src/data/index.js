@@ -13,6 +13,7 @@
 module.exports = {
   maybe: require('./maybe'),
   either: require('./either'),
-  validation: require('./validation')
+  validation: require('./validation'),
+  future: require('./future')
 };
 
