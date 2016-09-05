@@ -9,7 +9,9 @@
 
 // --[ Dependencies ]--------------------------------------------------
 const define = require('folktale/helpers/define');
-const Future = require('./_future');
+const thunk  = require('folktale/helpers/thunk');
+
+const Future = thunk(_ => require('./_future'));
 const { Pending, Cancelled, Rejected, Resolved } = require('./_execution-state');
 
 
@@ -169,11 +171,11 @@ Deferred.prototype = {
    *   (Deferred 'f 's).() => Future 'f 's
    */
   future() {
-    let future = new Future();
+    let future = new (Future());
     this.listen({
-      onCancelled: _ => moveToState(future, Cancelled()),
-      onRejected:  ({ reason }) => moveToState(future, Rejected(reason)),
-      onResolved:  ({ value })  => moveToState(future, Resolved(value)) 
+      onCancelled: _      => moveToState(future, Cancelled()),
+      onRejected:  reason => moveToState(future, Rejected(reason)),
+      onResolved:  value  => moveToState(future, Resolved(value)) 
     });
 
     return future;
