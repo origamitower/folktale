@@ -153,7 +153,7 @@ Deferred.prototype = {
    *   (Deferred 'f 's).() => Promise 'f 's
    */
   promise() {
-    return new Promise((reject, resolve) => {
+    return new Promise((resolve, reject) => {
       this.listen({
         onCancelled: _ => reject(Cancelled()),
         onResolved: resolve,
