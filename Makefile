@@ -44,7 +44,7 @@ clean:
 	rm -r core helpers data
 
 test: compile compile-test
-	$(mocha) --reporter spec --ui bdd
+	FOLKTALE_ASSERTIONS=minimal $(mocha) --reporter spec --ui bdd
 
 test-watch: compile
 	$(babel) test --source-map inline --out-dir test --watch &
