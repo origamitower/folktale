@@ -17,6 +17,13 @@
     "folktale",
     "monads"
   ],
+  "files": [
+    "core/",
+    "data/",
+    "helpers/",
+    "documentation.js",
+    "index.js"
+  ],
   "author": "Quildreen Motta",
   "license": "MIT",
   "bugs": {
