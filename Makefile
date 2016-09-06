@@ -46,10 +46,6 @@ clean:
 test: compile compile-test
 	FOLKTALE_ASSERTIONS=minimal $(mocha) --reporter spec --ui bdd
 
-test-watch: compile
-	$(babel) test --source-map inline --out-dir test --watch &
-	$(mocha) --reporter min --ui bdd --watch
-
 lint:
 	$(eslint) .
 
