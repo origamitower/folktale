@@ -10,118 +10,81 @@ Folktale
 ![Stability: Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 
-Folktale is a suite of libraries for generic functional programming in
-JavaScript that allows you to write elegant modular applications with fewer bugs
-and more reuse.
+Folktale is a standard library for functional programming in JavaScript.
 
 
 ## Installing
 
-The officially supported way of getting Folktale is through [npm][]:
+Folktale can be installed through [npm][]:
 
     $ npm install folktale
 
-> **NOTE**  
-> If you don't have npm, you'll need to install [Node.js][] in your
-> system before installing Folktale.
-
-A tool like [Browserify][] or [Webpack][] can be used to run Folktale in
-platforms that don't implement Node-style modules, like the Browser.
-
-[Node.js]: https://nodejs.org/
-[npm]: https://www.npmjs.com
-[Browserify]: http://browserify.org/
-[Webpack]: https://webpack.github.io/
+> Not using Node.js? [Check out our guide to running Folktale in other environments!][install]
 
 
 ## Documentation
 
-Folktale has [comprehensive HTML docs](http://origamitower.github.io/folktale).
-If you find any functionality that's not documented, please [report a bug on
-our issue tracker](https://github.com/origamitower/folktale/issues).
+  - [Browse the HTML documentation for Folktale](http://origamitower.github.io/folktale)
+  - [See the documentation for Folktale objects right from your Node REPL][repl]
 
-
-### Interactive documentation
-
-Folktale is annotated with [Meta:Magical](https://github.com/origamitower/metamagical),
-so every runtime Folktale object contains documentation annotation that you
-can retrieve interactively.
-
-You can look at the documentation in the REPL using the [REPL browser](https://github.com/origamitower/metamagical/tree/master/packages/repl).
-
-To look at Folktale's documentation you need to install `metamagical-interface`
-and `metamagical-repl`:
-
-```shell
-npm install metamagical-interface@3.4.x
-npm install metamagical-repl@0.3.x
-```
-
-Once that's taken care of, you can look at documentation by loading the `documentation`
-submodule:
-
-```js
-var docs = require('folktale/documentation');  
-```
-
-`docs` is a browser pointing to the root of the Folktale library. From there
-you can invoke the following methods:
-
-  - `.forProperty(name)` — returns a new Browser for the object you can reach
-    at that property in the current object. `docs.forProperty("core")` returns
-    a Browser for the `core` module, for example.
-    
-  - `.source()` — returns the original source code of the current object. This
-    is the source code before the Babel compilation pass, so it's actual,
-    human-written ES6 code! — and for objects too, not only functions.
-    
-  - `.stability()` — returns the stability of the current object, considering
-    all of the objects below it. So if an object is made out of experimental
-    objects, it'll also be considered experimental.
-    
-  - `.documentation()` — returns the full documentation of the object. This
-    is usually a huge chunk of (formatted for TTY) markdown, containing
-    examples, explanations of why a feature exists, when you would use it,
-    how it works under the hood, and others. The new version of Folktale
-    places a heavy emphasis on documentation.
-    
-  - `.summary()` — returns a summary of the object. Its signature, type,
-    where it's defined, a short summary of its documentation, the properties
-    in the object, and some other meta-data.
-  
+> If you find any functionality that's not documented, or whose documentation
+> is confusing or hard to understand, please [report a bug on our issue tracker][bug]
 
 
 ## Supported platforms
 
-Folktale is supported in all platforms that support ECMAScript 5.
+  - Node 6.0+
 
-> **NOTE**  
-> For platforms that don't support ECMAScript 5, (like IE8 and 9) the
-> [es5-shim][] library can be used to provide the additional runtime
-> support.
+**Browsers**:
+  - Chrome 23+
+  - Firefox 21+
+  - Safari 6+
+  - Internet Explorer 9+
+  - Edge 13+
+  - Opera 12.10+
 
-[es5-shim]: https://github.com/es-shims/es5-shim
+**Mobile browsers**:
+  - Android 4.4+
+  - iOS 7+
 
 
 ## Support
 
-If you think you've found a bug in the project, or want to voice your
-frustration about using it (maybe the documentation isn't clear enough? Maybe
-it takes too much effort to use?), feel free to open a new issue in the
-[Github issue tracker](https://github.com/origamitower/folktale/issues).
+> Note that all interactions in this project are subject to Origami Tower's
+> [Code of Conduct](https://github.com/origamitower/folktale/blob/master/CODE_OF_CONDUCT.md).
 
-Pull Requests are welcome. By submitting a Pull Request you agree with releasing
-your code under the MIT licence.
+##### Having trouble using Folktale?
 
-You can join the [Gitter Channel](https://gitter.im/folktale/discussion) for
-quick support. You may also contact the author directly through
-[email](mailto:queen@robotlolita.me), or
-[Twitter](https://twitter.com/robotlolita).
+  - ["I think I found a bug in Folktale"][bug]
+  - ["There's no documentation for X" / "The docs are hard to understand"][bug]
+  - [See the Frequently Asked Questions for common issues][faq]
+  - [Join the discussion channel][gitter]
 
-Note that all interactions in this project are subject to Origami Tower's
-[Code of Conduct](https://github.com/origamitower/folktale/blob/master/CODE_OF_CONDUCT.md).
 
+##### Think Folktale should do something it doesn't yet?
+
+  - [I want to propose a new feature][feat]
+  - [I want to submit a patch/pull request][pr]
+
+> By submitting a Pull Request you agree with releasing your code under the MIT licence.
+
+##### Folktale discussion channels and information
+
+  - [Discussion channel @ Gitter][gitter]
+  - [Follow @origamitower for news on Folktale](https://twitter.com/OrigamiTower)
+  - [Email the organisation directly](mailto:contact@origamitower.com)
 
 ## Licence
 
-Folktale is copyright (c) Quildreen Motta 2015-2016, and released under the MIT licence. See the `LICENCE` file in this repository for detailed information.
+Folktale is copyright (c) Quildreen Motta 2015-2016, and released under the MIT licence.
+See the `LICENCE` file in this repository for detailed information.
+
+[npm]: https://www.npmjs.com
+[bug]: https://github.com/origamitower/folktale/issues/new
+[gitter]: https://gitter.im/folktale/discussion
+[install]: https://github.com/origamitower/folktale/wiki/Installing-Folktale
+[faq]: https://github.com/origamitower/folktale/wiki/FAQ
+[feat]: https://github.com/origamitower/folktale/blob/master/CONTRIBUTING.md#requesting-features
+[pr]: https://github.com/origamitower/folktale/blob/master/CONTRIBUTING.md#contributing-code
+[repl]: https://github.com/origamitower/folktale/wiki/REPL-documentation
+
