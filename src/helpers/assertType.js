@@ -2,10 +2,11 @@ const { typeSymbol } = require('folktale/core/adt/core');
 
 module.exports = (type) => (method, value) => {
   const typeName = type[typeSymbol];
-  if (process.env.NODE_ENV !== 'production' && !(type.isPrototypeOf(value))) {
-    console.warn(`
-${typeName}.${method} expects a value of the same type, but was given ${value}.
+  if (process.env.FOLKTALE_ASSERTIONS !== 'none' && !(type.isPrototypeOf(value))) {
+    console.warn(`${typeName}.${method} expects a value of the same type, but was given ${value}.`);
 
+    if (process.env.FOLKTALE_ASSERTIONS !== 'minimal') {
+      console.warn(`
 This could mean that you've provided the wrong value to the method, in
 which case this is a bug in your program, and you should try to track
 down why the wrong value is getting here.
@@ -39,6 +40,7 @@ try looking into why the version conflict is happening.
 Parametric modules can help ensuring your program only has a single
 instance of the folktale library. Check out the Folktale Architecture
 documentation for more information.
-    `);
+      `);
+    }
   }
 };
