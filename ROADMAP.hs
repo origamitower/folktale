@@ -103,6 +103,199 @@ module Core.Object where
   values :: (Object 'a) => Array 'a
 
 
+-- Provides functions for fantasy land operations
+-- Necessary since FL is moving to namespaced methods
+module Core.FantasyLand where
+  -- equals(setoidA, setoidB)
+  equals :: ('S 'a, 'S 'a) => Boolean
+            where 'S is Setoid
+
+  -- concat(semigroupLeft, semigroupRight)
+  concat :: ('S 'a, 'S 'a) => 'S 'a
+            where 'S is Semigroup
+
+  -- empty(monoid)
+  empty :: ('M) => 'M 'a
+           where 'M is Monoid
+
+  -- map(functor, transformation)
+  map :: ('F 'a, ('a) => 'b) => 'F 'b
+         where 'F is Functor
+
+  -- apply(applicativeFn, applicativeValue)
+  apply :: ('F (('a) => 'b), 'F 'a) => 'F 'b
+           where 'F is Apply
+
+  -- of(applicative, value)
+  of :: ('F, 'a) => 'F 'a
+        where 'F is Applicative
+
+  -- reduce(foldable, fn, initial)
+  reduce :: ('F 'a, (('b, 'a) => 'b), 'b) => 'b
+            where 'F is Foldable
+
+  -- sequence(traversable, fn)
+  sequence :: ('T ('F 'a), (('b) => 'F 'b)) => 'F ('T 'a)
+              where 'T is Traversable, 'A is Apply
+
+  -- chain(monad, transformation)
+  chain :: ('C 'a, ('a) => 'C 'b) => 'C 'b
+           where 'C is Chain
+
+  -- chainRecursively(monad, transformation, initial)
+  chainRecursively :: (
+    'M,
+    (
+      next:  ('a) => 'c,
+      done:  ('b) => 'c,
+      value: 'a
+    ) => 'M 'c,
+    initial: 'a
+  ) => 'M 'b
+  where 'M is ChainRec
+
+  -- extend(comonad, transformation)
+  extend :: ('W 'a, ('W 'a) => 'b) => 'W 'b
+            where 'W is Extend
+
+  -- extract(comonad)
+  extract :: ('W 'a) => 'a
+
+  -- bimap(bifunctor, transformLeft, transformRight)
+  bimap :: ('F 'a 'b, ('a) => 'c, ('b) => 'd) => 'F 'c 'd
+           where 'F is Bifunctor
+
+  -- promap(profunctor, transformLeft, transformRight)
+  promap :: ('F 'a 'b, ('c) => 'a, ('b) => 'd) => 'F 'c 'd
+            where 'F is Profunctor
+
+  
+module Core.FantasyLand.Curried where
+  -- equals(setoidB)(setoidA)
+  equals :: ('S 'a) => ('S 'a) => Boolean
+            where 'S is Setoid
+
+  -- concat(semigroupRight)(semigroupLeft)
+  concat :: ('S 'a) => ('S 'a) => 'S 'a
+            where 'S is Semigroup
+
+  -- empty(monoid)
+  empty :: ('M) => 'M 'a
+           where 'M is Monoid
+
+  -- map(transformation)(functor)
+  map :: (('a) => 'b) => ('F 'a) => 'F 'b
+         where 'F is Functor
+
+  -- apply(applicativeValue)(applicativeFn)
+  apply :: ('F 'a) => ('F (('a) => 'b)) => 'F 'b
+           where 'F is Apply
+
+  -- of(applicative)(value)
+  of :: ('F) => ('a) => 'F 'a
+        where 'F is Applicative
+
+  -- reduce(fn)(initial)(foldable)
+  reduce :: (('b, 'a) => 'b) => ('b) => ('F 'a) => 'b
+            where 'F is Foldable
+
+  -- sequence(fn)(traversable)
+  sequence :: (('b) => 'F 'b) => ('T ('F 'a)) => 'F ('T 'a)
+              where 'T is Traversable, 'A is Apply
+
+  -- chain(transformation)(monad)
+  chain :: (('a) => 'C 'b) => ('C 'a) => 'C 'b
+           where 'C is Chain
+
+  -- chainRecursively(monad)(transformation)(initial)
+  chainRecursively :: ('M)
+                   => ((
+                        next:  ('a) => 'c,
+                        done:  ('b) => 'c,
+                        value: 'a
+                      ) => 'M 'c)
+                   => (initial: 'a)
+                   => 'M 'b
+                   where 'M is ChainRec
+
+  -- extend(transformation)(comonad)
+  extend :: (('W 'a) => 'b) => ('W 'a) => 'W 'b
+            where 'W is Extend
+
+  -- extract(comonad)
+  extract :: ('W 'a) => 'a
+
+  -- bimap(transformLeft)(transformRight)(bifunctor)
+  bimap :: (('a) => 'c) => (('b) => 'd) => ('F 'a 'b) => 'F 'c 'd
+           where 'F is Bifunctor
+
+  -- promap(transformLeft)(transformRight)(profunctor)
+  promap :: (('c) => 'a) => (('b) => 'd) => ('F 'a 'b) => 'F 'c 'd
+            where 'F is Profunctor
+    
+module Core.FantasyLand.Infix where
+  -- setoidA::equals(setoidB)
+  ('S 'a).equals :: ('S 'a) => Boolean
+                    where 'S is Setoid
+
+  -- semigroupLeft::concat(semigroupRight)
+  ('S 'a).concat :: ('S 'a) => 'S 'a
+                    where 'S is Semigroup
+
+  -- monoid::empty()
+  ('M).empty :: () => 'M 'a
+                where 'M is Monoid
+
+  -- functor::map(transformation)
+  ('F 'a).map :: (('a) => 'b) => 'F 'b
+                 where 'F is Functor
+
+  -- applicativeFn::apply(applicativeValue)
+  ('F (('a) => 'b)).apply :: ('F 'a) => 'F 'b
+                             where 'F is Apply
+
+  -- applicative::of(value)
+  ('F).of :: ('a) => 'F 'a
+             where 'F is Applicative
+
+  -- foldable::reduce(fn, initial)
+  ('F 'a).reduce :: ((('b, 'a) => 'b), 'b) => 'b
+                    where 'F is Foldable
+
+  -- traversable::sequence(fn)
+  ('T ('F 'a)).sequence :: ((('b) => 'F 'b)) => 'F ('T 'a)
+                           where 'T is Traversable, 'A is Apply
+
+  -- monad::chain(transformation)
+  ('C 'a).chain :: (('a) => 'C 'b) => 'C 'b
+                   where 'C is Chain
+
+  -- monad::chainRecursively(transformation, initial)
+  ('M).chainRecursively :: (
+    (
+      next:  ('a) => 'c,
+      done:  ('b) => 'c,
+      value: 'a
+    ) => 'M 'c,
+    initial: 'a
+  ) => 'M 'b
+  where 'M is ChainRec
+
+  -- comonad::extend(transformation)
+  ('W 'a).extend :: (('W 'a) => 'b) => 'W 'b
+                    where 'W is Extend
+
+  -- comonad::extract()
+  ('W 'a).extract :: () => 'a
+
+  -- bifunctor::bimap(transformLeft, transformRight)
+  ('F 'a 'b).bimap :: (('a) => 'c, ('b) => 'd) => 'F 'c 'd
+                      where 'F is Bifunctor
+
+  -- profunctor::promap(transformLeft, transformRight)
+  ('F 'a 'b).promap :: (('c) => 'a, ('b) => 'd) => 'F 'c 'd
+                       where 'F is Profunctor
+
 
 module Data.Conversions where
   -- resultToMaybe(result)
