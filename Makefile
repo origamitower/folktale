@@ -57,4 +57,4 @@ lint:
 	$(eslint) .
 
 
-.PHONY: help compile clean test lint test-watch
+.PHONY: help bundle compile clean test lint
