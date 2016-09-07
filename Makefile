@@ -1,9 +1,11 @@
 .DEFAULT_GOAL = help
 
-bin    := $(shell npm bin)
-babel  := $(bin)/babel
-eslint := $(bin)/eslint
-mocha  := $(bin)/mocha
+bin        := $(shell npm bin)
+babel      := $(bin)/babel
+eslint     := $(bin)/eslint
+mocha      := $(bin)/mocha
+browserify := $(bin)/browserify
+uglify     := $(bin)/uglifyjs
 
 
 # -- [ CONFIGURATION ] -------------------------------------------------
@@ -26,12 +28,17 @@ help:
 	@echo ""
 	@echo "AVAILABLE TASKS"
 	@echo ""
+	@echo "  bundle ................. Generates a Browser bundle of Folktale."
 	@echo "  compile ................ Compiles the project."
 	@echo "  clean .................. Removes build artifacts."
 	@echo "  test ................... Runs the tests for the project."
 	@echo "  lint ................... Lints all source files."
 	@echo ""
 
+bundle:
+	mkdir -p dist
+	$(browserify) index.js --standalone folktale > dist/folktale.js
+	$(uglify) --mangle - < dist/folktale.js > dist/folktale.min.js
 
 compile: $(SRC)
 	$(babel) src --source-map inline --out-dir .
