@@ -8,8 +8,6 @@
 //---------------------------------------------------------------------
 
 // --[ Dependencies ]--------------------------------------------------
-const fl = require('fantasy-land');
-
 const define = require('folktale/helpers/define');
 const Deferred = require('./deferred');
 const { Pending, Resolved, Rejected } = require('./_execution-state');
@@ -85,7 +83,7 @@ Future.prototype = {
    * type: |
    *   (Future 'f 's).(('s) => Future 's2) => Future 'f 's2
    */
-  [fl.chain](transformation) {
+  ['fantasy-land/chain'](transformation) {
     let deferred = new Deferred();
     this.listen({
       onCancelled: ()     => deferred.cancel(),
@@ -110,7 +108,7 @@ Future.prototype = {
    * type: |
    *   (Future 'f 's).(('s) => 's2) => Future 'f 's2
    */
-  [fl.map](transformation) {
+  ['fantasy-land/map'](transformation) {
     return this[fl.chain](value => Future[fl.of](transformation(value)));
   },
 
@@ -123,7 +121,7 @@ Future.prototype = {
    * type: |
    *   (Future 'f 's).(Future 'f (('s) => 's2)) => Future 'f 's2
    */
-  [fl.ap](future) {
+  ['fantasy-land/ap'](future) {
     // This should resolve futures in parallel
     return future[fl.chain](fn => this[fl.map](fn));
   },
@@ -136,7 +134,7 @@ Future.prototype = {
    * type: |
    *   (Future 'f 's).(('f) => 'f2, ('s) => 's2) => Future 'f2 's2
    */
-  [fl.bimap](rejectionTransformation, successTransformation) {
+  ['fantasy-land/bimap'](rejectionTransformation, successTransformation) {
     let deferred = new Deferred();
     this.listen({
       onCancelled: ()     => deferred.cancel(),
@@ -248,7 +246,7 @@ Object.assign(Future, {
    * type: |
    *   (Future).('s) => Future 'f 's
    */
-  [fl.of](value) {
+  ['fantasy-land/of'](value) {
     let result = new Future();
     result._state = Resolved(value);
     return result;
