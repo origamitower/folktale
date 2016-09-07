@@ -40,10 +40,10 @@ bundle:
 	$(browserify) index.js --standalone folktale > dist/folktale.js
 	$(uglify) --mangle - < dist/folktale.js > dist/folktale.min.js
 
-compile: $(SRC)
+compile:
 	$(babel) src --source-map inline --out-dir .
 
-compile-test: $(TEST_SRC)
+compile-test:
 	$(babel) test --source-map inline --out-dir test
 
 clean:
@@ -52,6 +52,9 @@ clean:
 
 test: compile compile-test
 	FOLKTALE_ASSERTIONS=minimal $(mocha) --reporter spec --ui bdd
+
+documentation: compile
+	node tools/generate-docs.js
 
 lint:
 	$(eslint) .
