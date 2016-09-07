@@ -12,14 +12,14 @@
 
 const assertType = require('folktale/helpers/assertType');
 const assertFunction = require('folktale/helpers/assertFunction');
-const { data } = require('folktale/core/adt');
+const { data, show, setoid} = require('folktale/core/adt');
 
 const fl   = require('fantasy-land');
 
 const Maybe = data('folktale:Data.Maybe', {
   Nothing()   { },
   Just(value) { return { value } }
-});
+}).derive(setoid, show);
 
 const { Nothing, Just } = Maybe;
 
@@ -60,7 +60,6 @@ Just.prototype[fl.ap] = function(aMaybe) {
   return aMaybe.map(this.value);
 };
 
-
 // -- Applicative ------------------------------------------------------
 Maybe[fl.of] = Just;
 
@@ -75,28 +74,6 @@ Just.prototype[fl.chain] = function(transformation) {
   assertFunction('Maybe.Just#chain', transformation);
   return transformation(this.value);
 };
-
-
-// -- Show -------------------------------------------------------------
-
-// (for Object.prototype.toString)
-Maybe[Symbol.toStringTag]    = '(folktale) Maybe';
-Nothing.prototype[Symbol.toStringTag] = '(folktale) Maybe.Nothing';
-Just.prototype[Symbol.toStringTag]    = '(folktale) Maybe.Just';
-
-// (regular JavaScript representations)
-Maybe.toString = () => '(folktale) Maybe';
-Nothing.prototype.toString = () => '(folktale) Maybe.Nothing()';
-
-Just.prototype.toString = function() {
-  return `(folktale) Maybe.Just(${this.value})`;
-};
-
-// (Node REPL representations)
-Maybe.inspect = Maybe.toString;
-Nothing.prototype.inspect = Maybe.Nothing.prototype.toString;
-Just.prototype.inspect = Maybe.Just.prototype.toString;
-
 
 // -- Extracting values and recovering ---------------------------------
 
@@ -163,12 +140,7 @@ Maybe.toValidation = function(...args) {
 
 
 // -- Exports ----------------------------------------------------------
-module.exports = {
-  Nothing: Nothing,
-  Just: Just,
-  type: Maybe
-};
-
+module.exports = Maybe;
 
 // -- Annotations ------------------------------------------------------
 if (process.env.NODE_ENV !== 'production') {
