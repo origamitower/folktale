@@ -26,7 +26,7 @@ const getRandomMonad = (num) => monads[applySizeConstraint(num, monads.length - 
 const monad = (value) => bless({
   generator: (num) => getRandomMonad(num).of(value.generator(num)),
   shrink: shrink.bless(() => []),
-  show: (maybe) => maybe.toString()
+  show: (monad) => monad.toString()
 });
 
 module.exports = {
