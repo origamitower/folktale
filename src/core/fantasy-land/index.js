@@ -28,8 +28,5 @@
  *   - Quildreen Motta <queen@robotlolita.me>
  */
 module.exports = {
-  lambda: require('./lambda'),
-  adt: require('./adt'),
-  object: require('./object'),
-  fantasyLand: require('./fantasy-land')
+  ...require('./curried')
 };

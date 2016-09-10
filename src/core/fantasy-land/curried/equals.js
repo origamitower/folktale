@@ -7,11 +7,4 @@
 //
 //----------------------------------------------------------------------
 
-module.exports = {
-  ap: require('./ap'),
-  concat: require('./concat'),
-  chain: require('./chain'),
-  empty: require('./empty'),
-  map: require('./map'),
-  of: require('./of')
-};
+module.exports = (b) => (a) => a.equals(b);

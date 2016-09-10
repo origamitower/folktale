@@ -17,18 +17,20 @@ const shrink = require('jsverify/lib/shrink');
 //Accepts a random integer, and a size constraint, returns another integer that obeys the constraint.
 const applySizeConstraint = (num, max) => num % (max + 1);
 
-//An array containing various monad constructors from folktale
-const monads = [require('../data/maybe'), require('../data/either')];
+//Returns a deterministically-random element from an array based on a number
+const getRandom = (elements, num) => elements[applySizeConstraint(num, elements.length - 1)];
 
-//Returns a random monad constructor
-const getRandomMonad = (num) => monads[applySizeConstraint(num, monads.length - 1)];
-
-const monad = (value) => bless({
-  generator: (num) => getRandomMonad(num).of(value.generator(num)),
+const returns = (types) => (value) => bless({
+  generator: (num) => getRandom(types, num).of(value.generator(num)),
   shrink: shrink.bless(() => []),
-  show: (monad) => monad.toString()
+  show: (type) => type.toString()
 });
 
+const { maybe, either, validation } = require('../').data
+
 module.exports = {
-  monad
+  monad: returns([maybe, either]),
+  bifunctor: returns([validation, either]),
+  functor: returns([maybe, either, validation]),
+  applicative: returns([maybe, either, validation])
 }
