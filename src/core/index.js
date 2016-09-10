@@ -43,5 +43,6 @@
 module.exports = {
   lambda: require('./lambda'),
   adt: require('./adt'),
-  object: require('./object')
+  object: require('./object'),
+  fantasyLand: require('./fantasy-land')
 };
