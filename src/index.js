@@ -31,6 +31,5 @@
  */
 module.exports = {
   core: require('./core'),
-  control: require('./control'),
   data: require('./data')
 };
