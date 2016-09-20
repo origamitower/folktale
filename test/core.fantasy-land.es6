@@ -13,7 +13,7 @@
 const { property, forall} = require('jsverify');
 const assert = require('assert');
 const env = require('./environment');
-const _ = require('folktale/core/fantasy-land/curried');
+const _ = require('../core/fantasy-land/curried');
 
 describe('core.fantasyLand', function() {
 
@@ -45,7 +45,6 @@ describe('core.fantasyLand', function() {
     });
 
     property('equals', 'functor json', 'functor json', env, function(a, b) {
-      console.log(_.equals(b)(a))
       return _.equals(b)(a) === a.equals(b)
     });
     property('bimap', 'bifunctor json', 'json -> json', 'json -> json', env, function(a, f, g) {

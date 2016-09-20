@@ -7,6 +7,13 @@
 //
 //----------------------------------------------------------------------
 
-module.exports = (a) =>
-  typeof a.empty === 'function' ? a.empty()
-  : /*otherwise*/                 a.constructor.empty();
+const { empty } = require('fantasy-land')
+const warn = require('folktale/helpers/warn-deprecated')('empty')
+const unsupported = require('folktale/helpers/unsupported-method')('empty')
+
+module.exports = (a) => 
+  typeof a[empty] === 'function'             ? a[empty]()
+: typeof a.constructor[empty] === 'function' ? a.constructor[empty]()
+: typeof a.empty  === 'function'             ? warn(a.empty())
+: typeof a.constructor.empty === 'function'  ? warn(a.constructor.empty())
+: /*otherwise*/                                unsupported(a);
