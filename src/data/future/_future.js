@@ -100,6 +100,10 @@ Future.prototype = {
     return deferred.future();
   },
 
+  chain(f) {
+    return this['fantasy-land/chain'](f)
+  },
+
   /*~
    * Transforms the value inside a future with a simple function.
    * 
@@ -110,6 +114,10 @@ Future.prototype = {
    */
   ['fantasy-land/map'](transformation) {
     return this[fl.chain](value => Future[fl.of](transformation(value)));
+  },
+
+  map(f) {
+    return this['fantasy-land/map'](f)
   },
 
   /*~
@@ -124,6 +132,10 @@ Future.prototype = {
   ['fantasy-land/ap'](future) {
     // This should resolve futures in parallel
     return future[fl.chain](fn => this[fl.map](fn));
+  },
+
+  ap(f) {
+    return this['fantasy-land/ap'](f)
   },
 
   /*~
@@ -143,6 +155,10 @@ Future.prototype = {
     });
 
     return deferred.future();
+  },
+
+  bimap(f, g) {
+    return this['fantasy-land/bimap'](f, g)
   },
 
   /*~
@@ -250,6 +266,10 @@ Object.assign(Future, {
     let result = new Future();
     result._state = Resolved(value);
     return result;
+  },
+
+  of(v) {
+    return this['fantasy-land/of'](v)
   },
 
   /*~
