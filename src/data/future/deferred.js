@@ -123,6 +123,12 @@ Deferred.prototype = {
     moveToState(this, Cancelled());
   },
 
+  maybeCancel() {
+    if (Pending.hasInstance(this._state)) {
+      this.cancel();
+    }
+  },
+
 
   // ---[ Reacting to events in a deferred ]---------------------------
   /*~
