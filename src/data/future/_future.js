@@ -20,13 +20,13 @@ const { Pending, Resolved, Rejected } = require('./_execution-state');
  * Represents an eventual value, like Promise, but without a recursive
  * `.then`.
  */
-function Future() {
-  define(this, '_state', Pending());
-  define(this, '_listeners', []);
-}
+class Future {
+  constructor() {
+    define(this, '_state', Pending());
+    define(this, '_listeners', []);
+  }
 
 
-Future.prototype = {
   // ---[ State and configuration ]------------------------------------
   /*~
    * The current state of the future.
@@ -39,7 +39,7 @@ Future.prototype = {
    */
   get _state() {
     throw new TypeError('Future.prototype._state should be implemented in an inherited object.');
-  },
+  }
 
   /*~
    * A list of listeners to notify when the future is resolved.
@@ -52,7 +52,7 @@ Future.prototype = {
    */
   get _listeners() {
     throw new TypeError('Future.prototype._listeners should be implemented in an inherited object.');
-  },
+  }
 
 
   // ---[ Reacting to Future events ]----------------------------------
@@ -71,7 +71,7 @@ Future.prototype = {
       Resolved:  ({ value })  => pattern.onResolved(value),
       Rejected:  ({ reason }) => pattern.onRejected(reason)
     });
-  },
+  }
 
 
   // --[ Transforming Futures ]----------------------------------------
@@ -83,7 +83,7 @@ Future.prototype = {
    * type: |
    *   (Future 'f 's).(('s) => Future 's2) => Future 'f 's2
    */
-  ['fantasy-land/chain'](transformation) {
+  chain(transformation) {
     let deferred = new Deferred();
     this.listen({
       onCancelled: ()     => deferred.cancel(),
@@ -98,11 +98,7 @@ Future.prototype = {
     });
 
     return deferred.future();
-  },
-
-  chain(f) {
-    return this['fantasy-land/chain'](f)
-  },
+  }
 
   /*~
    * Transforms the value inside a future with a simple function.
@@ -112,13 +108,9 @@ Future.prototype = {
    * type: |
    *   (Future 'f 's).(('s) => 's2) => Future 'f 's2
    */
-  ['fantasy-land/map'](transformation) {
-    return this[fl.chain](value => Future[fl.of](transformation(value)));
-  },
-
-  map(f) {
-    return this['fantasy-land/map'](f)
-  },
+  map(transformation) {
+    return this.chain(value => Future.of(transformation(value)));
+  }
 
   /*~
    * Transforms the value inside a future with a function contained in
@@ -129,14 +121,10 @@ Future.prototype = {
    * type: |
    *   (Future 'f 's).(Future 'f (('s) => 's2)) => Future 'f 's2
    */
-  ['fantasy-land/ap'](future) {
+  apply(future) {
     // This should resolve futures in parallel
-    return future[fl.chain](fn => this[fl.map](fn));
-  },
-
-  ap(f) {
-    return this['fantasy-land/ap'](f)
-  },
+    return future.chain(fn => this.map(fn));
+  }
 
   /*~
    * Transforms successes and failures in a future.
@@ -146,7 +134,7 @@ Future.prototype = {
    * type: |
    *   (Future 'f 's).(('f) => 'f2, ('s) => 's2) => Future 'f2 's2
    */
-  ['fantasy-land/bimap'](rejectionTransformation, successTransformation) {
+  bimap(rejectionTransformation, successTransformation) {
     let deferred = new Deferred();
     this.listen({
       onCancelled: ()     => deferred.cancel(),
@@ -155,11 +143,7 @@ Future.prototype = {
     });
 
     return deferred.future();
-  },
-
-  bimap(f, g) {
-    return this['fantasy-land/bimap'](f, g)
-  },
+  }
 
   /*~
    * Transform the values of rejected futures.
@@ -170,8 +154,8 @@ Future.prototype = {
    *   (Future 'f 's).(('f) => 'f2) => Future 'f2 's
    */
   mapRejection(transformation) {
-    return this[fl.bimap](transformation, x => x);
-  },
+    return this.bimap(transformation, x => x);
+  }
 
 
   // ---[ Recovering from errors ]-------------------------------------
@@ -198,7 +182,7 @@ Future.prototype = {
     });
 
     return deferred.future();
-  },
+  }
 
   /*~
    * Transforms rejected futures in successes, and vice-versa.
@@ -217,7 +201,7 @@ Future.prototype = {
     });
 
     return deferred.future();
-  },
+  }
 
 
   // ---[ Debugging ]--------------------------------------------------
@@ -234,7 +218,7 @@ Future.prototype = {
     const state     = this._state;
 
     return `folktale:Future(${state}, ${listeners} listeners)`;
-  },
+  }
 
   /*~
    * Returns a textual representation of this object for Node's REPL.
@@ -246,30 +230,16 @@ Future.prototype = {
    */
   inspect() {
     return this.toString();
-  },
-
-  [Symbol.toStringTag]: 'folktale:Future'
-};
+  }
+}
 
 
 // ---[ Constructing futures ]-----------------------------------------
 Object.assign(Future, {
-  /*~
-   * Constructs a future containing a single successful value.
-   * 
-   * ---
-   * category: Constructing futures
-   * type: |
-   *   (Future).('s) => Future 'f 's
-   */
-  ['fantasy-land/of'](value) {
+  of(v) {
     let result = new Future();
     result._state = Resolved(value);
     return result;
-  },
-
-  of(v) {
-    return this['fantasy-land/of'](v)
   },
 
   /*~
