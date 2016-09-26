@@ -7,4 +7,11 @@
 //
 //----------------------------------------------------------------------
 
-module.exports = require('./task');
+const Task = require('./_task');
+
+module.exports = {
+  ...Task,
+  task: require('./task'),
+  _Task: Task,
+  _TaskExecution: require('./_task-execution')
+};
