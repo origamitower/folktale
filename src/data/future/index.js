@@ -17,7 +17,8 @@ const Future = require('./_future');
  * category: Asynchronous Concurrency
  */
 module.exports = {
-  ...Future,
+  of: Future.of,
+  rejecte: Future.rejected,
   Deferred: require('./deferred'),
   _ExecutionState: require('./_execution-state'),
   _Future: Future

@@ -7,13 +7,12 @@
 //
 //----------------------------------------------------------------------
 
+const defer = require('folktale/helpers/defer');
 const Deferred = require('folktale/data/future/deferred');
 const TaskExecution = require('./_task-execution');
 
 
 const noop = () => {};
-
-const defer = (fn) => process.nextTick(fn);
 
 class Task {
   constructor(computation, onCancel, cleanup) {
@@ -43,6 +42,10 @@ class Task {
     );
   }
 
+  ['fantasy-land/chain'](transformation) {
+    return this.chain(transformation);
+  }
+
   map(transformation) {
     return new Task(
       resolver => {
@@ -53,6 +56,76 @@ class Task {
           onResolved:  value => resolver.resolve(transformation(value))
         });
         return execution
+      },
+      execution => execution.cancel()
+    );
+  }
+
+  ['fantasy-land/map'](transformation) {
+    return this.map(transformation);
+  }
+
+  apply(task) {
+    return this.chain(f => task.map(f));
+  }
+
+  ap(task) {
+    return this.apply(task);
+  }
+
+  ['fantasy-land/ap'](task) {
+    return this.apply(task);
+  }
+
+  bimap(successTransformation, rejectionTransformation) {
+    return new Task(
+      resolver => {
+        const execution = this.run();
+        execution.listen({
+          onCancelled: resolver.cancel,
+          onRejected:  reason => resolver.reject(rejectionTransformation(reason)),
+          onResolved:  value => resolver.resolve(successTransformation(value))
+        });
+        return execution;
+      },
+      execution => execution.cancel()
+    );
+  }
+
+  ['fantasy-land/bimap'](successTransformation, rejectionTransformation) {
+    return this.bimap(successTransformation, rejectionTransformation);
+  }
+
+  matchWith(pattern) {
+    return new Task(
+      resolver => {
+        const execution = this.run();
+        const resolve = (handler) => (value) => handler(value).run().listen({
+          onCancelled: resolver.cancel,
+          onRejected:  resolver.reject,
+          onResolved:  resolver.resolve
+        });
+        execution.listen({
+          onCancelled: resolve(_ => pattern.Cancelled()),
+          onRejected:  resolve(pattern.Rejected),
+          onResolved:  resolve(pattern.Resolved)
+        });
+        return execution;
+      },
+      execution => execution.cancel()
+    );
+  }
+
+  swap() {
+    return new Task(
+      resolver => {
+        let execution = this.run();
+        execution.listen({
+          onCancelled: resolver.cancel,
+          onRejected:  resolver.resolve,
+          onResolved:  resolver.reject
+        });
+        return execution;
       },
       execution => execution.cancel()
     );
@@ -185,6 +258,10 @@ class Task {
 Object.assign(Task, {
   of(value) {
     return new Task(resolver => resolver.resolve(value));
+  },
+
+  ['fantasy-land/of'](value) {
+    return Task.of(value)
   },
 
   rejected(reason) {

@@ -100,6 +100,10 @@ class Future {
     return deferred.future();
   }
 
+  ['fantasy-land/chain'](transformation) {
+    return this.chain(transformation);
+  }
+
   /*~
    * Transforms the value inside a future with a simple function.
    * 
@@ -112,6 +116,10 @@ class Future {
     return this.chain(value => Future.of(transformation(value)));
   }
 
+  ['fantasy-land/map'](transformation) {
+    return this.map(transformation);
+  }
+
   /*~
    * Transforms the value inside a future with a function contained in
    * another future.
@@ -122,8 +130,15 @@ class Future {
    *   (Future 'f 's).(Future 'f (('s) => 's2)) => Future 'f 's2
    */
   apply(future) {
-    // This should resolve futures in parallel
     return future.chain(fn => this.map(fn));
+  }
+
+  ap(future) {
+    return this.apply(future);
+  }
+
+  ['fantasy-land/ap'](future) {
+    return this.apply(future);
   }
 
   /*~
@@ -143,6 +158,10 @@ class Future {
     });
 
     return deferred.future();
+  }
+
+  ['fantasy-land/bimap'](rejectionTransformation, successTransformation) {
+    return this.bimap(rejectionTransformation, successTransformation);
   }
 
   /*~
@@ -179,6 +198,22 @@ class Future {
           onRejected:  newReason => deferred.reject(newReason)
         });
       }
+    });
+
+    return deferred.future();
+  }
+
+  matchWith(pattern) {
+    let deferred = new Deferred();
+    const resolve = (handler) => (value) => handler(value).listen({
+      onCancelled: ()       => deferred.cancel(),
+      onResolved:  (value)  => deferred.resolve(value),
+      onRejected:  (reason) => deferred.reject(reason) 
+    });
+    this.listen({
+      onCancelled: resolve(pattern.Cancelled),
+      onResolved:  resolve(pattern.Resolved),
+      onRejected:  resolve(pattern.Rejected)
     });
 
     return deferred.future();
@@ -236,10 +271,14 @@ class Future {
 
 // ---[ Constructing futures ]-----------------------------------------
 Object.assign(Future, {
-  of(v) {
+  of(value) {
     let result = new Future();
     result._state = Resolved(value);
     return result;
+  },
+
+  ['fantasy-land/of'](value) {
+    return Future.of(value);
   },
 
   /*~
