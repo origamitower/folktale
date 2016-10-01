@@ -7,12 +7,10 @@
 //
 //----------------------------------------------------------------------
 
-const Task = require('./_task');
+const raise = (error) => { throw error };
 
-module.exports = {
-  of: Task.of,
-  rejected: Task.rejected,
-  task: require('./task'),
-  _Task: Task,
-  _TaskExecution: require('./_task-execution')
-};
+const defer = typeof setImmediate !== 'undefined' ?  setImmediate
+            : typeof process !== 'undefined'      ?  process.nextTick
+            : /* otherwise */                        setTimeout;
+
+module.exports = defer;
