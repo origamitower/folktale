@@ -18,7 +18,7 @@ const Future = require('./_future');
  */
 module.exports = {
   of: Future.of,
-  rejecte: Future.rejected,
+  rejected: Future.rejected,
   Deferred: require('./deferred'),
   _ExecutionState: require('./_execution-state'),
   _Future: Future
