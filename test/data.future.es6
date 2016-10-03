@@ -13,7 +13,7 @@ describe('Data.Future', function() {
       $ASSERT(deferred._state == _ExecutionState.Pending());
     });
 
-    it('shouldt allow resolving more than once', () => {
+    it('shouldnt allow resolving more than once', () => {
       assert.throws(_ => {
         let a = new Deferred();
         a.resolve(1);
@@ -210,7 +210,7 @@ describe('Data.Future', function() {
 
   describe('Future', _ => {
     property('#of(v) should create a resolved Future with v', 'nat', v => {
-      return Future['fantasy-land/of'](v)._state[fl.equals](Resolved(v));
+      return Future.of(v)._state[fl.equals](Resolved(v));
     });
 
     property('#rejected(v) should create a rejected Future with v', 'nat', v => {
