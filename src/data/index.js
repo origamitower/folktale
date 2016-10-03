@@ -14,6 +14,7 @@ module.exports = {
   maybe: require('./maybe'),
   either: require('./either'),
   validation: require('./validation'),
-  future: require('./future')
+  future: require('./future'),
+  task: require('./task')
 };
 
