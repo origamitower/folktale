@@ -7,11 +7,11 @@
 //
 //----------------------------------------------------------------------
 
-const { equals } = require('fantasy-land')
-const warn = require('folktale/helpers/warn-deprecated')('equals')
-const unsupported = require('folktale/helpers/unsupported-method')('equals')
+const { chain } = require('fantasy-land')
+const warn = require('folktale/helpers/warn-deprecated')('chain')
+const unsupported = require('folktale/helpers/unsupported-method')('chain')
 
-module.exports = (b) => (a) => 
-  typeof a[equals] === 'function' ? a[equals](b)
-: typeof a.equals  === 'function' ? warn(a.equals(b))
+module.exports = (f, a) => 
+  typeof a[chain] === 'function' ?  a[chain](f)
+: typeof a.chain  === 'function' ?  warn(a.chain(f))
 : /*otherwise*/                     unsupported(a);
