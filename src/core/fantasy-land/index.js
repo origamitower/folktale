@@ -28,5 +28,6 @@
  *   - Quildreen Motta <queen@robotlolita.me>
  */
 module.exports = {
-  ...require('./curried')
+  ...require('./core'),
+  curried: require('./curried')
 };

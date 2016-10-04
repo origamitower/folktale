@@ -11,6 +11,6 @@
 // const warn = require('folktale/helpers/warn-deprecated')('bimap')
 // const unsupported = require('folktale/helpers/unsupported-method')('bimap')
 
-module.exports = (f, g) => (a) => 
+module.exports = (f, g, a) => 
   typeof a.bimap  === 'function' ? a.bimap(f, g)
 : /*otherwise*/                    unsupported(a);

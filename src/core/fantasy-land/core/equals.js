@@ -7,11 +7,11 @@
 //
 //----------------------------------------------------------------------
 
-const { concat } = require('fantasy-land')
-const warn = require('folktale/helpers/warn-deprecated')('concat')
-const unsupported = require('folktale/helpers/unsupported-method')('concat')
+const { equals } = require('fantasy-land')
+const warn = require('folktale/helpers/warn-deprecated')('equals')
+const unsupported = require('folktale/helpers/unsupported-method')('equals')
 
-module.exports = (b) => (a) => 
-  typeof a[concat] === 'function' ?  a[concat](b)
-: typeof a.concat  === 'function' ?  warn(a.concat(b))
+module.exports = (b, a) => 
+  typeof a[equals] === 'function' ? a[equals](b)
+: typeof a.equals  === 'function' ? warn(a.equals(b))
 : /*otherwise*/                     unsupported(a);
