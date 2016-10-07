@@ -7,10 +7,11 @@
 //
 //----------------------------------------------------------------------
 
-// const { bimap } = require('fantasy-land')
-// const warn = require('folktale/helpers/warn-deprecated')('bimap')
-// const unsupported = require('folktale/helpers/unsupported-method')('bimap')
+const { bimap } = require('folktale/helpers/fantasy-land');
+const warn = require('folktale/helpers/warn-deprecated')('bimap');
+const unsupported = require('folktale/helpers/unsupported-method')('bimap');
 
-module.exports = (f, g, a) => 
-  typeof a.bimap  === 'function' ? a.bimap(f, g)
+module.exports = (f, g, a) =>
+  typeof a[bimap] === 'function' ? a[bimap](f, g)
+: typeof a.bimap  === 'function' ? warn(a.bimap(f, g))
 : /*otherwise*/                    unsupported(a);

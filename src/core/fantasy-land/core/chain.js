@@ -7,11 +7,11 @@
 //
 //----------------------------------------------------------------------
 
-const { chain } = require('fantasy-land')
-const warn = require('folktale/helpers/warn-deprecated')('chain')
-const unsupported = require('folktale/helpers/unsupported-method')('chain')
+const { chain } = require('folktale/helpers/fantasy-land');
+const warn = require('folktale/helpers/warn-deprecated')('chain');
+const unsupported = require('folktale/helpers/unsupported-method')('chain');
 
-module.exports = (f, a) => 
+module.exports = (f, a) =>
   typeof a[chain] === 'function' ?  a[chain](f)
 : typeof a.chain  === 'function' ?  warn(a.chain(f))
 : /*otherwise*/                     unsupported(a);
