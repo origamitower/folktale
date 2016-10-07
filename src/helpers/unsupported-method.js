@@ -8,5 +8,5 @@
 //----------------------------------------------------------------------
 
 module.exports = (methodName) => (object) => {
-  throw new TypeError(`${object} does not have a method '${methodName}'.`)
-}
+  throw new TypeError(`${object} does not have a method '${methodName}'.`);
+};
