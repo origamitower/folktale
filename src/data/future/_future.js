@@ -203,7 +203,7 @@ class Future {
     return deferred.future();
   }
 
-  matchWith(pattern) {
+  willMatchWith(pattern) {
     let deferred = new Deferred();
     const resolve = (handler) => (value) => handler(value).listen({
       onCancelled: ()       => deferred.cancel(),
