@@ -44,7 +44,7 @@ compile:
 	$(babel) src --source-map inline --out-dir .
 
 compile-test:
-	$(babel) test --source-map inline --out-dir test
+	$(babel) test --source-map inline --out-dir test -x .es6
 
 clean:
 	rm -f $(TGT) $(TEST_TGT)
