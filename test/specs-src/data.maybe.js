@@ -11,7 +11,7 @@
 //----------------------------------------------------------------------
 
 const { property, forall} = require('jsverify');
-const _ = require('../../').data.maybe;
+const _ = require('folktale').data.maybe;
 
 describe('Data.Maybe', function() {
 

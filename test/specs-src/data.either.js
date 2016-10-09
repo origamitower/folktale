@@ -11,7 +11,7 @@
 //----------------------------------------------------------------------
 
 const { property, forall} = require('jsverify');
-const _ = require('../../').data.either;
+const _ = require('folktale').data.either;
 
 describe('Data.Either', function() {
 

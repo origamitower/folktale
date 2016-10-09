@@ -12,7 +12,7 @@
 
 const { property } = require('jsverify');
 const assert = require('assert');
-const _ = require('../../').core.lambda;
+const _ = require('folktale').core.lambda;
 
 const eqPairs = (...xs) =>
         xs.reduce((p, x) =>

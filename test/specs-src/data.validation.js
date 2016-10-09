@@ -11,7 +11,7 @@
 //----------------------------------------------------------------------
 
 const { property, forall} = require('jsverify');
-const _ = require('../../').data.validation;
+const _ = require('folktale').data.validation;
 
 describe('Data.Validation', function() {
   describe('Functor', function () {

@@ -26,7 +26,7 @@ const returns = (types) => (value) => bless({
   show: (type) => type.toString()
 });
 
-const { maybe, either, validation } = require('../../').data
+const { maybe, either, validation } = require('folktale').data
 
 module.exports = {
   monad: returns([maybe, either]),

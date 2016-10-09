@@ -11,7 +11,7 @@
 //----------------------------------------------------------------------
 
 const { property, forall} = require('jsverify');
-const {data, setoid, show, serialize} = require('../../core/adt/')
+const {data, setoid, show, serialize} = require('folktale/core/adt')
 
 describe('Data.ADT.derive', function() {
   describe('Setoid', function() {

@@ -13,7 +13,7 @@
 const { property, forall} = require('jsverify');
 const assert = require('assert');
 const env = require('./environment');
-const _ = require('../../core/fantasy-land/curried');
+const _ = require('folktale/core/fantasy-land/curried');
 
 describe('core.fantasyLand', function() {
 
