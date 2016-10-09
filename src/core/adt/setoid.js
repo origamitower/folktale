@@ -354,7 +354,7 @@ const createDerivation = (valuesEqual) => {
     const leftSetoid  = isSetoid(a);
     const rightSetoid = isSetoid(b);
     if (leftSetoid) {
-      if (rightSetoid)  return flEquals(a, b);
+      if (rightSetoid)  return flEquals(b, a);
       else              return false;
     }
 
