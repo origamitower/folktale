@@ -33,7 +33,7 @@ Folktale can be installed through [npm][]:
 
 ## Supported platforms
 
-  - Node 6.0+
+  - Node 4+
 
 **Browsers**:
   - Chrome 23+
@@ -41,7 +41,7 @@ Folktale can be installed through [npm][]:
   - Safari 6+
   - Internet Explorer 9+
   - Edge 13+
-  - Opera 12.10+
+  - Opera 12.12+
 
 **Mobile browsers**:
   - Android 4.4+
