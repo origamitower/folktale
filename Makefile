@@ -23,6 +23,7 @@ help:
 	@echo "  clean .................. Removes build artifacts."
 	@echo "  test ................... Runs the tests for the project."
 	@echo "  lint ................... Lints all source files."
+	@echo "  documentation .......... Builds the documentation from source."
 	@echo ""
 
 bundle:
@@ -49,4 +50,4 @@ lint:
 	$(eslint) .
 
 
-.PHONY: help bundle compile clean test lint
+.PHONY: help bundle compile compile-test clean test lint documentation
