@@ -7,7 +7,7 @@ npm-debug.log
 /control/
 /helpers/
 /data/
-/test/**/*.js
+/test/specs/
 *.un~
 *.swp
 /dist/

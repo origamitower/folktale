@@ -8,16 +8,6 @@ browserify := $(bin)/browserify
 uglify     := $(bin)/uglifyjs
 
 
-# -- [ CONFIGURATION ] -------------------------------------------------
-SRC_DIR := src
-SRC := $(shell find $(SRC_DIR)/ -name '*.js')
-TGT := ${SRC:$(SRC_DIR)/%.js=%.js}
-
-TEST_DIR := test
-TEST_SRC := $(shell find $(TEST_DIR)/ -name '*.es6')
-TEST_TGT := ${TEST_SRC:$(TEST_DIR)/%.es6=%.js}
-
-
 # -- [ COMPILATION ] ---------------------------------------------------
 node_modules: package.json
 	npm install
@@ -44,14 +34,13 @@ compile:
 	$(babel) src --source-map inline --out-dir .
 
 compile-test:
-	$(babel) test --source-map inline --out-dir test -x .es6
+	$(babel) test/specs-src --source-map inline --out-dir test/specs
 
 clean:
-	rm -f $(TGT) $(TEST_TGT)
-	rm -r core helpers data
+	rm -rf core helpers data test/specs index.js
 
-test: compile compile-test
-	FOLKTALE_ASSERTIONS=minimal $(mocha) --reporter spec --ui bdd
+test: clean compile compile-test
+	FOLKTALE_ASSERTIONS=minimal $(mocha) --reporter spec --ui bdd test/specs
 
 documentation: compile
 	node tools/generate-docs.js
