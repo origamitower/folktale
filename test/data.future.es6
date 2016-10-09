@@ -209,6 +209,16 @@ describe('Data.Future', function() {
   });
 
   describe('Future', _ => {
+    const cancelled = () => {
+      const b = new Deferred();
+      b.cancel();
+      return b.future();
+    };
+
+    function eq(b) {
+      return this._state[fl.equals](b._state);
+    }
+
     property('#of(v) should create a resolved Future with v', 'nat', v => {
       return Future.of(v)._state[fl.equals](Resolved(v));
     });
@@ -216,6 +226,41 @@ describe('Data.Future', function() {
     property('#rejected(v) should create a rejected Future with v', 'nat', v => {
       return Future.rejected(v)._state[fl.equals](Rejected(v));
     });
+
+    it('#listen(p) should invoke the right branch for the future', () => {
+      let x = [0, 0, 0];
+      const pattern = {
+        onCancelled: () => x[0]++,
+        onResolved:  () => x[1]++,
+        onRejected:  () => x[2]++
+      };
+
+      Future.of(1).listen(pattern);
+      Future.rejected(1).listen(pattern);
+      let a = new Deferred();
+      let b = a.future();
+      b.listen(pattern);
+      a.cancel();
+
+      $ASSERT(x == [1, 1, 1]);
+    });
+
+    property('#chain(f) transforms the successful value', 'nat', 'nat -> nat', (a, f) => {
+      return Future.of(a).chain(x => Future.of(f(x)))
+      ::eq   (Future.of(f(a)));
+    });
+
+    property('#chain(f) shouldnt transform rejections', 'nat', 'nat -> nat', (a, f) => {
+      return Future.rejected(a).chain(x => Future.of(f(x)))
+      ::eq   (Future.rejected(a));
+    });
+
+    property('#chain(f) shouldnt transform cancellations', 'nat', 'nat -> nat', (a, f) => {
+      return cancelled().chain(x => Future.of(f(x)))
+      ::eq   (cancelled());
+    });
+
+
 
   });
 });
