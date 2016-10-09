@@ -1,7 +1,7 @@
 const assertType = require('folktale/helpers/assertType');
 const assertFunction = require('folktale/helpers/assertFunction');
 const { data, setoid, show } = require('folktale/core/adt/');
-const fl   = require('fantasy-land');
+const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const constant = require('folktale/core/lambda/constant');
 
 const Validation = data('folktale:Data.Validation', {
@@ -14,30 +14,30 @@ const { Success, Failure } = Validation;
 const assertValidation = assertType(Validation);
 
 // -- Functor ----------------------------------------------------------
-Failure.prototype[fl.map] = function(transformation) {
+Failure.prototype.map = function(transformation) {
   assertFunction('Validation.Failure#map', transformation);
   return this;
 };
-Success.prototype[fl.map] = function(transformation) {
+Success.prototype.map = function(transformation) {
   assertFunction('Validation.Success#map', transformation);
   return Success(transformation(this.value));
 };
 
 // -- Apply ------------------------------------------------------------
-Failure.prototype[fl.ap]  = function(aValidation) {
-  assertValidation('Failure#ap', aValidation);
+Failure.prototype.apply = function(aValidation) {
+  assertValidation('Failure#apply', aValidation);
   return Failure.hasInstance(aValidation) ? Failure(this.value.concat(aValidation.value))
   :      /* otherwise */                    this;
 };
 
-Success.prototype[fl.ap]  = function(aValidation) {
-  assertValidation('Success#ap', aValidation);
+Success.prototype.apply = function(aValidation) {
+  assertValidation('Success#apply', aValidation);
   return Failure.hasInstance(aValidation) ? aValidation
   :      /* otherwise */                    aValidation.map(this.value);
 };
 
 // -- Applicative ------------------------------------------------------
-Validation[fl.of] = Success;
+Validation.of = Success;
 
 // -- Extracting values and recovering ---------------------------------
 
@@ -61,7 +61,7 @@ Success.prototype.get = function() {
 
 
 // -- Semigroup --------------------------------------------------------
-Validation[fl.concat] = function(aValidation) {
+Validation.concat = function(aValidation) {
   assertValidation('Validation#concat', aValidation);
   return this.matchWith({
     Failure: ({ value }) => Failure.hasInstance(aValidation) ? Failure(value.concat(aValidation.value))
@@ -148,5 +148,10 @@ Validation.toEither = function(...args) {
 Validation.toMaybe = function(...args) {
   return require('folktale/data/conversions/validation-to-maybe')(this, ...args);
 };
+
+
+provideAliases(Success.prototype);
+provideAliases(Failure.prototype);
+provideAliases(Validation);
 
 module.exports = Validation;

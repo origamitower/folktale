@@ -1,7 +1,7 @@
 const assertType = require('folktale/helpers/assertType');
 const assertFunction = require('folktale/helpers/assertFunction');
 const { data, setoid, show } = require('folktale/core/adt/');
-const fl   = require('fantasy-land');
+const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 
 const Either = data('folktale:Data.Either', {
   Left(value)  { return { value } },
@@ -13,38 +13,38 @@ const { Left, Right } = Either;
 const assertEither = assertType(Either);
 
 // -- Functor ----------------------------------------------------------
-Left.prototype[fl.map] = function(transformation) {
+Left.prototype.map = function(transformation) {
   assertFunction('Either.Left#map', transformation);
   return this;
 };
 
-Right.prototype[fl.map] = function(transformation) {
+Right.prototype.map = function(transformation) {
   assertFunction('Either.Right#map', transformation);
   return Right(transformation(this.value));
 };
 
 // -- Apply ------------------------------------------------------------
-Left.prototype[fl.ap] = function(anEither) {
-  assertEither('Left#ap', anEither);
+Left.prototype.apply = function(anEither) {
+  assertEither('Left#apply', anEither);
   return this;
 };
 
-Right.prototype[fl.ap] = function(anEither) {
-  assertEither('Right#ap', anEither);
+Right.prototype.apply = function(anEither) {
+  assertEither('Right#apply', anEither);
   return anEither.map(this.value);
 };
 
 
 // -- Applicative ------------------------------------------------------
-Either[fl.of] = Right;
+Either.of = Right;
 
 // -- Chain ------------------------------------------------------------
-Left.prototype[fl.chain] = function(transformation) {
+Left.prototype.chain = function(transformation) {
   assertFunction('Either.Left#chain', transformation);
   return this;
 };
 
-Right.prototype[fl.chain] = function(transformation) {
+Right.prototype.chain = function(transformation) {
   assertFunction('Either.Right#chain', transformation);
   return transformation(this.value);
 };
@@ -144,5 +144,9 @@ Either.toValidation = function(...args) {
 Either.toMaybe = function(...args) {
   return require('folktale/data/conversions/either-to-maybe')(this, ...args);
 };
+
+provideAliases(Left.prototype);
+provideAliases(Right.prototype);
+provideAliases(Either);
 
 module.exports = Either;

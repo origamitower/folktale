@@ -13,64 +13,51 @@
 const assertType = require('folktale/helpers/assertType');
 const assertFunction = require('folktale/helpers/assertFunction');
 const { data, show, setoid} = require('folktale/core/adt');
-
-const fl   = require('fantasy-land');
+const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 
 const Maybe = data('folktale:Data.Maybe', {
   Nothing()   { },
   Just(value) { return { value } }
-}).derive(setoid, show);
+}).derive(setoid, show, setoid);
 
 const { Nothing, Just } = Maybe;
 
 const assertMaybe = assertType(Maybe);
 
-// -- Setoid -----------------------------------------------------------
-Nothing.prototype[fl.equals] = function(aMaybe) {
-  assertMaybe('Maybe.Nothing#equals', aMaybe);
-  return Nothing.hasInstance(aMaybe);
-};
-
-Just.prototype[fl.equals] = function(aMaybe) {
-  assertMaybe('Maybe.Just#equals', aMaybe);
-  return Just.hasInstance(aMaybe) && aMaybe.value === this.value;
-};
-
-
 // -- Functor ----------------------------------------------------------
-Nothing.prototype[fl.map] = function(transformation) {
+Nothing.prototype.map = function(transformation) {
   assertFunction('Maybe.Nothing#map', transformation);
   return this;
 };
 
-Just.prototype[fl.map] = function(transformation) {
+Just.prototype.map = function(transformation) {
   assertFunction('Maybe.Nothing#map',  transformation);
   return Just(transformation(this.value));
 };
 
 
 // -- Apply ------------------------------------------------------------
-Nothing.prototype[fl.ap] = function(aMaybe) {
+Nothing.prototype.apply = function(aMaybe) {
   assertMaybe('Maybe.Nothing#ap', aMaybe);
   return this;
 };
 
-Just.prototype[fl.ap] = function(aMaybe) {
+Just.prototype.apply = function(aMaybe) {
   assertMaybe('Maybe.Just#ap', aMaybe);
   return aMaybe.map(this.value);
 };
 
 // -- Applicative ------------------------------------------------------
-Maybe[fl.of] = Just;
+Maybe.of = Just;
 
 
 // -- Chain ------------------------------------------------------------
-Nothing.prototype[fl.chain] = function(transformation) {
+Nothing.prototype.chain = function(transformation) {
   assertFunction('Maybe.Nothing#chain', transformation);
   return this;
 };
 
-Just.prototype[fl.chain] = function(transformation) {
+Just.prototype.chain = function(transformation) {
   assertFunction('Maybe.Just#chain', transformation);
   return transformation(this.value);
 };
@@ -140,39 +127,8 @@ Maybe.toValidation = function(...args) {
 
 
 // -- Exports ----------------------------------------------------------
+provideAliases(Just.prototype);
+provideAliases(Nothing.prototype);
+provideAliases(Maybe);
+
 module.exports = Maybe;
-
-// -- Annotations ------------------------------------------------------
-if (process.env.NODE_ENV !== 'production') {
-  module.exports[Symbol.for('@@meta:magical')] = {
-    name: 'Maybe',
-    category: 'Data Structures',
-    stability: 'experimental',
-    platforms: ['ECMAScript 3'],
-    portability: 'Portable',
-    authors: ['Quildreen Motta'],
-    module: 'folktale/data/maybe/core',
-    licence: 'MIT',
-    seeAlso: [{
-      type: 'link',
-      title: 'A Monad in Practicality: First-Class Failures',
-      url: 'http://robotlolita.me/2013/12/08/a-monad-in-practicality-first-class-failures.html'
-    }],
-    documentation: `
-The Maybe module provides a data structure to represent values that
-might not be present, or the result of computations that may fail.
-
-The data structure models two different cases:
-
- -  \`Just α\`, which represents any value, including \`null\` and \`undefined\`.
- -  \`Nothing\`, which represents the abscence of a value.
-
-The idea is that, by explicitly modelling these failures, and forcing
-the user to deal with the failures to get to the value, we can get rid
-of common problems such as \`TypeError: undefined is not a function\`.
-In other words, this data structure helps writing programs that are
-correct by construction, because they force the user to deal with
-all *potential* failures.
-    `
-  };
-}
