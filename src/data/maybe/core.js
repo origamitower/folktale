@@ -38,12 +38,12 @@ Just.prototype.map = function(transformation) {
 
 // -- Apply ------------------------------------------------------------
 Nothing.prototype.apply = function(aMaybe) {
-  assertMaybe('Maybe.Nothing#ap', aMaybe);
+  assertMaybe('Maybe.Nothing#apply', aMaybe);
   return this;
 };
 
 Just.prototype.apply = function(aMaybe) {
-  assertMaybe('Maybe.Just#ap', aMaybe);
+  assertMaybe('Maybe.Just#apply', aMaybe);
   return aMaybe.map(this.value);
 };
 
