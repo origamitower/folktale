@@ -11,4 +11,4 @@
 const metamagical = require('metamagical-interface');
 const defineTests = require('metamagical-mocha-bridge')(metamagical, describe, it);
 
-defineTests(require('../../'));
+defineTests(require('folktale'));
