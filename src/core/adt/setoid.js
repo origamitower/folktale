@@ -9,7 +9,9 @@
 
 // --[ Dependencies ]---------------------------------------------------
 const assertType = require('folktale/helpers/assertType');
-const fl = require('fantasy-land');
+const { equals } = require('folktale/core/fantasy-land');
+const fl = require('folktale/helpers/fantasy-land');
+const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const { tagSymbol, typeSymbol } = require('./core');
 
 
@@ -22,7 +24,7 @@ const { tagSymbol, typeSymbol } = require('./core');
  * type: (Any) => Boolean
  */
 const isSetoid = (value) => value != null 
-                         && typeof value[fl.equals] === 'function';
+                         && (typeof value[fl.equals] === 'function' || typeof value.equals === 'function');
 
 /*~
  * True if two variant instances are of the same type/tag.
@@ -38,16 +40,15 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
 /*~
  * Provides structural equality for ADTs.
  * 
- * The `setoid` derivation bestows Fantasy Land's `equals` method upon
- * ADTs constructed by Core.ADT. This `equals` method performs
- * structural equality, and may be configured on how to compare
- * values that aren't themselves setoids.
+ * The `setoid` derivation bestows Fantasy Land's `fantasy-land/equals`
+ * method upon ADTs constructed by Core.ADT, as well as an `equals`
+ * alias. This `equals` method performs structural equality, and may
+ * be configured on how to compare values that aren't themselves setoids.
  * 
  * 
  * ## Example::
  * 
  *     const { data, setoid } = require('folktale/core/adt');
- *     const fl = require('fantasy-land');
  *     const Result = data('Result', {
  *       Ok(value){
  *         return { value };
@@ -58,13 +59,13 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  *     }).derive(setoid);
  *     const { Ok, Error } = Result;
  * 
- *     Ok(1)[fl.equals](Ok(1));
+ *     Ok(1).equals(Ok(1));
  *     // ==> true
  * 
- *     Ok(1)[fl.equals](Error(1));
+ *     Ok(1).equals(Error(1));
  *     // ==> false
  * 
- *     Error(Error(1))[fl.equals](Error(Error(1)));
+ *     Error(Error(1)).equals(Error(Error(1)));
  *     // ==> true
  * 
  * 
@@ -78,7 +79,6 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  * following definition::
  * 
  *     const { data, setoid } = require('folktale/core/adt');
- *     const fl = require('fantasy-land');
  *     const Id = data('Id', {
  *       Id(value){ return { value } }
  *     }).derive(setoid);
@@ -103,9 +103,9 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  * If we want to compare things by value, we can use the `equals` method
  * provided by this setoid derivation instead::
  * 
- *     a[fl.equals](b);        // ==> true
- *     a[fl.equals](a);        // ==> true
- *     a[fl.equals](Id.Id(2)); // ==> false
+ *     a.equals(b);        // ==> true
+ *     a.equals(a);        // ==> true
+ *     a.equals(Id.Id(2)); // ==> false
  * 
  * When comparing with the `equals` method, two values are considered
  * equal if they represent the same value. This is called *structural
@@ -123,7 +123,6 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  * The following example shows these in practice::
  * 
  *     const { data, setoid } = require('folktale/core/adt');
- *     const fl = require('fantasy-land');
  * 
  *     //                    ┌◦ TYPE
  *     //                  ┌╌┴╌╌╌╌┐
@@ -161,20 +160,20 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  * 
  * So if we compare these two for equality::
  * 
- *     Ok(1)[fl.equals](Ok(1)); // ==> true
+ *     Ok(1).equals(Ok(1)); // ==> true
  *     // same type, tag, keys and values.
  * 
- *     Ok(1)[fl.equals](Ok(2)); // ==> false
+ *     Ok(1).equals(Ok(2)); // ==> false
  *     // same type, tag, and keys. Different values (1 !== 2).
  * 
- *     Ok(1)[fl.equals](Error(1)); // ==> false
+ *     Ok(1).equals(Error(1)); // ==> false
  *     // same type, keys, and values. Different tags ('Ok' !== 'Error').
  * 
  *     const { Error: E } = data('Res', {
  *       Error(value){ return { value } }
  *     }).derive(setoid);
  * 
- *     E(1)[fl.equals](Error(1)); // ==> false
+ *     E(1).equals(Error(1)); // ==> false
  *     // same tag, keys, and values. Different types ('Result' !== 'Res')
  * 
  * 
@@ -194,16 +193,15 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  * Here's an example::
  * 
  *     const { data, setoid } = require('folktale/core/adt');
- *     const fl = require('fantasy-land');
  *     const { Id } = data('Id', {
  *       Id(value){ return { value } }
  *     }).derive(setoid);
  * 
  *     // This is fine, because all values are either Setoids or primitives
- *     Id(Id(1))[fl.equals](Id(Id(1))); // ==> true
+ *     Id(Id(1)).equals(Id(Id(1))); // ==> true
  * 
  *     // This is not fine, because it compares `[1] === [1]`
- *     Id([1])[fl.equals](Id([1]));     // ==> false
+ *     Id([1]).equals(Id([1]));     // ==> false
  * 
  * To handle complex JS values, one must provide their own deep equality
  * function. Folktale does not have a deep equality function yet, but
@@ -211,12 +209,11 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  * 
  * Here's an example of an equality function that checks array equality::
  * 
- *     const isSetoid = (a) =>
- *       a && typeof a[fl.equals] === 'function';
- * 
  *     const isEqual = (a, b) =>
  *       Array.isArray(a) && Array.isArray(b) ?  arrayEquals(a, b)
- *     : isSetoid(a)                          ?  a[fl.equals(b)]
+ *     : a == null                            ?  a === b
+ *     : a['fantasy-land/equals']             ?  a['fantasy-land/equals'](b)
+ *     : a.equals                             ?  a.equals(b)
  *     :                                         a === b;
  * 
  *     const arrayEquals = (a, b) =>
@@ -228,9 +225,9 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  *       Id(value){ return { value } }
  *     }).derive(setoid.withEquality(isEqual));
  * 
- *     Id2([1])[fl.equals](Id2([1]));       // ==> true
- *     Id2(Id2(1))[fl.equals](Id2(Id2(1))); // ==> true
- *     Id2(2)[fl.equals](Id2(1));           // ==> false
+ *     Id2([1]).equals(Id2([1]));       // ==> true
+ *     Id2(Id2(1)).equals(Id2(Id2(1))); // ==> true
+ *     Id2(2).equals(Id2(1));           // ==> false
  * 
  * 
  * ## Setoid equality and the asymmetry problem::
@@ -244,13 +241,12 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  * Here's an example of the asymmetry problem::
  * 
  *     const { data, setoid } = require('folktale/core/adt');
- *     const fl = require('fantasy-land');
  *     const { Id } = data('Id', {
  *       Id(value){ return { value } }
  *     }).derive(setoid);
  * 
  *     const bogus = {
- *       [fl.equals](that){ return that.value === this.value },
+ *       equals(that){ return that.value === this.value },
  *       value: 1
  *     };
  * 
@@ -299,7 +295,6 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  * 
  *     const hash = Symbol('hash code');
  *     const { data, setoid } = require('folktale/core/adt');
- *     const fl = require('fantasy-land');
  * 
  *     const { Cons, Nil } = data('List', {
  *       Nil(){ return { [hash]: 0 } },
@@ -311,25 +306,25 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  *       }
  *     });
  * 
- *     Nil.prototype[fl.equals] = function(that) {
+ *     Nil.prototype.equals = function(that) {
  *       return Nil.hasInstance(that);
  *     }
  * 
- *     Cons.prototype[fl.equals] = function(that) {
+ *     Cons.prototype.equals = function(that) {
  *       if (this === that)              return true
  *       if (!Cons.hasInstance(that))    return false
  *       if (this[hash] !== that[hash])  return false
  *       
  *       return this.value === that.value
- *       &&     this.rest[fl.equals](that.rest)
+ *       &&     this.rest.equals(that.rest)
  *     }
  * 
  *     const a = Cons(1, Cons(2, Cons(3, Nil())));
  *     const b = Cons(1, Cons(2, Cons(3, Nil())));
  *     const c = Cons(1, b);
  * 
- *     a[fl.equals](b); // ==> true
- *     a[fl.equals](c); // ==> false
+ *     a.equals(b); // ==> true
+ *     a.equals(c); // ==> false
  * 
  * 
  * > **NOTE**:  
@@ -359,7 +354,7 @@ const createDerivation = (valuesEqual) => {
     const leftSetoid  = isSetoid(a);
     const rightSetoid = isSetoid(b);
     if (leftSetoid) {
-      if (rightSetoid)  return a[fl.equals](b);
+      if (rightSetoid)  return equals(a, b);
       else              return false;
     }
 
@@ -386,10 +381,11 @@ const createDerivation = (valuesEqual) => {
 
 
   const derivation = (variant, adt) => {
-    variant.prototype[fl.equals] = function(value) {
+    variant.prototype.equals = function(value) {
       assertType(adt)(`${this[tagSymbol]}#equals`, value);
       return sameType(this, value) && compositesEqual(this, value, Object.keys(this));
     };
+    provideAliases(variant.prototype);
     return variant;
   };
   if (process.env.FOLKTALE_DOCS !== 'false') {

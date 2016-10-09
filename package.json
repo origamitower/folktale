@@ -30,7 +30,6 @@
     "url": "https://github.com/origamitower/folktale/issues"
   },
   "dependencies": {
-    "fantasy-land": "^0.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.4.5",
