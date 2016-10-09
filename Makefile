@@ -6,6 +6,7 @@ eslint     := $(bin)/eslint
 mocha      := $(bin)/mocha
 browserify := $(bin)/browserify
 uglify     := $(bin)/uglifyjs
+karma      := $(bin)/karma
 
 
 # -- [ COMPILATION ] ---------------------------------------------------
@@ -22,6 +23,8 @@ help:
 	@echo "  compile ................ Compiles the project."
 	@echo "  clean .................. Removes build artifacts."
 	@echo "  test ................... Runs the tests for the project."
+	@echo "  test-browser ........... Runs the tests in your local Chrome/Firefox."
+	@echo "  test-sauce ............. Runs the tests in SauceLabs (requires sauceconnect + env vars)."
 	@echo "  lint ................... Lints all source files."
 	@echo "  documentation .......... Builds the documentation from source."
 	@echo ""
@@ -36,12 +39,19 @@ compile:
 
 compile-test:
 	$(babel) test/specs-src --source-map inline --out-dir test/specs
+	$(browserify) test/browser/browser-tests.js --source-map inline > test/browser/tests.js
 
 clean:
 	rm -rf core helpers data test/specs index.js
 
 test: clean compile compile-test
 	FOLKTALE_ASSERTIONS=minimal $(mocha) --reporter spec --ui bdd test/specs
+
+test-browser: compile compile-test
+	$(karma) start test/karma-local.js
+
+test-sauce: compile compile-test
+	$(karma) start test/karma-sauce.js
 
 documentation: compile
 	node tools/generate-docs.js
