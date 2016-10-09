@@ -12,6 +12,6 @@ const warn = require('folktale/helpers/warn-deprecated')('ap');
 const unsupported = require('folktale/helpers/unsupported-method')('ap');
 
 module.exports = (a, b) =>
-  typeof a[ap] === 'function' ?  a[ap](b)
+  typeof a[ap] === 'function' ?  b[ap](a)
 : typeof a.ap  === 'function' ?  warn(a.ap(b))
 : /*otherwise*/                  unsupported(a);
