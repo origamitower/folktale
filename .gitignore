@@ -8,6 +8,7 @@ npm-debug.log
 /helpers/
 /data/
 /test/specs/
+/test/browser/tests.js
 *.un~
 *.swp
 /dist/
