@@ -234,7 +234,7 @@ const serialize = (variant, adt) => {
    * 
    * ## Example::
    * 
-   *     const { data, setoid } = require('folktale/core/adt/core');
+   *     const { data, setoid } = require('folktale/core/adt');
    *     const Id = data('Id', {
    *       Id(value){ return { value } }
    *     }).derive(serialize, setoid);
@@ -271,7 +271,7 @@ const serialize = (variant, adt) => {
    * 
    * ## Example::
    * 
-   *     const { data, setoid } = require('folktale/core/adt/core');
+   *     const { data, setoid } = require('folktale/core/adt');
    *     const Id = data('Id', {
    *       Id(value){ return { value } }
    *     }).derive(serialize, setoid);
