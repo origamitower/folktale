@@ -130,10 +130,12 @@ describe('Core.ADT', () => {
       // NOTE: this fails randomly in Node 5's v8. Seems to be a v8
       // optimisation bug, although I haven't had the time to analyse
       // it yet.
+      /*
       property('Gets a tag with the same name as the constructor', 'string', (a) => {
         const adt = data('', { [a](){ return {} }});
         return adt[a]()[data.tagSymbol] === a;
       });
+      */
 
       property('Gets a hasInstance method that only looks at type/tag', 'string', (a) => {
         const b = a + '2';
