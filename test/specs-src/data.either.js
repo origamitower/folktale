@@ -11,119 +11,119 @@
 //----------------------------------------------------------------------
 
 const { property, forall} = require('jsverify');
-const _ = require('folktale').data.either;
+const _ = require('folktale/data/either');
 
 describe('Data.Either', function() {
 
-  describe('constructors', function () {
-    property('try#Left', 'json', function(a) {
+  describe('constructors', () => {
+    property('try#Left', 'json', (a) => {
         return _.try((a) => {throw a })(a).equals(_.Left(a))
     });
 
-    property('try#Right', 'json', function(a) {
+    property('try#Right', 'json', (a) => {
         return _.try(() => (a))(a).equals(_.Right(a))
     }); 
   });
 
-  describe('Functor', function () {
-    property('map', 'json', 'json -> json', function(a, f) {
+  describe('Functor', () => {
+    property('map', 'json', 'json -> json', (a, f) => {
       return _.of(f(a)).equals(_.of(a).map(f))
     });
     
-    property('Left#map', 'json', 'json -> json', function(a, f) {
+    property('Left#map', 'json', 'json -> json', (a, f) => {
       return _.Left(a).map(f).equals(_.Left(a))
     });
   });
 
-  describe('Applicative', function () {
-    property('of', 'json', 'json', function(a, b) {
+  describe('Applicative', () => {
+    property('of', 'json', 'json', (a, b) => {
       return (a === b) === (_.of(a).equals(_.of(b)))
     });
 
-    property('ap', 'json', 'json -> json', function(a, f) {
-      return _.of(f).ap(_.of(a)).equals(_.of(f(a)))
+    property('apply', 'json', 'json -> json', (a, f) => {
+      return _.of(f).apply(_.of(a)).equals(_.of(f(a)))
     });
   });
 
-  describe('Chain', function () {
+  describe('Chain', () => {
     const lift = (f) => a => _.of(f(a))
-    property('chain', 'json', 'json -> json', function(a, f) {
+    property('chain', 'json', 'json -> json', (a, f) => {
       return  _.of(a).chain(lift(f)).equals(lift(f)(a))
     });
 
-    property('Left#chain', 'json', 'json -> json', function(a, f) {
+    property('Left#chain', 'json', 'json -> json', (a, f) => {
       return _.Left(a).chain(lift(f)).equals(_.Left(a))
     });
   });
 
-  describe('extracting/recovering', function () {
-    property('Left#getOrElse', 'json', 'json', function(a, b) {
+  describe('extracting/recovering', () => {
+    property('Left#getOrElse', 'json', 'json', (a, b) => {
       return _.Left(b).getOrElse(a) === a
     });
-    property('Right#getOrElse', 'json', 'json', function(a, b) {
+    property('Right#getOrElse', 'json', 'json', (a, b) => {
       return _.Right(b).getOrElse(a) === b
     });
 
-    property('Left#orElse', 'json', 'json', function(a, b) {
+    property('Left#orElse', 'json', 'json', (a, b) => {
       return _.Left(b).orElse(() => a) === a
     });
-    property('Right#orElse', 'json', 'json', function(a, b) {
+    property('Right#orElse', 'json', 'json', (a, b) => {
       return _.Right(b).orElse(() => b).equals(_.Right(b))
     });
   });
-  describe('folds', function () {
+  describe('folds', () => {
     const id = (a) => a
-    property('Left#fold', 'json', 'json -> json', function(a, f) {
+    property('Left#fold', 'json', 'json -> json', (a, f) => {
       return _.Left(a).fold(f, id) === f(a)
     });
-    property('Right#fold', 'json', 'json -> json', function(a, f) {
+    property('Right#fold', 'json', 'json -> json', (a, f) => {
       return _.Right(a).fold(id, f) === f(a)
     });
 
-    property('Left#merge', 'json', function(a) {
+    property('Left#merge', 'json', (a) => {
       return _.Left(a).merge() === a 
     });
-    property('Right#merge', 'json', function(a) {
+    property('Right#merge', 'json', (a) => {
       return _.Right(a).merge() === a 
     });
 
-    property('Left#swap', 'json', function(a) {
+    property('Left#swap', 'json', (a) => {
       return _.Left(a).swap().equals(_.Right(a))
     });
-    property('Right#swap', 'json', function(a) {
+    property('Right#swap', 'json', (a) => {
       return _.Right(a).swap().equals(_.Left(a))
     });
 
-    property('Left#bimap', 'json', 'json -> json', function(a, f) {
+    property('Left#bimap', 'json', 'json -> json', (a, f) => {
       return _.Left(a).bimap(f, id).equals(_.Left(f(a)))
     });
-    property('Right#bimap', 'json', 'json -> json', function(a, f) {
+    property('Right#bimap', 'json', 'json -> json', (a, f) => {
       return _.Right(a).bimap(id, f).equals(_.Right(f(a)))
     });
 
-    property('Left#leftMap', 'json', 'json -> json', function(a, f) {
+    property('Left#leftMap', 'json', 'json -> json', (a, f) => {
       return _.Left(f(a)).equals(_.Left(a).leftMap(f))
     });
     
-    property('Right#leftMap', 'json', 'json -> json', function(a, f) {
+    property('Right#leftMap', 'json', 'json -> json', (a, f) => {
       return _.Right(a).leftMap(f).equals(_.Right(a))
     });
   });
-  describe('Conversions', function () {
-    property('Left#fromNullable', function () {
+  describe('Conversions', () => {
+    property('Left#fromNullable', () => {
       return _.fromNullable(null).equals(_.Left(null));
     });
 
-    property('Right#fromNullable', 'json', function (a) {
+    property('Right#fromNullable', 'json', (a) => {
       return _.fromNullable(a).equals(_.Right(a));
     });
-    property('Either#fromValidation', 'json', function(a) {
+    property('Either#fromValidation', 'json', (a) => {
       return _.fromValidation(_.Left(a).toValidation()).equals(_.Left(a));
     });
-    property('Left#fromMaybe', 'string', 'string', function(a, b) {
+    property('Left#fromMaybe', 'string', 'string', (a, b) => {
       return _.fromMaybe(_.Left(b).toMaybe(), b).equals(_.Left(b));
     });
-    property('Right#fromMaybe', 'json', 'json', function(a, b) {
+    property('Right#fromMaybe', 'json', 'json', (a, b) => {
       return _.fromMaybe(_.Right(a).toMaybe(), b).equals(_.Right(a));
     });
   })
