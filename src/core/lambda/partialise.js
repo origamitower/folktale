@@ -153,7 +153,8 @@ const hole = {};
  * type: |
  *   (Number, (Any... => Any)) => ((hole | Any)...) => Any :: (throw TypeError)
  */
-const partialise = (arity, fn) => (...args) => {
+const partialise = (arity, fn) => (...args) => { 
+  /* eslint-disable no-magic-numbers */
   if (args.length < arity) {
     throw new TypeError(`The partial function takes at least ${arity} arguments, but was given ${args.length}.`);
   }
@@ -187,7 +188,7 @@ const partialise = (arity, fn) => (...args) => {
   } else {
     return fn(...args);
   }
-};
+}; /* eslint-enable no-magic-numbers */
 
 
 // ---[ Special Values ]-----------------------------------------------
