@@ -346,12 +346,13 @@ compose.infix = function(that) {
  * type: |
  *   (Function...) -> Function 
  */
-compose.all = function(...fns) {
+compose.all = function(...fns) { 
+  /* eslint-disable no-magic-numbers */
   if (fns.length < 1) { // eslint-disable-next-line prefer-rest-params
     throw new TypeError(`compose.all requires at least one argument, ${arguments.length} given.`);
   }
   return fns.reduce(compose);
-};
+}; /* eslint-enable no-magic-numbers */
 
 
 // --[ Exports ]-------------------------------------------------------
