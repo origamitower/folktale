@@ -12,7 +12,7 @@
 
 const { property } = require('jsverify');
 const assert = require('assert');
-const _ = require('folktale').core.lambda;
+const _ = require('folktale/core/lambda');
 
 const eqPairs = (...xs) =>
         xs.reduce((p, x) =>
@@ -20,8 +20,9 @@ const eqPairs = (...xs) =>
                   : /* otherwise */  { r: false },
                   { r: true }).r;
 
-describe('Core.Lambda', function() {
-  describe('compose(f, g)', function() {
+
+describe('Core.Lambda', () => {
+  describe('compose(f, g)', () => {
     property('= f(g(x))', 'integer', (a) => {
       const f = (x) => x - 1;
       const g = (y) => y * 2;
@@ -36,35 +37,38 @@ describe('Core.Lambda', function() {
     });
   });
 
-  describe('constant(a)()', function() {
+
+  describe('constant(a)()', () => {
     property('= a', 'nat', (a) => {
       return _.constant(a)() === a;
     });
   });
 
-  describe('identity(a)', function() {
+
+  describe('identity(a)', () => {
     property('= a', 'nat', (a) => {
       return _.identity(a) === a;
     });
   });
 
-  describe('curry(arity, fn)', function() {
+
+  describe('curry(arity, fn)', () => {
     const f = (a, b) => a(b);
     const g = (a) => a + 1;
     const h = (a) => (b) => a(b) + 1;
     const i = (a, b, c, d) => a + b + c + d;
 
-    it('invoking with fewer arguments yields a new function that takes the rest', function() {
-      assert.equal(typeof _.curry(2, f)(g), 'function');
-      assert.equal(_.curry(2, f)(g)(1), 2);
+    it('invoking with fewer arguments yields a new function that takes the rest', () => {
+      $ASSERT(typeof _.curry(2, f)(g) == 'function');
+      $ASSERT(_.curry(2, f)(g)(1) == 2);
     });
 
-    it('invoking with the correct number of arguments invokes the underlying operation', function() {
-      assert.equal(_.curry(2, f)(g, 1), 2);
+    it('invoking with the correct number of arguments invokes the underlying operation', () => {
+      $ASSERT(_.curry(2, f)(g, 1) == 2);
     });
 
-    it('invoking with more arguments passes the remaining arguments to the result of the operation', function() {
-      assert.equal(_.curry(2, f)(h, g)(1), 3);
+    it('invoking with more arguments passes the remaining arguments to the result of the operation', () => {
+      $ASSERT(_.curry(2, f)(h, g)(1) == 3);
     });
 
     property('should support any kind of arguments grouping', 'nat & nat & nat & nat', ([a, b, c, d]) => {
@@ -80,5 +84,36 @@ describe('Core.Lambda', function() {
         a + b + c + d
       );
     });
+  });
+
+  describe('partialise(arity, f)', () => {
+    const f = (a, b, c) => a - b - c;
+    const $ = _.partialise.hole;
+
+    it('invoking with the less arguments than the arity is an error', () => {
+      assert.throws(_ => { _.partialise(3, f)(1, 2) });
+    });
+
+    property('providing a hole creates a new partially specified function', 'nat', 'nat', 'nat', (a, b, c) =>
+       _.partialise(3, f)($, b, c)(a) === f(a, b, c)
+    && _.partialise(3, f)(a, $, c)(b) === f(a, b, c)
+    && _.partialise(3, f)(a, b, $)(c) === f(a, b, c)
+    );
+
+    property('multiple holes may be provided', 'nat', 'nat', 'nat', (a, b, c) =>
+       _.partialise(3, f)($, $, c)(a, b) === f(a, b, c)
+    && _.partialise(3, f)(a, $, $)(b, c) === f(a, b, c)
+    && _.partialise(3, f)($, b, $)(a, c) === f(a, b, c)
+    );
+
+    property('returned partial functions are partialised themselves', 'nat', 'nat', 'nat', (a, b, c) =>
+       _.partialise(3, f)($, $, c)($, b)(a) === f(a, b, c)
+    && _.partialise(3, f)(a, $, $)($, c)(b) === f(a, b, c)
+    && _.partialise(3, f)($, b, $)(a, $)(c) === f(a, b, c)
+    );
+
+    property('all arguments may be holes, which doen’t change the function', 'nat', 'nat', 'nat', (a, b, c) =>
+      _.partialise(3, f)($, $, $)(a, b, c) === f(a, b, c)
+    );
   });
 });
