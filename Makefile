@@ -39,10 +39,11 @@ compile:
 
 compile-test:
 	$(babel) test/specs-src --source-map inline --out-dir test/specs
+	$(babel) test/helpers-src --source-map inline --out-dir test/helpers
 	$(browserify) test/browser/browser-tests.js --source-map inline > test/browser/tests.js
 
 clean:
-	rm -rf core helpers data test/specs index.js
+	rm -rf core helpers data test/specs test/helpers index.js
 
 test: clean compile compile-test
 	FOLKTALE_ASSERTIONS=minimal $(mocha) --reporter spec --ui bdd test/specs
