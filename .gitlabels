@@ -36,6 +36,7 @@
     - (adt)               The ADT package
     - (lambda)            The Lambda package
     - (object)            The Object package
+    - (fl)                The Fantasy Land package
   - (data)              The Data package
     - (either)            The Either structure
     - (maybe)             The Maybe structure
