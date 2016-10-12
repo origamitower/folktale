@@ -98,7 +98,7 @@ const Apply = (type, equals = defaultEquals) => {
   const { ap, map } = fl;
 
   describe('Apply instance', _ => {
-    property('composition', 'nat', 'nat -> nat', 'nat -> nat', (a, f, g) =>
+    property('composition', 'string', 'string -> string', 'string -> string', (a, f, g) =>
       equals(
         type(a)[ap](type(g)[ap](type(f)[map](f => g => x => f(g(x))))),
         type(a)[ap](type(g))[ap](type(f))
@@ -114,7 +114,7 @@ const Applicative = (type, equals = defaultEquals) => {
   describe('Applicative instance', _ => {
     property('identity', 'nat', (a) =>
       equals(
-        type()[of](a)[ap](type(x => x)),
+        type().of(x => x).ap(type(a)),    // ap's different signature matters
         type(a)
       )
     );
