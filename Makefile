@@ -46,7 +46,7 @@ clean:
 	rm -rf core helpers data test/specs test/helpers index.js
 
 test: clean compile compile-test
-	FOLKTALE_ASSERTIONS=minimal $(mocha) --reporter spec --ui bdd test/specs
+	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd test/specs
 
 test-browser: compile compile-test
 	$(karma) start test/karma-local.js
