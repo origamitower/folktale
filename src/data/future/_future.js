@@ -123,7 +123,7 @@ class Future {
    *   (Future 'f 's).(Future 'f (('s) => 's2)) => Future 'f 's2
    */
   apply(future) {
-    return future.chain(fn => this.map(fn));
+    return this.chain(fn => future.map(fn));
   }
 
   /*~
