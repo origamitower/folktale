@@ -1,8 +1,7 @@
 const assert = require('assert');
-const fl = require('fantasy-land');
 const { property, forall} = require('jsverify');
 
-const Future = require('../').data.future;
+const Future = require('folktale/data/future');
 const { _ExecutionState, Deferred } = Future;
 const { Resolved, Rejected } = _ExecutionState;
 
@@ -142,7 +141,7 @@ describe('Data.Future', function() {
       property('deferred.resolve(a) should resolve with the given value', 'nat', a => {
         let deferred = new Deferred();
         deferred.resolve(a);
-        return deferred._state[fl.equals](_ExecutionState.Resolved(a));
+        return deferred._state.equals(_ExecutionState.Resolved(a));
       });
     });
 
@@ -150,7 +149,7 @@ describe('Data.Future', function() {
       property('deferred.reject(a) should reject with the given value', 'nat', a => {
         let deferred = new Deferred();
         deferred.reject(a);
-        return deferred._state[fl.equals](_ExecutionState.Rejected(a));
+        return deferred._state.equals(_ExecutionState.Rejected(a));
       });
     });
 
@@ -158,7 +157,7 @@ describe('Data.Future', function() {
       property('deferred.cancel() should cancel', 'nat', a => {
         let deferred = new Deferred();
         deferred.cancel();
-        return deferred._state[fl.equals](_ExecutionState.Cancelled());
+        return deferred._state.equals(_ExecutionState.Cancelled());
       });
     });
 
@@ -216,15 +215,15 @@ describe('Data.Future', function() {
     };
 
     function eq(b) {
-      return this._state[fl.equals](b._state);
+      return this._state.equals(b._state);
     }
 
     property('#of(v) should create a resolved Future with v', 'nat', v => {
-      return Future.of(v)._state[fl.equals](Resolved(v));
+      return Future.of(v)._state.equals(Resolved(v));
     });
 
     property('#rejected(v) should create a rejected Future with v', 'nat', v => {
-      return Future.rejected(v)._state[fl.equals](Rejected(v));
+      return Future.rejected(v)._state.equals(Rejected(v));
     });
 
     it('#listen(p) should invoke the right branch for the future', () => {

@@ -9,6 +9,7 @@
 
 // --[ Dependencies ]--------------------------------------------------
 const define = require('folktale/helpers/define');
+const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const Deferred = require('./deferred');
 const { Pending, Resolved, Rejected } = require('./_execution-state');
 
@@ -100,10 +101,6 @@ class Future {
     return deferred.future();
   }
 
-  ['fantasy-land/chain'](transformation) {
-    return this.chain(transformation);
-  }
-
   /*~
    * Transforms the value inside a future with a simple function.
    * 
@@ -114,10 +111,6 @@ class Future {
    */
   map(transformation) {
     return this.chain(value => Future.of(transformation(value)));
-  }
-
-  ['fantasy-land/map'](transformation) {
-    return this.map(transformation);
   }
 
   /*~
@@ -131,14 +124,6 @@ class Future {
    */
   apply(future) {
     return future.chain(fn => this.map(fn));
-  }
-
-  ap(future) {
-    return this.apply(future);
-  }
-
-  ['fantasy-land/ap'](future) {
-    return this.apply(future);
   }
 
   /*~
@@ -158,10 +143,6 @@ class Future {
     });
 
     return deferred.future();
-  }
-
-  ['fantasy-land/bimap'](rejectionTransformation, successTransformation) {
-    return this.bimap(rejectionTransformation, successTransformation);
   }
 
   /*~
@@ -277,10 +258,6 @@ Object.assign(Future, {
     return result;
   },
 
-  ['fantasy-land/of'](value) {
-    return Future.of(value);
-  },
-
   /*~
    * Constructs a future containing a single rejected value.
    * 
@@ -295,6 +272,10 @@ Object.assign(Future, {
     return result;
   }
 });
+
+
+provideAliases(Future);
+provideAliases(Future.prototype);
 
 
 // --[ Exports ]-------------------------------------------------------
