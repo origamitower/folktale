@@ -7,6 +7,7 @@
 //
 //----------------------------------------------------------------------
 
+const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const defer = require('folktale/helpers/defer');
 const Deferred = require('folktale/data/future/deferred');
 const TaskExecution = require('./_task-execution');
@@ -42,10 +43,6 @@ class Task {
     );
   }
 
-  ['fantasy-land/chain'](transformation) {
-    return this.chain(transformation);
-  }
-
   map(transformation) {
     return new Task(
       resolver => {
@@ -61,20 +58,8 @@ class Task {
     );
   }
 
-  ['fantasy-land/map'](transformation) {
-    return this.map(transformation);
-  }
-
   apply(task) {
     return this.chain(f => task.map(f));
-  }
-
-  ap(task) {
-    return this.apply(task);
-  }
-
-  ['fantasy-land/ap'](task) {
-    return this.apply(task);
   }
 
   bimap(successTransformation, rejectionTransformation) {
@@ -90,10 +75,6 @@ class Task {
       },
       execution => execution.cancel()
     );
-  }
-
-  ['fantasy-land/bimap'](successTransformation, rejectionTransformation) {
-    return this.bimap(successTransformation, rejectionTransformation);
   }
 
   matchWith(pattern) {
@@ -260,13 +241,12 @@ Object.assign(Task, {
     return new Task(resolver => resolver.resolve(value));
   },
 
-  ['fantasy-land/of'](value) {
-    return Task.of(value)
-  },
-
   rejected(reason) {
     return new Task(resolver => resolver.reject(reason));
   }
 });
+
+provideAliases(Task);
+provideAliases(Task.prototype);
 
 module.exports = Task;
