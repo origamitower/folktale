@@ -12,6 +12,7 @@
 
 const { property, forall} = require('jsverify');
 const _ = require('folktale/data/either');
+const laws = require('../helpers/fantasy-land-laws');
 
 describe('Data.Either', function() {
 
@@ -126,5 +127,28 @@ describe('Data.Either', function() {
     property('Right#fromMaybe', 'json', 'json', (a, b) => {
       return _.fromMaybe(_.Right(a).toMaybe(), b).equals(_.Right(a));
     });
-  })
+  });
+
+  describe('Fantasy Land', () => {
+    laws.Setoid(_.Left);
+    laws.Setoid(_.Right);
+
+    laws.Functor(_.Left);
+    laws.Functor(_.Right);
+
+    laws.Apply(_.Left);
+    laws.Apply(_.Right);
+
+    laws.Applicative(_.Left);
+    laws.Applicative(_.Right);
+
+    laws.Chain(_.Left);
+    laws.Chain(_.Right);
+
+    laws.Monad(_.Left);
+    laws.Monad(_.Right);
+
+    laws.Bifunctor((a, b) => _.Left(a));
+    laws.Bifunctor((a, b) => _.Right(b));
+  });
 });

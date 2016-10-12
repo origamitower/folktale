@@ -12,6 +12,7 @@
 
 const { property, forall} = require('jsverify');
 const _ = require('folktale/data/validation');
+const laws = require('../helpers/fantasy-land-laws');
 
 describe('Data.Validation', () => {
   describe('Functor', () => {
@@ -131,5 +132,25 @@ describe('Data.Validation', () => {
     property('Failure#fromMaybe', 'json', 'json', (a, b) => {
       return _.fromMaybe(_.Failure(b).toMaybe(), b).equals(_.Failure(b));
     });
-  })
+  });
+
+  describe('Fantasy Land', () => {
+    laws.Setoid(_.Failure);
+    laws.Setoid(_.Success);
+
+    laws.Semigroup(_.Failure);
+    laws.Semigroup(_.Success);
+
+    laws.Functor(_.Failure);
+    laws.Functor(_.Success);
+
+    // laws.Apply(_.Failure);  -- doesn't work because functions aren't semigroups
+    laws.Apply(_.Success);
+
+    laws.Applicative(_.Failure);
+    laws.Applicative(_.Success);
+
+    laws.Bifunctor((a, b) => _.Failure(a));
+    laws.Bifunctor((a, b) => _.Success(b));
+  });
 });

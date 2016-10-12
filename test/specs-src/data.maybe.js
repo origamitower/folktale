@@ -12,6 +12,7 @@
 
 const { property, forall} = require('jsverify');
 const assert = require('assert');
+const laws = require('../helpers/fantasy-land-laws');
 const Maybe = require('folktale/data/maybe');
 const { Just, Nothing } = Maybe;
 
@@ -122,5 +123,25 @@ describe('Data.Maybe', () => {
     property('Nothing().toValidation(b) = Failure(b)', 'json', 'json', (a, b) => {
       return Nothing().toValidation(b).equals(Failure(b));
     });
+  });
+
+  describe('Fantasy Land', _ => {
+    laws.Setoid(Maybe.Just);
+    laws.Setoid(Maybe.Nothing);
+
+    laws.Functor(Maybe.Just);
+    laws.Functor(Maybe.Nothing);
+
+    laws.Apply(Maybe.Just);
+    laws.Apply(Maybe.Nothing);
+
+    laws.Applicative(Maybe.Just);
+    laws.Applicative(Maybe.Nothing);
+
+    laws.Chain(Maybe.Just);
+    laws.Chain(Maybe.Nothing);
+
+    laws.Monad(Maybe.Just);
+    laws.Monad(Maybe.Nothing);
   });
 });
