@@ -1,5 +1,6 @@
 const assert = require('assert');
 const { property, forall} = require('jsverify');
+const env = require('./environment');
 
 const Future = require('folktale/data/future');
 const { _ExecutionState, Deferred } = Future;
@@ -244,22 +245,106 @@ describe('Data.Future', function() {
       $ASSERT(x == [1, 1, 1]);
     });
 
-    property('#chain(f) transforms the successful value', 'nat', 'nat -> nat', (a, f) => {
-      return Future.of(a).chain(x => Future.of(f(x)))
-      ::eq   (Future.of(f(a)));
+    property('#chain(f) transforms the successful value', 'nat', 'nat -> future nat', env, (a, f) => {
+      return Future.of(a).chain(f) ::eq(f(a));
     });
 
-    property('#chain(f) shouldnt transform rejections', 'nat', 'nat -> nat', (a, f) => {
-      return Future.rejected(a).chain(x => Future.of(f(x)))
-      ::eq   (Future.rejected(a));
+    property('#chain(f) shouldnt transform rejections', 'nat', 'nat -> future nat', env, (a, f) => {
+      return Future.rejected(a).chain(f) ::eq(Future.rejected(a));
     });
 
-    property('#chain(f) shouldnt transform cancellations', 'nat', 'nat -> nat', (a, f) => {
-      return cancelled().chain(x => Future.of(f(x)))
-      ::eq   (cancelled());
+    property('#chain(f) shouldnt transform cancellations', 'nat', 'nat -> future nat', env, (a, f) => {
+      return cancelled().chain(f) ::eq(cancelled());
     });
 
+    property('#map(f) transforms the successful value', 'nat', 'nat -> nat', (a, f) => {
+      return Future.of(a).map(f) ::eq(Future.of(f(a)));
+    });
 
+    property('#map(f) ignores rejections', 'nat', 'nat -> nat', (a, f) => {
+      return Future.rejected(a).map(f) ::eq(Future.rejected(a));
+    });
 
+    property('#map(f) ignores cancellations', 'nat', 'nat -> nat', (a, f) => {
+      return cancelled().map(f) ::eq(cancelled());
+    });
+
+    property('#apply(a) applies the function to the applicative a', 'nat', 'nat -> nat', (a, f) => {
+      return Future.of(f).apply(Future.of(a)) ::eq(Future.of(f(a)));
+    });
+
+    property('#apply(a) ignores rejections', 'nat', 'nat -> nat', (a, f) => {
+      return Future.rejected(f).apply(Future.of(a)) ::eq(Future.rejected(f));
+    });
+
+    property('#apply(a) ignores cancellations', 'nat', 'nat -> nat', (a, f) => {
+      return cancelled().apply(Future.of(a)) ::eq(cancelled());
+    });
+
+    property('#bimap(f, g) applies g for successes', 'nat', 'nat -> nat', 'nat -> nat', (a, f, g) => {
+      return Future.of(a).bimap(f, g) ::eq(Future.of(g(a)));
+    });
+
+    property('#bimap(f, g) applies f for rejections', 'nat', 'nat -> nat', 'nat -> nat', (a, f, g) => {
+      return Future.rejected(a).bimap(f, g) ::eq(Future.rejected(f(a)));
+    });
+
+    property('#bimap(f, g) ignores cancellations', 'nat', 'nat -> nat', 'nat -> nat', (a, f, g) => {
+      return cancelled().bimap(f, g) ::eq(cancelled());
+    });
+
+    property('#mapRejection(f) ignores successes', 'nat', 'nat -> nat', (a, f) => {
+      return Future.of(a).mapRejection(f) ::eq(Future.of(a));
+    });
+
+    property('#mapRejection(f) transforms rejections', 'nat', 'nat -> nat', (a, f) => {
+      return Future.rejected(a).mapRejection(f) ::eq(Future.rejected(f(a)));
+    });
+
+    property('#mapRejection(f) ignores cancellations', 'nat', 'nat -> nat', (a, f) => {
+      return cancelled().mapRejection(f) ::eq(cancelled());
+    });
+
+    property('#recover(f) ignores successes', 'nat', 'nat -> future nat', env, (a, f) => {
+      return Future.of(a).recover(f) ::eq(Future.of(a));
+    });
+
+    property('#recover(f) applies f to rejections', 'nat', 'nat -> future nat', env, (a, f) => {
+      return Future.rejected(a).recover(f) ::eq(f(a));
+    });
+
+    property('#recover(f) ignores cancellations', 'nat', 'nat -> future nat', env, (a, f) => {
+      return cancelled().recover(f) ::eq(cancelled());
+    });
+
+    property('#willMatchWith(pattern) invokes the proper pattern', 'nat', 'nat -> future nat', 'nat -> future nat', 'nat -> future nat', env, (a, f, g, h) => {
+      const pattern = {
+        Cancelled: f,
+        Resolved: g,
+        Rejected: h
+      };
+
+      $ASSERT(Future.of(a).willMatchWith(pattern)       ::eq(g(a)));
+      $ASSERT(Future.rejected(a).willMatchWith(pattern) ::eq(h(a)));
+      $ASSERT(cancelled().willMatchWith(pattern)        ::eq(f()));
+      return true;
+    });
+
+    property('#swap() swaps rejections and successes', 'nat', (a, b) => {
+      return Future.of(a).swap()       ::eq(Future.rejected(a))
+      &&     Future.rejected(b).swap() ::eq(Future.of(b));
+    });
+
+    property('#swap() ignores cancellations', 'nat', (a) => {
+      return cancelled().swap() ::eq(cancelled());
+    });
+
+    property('#of(value) constructs a future with resolved value', 'nat', (a) => {
+      return Future.of(a)._state.equals(Resolved(a));
+    });
+
+    property('#rejected(value) constructs a future with rejected value', 'nat', (a) => {
+      return Future.rejected(a)._state.equals(Rejected(a));
+    });
   });
 });
