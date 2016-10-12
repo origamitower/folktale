@@ -33,7 +33,7 @@ Folktale can be installed through [npm][]:
 
 ## Supported platforms
 
-  - Node 4+
+  - Node 4.x, Node 6+ ([**Node 5.x is not supported**](https://github.com/origamitower/folktale/issues/47))
 
 **Browsers**:
   - Chrome 23+
