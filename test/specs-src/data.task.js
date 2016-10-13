@@ -68,5 +68,47 @@ describe('Data.Task', () => {
     property('#bimap(f, g) ignores cancellation', 'nat', 'nat -> nat', 'nat -> nat', (a, f, g) => {
       return Task.task(r => r.cancel()).bimap(f, g).run().future() ::eq(cancelled());
     });
+
+    describe('#willMatchWith(pattern)', () => {
+      property('calls .Cancelled for cancellations', 'nat', 'nat -> task nat', 'nat -> task nat', 'nat -> task nat', env, (a, f, g, h) => {
+        return Task.task(r => r.cancel())
+            .willMatchWith({
+              Cancelled: f,
+              Rejected: g,
+              Resolved: h
+            })
+            .run().future()
+        ::eq(f().run().future());
+      });
+
+      property('calls .Rejected for rejections', 'nat', 'nat -> task nat', 'nat -> task nat', 'nat -> task nat', env, (a, f, g, h) => {
+        return Task.rejected(a)
+                   .willMatchWith({
+                      Cancelled: f,
+                      Rejected: g,
+                      Resolved: h
+                   }).run().future()
+        ::eq(g(a).run().future());
+      });
+
+      property('calls .Resolved for successes', 'nat', 'nat -> task nat', 'nat -> task nat', 'nat -> task nat', env, (a, f, g, h) => {
+        return Task.of(a)
+                   .willMatchWith({
+                     Cancelled: f,
+                     Rejected: g,
+                     Resolved: h
+                   }).run().future()
+        ::eq(h(a).run().future());
+      });
+    });
+
+    property('#swap() swaps rejections and successes', 'nat', 'nat', (a, b) => {
+      return Task.of(a).swap().run().future()        ::eq(Future.rejected(a))
+      &&     Task.rejected(b).swap().run().future()  ::eq(Future.of(b));
+    });
+
+    property('#swap() ignores cancellations', () => {
+      return Task.task(r => r.cancel()).run().future() ::eq(cancelled());
+    });
   });
 });
