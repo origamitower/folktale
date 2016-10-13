@@ -62,7 +62,7 @@ class Task {
     return this.chain(f => task.map(f));
   }
 
-  bimap(successTransformation, rejectionTransformation) {
+  bimap(rejectionTransformation, successTransformation) {
     return new Task(
       resolver => {
         const execution = this.run();
