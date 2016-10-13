@@ -77,7 +77,7 @@ class Task {
     );
   }
 
-  matchWith(pattern) {
+  willMatchWith(pattern) {
     return new Task(
       resolver => {
         const execution = this.run();
