@@ -12,6 +12,6 @@ const Task = require('./_task');
 const noop = () => {};
 
 const task = (computation, handlers = { onCancelled: noop, cleanup: noop }) =>
-  Task(computation, handlers.onCancelled, handlers.cleanup);
+  new Task(computation, handlers.onCancelled, handlers.cleanup);
 
 module.exports = task;
