@@ -14,7 +14,7 @@ class TaskExecution {
   }
 
   cancel() {
-    this._deferred.cancel();
+    this._deferred.maybeCancel();
   }
 
   listen(pattern) {
