@@ -4,7 +4,7 @@ const env = require('./environment');
 const Task = require('folktale/data/task');
 const Future = require('folktale/data/future');
 const { _ExecutionState, Deferred } = Future;
-const { Resolved, Rejected } = _ExecutionState;
+const { Resolved, Rejected, Cancelled } = _ExecutionState;
 
 const cancelled = () => {
   const d = new Deferred();
@@ -417,5 +417,75 @@ describe('Data.Task', () => {
 
   property('#rejected(v) creates a rejected task containing v', 'nat', (a) => {
     return Task.rejected(a).run().future() ::eq(Future.rejected(a));
+  });
+
+
+  describe('TaskExecution', () => {
+    describe('#listen(pattern)', () => {
+      it('invokes pattern.Resolved for successes', () => {
+        let a = [0, 0, 0];
+        Task.of(1).run().listen({
+          onCancelled: _ => a[0]++,
+          onRejected: b => a[1] += b,
+          onResolved: b => a[2] += b
+        });
+        $ASSERT(a == [0, 0, 1]);
+      });
+
+      it('invokes pattern.Rejected for rejections', () => {
+        let a = [0, 0, 0];
+        Task.rejected(2).run().listen({
+          onCancelled: _ => a[0]++,
+          onRejected: b => a[1] += b,
+          onResolved: b => a[2] += b
+        });
+        $ASSERT(a == [0, 2, 0]);
+      });
+
+      it('invokes pattern.Cancelled for cancellations', () => {
+        let a = [0, 0, 0];
+        let ex = Task.task(r => {}).run();
+        ex.listen({
+          onCancelled: _ => a[0]++,
+          onRejected: b => a[1] += b,
+          onResolved: b => a[2] += b
+        });
+        ex.cancel();
+        $ASSERT(a == [1, 0, 0]);
+      });
+    });
+
+    describe('#promise()', () => {
+      it('Returns a resolved promise for successes', async () => {
+        let a = await Task.of(1).run().promise();
+        $ASSERT(a == 1);
+      });
+
+      it('Returns a rejected promise for rejections', async () => {
+        return Task.rejected(1).run().promise().catch(v => $ASSERT(v == 1));
+      });
+
+      it('Returns a rejected promise containing Cancelled for cancellations', async () => {
+        let ex = Task.task(r => {}).run();
+        ex.cancel();
+        return ex.promise().catch(v => $ASSERT(Cancelled.hasInstance(v)));
+      });
+    });
+
+    describe('#future()', () => {
+      property('Returns a resolved future for succeses', 'nat', (a) => {
+        return Task.of(a).run().future() ::eq(Future.of(a));
+      });
+
+      property('Returns a rejected future for failures', 'nat', (a) => {
+        return Task.rejected(a).run().future() ::eq(Future.rejected(a));
+      });
+
+      property('Returns a cancelled future for cancellations', () => {
+        let ex = Task.task(r => {}).run();
+        ex.cancel();
+        return ex.future() ::eq(cancelled());
+      });
+    });
   });
 });
