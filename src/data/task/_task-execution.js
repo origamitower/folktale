@@ -15,10 +15,12 @@ class TaskExecution {
 
   cancel() {
     this._deferred.maybeCancel();
+    return this;
   }
 
   listen(pattern) {
     this._deferred.listen(pattern);
+    return this;
   }
 
   promise() {

@@ -63,7 +63,7 @@ class Future {
    * ---
    * category: Reacting to Future events
    * type: |
-   *   (Future 'f 's).(DeferredListener 'f 's) => Void
+   *   (Future 'f 's).(DeferredListener 'f 's) => Future 'f 's
    */
   listen(pattern) {
     this._state.matchWith({
@@ -72,6 +72,7 @@ class Future {
       Resolved:  ({ value })  => pattern.onResolved(value),
       Rejected:  ({ reason }) => pattern.onRejected(reason)
     });
+    return this;
   }
 
 
