@@ -93,10 +93,11 @@ Deferred.prototype = {
    * ---
    * category: Resolving a deferred
    * type: |
-   *   ('a: Deferred 'f 's).('s) => Void :: mutates 'a
+   *   ('a: Deferred 'f 's).('s) => 'a :: mutates 'a
    */
   resolve(value) {
     moveToState(this, Resolved(value));
+    return this;
   },
 
   /*~
@@ -105,10 +106,11 @@ Deferred.prototype = {
    * ---
    * category: Resolving a deferred
    * type: |
-   *   ('a: Deferred 'f 's).('f) => Void :: mutates 'a
+   *   ('a: Deferred 'f 's).('f) => 'a :: mutates 'a
    */
   reject(reason) {
     moveToState(this, Rejected(reason));
+    return this;
   },
 
   /*~
@@ -117,16 +119,18 @@ Deferred.prototype = {
    * ---
    * category: Resolving a deferred
    * type: |
-   *   ('a: Deferred 'f 's).() => Void :: mutates 'a
+   *   ('a: Deferred 'f 's).() => 'a :: mutates 'a
    */
   cancel() {
     moveToState(this, Cancelled());
+    return this;
   },
 
   maybeCancel() {
     if (Pending.hasInstance(this._state)) {
       this.cancel();
     }
+    return this;
   },
 
 
@@ -146,6 +150,7 @@ Deferred.prototype = {
       Resolved:  ({ value })  => pattern.onResolved(value),
       Rejected:  ({ reason }) => pattern.onRejected(reason)
     });
+    return this;
   },
 
 
