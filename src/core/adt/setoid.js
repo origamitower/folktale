@@ -9,7 +9,7 @@
 
 // --[ Dependencies ]---------------------------------------------------
 const assertType = require('folktale/helpers/assertType');
-const { equals:flEquals } = require('folktale/core/fantasy-land');
+const flEquals = require('folktale/core/fantasy-land/equals');
 const fl = require('folktale/helpers/fantasy-land');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const { tagSymbol, typeSymbol } = require('./data');
@@ -354,7 +354,7 @@ const createDerivation = (valuesEqual) => {
     const leftSetoid  = isSetoid(a);
     const rightSetoid = isSetoid(b);
     if (leftSetoid) {
-      if (rightSetoid)  return flEquals(b, a);
+      if (rightSetoid)  return flEquals(a, b);
       else              return false;
     }
 
