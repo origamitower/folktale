@@ -10,6 +10,13 @@
 //
 //----------------------------------------------------------------------
 
+
+/*~
+ * Provides the Either data structure.
+ * ---
+ * name: module folktale/data/either
+ * category: Handling failures
+ */
 module.exports = {
   ...require('./either'),
   try: require('./try'),

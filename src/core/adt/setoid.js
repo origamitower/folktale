@@ -381,6 +381,20 @@ const createDerivation = (valuesEqual) => {
 
 
   const derivation = (variant, adt) => {
+    /*~
+     * Compares two setoids structurally.
+     * ---
+     * category: Comparing and testing
+     * stability: experimental
+     * authors:
+     *   - "@boris-marinov"
+     *   - Quildreen Motta
+     * 
+     * type: |
+     *   forall S, a:
+     *     (S a).(S a) => Boolean
+     *   where S is Setoid
+     */
     variant.prototype.equals = function(value) {
       assertType(adt)(`${this[tagSymbol]}#equals`, value);
       return sameType(this, value) && compositesEqual(this, value, Object.keys(this));
