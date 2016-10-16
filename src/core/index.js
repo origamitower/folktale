@@ -35,6 +35,11 @@
  *     as dictionaries. Several JavaScript APIs expect that usage of
  *     objects, but the built-in operations don't support  this well,
  *     so the Core.Object module addresses that.
+ * 
+ *   - **Writing generic code with Fantasy-Land**: The Core.FantasyLand
+ *     module takes care of the differences in the various versions of
+ *     the Fantasy Land spec, so you can write generic code that supports
+ *     many libraries implementing any version of the spec.
  *
  * ---
  * name        : module folktale/core

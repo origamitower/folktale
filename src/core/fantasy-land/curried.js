@@ -9,13 +9,11 @@
 
 
 /*~
- * Allows invoking methods of Fantasy Land structures without
- * worrying about the differences in multiple versions of the spec.
+ * Curried versions of the fantasy-land functions.
  * ---
- * category: Curried operations
+ * name: module folktale/core/fantasy-land/curried
+ * category: Convenience
  * stability: experimental
- * authors:
- *   - Quildreen Motta
  */
 module.exports = {
   apply: require('./apply').curried,
