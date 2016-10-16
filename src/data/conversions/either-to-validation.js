@@ -10,7 +10,7 @@
 //
 //----------------------------------------------------------------------
 
-const { Success, Failure } = require('folktale/data/validation/core');
+const { Success, Failure } = require('folktale/data/validation/validation');
 
 
 /*~

@@ -11,7 +11,7 @@
 //----------------------------------------------------------------------
 
 module.exports = {
-  ...require('./core'),
+  ...require('./maybe'),
   fromEither: require('folktale/data/conversions/either-to-maybe'),
   fromValidation: require('folktale/data/conversions/validation-to-maybe')
 };

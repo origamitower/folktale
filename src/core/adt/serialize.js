@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------
 
 // --[ Dependencies ]---------------------------------------------------
-const { tagSymbol, typeSymbol } = require('./core');
+const { tagSymbol, typeSymbol } = require('./data');
 const mapValues = require('folktale/core/object/map-values');
 const values = require('folktale/core/object/values');
 
@@ -140,7 +140,7 @@ const serializeValue = (value) =>
  * which converts rich ADTs into objects that can be safely serialised as
  * JSON. For example::
  * 
- *     const data = require('folktale/core/adt/core');
+ *     const data = require('folktale/core/adt/data');
  *     const { Id } = data('Id', {
  *       Id(value){ return { value } }
  *     }).derive(serialize);

@@ -1,4 +1,4 @@
-const { Left, Right } = require('./core');
+const { Left, Right } = require('./either');
 
 module.exports = (f) => (...args) => {
   try {
