@@ -15,7 +15,7 @@ const { Success, Failure } = require('folktale/data/validation/core');
 /*~
  * Converts a nullable value to a Validation.
  * ---
- * category: Converting data
+ * category: Converting from nullables
  * stability: experimental
  * authors:
  *   - "@boris-marinov"

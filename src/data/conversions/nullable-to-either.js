@@ -16,7 +16,7 @@ const { Left, Right } = require('folktale/data/either/core');
 /*~
  * Converts a nullable value to an either.
  * ---
- * category: Converting data
+ * category: Converting from nullables
  * stability: experimental
  * authors:
  *   - "@boris-marinov"

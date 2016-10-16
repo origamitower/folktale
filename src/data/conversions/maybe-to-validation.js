@@ -15,7 +15,7 @@ const { Success, Failure } = require('folktale/data/validation/core');
 /*~
  * Converts a Maybe to a Validation.
  * ---
- * category: Converting data
+ * category: Converting from Maybe
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
