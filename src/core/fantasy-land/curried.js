@@ -7,16 +7,23 @@
 //
 //----------------------------------------------------------------------
 
-const mapValues = require('folktale/core/object/map-values');
-const curry = require('folktale/core/lambda/curry');
 
 /*~
  * Allows invoking methods of Fantasy Land structures without
  * worrying about the differences in multiple versions of the spec.
  * ---
- * category: Fantasy Land
+ * category: Curried operations
  * stability: experimental
  * authors:
- *   - "@boris-marinov"
+ *   - Quildreen Motta
  */
-module.exports = mapValues(require('./core'), (f) => curry(f.length, f));
+module.exports = {
+  apply: require('./apply').curried,
+  bimap: require('./bimap').curried,
+  chain: require('./chain').curried,
+  concat: require('./concat').curried,
+  empty: require('./empty').curried,
+  equals: require('./equals').curried,
+  map: require('./map').curried,
+  of: require('./of').curried
+};

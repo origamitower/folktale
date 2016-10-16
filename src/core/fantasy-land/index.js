@@ -15,8 +15,17 @@
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
+ *   - Quildreen Motta
  */
 module.exports = {
-  ...require('./core'),
-  curried: require('./curried')
+  apply: require('./apply'),
+  concat: require('./concat'),
+  chain: require('./chain'),
+  empty: require('./empty'),
+  map: require('./map'),
+  of: require('./of'),
+  equals: require('./equals'),
+  bimap: require('./bimap'),
+  curried: require('./curried'),
+  infix: require('./infix')
 };

@@ -7,22 +7,23 @@
 //
 //----------------------------------------------------------------------
 
+
 /*~
  * Allows invoking methods of Fantasy Land structures without
  * worrying about the differences in multiple versions of the spec.
  * ---
- * category: Fantasy Land
+ * category: Infix operations
  * stability: experimental
  * authors:
- *   - "@boris-marinov"
+ *   - Quildreen Motta
  */
 module.exports = {
-  apply: require('./apply'),
-  concat: require('./concat'),
-  chain: require('./chain'),
-  empty: require('./empty'),
-  map: require('./map'),
-  of: require('./of'),
-  equals: require('./equals'),
-  bimap: require('./bimap')
+  apply: require('./apply').infix,
+  bimap: require('./bimap').infix,
+  chain: require('./chain').infix,
+  concat: require('./concat').infix,
+  empty: require('./empty').infix,
+  equals: require('./equals').infix,
+  map: require('./map').infix,
+  of: require('./of').infix
 };
