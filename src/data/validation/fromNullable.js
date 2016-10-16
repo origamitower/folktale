@@ -1,4 +1,4 @@
-const { Success, Failure } = require('./core');
+const { Success, Failure } = require('./validation');
 
 module.exports = (a) =>
   a != null ? Success(a)

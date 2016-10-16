@@ -12,7 +12,7 @@ const assertType = require('folktale/helpers/assertType');
 const { equals:flEquals } = require('folktale/core/fantasy-land');
 const fl = require('folktale/helpers/fantasy-land');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
-const { tagSymbol, typeSymbol } = require('./core');
+const { tagSymbol, typeSymbol } = require('./data');
 
 
 // --[ Helpers ]--------------------------------------------------------

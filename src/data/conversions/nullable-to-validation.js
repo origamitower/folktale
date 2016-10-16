@@ -9,7 +9,7 @@
 // See CONTRIBUTORS for the list of contributors to the project.
 //
 //----------------------------------------------------------------------
-const { Success, Failure } = require('folktale/data/validation/core');
+const { Success, Failure } = require('folktale/data/validation/validation');
 
 
 /*~

@@ -10,7 +10,7 @@
 //
 //----------------------------------------------------------------------
 
-const { Just, Nothing } = require('folktale/data/maybe/core');
+const { Just, Nothing } = require('folktale/data/maybe/maybe');
 
 
 /*~

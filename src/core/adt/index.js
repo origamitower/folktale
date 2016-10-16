@@ -24,7 +24,7 @@
  * easy way. The `data` function provided by this module achieves that
  * goal::
  * 
- *     const data = require('folktale/core/adt/core');
+ *     const data = require('folktale/core/adt/data');
  *     
  *     const Maybe = data('Maybe', {
  *       Some(value){ return { value } },
@@ -81,7 +81,7 @@
  * category    : Data Structures
  */
 module.exports = {
-  data: require('./core'),
+  data: require('./data'),
   setoid: require('./setoid'),
   show: require('./show'),
   serialize: require('./serialize')

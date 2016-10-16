@@ -1,4 +1,4 @@
-const { typeSymbol } = require('folktale/core/adt/core');
+const { typeSymbol } = require('folktale/core/adt/data');
 
 module.exports = (type) => (method, value) => {
   const typeName = type[typeSymbol];

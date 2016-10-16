@@ -10,7 +10,7 @@
 //
 //----------------------------------------------------------------------
 
-const { Left, Right } = require('folktale/data/either/core');
+const { Left, Right } = require('folktale/data/either/either');
 
 
 /*~
