@@ -14,10 +14,9 @@
  * Provides functions to convert from and to different data
  * structures.
  * ---
+ * name: module folktale/data/conversions
  * category: Converting data
  * stability: experimental
- * authors:
- *   - "@boris-marinov"
  */
 module.exports = {
   eitherToValidation: require('./either-to-validation'),
