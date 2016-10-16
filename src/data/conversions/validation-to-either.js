@@ -31,3 +31,6 @@ const validationToEither = (aValidation) =>
     Failure: ({ value }) => Left(value),
     Success: ({ value }) => Right(value)
   });
+
+
+module.exports = validationToEither;
