@@ -18,7 +18,7 @@ const { Just, Nothing } = require('folktale/data/maybe/core');
  * 
  * Failure values are lost in the process.
  * ---
- * category: Converting data
+ * category: Converting from Validation
  * stability: experimental
  * authors: 
  *   - "@boris-marinov"

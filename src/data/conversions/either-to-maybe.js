@@ -18,7 +18,7 @@ const { Just, Nothing } = require('folktale/data/maybe/core');
  * 
  * Left values are lost in the process.
  * ---
- * category: Converting data
+ * category: Converting from Either
  * stability: experimental
  * authors:
  *   - "@boris-marinov"

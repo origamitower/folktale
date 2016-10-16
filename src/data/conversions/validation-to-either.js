@@ -17,7 +17,7 @@ const { Left, Right } = require('folktale/data/either/core');
 /*~
  * Converts a Validation to an Either.
  * ---
- * category: Converting data
+ * category: Converting from Validation
  * stability: experimental
  * authors:
  *   - "@boris-marinov"

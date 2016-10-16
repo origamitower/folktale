@@ -16,7 +16,7 @@ const { Success, Failure } = require('folktale/data/validation/core');
 /*~
  * Converts an Either to a Validation.
  * ---
- * category: Converting data
+ * category: Converting from Either
  * stability: experimental
  * authors:
  *   - "@boris-marinov"

@@ -24,6 +24,9 @@ module.exports = {
   validationToEither: require('./validation-to-either'),
   validationToMaybe: require('./validation-to-maybe'),
   maybeToValidation: require('./maybe-to-validation'),
-  maybeToEither: require('./maybe-to-either')
+  maybeToEither: require('./maybe-to-either'),
+  nullableToValidation: require('./nullable-to-validation'),
+  nullableToEither: require('./nullable-to-either'),
+  nullableToMaybe: require('./nullable-to-maybe')
 };
 

@@ -16,7 +16,7 @@ const { Left, Right } = require('folktale/data/either/core');
 /*~
  * Converts a Maybe to an Either.
  * ---
- * category: Converting data
+ * category: Converting from Maybe
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
