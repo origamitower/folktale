@@ -12,6 +12,22 @@
 
 const { Left, Right } = require('folktale/data/either/core');
 
-module.exports = (a) =>
+
+/*~
+ * Converts a nullable value to an either.
+ * ---
+ * category: Converting data
+ * stability: experimental
+ * authors:
+ *   - "@boris-marinov"
+ * 
+ * type: |
+ *   forall a:
+ *     (a or None) => Either None a
+ */
+const nullableToEither = (a) =>
   a != null ? Right(a)
   :/*else*/   Left(a);
+
+
+module.exports = nullableToEither;

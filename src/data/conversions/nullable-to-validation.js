@@ -11,6 +11,22 @@
 //----------------------------------------------------------------------
 const { Success, Failure } = require('folktale/data/validation/core');
 
-module.exports = (a) =>
+
+/*~
+ * Converts a nullable value to a Validation.
+ * ---
+ * category: Converting data
+ * stability: experimental
+ * authors:
+ *   - "@boris-marinov"
+ * 
+ * type: |
+ *   forall a:
+ *     (a or None) => Validation None a
+ */
+const nullableToValidation = (a) =>
   a != null ? Success(a)
   :/*else*/   Failure(a);
+
+
+module.exports = nullableToValidation;

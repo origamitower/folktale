@@ -8,24 +8,13 @@
 //----------------------------------------------------------------------
 
 /*~
- * Essential building blocks and compositional operations which are
- * likely to be used by most programs are provided by this module.
- *
- * These operations usually don't fit in more specific categories,
- * like `data`, or provide a better alternative to functionality
- * that's already provided by the language itself.
- *
- * --------------------------------------------------------------------
- * name        : module folktale/core
- * module      : folktale/core
- * copyright   : (c) 2015-2016 Quildreen Motta, and CONTRIBUTORS
- * licence     : MIT
- * repository  : https://github.com/origamitower/folktale
- *
- * category    : Essential Operations
- *
- * maintainers:
- *   - Quildreen Motta <queen@robotlolita.me>
+ * Allows invoking methods of Fantasy Land structures without
+ * worrying about the differences in multiple versions of the spec.
+ * ---
+ * category: Fantasy Land
+ * stability: experimental
+ * authors:
+ *   - "@boris-marinov"
  */
 module.exports = {
   ...require('./core'),

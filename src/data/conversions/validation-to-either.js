@@ -13,7 +13,20 @@
 
 const { Left, Right } = require('folktale/data/either/core');
 
-module.exports = (aValidation) =>
+
+/*~
+ * Converts a Validation to an Either.
+ * ---
+ * category: Converting data
+ * stability: experimental
+ * authors:
+ *   - "@boris-marinov"
+ * 
+ * type: |
+ *   forall a, b:
+ *      (Validation a b) => Either a b
+ */
+const validationToEither = (aValidation) =>
   aValidation.matchWith({
     Failure: ({ value }) => Left(value),
     Success: ({ value }) => Right(value)

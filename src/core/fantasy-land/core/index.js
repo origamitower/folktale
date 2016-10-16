@@ -7,8 +7,17 @@
 //
 //----------------------------------------------------------------------
 
+/*~
+ * Allows invoking methods of Fantasy Land structures without
+ * worrying about the differences in multiple versions of the spec.
+ * ---
+ * category: Fantasy Land
+ * stability: experimental
+ * authors:
+ *   - "@boris-marinov"
+ */
 module.exports = {
-  ap: require('./ap'),
+  apply: require('./apply'),
   concat: require('./concat'),
   chain: require('./chain'),
   empty: require('./empty'),

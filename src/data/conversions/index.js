@@ -10,6 +10,15 @@
 //
 //----------------------------------------------------------------------
 
+/*~
+ * Provides functions to convert from and to different data
+ * structures.
+ * ---
+ * category: Converting data
+ * stability: experimental
+ * authors:
+ *   - "@boris-marinov"
+ */
 module.exports = {
   eitherToValidation: require('./either-to-validation'),
   eitherToMaybe: require('./either-to-maybe'),
