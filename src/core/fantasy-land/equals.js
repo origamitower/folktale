@@ -51,7 +51,7 @@ const equals = (setoidLeft, setoidRight) =>
  *     (S a) => (S a) => Boolean
  *   where S is Setoid
  */
-equals.curried = curry((setoidRight, setoidLeft) => 
+equals.curried = curry(2, (setoidRight, setoidLeft) => 
   equals(setoidLeft, setoidRight)
 );
 

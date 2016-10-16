@@ -55,7 +55,7 @@ const empty = (monoid) =>
  *     (M) => M a
  *   where M is Monoid 
  */
-empty.curried = curry(empty);
+empty.curried = curry(1, empty);
 
 
 /*~

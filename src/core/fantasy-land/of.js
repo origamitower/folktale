@@ -55,7 +55,7 @@ const of = (applicative, value) =>
  *     (F) => (a) => F a
  *   where F is Applicative
  */
-of.curried = curry(of);
+of.curried = curry(2, of);
 
 
 /*~
