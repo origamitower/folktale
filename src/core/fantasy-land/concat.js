@@ -50,7 +50,7 @@ const concat = (semigroupLeft, semigroupRight) =>
  *     (S a) => (S a) => S a
  *   where S is Semigroup
  */
-concat.curried = curry((semigroupRight, semigroupLeft) => 
+concat.curried = curry(2, (semigroupRight, semigroupLeft) => 
   concat(semigroupLeft, semigroupRight)
 );
 

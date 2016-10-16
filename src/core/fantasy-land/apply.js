@@ -49,7 +49,7 @@ const apply = (applicativeFunction, applicativeValue) =>
  *     (F (a) => b) => (F a) => F b
  *   where F is Apply
  */
-apply.curried = curry(apply);
+apply.curried = curry(2, apply);
 
 
 /*~

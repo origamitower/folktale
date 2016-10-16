@@ -50,7 +50,7 @@ const chain = (monad, transformation) =>
  *     ((a) => C b) => (C a) => C b
  *   where C is Chain
  */
-chain.curried = curry((transformation, monad) =>
+chain.curried = curry(2, (transformation, monad) =>
   chain(monad, transformation)
 );
 

@@ -50,7 +50,7 @@ const map = (functor, transformation) =>
  *     ((a) => b) => (F a) => F b
  *   where F is Functor
  */
-map.curried = curry((transformation, functor) => 
+map.curried = curry(2, (transformation, functor) => 
   map(functor, transformation)
 );
 

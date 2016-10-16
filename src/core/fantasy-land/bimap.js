@@ -31,7 +31,7 @@ const isOld = (a) => typeof a.bimap === 'function';
  *     (F a b, (a) => c, (b) => d) => F c d
  *   where F is Bifunctor
  */
-const bimap = (transformLeft, transformRight, bifunctor) =>
+const bimap = (bifunctor, transformLeft, transformRight) =>
   isNew(bifunctor) ?  bifunctor[flBimap](transformLeft, transformRight)
 : isOld(bifunctor) ?  warn(bifunctor.bimap(transformLeft, transformRight))
 : /*otherwise*/       unsupported(bifunctor);
@@ -51,7 +51,7 @@ const bimap = (transformLeft, transformRight, bifunctor) =>
  *     ((a) => c) => ((b) => d) => (F a b) => F c d
  *   where F is Bifunctor
  */
-bimap.curried = curry((transformLeft, transformRight, bifunctor) => 
+bimap.curried = curry(3, (transformLeft, transformRight, bifunctor) => 
   bimap(bifunctor, transformLeft, transformRight)
 );
 
