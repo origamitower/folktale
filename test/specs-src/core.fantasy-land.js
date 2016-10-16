@@ -19,8 +19,8 @@ describe('core.fantasyLand', function() {
 
   describe('curried', function() {
 
-    property('ap', 'applicative (json -> json)', 'applicative json', env, function(mf, ma) {
-      return _.ap(mf)(ma).equals(mf.ap(ma))
+    property('apply', 'applicative (json -> json)', 'applicative json', env, function(mf, ma) {
+      return _.apply(mf)(ma).equals(mf.ap(ma))
     })
 
     property('concat', 'string', 'string', function(a, b)  {

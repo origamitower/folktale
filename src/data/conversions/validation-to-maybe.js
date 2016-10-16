@@ -10,10 +10,28 @@
 //
 //----------------------------------------------------------------------
 
+const { Just, Nothing } = require('folktale/data/maybe/core');
 
-module.exports = (anEither) =>
-  anEither.matchWith({
+
+/*~
+ * Converts a Validation to a Maybe.
+ * 
+ * Failure values are lost in the process.
+ * ---
+ * category: Converting data
+ * stability: experimental
+ * authors: 
+ *   - "@boris-marinov"
+ * 
+ * type: |
+ *   forall a, b:
+ *     (Validation a b) => Maybe b
+ */
+const validationToMaybe = (aValidation) =>
+  aValidation.matchWith({
     Failure:  () => Nothing(),
     Success:  ({ value }) => Just(value)
   });
-const { Just, Nothing } = require('folktale/data/maybe/core');
+
+
+module.exports = validationToMaybe;

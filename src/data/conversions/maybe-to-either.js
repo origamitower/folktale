@@ -12,8 +12,24 @@
 
 const { Left, Right } = require('folktale/data/either/core');
 
-module.exports = (aMaybe, failureValue) =>
+
+/*~
+ * Converts a Maybe to an Either.
+ * ---
+ * category: Converting data
+ * stability: experimental
+ * authors:
+ *   - "@boris-marinov"
+ * 
+ * type: |
+ *   forall a, b:
+ *     (Maybe a, b) => Either b a
+ */
+const maybeToEither = (aMaybe, failureValue) =>
   aMaybe.matchWith({
     Nothing: () => Left(failureValue),
     Just:    ({ value }) => Right(value)
   });
+
+
+module.exports = maybeToEither;

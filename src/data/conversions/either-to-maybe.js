@@ -10,11 +10,29 @@
 //
 //----------------------------------------------------------------------
 
-module.exports = (anEither) =>
+const { Just, Nothing } = require('folktale/data/maybe/core');
+
+
+/*~
+ * Converts an Either structure to a Maybe structure.
+ * 
+ * Left values are lost in the process.
+ * ---
+ * category: Converting data
+ * stability: experimental
+ * authors:
+ *   - "@boris-marinov"
+ * 
+ * type: |
+ *   forall a, b:
+ *     (Either a b) => Maybe b
+ */
+const eitherToMaybe = (anEither) =>
   anEither.matchWith({
     Left:  () => Nothing(),
     Right: ({ value }) => Just(value)
   });
 
-const { Just, Nothing } = require('folktale/data/maybe/core');
+
+module.exports = eitherToMaybe;
 

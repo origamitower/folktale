@@ -11,8 +11,24 @@
 //----------------------------------------------------------------------
 const { Success, Failure } = require('folktale/data/validation/core');
 
-module.exports = (aMaybe, failureValue) =>
+
+/*~
+ * Converts a Maybe to a Validation.
+ * ---
+ * category: Converting data
+ * stability: experimental
+ * authors:
+ *   - "@boris-marinov"
+ * 
+ * type: |
+ *   forall a, b:
+ *     (Maybe a, b) => Validation b a
+ */
+const maybeToValidation = (aMaybe, failureValue) =>
   aMaybe.matchWith({
     Nothing: () => Failure(failureValue),
     Just:    ({ value }) => Success(value)
   });
+
+
+module.exports = maybeToValidation
