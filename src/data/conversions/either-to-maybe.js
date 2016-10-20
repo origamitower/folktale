@@ -14,9 +14,19 @@ const { Just, Nothing } = require('folktale/data/maybe/maybe');
 
 
 /*~
- * Converts an Either structure to a Maybe structure.
+ * Converts an `Either` structure to a Maybe structure. `Left`s map to `Nothing`s,
+ * `Right`s map to `Just`s.
  * 
- * Left values are lost in the process.
+ * Not that `Left` values are lost in the conversion process, since failures
+ * in `Maybe` (the `Nothing` tag) don't have a value.
+ * 
+ * ## Example::
+ * 
+ *     const { Left, Right } = require('folktale/data/either');
+ *     const { Just, Nothing } = require('folktale/data/maybe');
+ *     eitherToMaybe(Left(1));  // ==> Nothing()
+ *     eitherToMaybe(Right(1)); // ==> Just(1) 
+ * 
  * ---
  * category: Converting from Either
  * stability: experimental

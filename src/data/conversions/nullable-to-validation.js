@@ -13,7 +13,19 @@ const { Success, Failure } = require('folktale/data/validation/validation');
 
 
 /*~
- * Converts a nullable value to a Validation.
+ * Converts a nullable value to a `Validation`. `null` and `undefined`
+ * map to `Failure`s, any other type maps to `Success`es.
+ * 
+ * A nullable is a value that may be any type, or `null`/`undefined`.
+ * 
+ * 
+ * ## Example::
+ * 
+ *     const { Failure, Success } = require('folktale/data/validation');
+ *     nullableToValidation(undefined); // ==> Failure(undefined)
+ *     nullableToValidation(null);      // ==> Failure(null)
+ *     nullableToValidation(1);         // ==> Success(1)
+ * 
  * ---
  * category: Converting from nullables
  * stability: experimental
