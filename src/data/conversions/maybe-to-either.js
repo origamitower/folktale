@@ -14,7 +14,21 @@ const { Left, Right } = require('folktale/data/either/either');
 
 
 /*~
- * Converts a Maybe to an Either.
+ * Converts a `Maybe` to an `Either`. `Nothing`s map to `Left`s, `Just`s map to
+ * `Right`s.
+ * 
+ * Note that since `Maybe`s don't hold a value for failures in the `Nothing` tag, 
+ * you must provide one to this function.
+ * 
+ * 
+ * ## Example::
+ * 
+ *     const { Left, Right } = require('folktale/data/either');
+ *     const { Nothing, Just } = require('folktale/data/maybe');
+ * 
+ *     maybeToEither(Nothing(), 2); // ==> Left(2)
+ *     maybeToEither(Just(1), 2);   // ==> Right(1)
+ * 
  * ---
  * category: Converting from Maybe
  * stability: experimental

@@ -14,7 +14,20 @@ const { Left, Right } = require('folktale/data/either/either');
 
 
 /*~
- * Converts a nullable value to an either.
+ * Converts a nullable value to an either. `null` and `undefined` map to
+ * `Left`s, any other value maps to `Right`s.
+ * 
+ * A nullable is a value that may be any type, or `null`/`undefined`.
+ * 
+ * 
+ * ## Example::
+ * 
+ *     const { Left, Right } = require('folktale/data/either');
+ * 
+ *     nullableToEither(undefined);  // ==> Left(undefined)
+ *     nullableToEither(null);       // ==> Left(null)
+ *     nullableToEither(1);          // ==> Right(1)
+ * 
  * ---
  * category: Converting from nullables
  * stability: experimental
