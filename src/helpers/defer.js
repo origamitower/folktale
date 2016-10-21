@@ -9,8 +9,8 @@
 
 const raise = (error) => { throw error };
 
-const defer = typeof setImmediate !== 'undefined' ?  setImmediate
-            : typeof process !== 'undefined'      ?  process.nextTick
-            : /* otherwise */                        setTimeout;
+const defer = typeof setImmediate !== 'undefined' ?  (f) => setImmediate(f)
+            : typeof process !== 'undefined'      ?  (f) => process.nextTick(f)
+            : /* otherwise */                        (f) => setTimeout(f, 0);
 
 module.exports = defer;

@@ -57,6 +57,10 @@ test-browser: compile compile-test
 test-sauce: compile compile-test
 	$(karma) start test/karma-sauce.js
 
+all-tests:
+	$(MAKE) test
+	$(karma) start test/karma-local.js
+
 documentation: compile
 	node tools/generate-docs.js
 
@@ -64,4 +68,4 @@ lint:
 	$(eslint) .
 
 
-.PHONY: help bundle compile compile-test clean test lint documentation
+.PHONY: help bundle compile compile-test clean test lint documentation test-minimal test-browser test-sauce all-tests
