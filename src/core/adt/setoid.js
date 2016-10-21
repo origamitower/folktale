@@ -12,6 +12,7 @@ const assertType = require('folktale/helpers/assertType');
 const flEquals = require('folktale/core/fantasy-land/equals');
 const fl = require('folktale/helpers/fantasy-land');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
+const copyDocs = require('folktale/helpers/copy-documentation');
 const { tagSymbol, typeSymbol } = require('./data');
 
 
@@ -402,10 +403,9 @@ const createDerivation = (valuesEqual) => {
     provideAliases(variant.prototype);
     return variant;
   };
-  if (process.env.FOLKTALE_DOCS !== 'false') {
-    derivation[Symbol.for('@@meta:magical')] = createDerivation[Symbol.for('@@meta:magical')];
-    derivation[Symbol.for('@@meta:magical')].type = '(Variant, ADT) => Void';
-  }
+  copyDocs(createDerivation, derivation, {
+    type: '(Variant, ADT) => Void'
+  });
 
 
   return derivation;

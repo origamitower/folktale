@@ -20,35 +20,34 @@ describe('core.fantasyLand', function() {
   describe('curried', function() {
 
     property('apply', 'applicative (json -> json)', 'applicative json', env, function(mf, ma) {
-      return _.apply(mf)(ma).equals(mf.ap(ma))
+      return _.apply(mf)(ma).equals(ma['fantasy-land/ap'](mf))
     })
 
-    property('concat', 'string', 'string', function(a, b)  {
-      return _.concat(b)(a) === (a.concat(b))
+    property('concat', 'semigroup string', 'semigroup string', env, function(a, b)  {
+      return _.concat(b)(a).equals((a['fantasy-land/concat'](b)))
     });
 
     property('chain', 'json -> monad json', 'monad json', env, function(mf, ma) {
-      return _.chain(mf)(ma).equals(ma.chain(mf))
+      return _.chain(mf)(ma).equals(ma['fantasy-land/chain'](mf))
     });
 
-    it('empty', function() {
-      var mock = { empty(){ return 1} }
-      assert(_.empty(mock) === mock.empty());
+    property('empty', 'monoid string', env, (m) => {
+      return _.empty(m).equals(m['fantasy-land/empty']());
     });
 
     property('map', 'json -> json', 'functor json', env, function(f, ma) {
-      return _.map(f)(ma).equals(ma.map(f))
+      return _.map(f)(ma).equals(ma['fantasy-land/map'](f))
     });
 
     property('of', 'json', 'functor json', env, function(a, ma) {
-      return _.of(ma)(a).equals(ma.of(a))
+      return _.of(ma)(a).equals(ma['fantasy-land/of'](a))
     });
 
     property('equals', 'functor json', 'functor json', env, function(a, b) {
-      return _.equals(b)(a) === a.equals(b)
+      return _.equals(b)(a) === a['fantasy-land/equals'](b)
     });
     property('bimap', 'bifunctor json', 'json -> json', 'json -> json', env, function(a, f, g) {
-      return _.bimap(f, g)(a).equals(a.bimap(f, g))
+      return _.bimap(f, g)(a).equals(a['fantasy-land/bimap'](f, g))
     });
   });
 
