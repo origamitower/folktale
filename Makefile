@@ -48,6 +48,9 @@ clean:
 test: clean compile compile-test
 	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd test/specs
 
+test-minimal:
+	FOLKTALE_ASSERTIONS=none $(mocha) --require babel-polyfill --reporter dot --ui bdd test/specs
+
 test-browser: compile compile-test
 	$(karma) start test/karma-local.js
 
