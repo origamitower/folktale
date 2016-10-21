@@ -7,8 +7,10 @@
 //
 //----------------------------------------------------------------------
 
+const deprecated = require('./warnDeprecation');
+
 module.exports = (methodName) => (result) => {
-  console.warn(`Type.${methodName}() is being deprecated in favour of Type['fantasy-land/${methodName}'](). 
+  deprecated(`Type.${methodName}() is being deprecated in favour of Type['fantasy-land/${methodName}'](). 
     Your data structure is using the old-style fantasy-land methods,
     and these won't be supported in Folktale 3`);
   return result;

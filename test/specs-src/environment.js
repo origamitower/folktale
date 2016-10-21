@@ -13,6 +13,7 @@
 const jsc = require('jsverify');
 const bless = require('jsverify/lib/arbitraryBless');
 const shrink = require('jsverify/lib/shrink');
+const { Text } = require('../helpers/simple-structures');
 
 //Accepts a random integer, and a size constraint, returns another integer that obeys the constraint.
 const applySizeConstraint = (num, max) => num % (max + 1);
@@ -29,10 +30,12 @@ const returns = (types) => (value) => bless({
 const { maybe, either, validation, future, task } = require('folktale').data
 
 module.exports = {
-  monad: returns([maybe, either]),
+  monad: returns([maybe, either, Text]),
   bifunctor: returns([validation, either]),
-  functor: returns([maybe, either, validation]),
-  applicative: returns([maybe, either, validation]),
+  functor: returns([maybe, either, validation, Text]),
+  applicative: returns([maybe, either, validation, Text]),
+  semigroup: returns([Text]),
+  monoid: returns([Text]),
   maybe: returns([maybe]),
   either: returns([either]),
   validation: returns([validation]),

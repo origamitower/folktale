@@ -8,17 +8,19 @@
 //----------------------------------------------------------------------
 
 function warnDeprecation(reason) {
-  const stack = new Error('').stack;
-  let offender;
-  if (stack) {
-    const lines = stack.split('\n');
-    offender = lines[3];
-  }
+  if (process.env.FOLKTALE_ASSERTIONS !== 'none') { 
+    const stack = new Error('').stack;
+    let offender;
+    if (stack) {
+      const lines = stack.split('\n');
+      offender = lines[3];
+    }
 
-  if (offender) {
-    console.warn(`${reason}\n    Blame: ${offender.trim()}`);
-  } else {
-    console.warn(reason);
+    if (offender) {
+      console.warn(`${reason}\n    Blame: ${offender.trim()}`);
+    } else {
+      console.warn(reason);
+    }
   }
 }
 
