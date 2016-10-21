@@ -23,7 +23,7 @@ help:
 	@echo "  compile ................ Compiles the project."
 	@echo "  clean .................. Removes build artifacts."
 	@echo "  test ................... Runs the tests for the project."
-	@echo "  test-browser ........... Runs the tests in your local Chrome/Firefox."
+	@echo "  test-browser ........... Runs the tests in PhantomJS."
 	@echo "  test-sauce ............. Runs the tests in SauceLabs (requires sauceconnect + env vars)."
 	@echo "  lint ................... Lints all source files."
 	@echo "  documentation .......... Builds the documentation from source."
