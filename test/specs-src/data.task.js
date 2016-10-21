@@ -137,11 +137,11 @@ describe('Data.Task', () => {
       const a = Task.task(r => {
         start[0] = true;
         return setTimeout(_ => { done[0] = true; r.resolve(1); }, 150)
-      }, { cleanup: clearTimeout });
+      }, { cleanup: x => clearTimeout(x) });
       const b = Task.task(r => {
         start[1] = true;
         return setTimeout(_ => { done[1] = true; r.resolve(2); }, 100)
-      }, { cleanup: clearTimeout });
+      }, { cleanup: x => clearTimeout(x) });
 
       const p = a.or(b).run().promise();
       $ASSERT(start == [true, true]);
@@ -216,13 +216,13 @@ describe('Data.Task', () => {
       const a = Task.task(r => {
         return setTimeout(_ => r.resolve(1), 150);
       }, {
-        cleanup: clearTimeout
+        cleanup: x => clearTimeout(x)
       });
 
       const b = Task.task(r => {
         return setTimeout(_ => r.resolve(2), 100);
       }, {
-        cleanup: clearTimeout
+        cleanup: x => clearTimeout(x)
       });
 
       const val = await a.and(b).run().promise();

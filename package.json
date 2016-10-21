@@ -4,7 +4,7 @@
   "description": "A suite of libraries for generic functional programming in JavaScript that allows you to write elegant modular applications with fewer bugs and more reuse.",
   "main": "./index.js",
   "scripts": {
-    "test": "make test"
+    "test": "make all-tests"
   },
   "repository": {
     "type": "git",
@@ -44,7 +44,7 @@
     "babel-preset-es2016": "^6.11.3",
     "babel-preset-es2017": "^6.14.0",
     "babel-runtime": "^6.11.6",
-    "browserify": "^13.1.0",
+    "browserify": "github:robotlolita/node-browserify#patch/assert",
     "es5-shim": "^4.5.9",
     "es6-shim": "^0.35.1",
     "eslint": "^2.7.0",
