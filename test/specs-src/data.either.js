@@ -18,11 +18,11 @@ describe('Data.Either', function() {
 
   describe('constructors', () => {
     property('try#Left', 'json', (a) => {
-        return _.try((a) => {throw a })(a).equals(_.Left(a))
+        return _.try(() => {throw a }).equals(_.Left(a))
     });
 
     property('try#Right', 'json', (a) => {
-        return _.try(() => (a))(a).equals(_.Right(a))
+        return _.try(() => (a)).equals(_.Right(a))
     }); 
   });
 
