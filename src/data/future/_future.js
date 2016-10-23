@@ -341,10 +341,10 @@ class Future {
    *     const { of, rejected } = require('folktale/data/future');
    * 
    *     of(1).toString(); 
-   *     // ==> 'folktale:Future(Resolved(1), 0 listeners)'
+   *     // ==> 'folktale:Future(folktale:ExecutionState.Resolved({ value: 1 }), 0 listeners)'
    *     
    *     rejected(1).toString();
-   *     // ==> 'folktale:Future(Rejected(1), 0 listeners)'
+   *     // ==> 'folktale:Future(folktale:ExecutionState.Rejected({ reason: 1 }), 0 listeners)'
    * 
    * ---
    * category: Debugging
