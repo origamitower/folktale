@@ -37,8 +37,8 @@ describe('Data.Either', function() {
   });
 
   describe('Applicative', () => {
-    property('of', 'json', 'json', (a, b) => {
-      return (a === b) === (_.of(a).equals(_.of(b)))
+    property('of', 'json', 'json', (a) => {
+      return _.of(a).equals(_.of(a))
     });
 
     property('apply', 'json', 'json -> json', (a, f) => {

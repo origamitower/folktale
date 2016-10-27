@@ -200,8 +200,8 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  *     // This is fine, because all values are either Setoids or primitives
  *     Id(Id(1)).equals(Id(Id(1))); // ==> true
  * 
- *     // This is not fine, because it compares `[1] === [1]`
- *     Id([1]).equals(Id([1]));     // ==> false
+ *     // This is not fine, because it compares `{} === {}`
+ *     Id({}).equals(Id({}));     // ==> false
  * 
  * To handle complex JS values, one must provide their own deep equality
  * function. Folktale does not have a deep equality function yet, but
@@ -340,7 +340,27 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  * type: |
  *   (('a, 'a) => Boolean) => (Variant, ADT) => Void
  */
+ 
+
 const createDerivation = (valuesEqual) => {
+
+  const arrayEquals = (a, b) => {
+    /*~
+     * Tests if two arrays are equal.
+     * ---
+     * type: ([a], [a]) => Boolean
+     */
+    if (a.length !== b.length) {
+      return false
+    }
+    for (let i = 0; i <a.length; i++) {
+      if(!equals(a[i], b[i])) {
+        return false  
+      }
+    }
+    return true
+  }
+
   /*~
    * Tests if two objects are equal.
    * ---
@@ -358,9 +378,18 @@ const createDerivation = (valuesEqual) => {
       else              return false;
     }
 
+    // compare arrays (by comparing their elements)
+    const leftArray  = Array.isArray(a);
+    const rightArray = Array.isArray(b);
+    if(leftArray) {
+      if (rightArray)  return arrayEquals(b, a);
+      else              return false;
+    }
+
     // fall back to the provided equality
     return valuesEqual(a, b);
   };
+
 
 
   /*~
