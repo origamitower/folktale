@@ -13,5 +13,7 @@ module.exports = {
   filterM: require('./filter-m'),
   compose: require('./compose'),
   rightCompose: require('./right-compose'),
-  join: require('./join')
+  join: require('./join'),
+  liftM2: require('./lift-m2.js'),
+  liftMN: require('./lift-mn.js')
 };

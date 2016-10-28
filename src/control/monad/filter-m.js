@@ -7,17 +7,17 @@
 //
 //----------------------------------------------------------------------
 
-const curry = require('folktale/core/lambda/curry/')
-module.exports = curry(3, (mConstructor, f, listM) => {
-  return listM.reduce((mList, element) => mList.chain((list) =>
-    f(element).chain((include) => {
-      if (include) {
-        list.push(element)
-        return mConstructor.of(list)
-      } else {
-        return mList
-      }
-    }))
-  , mConstructor.of([]))
+const curry = require('folktale/core/lambda/curry/');
 
-})
+module.exports = curry(3, (m, f, list) =>
+  list.reduce((mList, a) => 
+      mList.chain((list) =>
+        f(a).chain((includeA) => {
+          if (includeA) {
+            list.push(a);
+            return m.of(list);
+          } else {
+            return mList;
+          }
+        }))
+  , m.of([])));

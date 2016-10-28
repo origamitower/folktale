@@ -7,6 +7,5 @@
 //
 //----------------------------------------------------------------------
 //
-const compose = require('./compose')
-const curry = require('folktale/core/lambda/curry/')
-module.exports = curry(3, (f, g, a) => compose(g, f, a))
+const compose = require('./compose');
+module.exports = (f, g) => (a) => compose(g, f)(a);

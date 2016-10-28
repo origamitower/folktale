@@ -8,12 +8,13 @@
 //----------------------------------------------------------------------
 //
 
-const curry = require('folktale/core/lambda/curry/')
-module.exports = curry(2, (mConstructor, listM) => 
-  listM.reduce((mList, mElement) => 
+const curry = require('folktale/core/lambda/curry/');
+
+module.exports = curry(2, (m, listM) => 
+  listM.reduce((mList, mA) => 
     mList.chain((list) => 
-      mElement.chain((element) => {
-        list.push(element)
-        return mConstructor.of(list)
+      mA.chain((a) => {
+        list.push(a);
+        return m.of(list);
       }))
-  , mConstructor.of([])))
+  , m.of([])));

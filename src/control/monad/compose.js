@@ -7,7 +7,4 @@
 //
 //----------------------------------------------------------------------
 //
-const curry = require('folktale/core/lambda/curry/')
-module.exports = curry(3, (f, g, a) => {
-  return f(a).chain(g)
-})
+module.exports = (f, g) => (a) => f(a).chain(g);

@@ -20,8 +20,8 @@ describe('control.monad', () => {
   property('compose', 'json -> monad json', 'json -> monad json', 'json', env, (f, g, a) => 
     _.compose(f, g)(a).equals(f(a).chain(g))
   )
-  property('rightCompose', 'json -> monad json', 'json -> monad json', 'json', env, (f, g, a) => 
-    _.compose(f, g)(a).equals(g(a).chain(f))
+  property('rightCompose', 'json -> monad json', 'json -> monad json', 'json', env, (f, g, a) =>
+    _.rightCompose(f, g)(a).equals(g(a).chain(f))
   )
   property('sequence', 'json', 'json', 'json', 'monad json', env, (a, b, c, m) =>
     _.sequence(m, [m.of(a), m.of(b), m.of(c)]).equals(m.of([a, b, c]))
@@ -35,5 +35,13 @@ describe('control.monad', () => {
   property('join', 'monad json', env, (ma) => 
     _.join(ma.of(ma)).equals(ma)
   )
+  property('liftM2', 'monad json', 'json -> json -> json', 'json', 'json', env, (m, fCurried, a, b) => {
+    const f = (a, b) => fCurried(a)(b) 
+    return _.liftM2(f)(m.of(a), m.of(b)).equals(m.of(f(a, b)))
+  })
+  property('liftMN', 'monad json', 'json -> json -> json', 'json', 'json', 'json', env, (m, fCurried, a, b, c) => {
+    const f = (a, b) => fCurried(a)(b) 
+    return _.liftMN(f)(m.of(a), m.of(b), m.of(c)).equals(m.of(f(a, b, c)))
+  })
 })
 
