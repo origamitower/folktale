@@ -18,7 +18,7 @@ const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const Maybe = data('folktale:Data.Maybe', {
   Nothing()   { },
   Just(value) { return { value } }
-}).derive(setoid, show, setoid);
+}).derive(setoid, show);
 
 const { Nothing, Just } = Maybe;
 
