@@ -10,7 +10,7 @@
 
 const aliases = {
   equals: {
-    /*
+    /*~
      * Fantasy Land's Setoid `equals'.
      * ---
      * category: Fantasy Land
@@ -24,7 +24,7 @@ const aliases = {
   },
 
   concat: {
-    /*
+    /*~
      * Fantasy Land's Semigroup `concat`.
      * ---
      * category: Fantasy Land
@@ -38,7 +38,7 @@ const aliases = {
   },
 
   empty: {
-    /*
+    /*~
      * Fnatasy Land's Monoid `empty`.
      * ---
      * category: Fantasy Land
@@ -52,7 +52,7 @@ const aliases = {
   },
 
   map: {
-    /*
+    /*~
      * Fantasy Land's Functor `map`.
      * ---
      * category: Fantasy Land
@@ -66,7 +66,7 @@ const aliases = {
   },
 
   apply: {
-    /*
+    /*~
      * Fantasy Land's Apply `ap`
      * ---
      * category: Fantasy Land
@@ -78,7 +78,7 @@ const aliases = {
       return this.apply(that);
     },
 
-    /*
+    /*~
      * Fantasy Land's Apply `ap`
      * ---
      * category: Fantasy Land
@@ -92,7 +92,7 @@ const aliases = {
   },
 
   of: {
-    /*
+    /*~
      * Fantasy Land's Applicative `of`
      * ---
      * category: Fantasy Land
@@ -107,7 +107,7 @@ const aliases = {
   },
 
   reduce: {
-    /*
+    /*~
      * Fantasy Land’s Foldable `reduce`.
      * ---
      * category: Fantasy Land
@@ -122,7 +122,7 @@ const aliases = {
   },
 
   traverse: {
-    /*
+    /*~
      * Fantasy Land’s Traversable `traverse`.
      * ---
      * category: Fantasy Land
@@ -137,7 +137,7 @@ const aliases = {
   },
 
   chain: {
-    /*
+    /*~
      * Fantasy Land’s Chain `chain`.
      * ---
      * category: Fantasy Land
@@ -152,7 +152,7 @@ const aliases = {
   },
 
   chainRecursively: {
-    /*
+    /*~
      * Fantasy Land’s ChainRec `chainRec`.
      * ---
      * category: Fantasy Land
@@ -168,7 +168,7 @@ const aliases = {
       return this.chainRecursively(step, initial);
     },
 
-    /*
+    /*~
      * Fantasy Land’s ChainRec `chainRec`.
      * ---
      * category: Fantasy Land
@@ -186,7 +186,7 @@ const aliases = {
   },
 
   extend: {
-    /*
+    /*~
      * Fantasy Land’s Extend `extend`
      * ---
      * category: Fantasy Land
@@ -201,7 +201,7 @@ const aliases = {
   },
 
   extract: {
-    /*
+    /*~
      * Fantasy Land’s Comonad `extract`
      * ---
      * category: Fantasy Land
@@ -216,7 +216,7 @@ const aliases = {
   },
 
   bimap: {
-    /*
+    /*~
      * Fantasy Land’s Bifunctor `bimap`
      * ---
      * category: Fantasy Land
@@ -231,7 +231,7 @@ const aliases = {
   },
 
   promap: {
-    /*
+    /*~
      * Fantasy Land’s Profunctor `promap`
      * ---
      * category: Fantasy Land
