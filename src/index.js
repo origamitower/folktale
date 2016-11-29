@@ -20,6 +20,7 @@
  * ---
  * name        : module folktale
  * category    : Functional Programming
+ * module      : folktale
  */
 module.exports = {
   core: require('./core'),
