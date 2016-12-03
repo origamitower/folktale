@@ -3,7 +3,7 @@ const env = require('./environment');
 
 const Task = require('folktale/data/task');
 const Future = require('folktale/data/future');
-const { _ExecutionState, Deferred } = Future;
+const { _ExecutionState, _Deferred: Deferred } = Future;
 const { Resolved, Rejected, Cancelled } = _ExecutionState;
 
 const cancelled = () => {

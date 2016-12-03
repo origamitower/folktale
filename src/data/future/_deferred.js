@@ -50,6 +50,51 @@ const moveToState = (deferred, newState) => {
 // --[ Implementation ]------------------------------------------------
 /*~
  * Deferreds allow creating containers for eventual values.
+ * 
+ * A deferred is a low-level structure to construct containers of
+ * eventual values, and fill them with a value at a later point in
+ * time. Most uses of deferred are better addressed by the `Task`
+ * object.
+ * 
+ * ## Example::
+ * 
+ *     const delay = (ms) => {
+ *       const deferred = new Deferred();
+ *       setTimeout(() => deferred.resolve(), ms);
+ *       return deferred.promise();
+ *     };
+ * 
+ *     delay(100).then(() => {
+ *       // do something after 100 ms
+ *     });
+ * 
+ * 
+ * ## Why not use Deferreds?
+ * 
+ * As mentioned above, a deferred is a low-level structure. While
+ * it does allow cancellation and converting to a higher-level
+ * structure (like Future or Promise), it does not provide important
+ * facilities for asynchronous concurrency, like resource handling.
+ * 
+ * In this sense, a Task provides a simpler interface and more
+ * guarantees for processes that must allocate resources and
+ * collect them afterwards. For example, a cancellable delay
+ * would look like this with a Task::
+ * 
+ *     const { task } = require('folktale/data/task');
+ *     
+ *     const delay = (ms) => task(resolver => {
+ *       return setTimeout(() => resolver.resolve(), ms);
+ *     }, {
+ *       onCancelled: (timer) => { clearTimeout(timer) }
+ *     });
+ * 
+ *     const execution = delay(100).run();
+ *     execution.promise().then(() => {
+ *       // do something after 100 ms
+ *     });
+ *     execution.cancel(); // cancels the execution and collects the timer
+ * 
  */
 function Deferred() {
   define(this, '_state', Pending());

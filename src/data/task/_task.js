@@ -9,7 +9,7 @@
 
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const defer = require('folktale/helpers/defer');
-const Deferred = require('folktale/data/future/deferred');
+const Deferred = require('folktale/data/future/_deferred');
 const TaskExecution = require('./_task-execution');
 
 

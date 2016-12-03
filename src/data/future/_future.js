@@ -10,7 +10,7 @@
 // --[ Dependencies ]--------------------------------------------------
 const define = require('folktale/helpers/define');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
-const Deferred = require('./deferred');
+const Deferred = require('./_deferred');
 const { Pending, Resolved, Rejected } = require('./_execution-state');
 
 
@@ -20,6 +20,10 @@ const { Pending, Resolved, Rejected } = require('./_execution-state');
 /*~
  * Represents an eventual value, like Promise, but without a recursive
  * `.then`.
+ * 
+ * Note that Future only allows users to create resolved futures. In
+ * order to create Futures that are resolved asynchronously one must
+ * use the Deferred or Task objects.
  * 
  * ---
  * category: Asynchronous concurrency
