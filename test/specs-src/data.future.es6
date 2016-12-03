@@ -3,7 +3,7 @@ const { property, forall} = require('jsverify');
 const env = require('./environment');
 
 const Future = require('folktale/data/future');
-const { _ExecutionState, Deferred } = Future;
+const { _ExecutionState, _Deferred: Deferred } = Future;
 const { Resolved, Rejected } = _ExecutionState;
 
 describe('Data.Future', function() {
