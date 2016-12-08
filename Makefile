@@ -58,7 +58,7 @@ compile-test:
 compile-documentation: $(DOCS_TGT)
 
 clean:
-	rm -rf core helpers data test/specs test/helpers index.js
+	rm -rf core helpers data test/specs test/helpers index.js docs/build
 
 test: clean compile compile-test
 	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd test/specs
