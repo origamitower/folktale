@@ -53,6 +53,7 @@
     "es6-shim": "^0.35.1",
     "eslint": "^2.7.0",
     "eslint-config-origamitower": "^1.2.0",
+    "glob": "^7.1.1",
     "hyperscript": "^2.0.2",
     "js-yaml": "^3.7.0",
     "jsverify": "^0.7.1",

@@ -10,5 +10,19 @@
 // This module runs all example-based tests defined in the documentation
 const metamagical = require('metamagical-interface');
 const defineTests = require('metamagical-mocha-bridge')(metamagical, describe, it);
+const glob = require('glob').sync;
+const path = require('path');
 
-defineTests(require('folktale'));
+
+const makeTests = (langDir, lang) => {
+  describe(`${lang} documentation examples`, () => {
+    require.cache = {};
+    const folktale = require('folktale');
+    glob(path.join(__dirname, '../../docs/build/', langDir, '**/*.js')).forEach(f => require(f)(metamagical, folktale));
+
+    defineTests(folktale);
+  });
+};
+
+
+makeTests('en', 'English');
