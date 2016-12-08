@@ -13,3 +13,4 @@ npm-debug.log
 *.un~
 *.swp
 /dist/
+/docs/build/
