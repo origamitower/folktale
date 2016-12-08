@@ -9,7 +9,18 @@ uglify     := $(bin)/uglifyjs
 karma      := $(bin)/karma
 
 
+# -- [ CONFIGURATION ]--------------------------------------------------
+DOCS_SRC_DIR := docs/source
+DOCS_TGT_DIR := docs/build
+DOCS_SRC := $(shell find $(DOCS_SRC_DIR)/ -name '*.md')
+DOCS_TGT := ${DOCS_SRC:$(DOCS_SRC_DIR)/%.md=$(DOCS_TGT_DIR)/%.js}
+
+
 # -- [ COMPILATION ] ---------------------------------------------------
+$(DOCS_TGT_DIR)/%.js: $(DOCS_SRC_DIR)/%.md
+	mkdir -p $(dir $@)
+	node tools/markdown-to-mm.js $< | $(babel) -f $< > $@
+
 node_modules: package.json
 	npm install
 
@@ -61,8 +72,8 @@ all-tests:
 	$(MAKE) test
 	$(karma) start test/karma-local.js
 
-documentation: compile
-	node tools/generate-docs.js
+documentation: compile $(DOCS_TGT)
+#	node tools/generate-docs.js
 
 lint:
 	$(eslint) .
