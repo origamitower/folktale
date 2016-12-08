@@ -6,5 +6,6 @@
     "transform-assertion-comments",
     ["babel-plugin-module-alias", [
       { "src": "./", "expose": "folktale" }
-    ]]]
+    ]]
+  ]
 }
