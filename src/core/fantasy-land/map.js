@@ -17,7 +17,6 @@ const isNew = (a) => typeof a[flMap] === 'function';
 const isOld = (a) => typeof a.map === 'function';
 
 /*~
- * Transforms the contents of a Functor.
  * ---
  * category: Fantasy Land
  * stability: experimental
@@ -37,7 +36,6 @@ const map = (functor, transformation) =>
 
 
 /*~
- * Transforms the contents of a Functor.
  * ---
  * category: Convenience
  * stability: experimental
@@ -56,7 +54,6 @@ map.curried = curry(2, (transformation, functor) =>
 
 
 /*~
- * Transforms the contents of a Functor.
  * ---
  * category: Convenience
  * stability: experimental

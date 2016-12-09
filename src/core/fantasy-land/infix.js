@@ -9,8 +9,6 @@
 
 
 /*~
- * Method versions of the fantasy-land functions, supporting the
- * `structure::fn(...)` syntax.
  * ---
  * name: module folktale/core/fantasy-land/infix
  * category: Convenience

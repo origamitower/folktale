@@ -18,7 +18,6 @@ const isOld = (a) => typeof a.bimap === 'function';
 
 
 /*~
- * Maps one function over each side of a Bifunctor.
  * ---
  * category: Fantasy Land
  * stability: experimental
@@ -38,7 +37,6 @@ const bimap = (bifunctor, transformLeft, transformRight) =>
 
 
 /*~
- * Maps one function over each side of a Bifunctor.
  * ---
  * category: Convenience
  * stability: experimental
@@ -57,7 +55,6 @@ bimap.curried = curry(3, (transformLeft, transformRight, bifunctor) =>
 
 
 /*~
- * Maps one function over each side of a Bifunctor.
  * ---
  * category: Convenience
  * stability: experimental

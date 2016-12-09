@@ -9,7 +9,6 @@
 
 
 /*~
- * Curried versions of the fantasy-land functions.
  * ---
  * name: module folktale/core/fantasy-land/curried
  * category: Convenience
