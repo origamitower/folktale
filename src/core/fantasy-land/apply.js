@@ -16,7 +16,6 @@ const isNew = (a) => typeof a[ap] === 'function';
 const isOld = (a) => typeof a.ap === 'function';
 
 /*~
- * Applies the function inside an applicative to the value of another applicative.
  * ---
  * category: Fantasy Land
  * stability: experimental
@@ -36,7 +35,6 @@ const apply = (applicativeFunction, applicativeValue) =>
 
 
 /*~
- * Applies the function inside an applicative to the value of another applicative.
  * ---
  * category: Convenience
  * stability: experimental
@@ -53,7 +51,6 @@ apply.curried = curry(2, apply);
 
 
 /*~
- * Applies the function inside an applicative to the value of another applicative.
  * ---
  * category: Convenience
  * stability: experimental

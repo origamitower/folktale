@@ -20,7 +20,6 @@ const isCtorOld = (a) => typeof a.constructor.empty === 'function';
 
 
 /*~
- * Returns the identity object for a monoid.
  * ---
  * category: Fantasy Land
  * stability: experimental
@@ -42,7 +41,6 @@ const empty = (monoid) =>
 
 
 /*~
- * Returns the identity object for a monoid.
  * ---
  * category: Convenience
  * stability: experimental
@@ -59,7 +57,6 @@ empty.curried = curry(1, empty);
 
 
 /*~
- * Returns the identity object for a monoid.
  * ---
  * category: Convenience
  * stability: experimental

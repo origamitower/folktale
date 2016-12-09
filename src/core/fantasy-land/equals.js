@@ -18,7 +18,6 @@ const isOld = (a) => typeof a.equals === 'function';
 
 
 /*~
- * Compares two setoids for equality.
  * ---
  * category: Fantasy Land
  * stability: experimental
@@ -38,7 +37,6 @@ const equals = (setoidLeft, setoidRight) =>
 
 
 /*~
- * Compares two setoids for equality.
  * ---
  * category: Convenience
  * stability: experimental
@@ -57,7 +55,6 @@ equals.curried = curry(2, (setoidRight, setoidLeft) =>
 
 
 /*~
- * Compares two setoids for equality.
  * ---
  * category: Convenience
  * stability: experimental

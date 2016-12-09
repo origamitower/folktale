@@ -20,7 +20,6 @@ const isCtorOld = (a) => typeof a.constructor.of === 'function';
 
 
 /*~
- * Constructs an applicative containing the given value.
  * ---
  * category: Fantasy Land
  * stability: experimental
@@ -42,7 +41,6 @@ const of = (applicative, value) =>
 
 
 /*~
- * Constructs an applicative containing the given value.
  * ---
  * category: Convenience
  * stability: experimental
@@ -59,7 +57,6 @@ of.curried = curry(2, of);
 
 
 /*~
- * Constructs an applicative containing the given value.
  * ---
  * category: Convenience
  * stability: experimental

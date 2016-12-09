@@ -17,7 +17,6 @@ const isOldSemigroup = (a) => typeof a.concat === 'function';
 
 
 /*~
- * Joins two semigroups.
  * ---
  * category: Fantasy Land
  * stability: experimental
@@ -37,7 +36,6 @@ const concat = (semigroupLeft, semigroupRight) =>
 
 
 /*~
- * Joins two semigroups.
  * ---
  * category: Convenience
  * stability: experimental
@@ -56,7 +54,6 @@ concat.curried = curry(2, (semigroupRight, semigroupLeft) =>
 
 
 /*~
- * Joins two semigroups.
  * ---
  * category: Convenience
  * stability: experimental

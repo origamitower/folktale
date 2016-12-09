@@ -17,7 +17,6 @@ const isOld = (a) => typeof a.chain === 'function';
 
 
 /*~
- * Transforms a monad with an unary function.
  * ---
  * category: Fantasy Land
  * stability: experimental
@@ -37,7 +36,6 @@ const chain = (monad, transformation) =>
 
 
 /*~
- * Transforms a monad with an unary function.
  * ---
  * category: Convenience
  * stability: experimental
