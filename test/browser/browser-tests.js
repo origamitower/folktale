@@ -13,4 +13,3 @@ require('../specs/data.future');
 require('../specs/data.maybe');
 require('../specs/data.task');
 require('../specs/data.validation');
-require('../specs/documentation');

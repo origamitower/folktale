@@ -464,8 +464,6 @@ and ADT, and providing new functionality for that variant.
 If one wanted to define a JSON serialisation for each variant, for example,
 they could do so by using the `derive` functionality::
 
-    const data = require('folktale/core/adt/data');
-
     function ToJSON(variant, adt) {
       var { tag, type } = variant;
       variant.prototype.toJSON = function() {
