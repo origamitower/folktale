@@ -10,6 +10,11 @@
 //
 //----------------------------------------------------------------------
 
+/*~
+ * ---
+ * name: module folktale/dta/maybe
+ * category: Modelling failures
+ */
 module.exports = {
   ...require('./maybe'),
   fromEither: require('folktale/data/conversions/either-to-maybe'),
