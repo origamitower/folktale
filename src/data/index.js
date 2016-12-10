@@ -12,7 +12,6 @@
 
 
 /*~
- * Implements common functional data structures in JavaScript.
  * ---
  * name: module folktale/data
  * category: Data Structures
