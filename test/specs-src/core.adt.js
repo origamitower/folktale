@@ -166,6 +166,9 @@ describe('Core.ADT', () => {
     property('Similar simple values are equal', 'json', (a) => {
       return A(a).equals(A(a))
     });
+    property('Similar array values are equal', 'json', (a, b) => {
+      return A([a, b]).equals(A([a, b]))
+    });
     property('Similar composite values are equal', 'json', (a) => {
       return A(B(a)).equals(A(B(a)))
     });
