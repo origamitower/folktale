@@ -15,8 +15,10 @@ in `Maybe` (the `Nothing` tag) don't have a value.
 
 ## Example::
 
+    const eitherToMaybe = require('folktale/data/conversions/either-to-maybe');
     const { Left, Right } = require('folktale/data/either');
     const { Just, Nothing } = require('folktale/data/maybe');
+    
     eitherToMaybe(Left(1));  // ==> Nothing()
     eitherToMaybe(Right(1)); // ==> Just(1) 
 
@@ -30,6 +32,7 @@ to `Success`es.
 
 ## Example::
 
+    const eitherToValidation = require('folktale/data/conversions/either-to-validation');
     const { Left, Right } = require('folktale/data/either');
     const { Failure, Success } = require('folktale/data/validation');
 
@@ -49,6 +52,7 @@ you must provide one to this function.
 
 ## Example::
 
+    const maybeToEither = require('folktale/data/conversions/maybe-to-either');
     const { Left, Right } = require('folktale/data/either');
     const { Nothing, Just } = require('folktale/data/maybe');
 
@@ -67,6 +71,7 @@ must provide one for the validation.
 
 ## Example::
 
+    const maybeToValidation = require('folktale/data/conversions/maybe-to-validation');
     const { Failure, Success } = require('folktale/data/validation');
     const { Nothing, Just } = require('folktale/data/maybe');
 
@@ -85,6 +90,7 @@ A nullable is a value that may be any type, or `null`/`undefined`.
 
 ## Example::
 
+    const nullableToEither = require('folktale/data/conversions/nullable-to-either');
     const { Left, Right } = require('folktale/data/either');
 
     nullableToEither(undefined);  // ==> Left(undefined)
@@ -104,6 +110,7 @@ the original value was `null` or `undefined` after the conversion.
 
 ## Example::
 
+    const nullableToMaybe = require('folktale/data/conversions/nullable-to-maybe');
     const { Nothing, Just } = require('folktale/data/maybe');
 
     nullableToMaybe(undefined);  // ==> Nothing()
@@ -122,7 +129,9 @@ A nullable is a value that may be any type, or `null`/`undefined`.
 
 ## Example::
 
+    const nullableToValidation = require('folktale/data/conversions/nullable-to-validation');
     const { Failure, Success } = require('folktale/data/validation');
+    
     nullableToValidation(undefined); // ==> Failure(undefined)
     nullableToValidation(null);      // ==> Failure(null)
     nullableToValidation(1);         // ==> Success(1)
@@ -136,6 +145,7 @@ Converts a `Validation` to an `Either`. `Failure`s map to `Left`s,
 
 ## Example::
 
+    const validationToEither = require('folktale/data/conversions/validation-to-either');
     const { Left, Right } = require('folktale/data/either');
     const { Failure, Success } = require('folktale/data/validation');
 
@@ -155,6 +165,7 @@ hold any values.
 
 ## Example::
 
+    const validationToMaybe = require('folktale/data/conversions/validation-to-maybe');
     const { Failure, Success } = require('folktale/data/validation');
     const { Nothing, Just } = require('folktale/data/maybe');
 
