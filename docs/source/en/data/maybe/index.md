@@ -180,9 +180,124 @@ values:
     first([]).map(render);
     // ==> Maybe.Nothing()
     
+
+### Sequencing computations
+
+Sometimes the functions we want to use to transform the value can also fail. We
+can't just use `.map()` here since that'd put the resulting Maybe inside of
+another Maybe value::
+
+    const Maybe = require('folktale/data/maybe');
     
+    function first(list) {
+      return list.length > 0 ?  Maybe.Just(list[0])
+      :      /* otherwise */    Maybe.Nothing();
+    }
+    
+    function second(list) {
+      return list.length > 1 ?  Maybe.Just(list[1])
+      :      /* otherwise */    Maybe.Nothing();
+    }
+
+    function render(item) {
+      return ['item', ['title', item.title]];
+    }
+
+    first([{ title: 'Hello' }]).map(render);
+    // ==> Maybe.Just(['item', ['title', 'Hello']])
+    
+    first([{ title: 'Hello' }]).map(render)
+                               .map(second);
+    // ==> Maybe.Just(Maybe.Just(['title', 'Hello']))
+      
+Ideally we'd like to get back `Maybe.Just(['title', 'Hello'])`, but `.map()`
+isn't the method for that. Instead, we can use the `.chain()` method. `.chain()`
+is a method that operates on Maybe values, and expects a function that also
+returns a Maybe value. This return value is then considered the whole result of
+the operation. Like `.map()`, `.chain()` only applies its function argument to
+`Just` cases::
+
+    first([{ title: 'Hello' }]).map(render)
+                               .chain(second);
+    // ==> Maybe.Just(['title', 'Hello'])
+    
+    first([]).map(render).chain(second);
+    // ==> Maybe.Nothing()
     
 
+## Error handling
 
+So far we've seen how to use values that are wrapped in a Maybe, but if the
+purpose of this structure is to represent something that might have failed, how
+do we handle those failures?
 
+Well, a simple form of error handling is the `.getOrElse(default)` method,
+covered in the previous sections, which allows us to extract a value from the
+Maybe structure, if it exists, or get a default value otherwise. 
 
+This doesn't help much if we need to do something in response to a failure,
+though. So, instead, we have the `.orElse(handler)` method, which behaves quite
+similarly to the `.chain()` method covered previously, except it executes its
+handler on `Nothing`s, rather than on `Just`s. We can use this to recover from
+errors::
+
+    const Maybe = require('folktale/data/maybe');
+    
+    function first(list) {
+      return list.length > 0 ?  Maybe.Just(list[0])
+      :      /* otherwise */    Maybe.Nothing();
+    }
+    
+    let nextId = 1;
+    
+    function issueError() {
+      return Maybe.Just(`Error #${nextId++}`);
+    }
+    
+    first([1]).orElse(issueError);
+    // ==> Maybe.Just(1)
+    
+    first([]).orElse(issueError);
+    // ==> Maybe.Just('Error #1') 
+
+Note that the major difference between this and `.getOrElse()` is that the
+handler function only gets ran on failure, whereas the expression in
+`.getOrElse()` is always executed::
+
+    nextId; // ==> 2
+
+    first([1]).getOrElse(issueError());
+    // ==> Maybe.Just(1)
+    
+    nextId; // ==> 3
+    
+
+## Pattern matching
+
+As with other union structures in Folktale, Maybe provides a `.matchWith()`
+method to perform a limited form of *pattern matching*. Pattern matching allows
+one to specify a piece of code for each case in a structure, like an `if/else`
+or `switch`, but specific to that structure.
+
+We could use `.matchWith()` to run different computations depending on whether a
+Maybe value represents a success or a failure, for example, without the
+requirement of having to return a Maybe::
+
+    const Maybe = require('folktale/data/maybe');
+    
+    function first(list) {
+      return list.length > 0 ?  Maybe.Just(list[0])
+      :      /* otherwise */    Maybe.Nothing();
+    }
+
+    first([1]).matchWith({
+      Just: ({ value }) => `Found: ${value}`,
+      Nothing: () => 'Nothing was found'
+    });
+    // ==> 'Found: 1'
+    
+    first([1]).matchWith({
+      Just: ({ value }) => `Found: ${value}`,
+      Nothing: () => 'Nothing was found'
+    });
+    // ==> 'Nothing was found'
