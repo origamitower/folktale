@@ -39,7 +39,7 @@ const parseJs = (source, options = {}) => {
   try {
     return babylonParse(source, options);
   } catch (e) {
-    const lines = source.split(/\r\n|\n\r|\r|\n/); 
+    const lines = source.split(/\r\n|\n\r|\r|\n/);
     const prev = lines.slice(Math.max(e.loc.line - 2, 1) - 1, e.loc.line - 1);
     const line = lines[e.loc.line - 1];
     const next = lines.slice(e.loc.line, e.loc.line + 2);
@@ -49,7 +49,7 @@ const parseJs = (source, options = {}) => {
 ${prev.join('\n')}
 ${line}
 ${' '.repeat(e.loc.column)}^
-${next.join('\n')} 
+${next.join('\n')}
 `);
   }
 };
@@ -108,9 +108,10 @@ const withMetaFD = parseJs(__metamagical_withMeta.toString()).program.body[0];
 
 // --[ Parser ]--------------------------------------------------------
 const classifyLine = (line) =>
-  /^\@annotate:/.test(line) ? ['Entity', line.match(/^\@annotate:\s*(.+)/m)[1]]
-: /^---+\s*$/.test(line)    ? ['Separator']
-: /* otherwise */             ['Line', line];
+  /^\@annotate:/.test(line)       ? ['Entity', line.match(/^\@annotate:\s*(.+)/m)[1]]
+: /^\@annotate-multi:/.test(line) ? ['Entities', line.match(/^\@annotate:\s*(.+)/m)[1]]
+: /^---+\s*$/.test(line)          ? ['Separator']
+: /* otherwise */                   ['Line', line];
 
 
 const parse = (source) =>
@@ -119,7 +120,15 @@ const parse = (source) =>
       Entity(ref) {
         return {
           annotation: true,
-          current: { ref, meta: '', doc: '' },
+          current: { ref, meta: '', doc: '', multi: false },
+          ast: append(ctx.ast, ctx.current)
+        };
+      },
+
+      Entities(refs) {
+        return {
+          annotation: true,
+          current: { ref, meta: '', doc: '', multi: false },
           ast: append(ctx.ast, ctx.current)
         };
       },
@@ -148,39 +157,40 @@ const parse = (source) =>
           throw new Error(`Documentation found before an entity annotation at line ${i + 1}`);
         }
         if (ctx.annotation) {
-          const { ref, meta, doc } = ctx.current;
+          const { ref, meta, doc, multi } = ctx.current;
           return {
             annotation: true,
-            current: { ref, meta: meta + '\n' + line, doc },
+            current: { ref, meta: meta + '\n' + line, doc, multi },
             ast: ctx.ast
           };
         } else {
-          const { ref, meta, doc } = ctx.current;
+          const { ref, meta, doc, multi } = ctx.current;
           return {
             annotation: false,
-            current: { ref, meta, doc: doc + '\n' + line },
+            current: { ref, meta, doc: doc + '\n' + line, multi },
             ast: ctx.ast
           };
         }
       }
-    }), { 
-      current: null, 
-      annotation: false, 
-      ast: [] 
+    }), {
+      current: null,
+      annotation: false,
+      ast: []
     }).ast;
 
 
 // --[ Compiler transformations ]--------------------------------------
 const analyse = (entities) =>
-  entities.map(parseMeta);
+  flatten(entities.map(parseMeta));
 
 const parseMeta = (entity) => {
   let meta = yaml.safeLoad(entity.meta) || {};
   meta.documentation = entity.doc;
-  return {
-    ref: entity.ref,
-    meta
-  };
+  if (entity.multi) {
+    return entity.ref.map(ref => ({ ref, meta }));
+  } else {
+    return [{ ref: entity.ref, meta }];
+  }
 };
 
 
@@ -209,7 +219,7 @@ const intoExampleFunction = (source, ast, options) => {
 const makeParser = (options) => (source) => parseJs(source, options || {});
 
 const parseExample = ({ name, source }, options) => {
-  let parse = makeParser(options || {})
+  let parse = makeParser(options || {});
   return name        ? { name, call: intoExampleFunction(source, parse(source), options), inferred: true }
   :      /* else */    { name: '', call: intoExampleFunction(source, parse(source), options), inferred: true };
 };
@@ -298,7 +308,7 @@ const moduleExport = template(
 );
 
 
-const lazy = (expr) => 
+const lazy = (expr) =>
   t.functionExpression(
     null,
     [],
