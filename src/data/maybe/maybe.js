@@ -12,24 +12,61 @@
 
 const assertType = require('folktale/helpers/assertType');
 const assertFunction = require('folktale/helpers/assertFunction');
-const { data, show, setoid} = require('folktale/core/adt');
+const { data, show, setoid, serialize } = require('folktale/core/adt');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 
+
+/*~
+ * ---
+ * category: Representing Failures
+ * authors:
+ *   - "@boris-marinov"
+ *   - Quildreen Motta
+ */
 const Maybe = data('folktale:Data.Maybe', {
-  Nothing()   { },
-  Just(value) { return { value } }
-}).derive(setoid, show);
+  /*~
+   * ---
+   * category: Constructing
+   * type: |
+   *   forall a: () => Maybe a
+   */
+  Nothing() {
+  },
+
+  /*~
+   * ---
+   * category: Constructing
+   * type: |
+   *   forall a: (a) => Maybe a
+   */
+  Just(value) {
+    return { value };
+  }
+}).derive(setoid, show, serialize);
+
 
 const { Nothing, Just } = Maybe;
-
 const assertMaybe = assertType(Maybe);
 
+
 // -- Functor ----------------------------------------------------------
+/*~
+ * ---
+ * category: Transforming Maybe values
+ * type: |
+ *   forall a, b: (Maybe a).((a) => b) => Maybe b
+ */
 Nothing.prototype.map = function(transformation) {
   assertFunction('Maybe.Nothing#map', transformation);
   return this;
 };
 
+/*~
+ * ---
+ * category: Transforming Maybe values
+ * type: |
+ *   forall a, b: (Maybe a).((a) => b) => Maybe b
+ */
 Just.prototype.map = function(transformation) {
   assertFunction('Maybe.Nothing#map',  transformation);
   return Just(transformation(this.value));
@@ -37,26 +74,58 @@ Just.prototype.map = function(transformation) {
 
 
 // -- Apply ------------------------------------------------------------
+/*~
+ * ---
+ * category: Transforming Maybe values
+ * type: |
+ *   forall a, b: (Maybe (a) => b).(Maybe a) => Maybe b
+ */
 Nothing.prototype.apply = function(aMaybe) {
   assertMaybe('Maybe.Nothing#apply', aMaybe);
   return this;
 };
 
+/*~
+ * ---
+ * category: Transforming Maybe values
+ * type: |
+ *   forall a, b: (Maybe (a) => b).(Maybe a) => Maybe b
+ */
 Just.prototype.apply = function(aMaybe) {
   assertMaybe('Maybe.Just#apply', aMaybe);
   return aMaybe.map(this.value);
 };
 
 // -- Applicative ------------------------------------------------------
-Maybe.of = Just;
+/*~
+ * ---
+ * category: Constructing
+ * type: |
+ *   forall a: (a) => Maybe a
+ */
+Maybe.of = function(value) {
+  return Just(value);
+};
 
 
 // -- Chain ------------------------------------------------------------
+/*~
+ * ---
+ * category: Transforming Maybes
+ * type: |
+ *   forall a: (Maybe a).((a) => Maybe b) => Maybe b
+ */
 Nothing.prototype.chain = function(transformation) {
   assertFunction('Maybe.Nothing#chain', transformation);
   return this;
 };
 
+/*~
+ * ---
+ * category: Transforming Maybes
+ * type: |
+ *   forall a: (Maybe a).((a) => Maybe b) => Maybe b
+ */
 Just.prototype.chain = function(transformation) {
   assertFunction('Maybe.Just#chain', transformation);
   return transformation(this.value);
@@ -104,19 +173,6 @@ Just.prototype.orElse = function() {
 
 
 // -- Conversions -------------------------------------------------
-Nothing.prototype.toJSON = function() {
-  return {
-    '#type': 'folktale:Maybe.Nothing'
-  };
-};
-
-Just.prototype.toJSON = function() {
-  return {
-    '#type': 'folktale:Maybe.Just',
-    value:   this.value
-  };
-};
-
 Maybe.toEither = function(...args) {
   return require('folktale/data/conversions/maybe-to-either')(this, ...args);
 };

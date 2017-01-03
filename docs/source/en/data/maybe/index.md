@@ -301,3 +301,124 @@ requirement of having to return a Maybe::
       Nothing: () => 'Nothing was found'
     });
     // ==> 'Nothing was found'
+
+
+@annotate: folktale.data.maybe.Nothing
+---
+
+Constructs a Maybe value that represents a failure (a `Nothing`).
+
+See the documentation for the Maybe structure to understand how to use this.
+
+
+@annotate: folktale.data.maybe.Just
+---
+
+Constructs a Maybe value that represents a successful value (a `Just`).
+
+> **NOTE**:  
+> The provided value is stored as-given in the structure. If you want to
+> convert a nullable value (a value that may be null/undefined) to a Maybe
+> value, use the `Maybe.fromNullable(value)` function instead of 
+> `Maybe.Just(value)`.
+
+See the documentation for the Maybe structure to understand how to use this.
+
+
+@annotate-multi: [folktale.data.maybe.Nothing.prototype.map, folktale.data.maybe.Just.prototype.map]
+---
+
+Transforms the value inside a Maybe structure with an unary function. Only
+transforms values that are successful (`Just`), and constructs a new Maybe as a
+result.
+
+## Example::
+
+    const Maybe = require('folktale/data/maybe');
+    
+    function increment(value) {
+      return value + 1;
+    }
+    
+    Maybe.Just(1).map(increment);
+    // ==> Maybe.Just(2)
+    
+    Maybe.Nothing().map(increment);
+    // ==> Maybe.Nothing()
+
+
+@annotate-multi: [folktale.data.maybe.Nothing.prototype.apply, folktale.data.maybe.Just.prototype.apply]
+---
+
+Transforms a Maybe value using a function contained in another Maybe. As with
+`.map()`, the Maybe values are expected to be `Just`, and no operation is
+performed if any of them is a `Nothing`.
+
+
+## Example::
+
+    const Maybe = require('folktale/data/maybe');
+    
+    function increment(value) {
+      return value + 1;
+    }
+    
+    Maybe.Just(increment).apply(Maybe.Just(1));
+    // ==> Maybe.Just(2)
+    
+    Maybe.Just(increment).apply(Maybe.Nothing());
+    // ==> Maybe.Nothing()
+    
+    Maybe.Nothing().apply(Maybe.Just(1));
+    // ==> Maybe.Nothing()
+
+
+@annotate: folktale.data.maybe.of
+---
+
+Constructs a Maybe value that represents a successful value (a `Just`).
+
+> **NOTE**:  
+> The provided value is stored as-given in the structure. If you want to
+> convert a nullable value (a value that may be null/undefined) to a Maybe
+> value, use the `Maybe.fromNullable(value)` function instead of 
+> `Maybe.of(value)`.
+
+See the documentation for the Maybe structure to understand how to use this.
+
+
+@annotate-multi: [folktale.data.maybe.Nothing.prototype.chain, folktale.data.maybe.Just.prototype.chain]
+---
+
+Transforms an entire Maybe structure with the provided function. As with
+`.map()`, the transformation is only applied if the value is a `Just`, but
+unlike `.map()` the transformation is expected to return a new `Maybe` value.
+
+Having the transformation function return a new Maybe value means that the
+transformation may fail, and the failure is appropriately propagated. In this
+sense, `a.chain(f)` works similarly to the sequencing of statements done by the
+`;` syntax in JavaScript — the next instruction only runs if the previous
+instruction succeeds, and either instructions may fail.
+
+
+## Example::
+
+    const Maybe = require('folktale/data/maybe');
+    
+    function first(list) {
+      return list.length > 0 ?  Maybe.Just(list[0])
+      :      /* otherwise */    Maybe.Nothing();
+    }
+    
+    first([]).chain(first);
+    // ==> Maybe.Nothing()
+    
+    first([[1]]).chain(first);
+    // ==> Maybe.Just(1)
+    
+    first([[]]).chain(first);
+    // ==> Maybe.Nothing()
+    
+    
+
+    
