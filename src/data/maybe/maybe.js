@@ -14,6 +14,7 @@ const assertType = require('folktale/helpers/assertType');
 const assertFunction = require('folktale/helpers/assertFunction');
 const { data, show, setoid, serialize } = require('folktale/core/adt');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
+const warnDeprecation = require('folktale/helpers/warnDeprecation');
 
 
 /*~
@@ -133,12 +134,37 @@ Just.prototype.chain = function(transformation) {
 
 // -- Extracting values and recovering ---------------------------------
 
-// NOTE:
-// `get` is similar to Comonad's `extract`. The reason we don't implement
-// Comonad here is that `get` is partial, and not defined for Nothing
-// values.
-
+/*~
+ * ---
+ * category: Extracting values
+ * stability: deprecated
+ * type: |
+ *   forall a: (Maybe a).() => a :: (throws TypeError)
+ */
 Nothing.prototype.get = function() {
+  warnDeprecation('`.get()` is deprecated, and has been renamed to `.unsafeGet()`.');
+  return this.unsafeGet();
+};
+
+/*~
+ * ---
+ * category: Extracting values
+ * stability: deprecated
+ * type: |
+ *   forall a: (Maybe a).() => a :: (throws TypeError)
+ */
+Just.prototype.get = function() {
+  warnDeprecation('`.get()` is deprecated, and has been renamed to `.unsafeGet()`.');
+  return this.unsafeGet();
+};
+
+/*~
+ * ---
+ * category: Extracting values
+ * type: |
+ *   forall a: (Maybe a).() => a :: (throws TypeError)
+ */
+Nothing.prototype.unsafeGet = function() {
   throw new TypeError(`Can't extract the value of a Nothing.
 
 Since Nothing holds no values, it's not possible to extract one from them.
@@ -147,9 +173,15 @@ that is not partial.
   `);
 };
 
-Just.prototype.get = function() {
+/*~
+ * ---
+ * category: Extracting values
+ * type: |
+ *   forall a: (Maybe a).() => a :: (throws TypeError)
+ */
+Just.prototype.unsafeGet = function() {
   return this.value;
-};
+}
 
 
 
