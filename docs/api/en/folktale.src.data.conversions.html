@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>module folktale/data/conversions</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/data/conversions</h1><div class="highlight-summary"><div><p>Provides functions to convert from and to different data
+structures.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Provides functions to convert from and to different data
+structures.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-converting-from-either">Converting from Either</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.conversions.either-to-maybe.eitherToMaybe.html">eitherToMaybe(anEither)</a><div class="doc-summary"><div><p>Converts an <code>Either</code> structure to a Maybe structure. <code>Left</code>s map to <code>Nothing</code>s,
+<code>Right</code>s map to <code>Just</code>s.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.data.conversions.either-to-validation.eitherToValidation.html">eitherToValidation(anEither)</a><div class="doc-summary"><div><p>Converts an <code>Either</code> to a <code>Validation</code>. <code>Left</code>s map to <code>Failure</code>s, <code>Right</code>s map
+to <code>Success</code>es.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-maybe">Converting from Maybe</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.conversions.maybe-to-either.maybeToEither.html">maybeToEither(aMaybe, failureValue)</a><div class="doc-summary"><div><p>Converts a <code>Maybe</code> to an <code>Either</code>. <code>Nothing</code>s map to <code>Left</code>s, <code>Just</code>s map to
+<code>Right</code>s.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.data.conversions.maybe-to-validation.maybeToValidation.html">maybeToValidation(aMaybe, failureValue)</a><div class="doc-summary"><div><p>Converts a <code>Maybe</code> to a <code>Validation</code>. <code>Nothing</code>s map to <code>Failure</code>s, <code>Just</code>s map
+to <code>Success</code>es.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-validation">Converting from Validation</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.conversions.validation-to-either.validationToEither.html">validationToEither(aValidation)</a><div class="doc-summary"><div><p>Converts a <code>Validation</code> to an <code>Either</code>. <code>Failure</code>s map to <code>Left</code>s,
+<code>Success</code>es map to <code>Right</code>s.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.data.conversions.validation-to-maybe.validationToMaybe.html">validationToMaybe(aValidation)</a><div class="doc-summary"><div><p>Converts a <code>Validation</code> to a <code>Maybe</code>. <code>Failure</code>s map to <code>Nothing</code>s,
+<code>Success</code>es map to <code>Just</code>s.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-nullables">Converting from nullables</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.conversions.nullable-to-either.nullableToEither.html">nullableToEither(a)</a><div class="doc-summary"><div><p>Converts a nullable value to an either. <code>null</code> and <code>undefined</code> map to
+<code>Left</code>s, any other value maps to <code>Right</code>s.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.data.conversions.nullable-to-maybe.nullableToMaybe.html">nullableToMaybe(a)</a><div class="doc-summary"><div><p>Converts a nullable value to a maybe. <code>null</code> and <code>undefined</code> map to
+<code>Nothing</code>, any other value maps to <code>Just</code>s.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.data.conversions.nullable-to-validation.nullableToValidation.html">nullableToValidation(a)</a><div class="doc-summary"><div><p>Converts a nullable value to a <code>Validation</code>. <code>null</code> and <code>undefined</code>
+map to <code>Failure</code>s, any other type maps to <code>Success</code>es.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/conversions/index.js at line 19, column 0</div><pre class="source-code"><code class="language-javascript">{
+  eitherToValidation: require('./either-to-validation'),
+  eitherToMaybe: require('./either-to-maybe'),
+  validationToEither: require('./validation-to-either'),
+  validationToMaybe: require('./validation-to-maybe'),
+  maybeToValidation: require('./maybe-to-validation'),
+  maybeToEither: require('./maybe-to-either'),
+  nullableToValidation: require('./nullable-to-validation'),
+  nullableToEither: require('./nullable-to-either'),
+  nullableToMaybe: require('./nullable-to-maybe')
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/src/data/conversions</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-converting-from-either">Converting from Either</a></li><li class="toc-item"><a href="#cat-converting-from-maybe">Converting from Maybe</a></li><li class="toc-item"><a href="#cat-converting-from-validation">Converting from Validation</a></li><li class="toc-item"><a href="#cat-converting-from-nullables">Converting from nullables</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

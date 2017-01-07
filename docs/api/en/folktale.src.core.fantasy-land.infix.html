@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>module folktale/core/fantasy-land/infix</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/core/fantasy-land/infix</h1><div class="highlight-summary"><div><p>Method versions of the fantasy-land functions, supporting the
+<code>structure::fn(...)</code> syntax.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Method versions of the fantasy-land functions, supporting the
+<code>structure::fn(...)</code> syntax.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-convenience">Convenience</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.core.fantasy-land.apply.apply.html">apply: infix(applicativeValue)</a><div class="doc-summary"><div><p>Applies the function inside an applicative to the value of another applicative.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.core.fantasy-land.bimap.bimap.html">bimap: infix(transformLeft, transformRight)</a><div class="doc-summary"><div><p>Maps one function over each side of a Bifunctor.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.core.fantasy-land.chain.chain.html">chain: infix(transformation)</a><div class="doc-summary"><div><p>Transforms a monad with an unary function.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.core.fantasy-land.concat.concat.html">concat: infix(aSemigroup)</a><div class="doc-summary"><div><p>Joins two semigroups.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.core.fantasy-land.empty.empty.html">empty: infix()</a><div class="doc-summary"><div><p>Returns the identity object for a monoid.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.core.fantasy-land.equals.equals.html">equals: infix(aSetoid)</a><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.core.fantasy-land.map.map.html">map: infix(transformation)</a><div class="doc-summary"><div><p>Transforms the contents of a Functor.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.core.fantasy-land.of.of.html">of: infix(value)</a><div class="doc-summary"><div><p>Constructs an applicative containing the given value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/fantasy-land/infix.js at line 17, column 0</div><pre class="source-code"><code class="language-javascript">{
+  apply: require('./apply').infix,
+  bimap: require('./bimap').infix,
+  chain: require('./chain').infix,
+  concat: require('./concat').infix,
+  empty: require('./empty').infix,
+  equals: require('./equals').infix,
+  map: require('./map').infix,
+  of: require('./of').infix
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/src/core/fantasy-land/infix</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-convenience">Convenience</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

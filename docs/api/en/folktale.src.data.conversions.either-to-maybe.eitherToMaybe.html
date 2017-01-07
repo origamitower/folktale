@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>eitherToMaybe</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">eitherToMaybe</h1><div class="highlight-summary"><div><p>Converts an <code>Either</code> structure to a Maybe structure. <code>Left</code>s map to <code>Nothing</code>s,
+<code>Right</code>s map to <code>Just</code>s.</p>
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">eitherToMaybe(anEither)</div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">forall a, b:
+  (Either a b) =&gt; Maybe b</code></pre></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Converts an <code>Either</code> structure to a Maybe structure. <code>Left</code>s map to <code>Nothing</code>s,
+<code>Right</code>s map to <code>Just</code>s.</p>
+<p>Not that <code>Left</code> values are lost in the conversion process, since failures
+in <code>Maybe</code> (the <code>Nothing</code> tag) don&#39;t have a value.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const eitherToMaybe = require(&#39;folktale/data/conversions/either-to-maybe&#39;);
+const { Left, Right } = require(&#39;folktale/data/either&#39;);
+const { Just, Nothing } = require(&#39;folktale/data/maybe&#39;);
+
+eitherToMaybe(Left(1));  // ==&gt; Nothing()
+eitherToMaybe(Right(1)); // ==&gt; Just(1) 
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">length</div><div class="doc-summary"><div><p>A Number.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/conversions/either-to-maybe.js at line 27, column 0</div><pre class="source-code"><code class="language-javascript">(anEither) =&gt;
+  anEither.matchWith({
+    Left:  () =&gt; Nothing(),
+    Right: ({ value }) =&gt; Just(value)
+  })</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/src/data/conversions/either-to-maybe</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat--uncategorised-">(Uncategorised)</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>@boris-marinov</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

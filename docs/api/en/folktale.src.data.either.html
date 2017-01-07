@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>module folktale/data/either</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/data/either</h1><div class="highlight-summary"><div><p>Provides the Either data structure.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Provides the Either data structure.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-comparing-and-testing">Comparing and Testing</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.core.adt.data.hasInstance.html">hasInstance(value)</a><div class="doc-summary"><div><p>Checks if a value belongs to this ADT.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-constructing">Constructing</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.either.Left.html">Left(value)</a><div class="doc-summary"><div><p>Constructs an Either containing a Left value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.data.either.Right.html">Right(value)</a><div class="doc-summary"><div><p>Constructs an Either containing a Right value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.data.either.either.of.html">of(value)</a><div class="doc-summary"><div><p>Constructs an Either holding a Right value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting">Converting</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.either.either.toMaybe.html">toMaybe()</a><div class="doc-summary"><div><p>Transforms an Either to a Maybe. Left values are lost in the process.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.data.either.either.toValidation.html">toValidation()</a><div class="doc-summary"><div><p>Transforms an Either into a Validation.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-maybe">Converting from Maybe</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.conversions.maybe-to-either.maybeToEither.html">fromMaybe: maybeToEither(aMaybe, failureValue)</a><div class="doc-summary"><div><p>Converts a <code>Maybe</code> to an <code>Either</code>. <code>Nothing</code>s map to <code>Left</code>s, <code>Just</code>s map to
+<code>Right</code>s.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-validation">Converting from Validation</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.conversions.validation-to-either.validationToEither.html">fromValidation: validationToEither(aValidation)</a><div class="doc-summary"><div><p>Converts a <code>Validation</code> to an <code>Either</code>. <code>Failure</code>s map to <code>Left</code>s,
+<code>Success</code>es map to <code>Right</code>s.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-nullables">Converting from nullables</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.conversions.nullable-to-either.nullableToEither.html">fromNullable: nullableToEither(a)</a><div class="doc-summary"><div><p>Converts a nullable value to an either. <code>null</code> and <code>undefined</code> map to
+<code>Left</code>s, any other value maps to <code>Right</code>s.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-debug-representation">Debug Representation</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.either.inspect.html">inspect: toString()</a><div class="doc-summary"><div><p>Returns a textual representation of the ADT.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.data.either.inspect.html">toString()</a><div class="doc-summary"><div><p>Returns a textual representation of the ADT.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-fantasy-land">Fantasy Land</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.helpers.provide-fantasy-land-aliases.fantasy-land/of.html">fantasy-land/of(value)</a><div class="doc-summary"><div><p>Fantasy Land&#39;s Applicative <code>of</code></p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-handling-exceptions">Handling exceptions</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.either.try.try.html">try: _try(f)</a><div class="doc-summary"><div><p>Runs a function that may raise an exception, trapping it, and returning
+an Either representing the result.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-members">Members</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.core.adt.data.variants.html">variants</a><div class="doc-summary"><div><p>The variants present in this ADT.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-serialisation">Serialisation</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.either.fromJSON.html">fromJSON(value, parsers = {
+  [typeName]: adt
+}, keysIndicateType = false)</a><div class="doc-summary"><div><p>Parses a previously serialised ADT into a rich ADT object.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/either/index.js at line 20, column 0</div><pre class="source-code"><code class="language-javascript">{
+  ...require('./either'),
+  try: require('./try'),
+  fromNullable: require('folktale/data/conversions/nullable-to-either'),
+  fromValidation: require('folktale/data/conversions/validation-to-either'),
+  fromMaybe: require('folktale/data/conversions/maybe-to-either')
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/src/data/either</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-comparing-and-testing">Comparing and Testing</a></li><li class="toc-item"><a href="#cat-constructing">Constructing</a></li><li class="toc-item"><a href="#cat-converting">Converting</a></li><li class="toc-item"><a href="#cat-converting-from-maybe">Converting from Maybe</a></li><li class="toc-item"><a href="#cat-converting-from-validation">Converting from Validation</a></li><li class="toc-item"><a href="#cat-converting-from-nullables">Converting from nullables</a></li><li class="toc-item"><a href="#cat-debug-representation">Debug Representation</a></li><li class="toc-item"><a href="#cat-fantasy-land">Fantasy Land</a></li><li class="toc-item"><a href="#cat-handling-exceptions">Handling exceptions</a></li><li class="toc-item"><a href="#cat-members">Members</a></li><li class="toc-item"><a href="#cat-serialisation">Serialisation</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
