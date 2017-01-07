@@ -459,3 +459,17 @@ Extracts the value from a `Just` structure.
     }
 
 
+@annotate-multi: [folktale.data.maybe.Nothing.prototype.getOrElse, folktale.data.maybe.Just.prototype.getOrElse]
+---
+
+Extracts the value of a Maybe structure, if it exists (i.e.: is a `Just`),
+otherwise returns the provided default value.
+
+## Example::
+
+    const Maybe = require('folktale/data/maybe');
+
+    Maybe.Just(1).getOrElse(2);   // ==> 1
+    Maybe.Nothing().getOrElse(2); // ==> 2
+
+
