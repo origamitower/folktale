@@ -420,5 +420,42 @@ instruction succeeds, and either instructions may fail.
     // ==> Maybe.Nothing()
     
     
+@annotate-multi: [folktale.data.maybe.Nothing.prototype.get, folktale.data.maybe.Just.prototype.get]
+deprecated:
+  version: '2.0.0'
+  replacedBy: unsafeGet()
+  reason: |
+    We want to discourage the use of partial functions, and having short names
+    makes it easy for people to want to use them without thinking about the
+    problems.
 
-    
+    For more details see https://github.com/origamitower/folktale/issues/42
+---
+
+This method has been renamed to `unsafeGet()`.    
+
+
+@annotate-multi: [folktale.data.maybe.Nothing.prototype.unsafeGet, folktale.data.maybe.Just.prototype.unsafeGet]
+---
+
+Extracts the value from a `Just` structure.
+
+> **WARNING**  
+> This method is partial, which means that it will only work for
+> `Just` structures, not for `Nothing` structures. It's recommended
+> to use `.getOrElse()` or `.matchWith()` instead.
+
+## Example::
+
+    const Maybe = require('folktale/data/maybe');
+
+    Maybe.Just(1).unsafeGet(); // ==> 1
+
+    try {
+      Maybe.Nothing().unsafeGet();
+      // TypeError: Can't extract the value of a Nothing
+    } catch (e) {
+      e instanceof TypeError; // ==> true
+    }
+
+
