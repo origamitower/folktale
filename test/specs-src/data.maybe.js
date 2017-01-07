@@ -71,13 +71,13 @@ describe('Data.Maybe', () => {
     });
   });
 
-  describe('#get()', () => {
-    property('Just(a).get() = a', 'json', (a) => {
-      return Just(a).get() === a;
+  describe('#unsafeGet()', () => {
+    property('Just(a).unsafeGet() = a', 'json', (a) => {
+      return Just(a).unsafeGet() === a;
     });
 
-    it('Nothing().get() throws', () => {
-      assert.throws(_ => Nothing().get());
+    it('Nothing().unsafeGet() throws', () => {
+      assert.throws(_ => Nothing().unsafeGet());
     });
   });
 
