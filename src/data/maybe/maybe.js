@@ -17,13 +17,6 @@ const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const warnDeprecation = require('folktale/helpers/warnDeprecation');
 
 
-/*~
- * ---
- * category: Representing Failures
- * authors:
- *   - "@boris-marinov"
- *   - Quildreen Motta
- */
 const Maybe = data('folktale:Data.Maybe', {
   /*~
    * ---
