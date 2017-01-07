@@ -204,11 +204,11 @@ another Maybe value::
     }
 
     first([{ title: 'Hello' }]).map(render);
-    // ==> Maybe.Just(['item', ['title', 'Hello']])
+    // => Maybe.Just(['item', ['title', 'Hello']])
     
     first([{ title: 'Hello' }]).map(render)
                                .map(second);
-    // ==> Maybe.Just(Maybe.Just(['title', 'Hello']))
+    // => Maybe.Just(Maybe.Just(['title', 'Hello']))
       
 Ideally we'd like to get back `Maybe.Just(['title', 'Hello'])`, but `.map()`
 isn't the method for that. Instead, we can use the `.chain()` method. `.chain()`
@@ -219,7 +219,7 @@ the operation. Like `.map()`, `.chain()` only applies its function argument to
 
     first([{ title: 'Hello' }]).map(render)
                                .chain(second);
-    // ==> Maybe.Just(['title', 'Hello'])
+    // => Maybe.Just(['title', 'Hello'])
     
     first([]).map(render).chain(second);
     // ==> Maybe.Nothing()
@@ -267,7 +267,7 @@ handler function only gets ran on failure, whereas the expression in
     nextId; // ==> 2
 
     first([1]).getOrElse(issueError());
-    // ==> Maybe.Just(1)
+    // ==> 1
     
     nextId; // ==> 3
     
@@ -296,7 +296,7 @@ requirement of having to return a Maybe::
     });
     // ==> 'Found: 1'
     
-    first([1]).matchWith({
+    first([]).matchWith({
       Just: ({ value }) => `Found: ${value}`,
       Nothing: () => 'Nothing was found'
     });
@@ -536,8 +536,8 @@ A convenience method for the `folktale/data/conversions/maybe-to-validation` mod
     const Maybe = require('folktale/data/maybe');
     const Validation = require('folktale/data/validation');
 
-    Maybe.Just(1).toEither(0);
+    Maybe.Just(1).toValidation(0);
     // ==> Validation.Success(1)
 
-    Maybe.Nothing().toEither(0)
+    Maybe.Nothing().toValidation(0)
     // ==> Validation.Failure(0)    
