@@ -83,7 +83,7 @@ all-tests:
 	$(karma) start test/karma-local.js
 
 documentation: compile compile-documentation
-#	node tools/generate-docs.js
+	node tools/generate-docs.js en
 
 lint:
 	$(eslint) .

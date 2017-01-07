@@ -12,8 +12,11 @@
 
 /*~
  * ---
- * name: module folktale/dta/maybe
+ * name: module folktale/data/maybe
  * category: Modelling failures
+ * authors:
+ *   - "@boris-marinov"
+ *   - Quildreen Motta
  */
 module.exports = {
   ...require('./maybe'),

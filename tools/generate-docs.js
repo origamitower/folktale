@@ -13,7 +13,7 @@ if (process.argv.length < 3) {
 const lang = process.argv[2];
 
 // Load all docs of the current language
-glob(path.join(__dirname, '..', 'docs/build', lang, '**/*.js')).forEach(file => require(file)(Interface));
+glob(path.join(__dirname, '../docs/build', lang, '**/*.js')).forEach(file => require(file)(Interface, Folktale));
 
 
 const entities = staticDocs.makeStatic(Interface, Folktale, 'Folktale', {
