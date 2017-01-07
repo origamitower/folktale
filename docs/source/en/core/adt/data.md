@@ -93,7 +93,7 @@ instead, many of these problems are solved:
     );
 
 Here the result of `fetch` can be either a response or an error, like in
-the `readFile` exammple, but the only way of getting to that value is
+the `readFile` example, but the only way of getting to that value is
 through the `then` function, which requires you to define separate branches
 for handling each case. This way it's not possible to forget to deal with
 one of the cases, or make mistakes in the branching condition, such as
