@@ -79,6 +79,8 @@ const isNumber = (value) => typeof value === 'number';
 
 const isObject = (value) => Object(value) === value;
 
+const flatten = (xs) => xs.reduce((a, b) => a.concat(b), []);
+
 
 function __metamagical_withMeta(object, meta) {
   const parent  = Object.getPrototypeOf(object);
@@ -109,7 +111,7 @@ const withMetaFD = parseJs(__metamagical_withMeta.toString()).program.body[0];
 // --[ Parser ]--------------------------------------------------------
 const classifyLine = (line) =>
   /^\@annotate:/.test(line)       ? ['Entity', line.match(/^\@annotate:\s*(.+)/m)[1]]
-: /^\@annotate-multi:/.test(line) ? ['Entities', line.match(/^\@annotate:\s*(.+)/m)[1]]
+: /^\@annotate-multi:/.test(line) ? ['Entities', line.match(/^\@annotate-multi:\s*(.+)/m)[1]]
 : /^---+\s*$/.test(line)          ? ['Separator']
 : /* otherwise */                   ['Line', line];
 
@@ -128,7 +130,7 @@ const parse = (source) =>
       Entities(refs) {
         return {
           annotation: true,
-          current: { ref, meta: '', doc: '', multi: false },
+          current: { ref: refs, meta: '', doc: '', multi: false },
           ast: append(ctx.ast, ctx.current)
         };
       },
