@@ -184,21 +184,41 @@ Just.prototype.unsafeGet = function() {
 }
 
 
-
+/*~
+ * ---
+ * category: Extracting values
+ * type: |
+ *   forall a: (Maybe a).(a) => a
+ */
 Nothing.prototype.getOrElse = function(default_) {
   return default_;
 };
 
+/*~
+ * ---
+ * category: Extracting values
+ * type: |
+ *   forall a: (Maybe a).(a) => a
+ */
 Just.prototype.getOrElse = function(_default_) {
   return this.value;
 };
 
 
-
+/*~
+ * category: Recovering from errors
+ * type: |
+ *   forall a: (Maybe a).((a) => Maybe a) => Maybe a
+ */
 Nothing.prototype.orElse = function(handler) {
   return handler();
 };
 
+/*~
+ * category: Recovering from errors
+ * type: |
+ *   forall a: (Maybe a).((a) => Maybe a) => Maybe a
+ */
 Just.prototype.orElse = function() {
   return this;
 };
