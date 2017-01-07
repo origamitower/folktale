@@ -509,3 +509,35 @@ state.
     failures; // ==> 1
 
 
+@annotate: folktale.data.maybe.toEither
+---
+
+A convenience method for the `folktale/data/conversions/maybe-to-either` module.
+
+## Example::
+
+    const Maybe = require('folktale/data/maybe');
+    const Either = require('folktale/data/either');
+
+    Maybe.Just(1).toEither(0);
+    // ==> Either.Right(1)
+
+    Maybe.Nothing().toEither(0)
+    // ==> Either.Left(0)
+
+
+@annotate: folktale.data.maybe.toValidation
+---
+
+A convenience method for the `folktale/data/conversions/maybe-to-validation` module.
+
+## Example::
+
+    const Maybe = require('folktale/data/maybe');
+    const Validation = require('folktale/data/validation');
+
+    Maybe.Just(1).toEither(0);
+    // ==> Validation.Success(1)
+
+    Maybe.Nothing().toEither(0)
+    // ==> Validation.Failure(0)    
