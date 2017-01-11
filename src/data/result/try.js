@@ -1,8 +1,8 @@
-const { Left, Right } = require('./either');
+const { Error, Ok } = require('./result');
 
 /*~
  * Runs a function that may raise an exception, trapping it, and returning
- * an Either representing the result.
+ * an Result representing the result.
  * 
  * ## Example::
  * 
@@ -14,10 +14,10 @@ const { Left, Right } = require('./either');
  *       }
  *     }
  * 
- *     const { Left, Right } = require('folktale/data/either');
+ *     const { Error, Ok } = require('folktale/data/result');
  *     
- *     _try(() => succ(-1));  // ==> Left('Not a natural number: -1')
- *     _try(() => succ(1));   // ==> Right(2)
+ *     _try(() => succ(-1));  // ==> Error('Not a natural number: -1')
+ *     _try(() => succ(1));   // ==> Ok(2)
  * 
  * ---
  * category: Handling exceptions
@@ -26,13 +26,13 @@ const { Left, Right } = require('./either');
  *   - "@boris-marinov"
  * 
  * type: |
- *   forall a, b: (() => b :: throws a) => Either a b
+ *   forall a, b: (() => b :: throws a) => Result a b
  */
 const _try = (f) => {
   try {
-    return Right(f());
+    return Ok(f());
   } catch (e) {
-    return Left(e);
+    return Error(e);
   }
 };
 

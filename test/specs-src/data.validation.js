@@ -123,8 +123,8 @@ describe('Data.Validation', () => {
     property('Success#fromNullable', 'json', (a) => {
         return _.fromNullable(a).equals(_.Success(a))
     }); 
-    property('Validation#fromEither', 'json', (a) => {
-      return _.fromEither(_.Success(a).toEither()).equals(_.Success(a));
+    property('Validation#fromResult', 'json', (a) => {
+      return _.fromResult(_.Success(a).toResult()).equals(_.Success(a));
     });
     property('Success#fromMaybe', 'json', 'json', (a, b) => {
       return _.fromMaybe(_.Success(a).toMaybe(), b).equals(_.Success(a));

@@ -13,6 +13,6 @@
 module.exports = {
   ...require('./validation'),
   fromNullable: require('folktale/data/conversions/nullable-to-validation'),
-  fromEither: require('folktale/data/conversions/either-to-validation'),
+  fromResult: require('folktale/data/conversions/result-to-validation'),
   fromMaybe: require('folktale/data/conversions/maybe-to-validation')
 };

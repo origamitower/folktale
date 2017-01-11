@@ -20,7 +20,7 @@
 module.exports = {
   conversions: require('./conversions'),
   maybe: require('./maybe'),
-  either: require('./either'),
+  result: require('./result'),
   validation: require('./validation'),
   future: require('./future'),
   task: require('./task')

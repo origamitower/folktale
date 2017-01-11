@@ -1,4 +1,3 @@
-
 //----------------------------------------------------------------------
 //
 // This source file is part of the Folktale project.
@@ -11,25 +10,25 @@
 //
 //----------------------------------------------------------------------
 
-const { Left, Right } = require('folktale/data/either/either');
+const { Error, Ok } = require('folktale/data/result/result');
 
 
 /*~
  * ---
- * category: Converting from Validation
+ * category: Converting from Maybe
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
  * 
  * type: |
  *   forall a, b:
- *      (Validation a b) => Either a b
+ *     (Maybe a, b) => Result b a
  */
-const validationToEither = (aValidation) =>
-  aValidation.matchWith({
-    Failure: ({ value }) => Left(value),
-    Success: ({ value }) => Right(value)
+const maybeToResult = (aMaybe, failureValue) =>
+  aMaybe.matchWith({
+    Nothing: () => Error(failureValue),
+    Just: ({ value }) => Ok(value)
   });
 
 
-module.exports = validationToEither;
+module.exports = maybeToResult;

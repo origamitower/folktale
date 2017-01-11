@@ -8,7 +8,7 @@ require('../specs/core.adt');
 require('../specs/core.fantasy-land');
 require('../specs/core.lambda');
 require('../specs/core.object');
-require('../specs/data.either');
+require('../specs/data.result');
 require('../specs/data.future');
 require('../specs/data.maybe');
 require('../specs/data.task');

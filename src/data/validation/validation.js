@@ -74,7 +74,7 @@ Validation.concat = function(aValidation) {
 
 // NOTE:
 // `get` is similar to Comonad's `extract`. The reason we don't implement
-// Comonad here is that `get` is partial, and not defined for Left
+// Comonad here is that `get` is partial, and not defined for Error
 // values.
 
 Failure.prototype.getOrElse = function(default_) {
@@ -141,8 +141,8 @@ Success.prototype.toJSON = function() {
   };
 };
 
-Validation.toEither = function(...args) {
-  return require('folktale/data/conversions/validation-to-either')(this, ...args);
+Validation.toResult = function(...args) {
+  return require('folktale/data/conversions/validation-to-result')(this, ...args);
 };
 
 Validation.toMaybe = function(...args) {

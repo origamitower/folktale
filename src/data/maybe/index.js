@@ -20,6 +20,6 @@
  */
 module.exports = {
   ...require('./maybe'),
-  fromEither: require('folktale/data/conversions/either-to-maybe'),
+  fromResult: require('folktale/data/conversions/result-to-maybe'),
   fromValidation: require('folktale/data/conversions/validation-to-maybe')
 };
