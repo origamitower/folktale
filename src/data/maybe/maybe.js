@@ -223,10 +223,10 @@ Just.prototype.orElse = function() {
  * ---
  * category: Converting
  * type: |
- *   forall a, b: (Maybe a).(b) => Either b a
+ *   forall a, b: (Maybe a).(b) => Result b a
  */
-Maybe.toEither = function(fallbackValue) {
-  return require('folktale/data/conversions/maybe-to-either')(this, fallbackValue);
+Maybe.toResult = function(fallbackValue) {
+  return require('folktale/data/conversions/maybe-to-result')(this, fallbackValue);
 };
 
 /*~

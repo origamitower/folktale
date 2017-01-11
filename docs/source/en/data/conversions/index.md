@@ -5,46 +5,46 @@ structures.
 
 
 
-@annotate: folktale.data.conversions.eitherToMaybe
+@annotate: folktale.data.conversions.resultToMaybe
 ---
-Converts an `Either` structure to a Maybe structure. `Left`s map to `Nothing`s,
-`Right`s map to `Just`s.
+Converts an `Result` structure to a Maybe structure. `Error`s map to `Nothing`s,
+`Ok`s map to `Just`s.
 
-Not that `Left` values are lost in the conversion process, since failures
+Not that `Error` values are lost in the conversion process, since failures
 in `Maybe` (the `Nothing` tag) don't have a value.
 
 ## Example::
 
-    const eitherToMaybe = require('folktale/data/conversions/either-to-maybe');
-    const { Left, Right } = require('folktale/data/either');
+    const resultToMaybe = require('folktale/data/conversions/result-to-maybe');
+    const { Error, Ok } = require('folktale/data/result');
     const { Just, Nothing } = require('folktale/data/maybe');
     
-    eitherToMaybe(Left(1));  // ==> Nothing()
-    eitherToMaybe(Right(1)); // ==> Just(1) 
+    resultToMaybe(Error(1));  // ==> Nothing()
+    resultToMaybe(Ok(1)); // ==> Just(1) 
 
 
 
-@annotate: folktale.data.conversions.eitherToValidation
+@annotate: folktale.data.conversions.resultToValidation
 ---
-Converts an `Either` to a `Validation`. `Left`s map to `Failure`s, `Right`s map
+Converts an `Result` to a `Validation`. `Error`s map to `Failure`s, `Ok`s map
 to `Success`es.
 
 
 ## Example::
 
-    const eitherToValidation = require('folktale/data/conversions/either-to-validation');
-    const { Left, Right } = require('folktale/data/either');
+    const resultToValidation = require('folktale/data/conversions/result-to-validation');
+    const { Error, Ok } = require('folktale/data/result');
     const { Failure, Success } = require('folktale/data/validation');
 
-    eitherToValidation(Left(1));  // ==> Failure(1)
-    eitherToValidation(Right(1)); // ==> Success(1)
+    resultToValidation(Error(1));  // ==> Failure(1)
+    resultToValidation(Ok(1)); // ==> Success(1)
 
 
 
-@annotate: folktale.data.conversions.maybeToEither
+@annotate: folktale.data.conversions.maybeToResult
 ---
-Converts a `Maybe` to an `Either`. `Nothing`s map to `Left`s, `Just`s map to
-`Right`s.
+Converts a `Maybe` to an `Result`. `Nothing`s map to `Error`s, `Just`s map to
+`Ok`s.
 
 Note that since `Maybe`s don't hold a value for failures in the `Nothing` tag, 
 you must provide one to this function.
@@ -52,12 +52,12 @@ you must provide one to this function.
 
 ## Example::
 
-    const maybeToEither = require('folktale/data/conversions/maybe-to-either');
-    const { Left, Right } = require('folktale/data/either');
+    const maybeToResult = require('folktale/data/conversions/maybe-to-result');
+    const { Error, Ok } = require('folktale/data/result');
     const { Nothing, Just } = require('folktale/data/maybe');
 
-    maybeToEither(Nothing(), 2); // ==> Left(2)
-    maybeToEither(Just(1), 2);   // ==> Right(1)
+    maybeToResult(Nothing(), 2); // ==> Error(2)
+    maybeToResult(Just(1), 2);   // ==> Ok(1)
 
 
 
@@ -80,22 +80,22 @@ must provide one for the validation.
 
 
 
-@annotate: folktale.data.conversions.nullableToEither
+@annotate: folktale.data.conversions.nullableToResult
 ---
-Converts a nullable value to an either. `null` and `undefined` map to
-`Left`s, any other value maps to `Right`s.
+Converts a nullable value to a `Result`. `null` and `undefined` map to
+`Error`s, any other value maps to `Ok`s.
 
 A nullable is a value that may be any type, or `null`/`undefined`.
 
 
 ## Example::
 
-    const nullableToEither = require('folktale/data/conversions/nullable-to-either');
-    const { Left, Right } = require('folktale/data/either');
+    const nullableToResult = require('folktale/data/conversions/nullable-to-result');
+    const { Error, Ok } = require('folktale/data/result');
 
-    nullableToEither(undefined);  // ==> Left(undefined)
-    nullableToEither(null);       // ==> Left(null)
-    nullableToEither(1);          // ==> Right(1)
+    nullableToResult(undefined);  // ==> Error(undefined)
+    nullableToResult(null);       // ==> Error(null)
+    nullableToResult(1);          // ==> Ok(1)
 
 
 
@@ -138,19 +138,19 @@ A nullable is a value that may be any type, or `null`/`undefined`.
 
 
 
-@annotate: folktale.data.conversions.validationToEither
+@annotate: folktale.data.conversions.validationToResult
 ---
-Converts a `Validation` to an `Either`. `Failure`s map to `Left`s,
-`Success`es map to `Right`s.
+Converts a `Validation` to an `Result`. `Failure`s map to `Error`s,
+`Success`es map to `Ok`s.
 
 ## Example::
 
-    const validationToEither = require('folktale/data/conversions/validation-to-either');
-    const { Left, Right } = require('folktale/data/either');
+    const validationToResult = require('folktale/data/conversions/validation-to-result');
+    const { Error, Ok } = require('folktale/data/result');
     const { Failure, Success } = require('folktale/data/validation');
 
-    validationToEither(Failure(1));  // ==> Left(1)
-    validationToEither(Success(1));  // ==> Right(1) 
+    validationToResult(Failure(1));  // ==> Error(1)
+    validationToResult(Success(1));  // ==> Ok(1) 
 
 
 

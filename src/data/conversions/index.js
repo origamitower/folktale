@@ -17,14 +17,14 @@
  * stability: experimental
  */
 module.exports = {
-  eitherToValidation: require('./either-to-validation'),
-  eitherToMaybe: require('./either-to-maybe'),
-  validationToEither: require('./validation-to-either'),
+  resultToValidation: require('./result-to-validation'),
+  resultToMaybe: require('./result-to-maybe'),
+  validationToResult: require('./validation-to-result'),
   validationToMaybe: require('./validation-to-maybe'),
   maybeToValidation: require('./maybe-to-validation'),
-  maybeToEither: require('./maybe-to-either'),
+  maybeToResult: require('./maybe-to-result'),
   nullableToValidation: require('./nullable-to-validation'),
-  nullableToEither: require('./nullable-to-either'),
+  nullableToResult: require('./nullable-to-result'),
   nullableToMaybe: require('./nullable-to-maybe')
 };
 

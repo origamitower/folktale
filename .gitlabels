@@ -38,7 +38,7 @@
     - (object)            The Object package
     - (fl)                The Fantasy Land package
   - (data)              The Data package
-    - (either)            The Either structure
+    - (result)            The Result structure
     - (maybe)             The Maybe structure
     - (val validation)    The Validation structure
     - (task)              The Task structure

@@ -10,17 +10,23 @@
 //
 //----------------------------------------------------------------------
 
+const { Error, Ok } = require('folktale/data/result/result');
+
 
 /*~
- * Provides the Either data structure.
  * ---
- * name: module folktale/data/either
- * category: Handling failures
+ * category: Converting from nullables
+ * stability: experimental
+ * authors:
+ *   - "@boris-marinov"
+ * 
+ * type: |
+ *   forall a:
+ *     (a or None) => Result None a
  */
-module.exports = {
-  ...require('./either'),
-  try: require('./try'),
-  fromNullable: require('folktale/data/conversions/nullable-to-either'),
-  fromValidation: require('folktale/data/conversions/validation-to-either'),
-  fromMaybe: require('folktale/data/conversions/maybe-to-either')
-};
+const nullableToResult = (a) =>
+  a != null ? Ok(a)
+  :/*else*/   Error(a);
+
+
+module.exports = nullableToResult;

@@ -654,10 +654,10 @@ The design of the Folktale library is guided by the following principles:
     — This is mostly to make using the libraries easier given the previous
     point. Modules that are higher in the hierarchy should re-export all
     features below it. This allows people to require a bag of things, like
-    `require('folktale/data/either')`, or a very specific functionality, when
+    `require('folktale/data/result')`, or a very specific functionality, when
     they are concerned about the resulting size of the application (if they are
     deploying to a Browser, for example), like
-    `require('folktale/data/either/fromNullable')`.
+    `require('folktale/data/result/fromNullable')`.
 
 
 ### How is Folktale organised?
@@ -740,8 +740,8 @@ allows people to import bags of features, or a particular feature separately.
     functional programming.
 
       - `maybe` — A structure for modelling the presence or absence of a value.
-      - `either` — A structure for modelling a tagged disjunction of two values.
-      - `validation` — A structure similar to Either, but designed for validations and supporting error aggregation.
+      - `result` — A structure for modelling a tagged disjunction of two values.
+      - `validation` — A structure similar to Result, but designed for validations and supporting error aggregation.
       - `task` — A structure for modelling a potentially asynchronous action.
 
 

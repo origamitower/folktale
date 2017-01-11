@@ -10,25 +10,26 @@
 //
 //----------------------------------------------------------------------
 
-const { Success, Failure } = require('folktale/data/validation/validation');
+const { Just, Nothing } = require('folktale/data/maybe/maybe');
 
 
 /*~
  * ---
- * category: Converting from Either
+ * category: Converting from Result
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
- * 
+ *
  * type: |
  *   forall a, b:
- *     (Either a b) => Validation a b
+ *     (Result a b) => Maybe b
  */
-const eitherToValidation = (anEither) =>
-  anEither.matchWith({
-    Left:  ({ value }) => Failure(value),
-    Right: ({ value }) => Success(value)
+const resultToMaybe = (aResult) =>
+  aResult.matchWith({
+    Error: ({ value }) => Nothing(),
+    Ok: ({ value }) => Just(value)
   });
 
 
-module.exports = eitherToValidation;
+module.exports = resultToMaybe;
+

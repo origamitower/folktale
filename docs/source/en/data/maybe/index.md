@@ -509,21 +509,21 @@ state.
     failures; // ==> 1
 
 
-@annotate: folktale.data.maybe.toEither
+@annotate: folktale.data.maybe.toResult
 ---
 
-A convenience method for the `folktale/data/conversions/maybe-to-either` module.
+A convenience method for the `folktale/data/conversions/maybe-to-result` module.
 
 ## Example::
 
     const Maybe = require('folktale/data/maybe');
-    const Either = require('folktale/data/either');
+    const Result = require('folktale/data/result');
 
-    Maybe.Just(1).toEither(0);
-    // ==> Either.Right(1)
+    Maybe.Just(1).toResult(0);
+    // ==> Result.Ok(1)
 
-    Maybe.Nothing().toEither(0)
-    // ==> Either.Left(0)
+    Maybe.Nothing().toResult(0)
+    // ==> Result.Error(0)
 
 
 @annotate: folktale.data.maybe.toValidation

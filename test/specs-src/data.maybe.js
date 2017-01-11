@@ -20,11 +20,11 @@ const { Just, Nothing } = Maybe;
 describe('Data.Maybe', () => {
 
   describe('Conversions', () => {
-    property('Just#fromEither', 'json', (a) => {
-      return Maybe.fromEither(Just(a).toEither()).equals(Just(a));
+    property('Just#fromResult', 'json', (a) => {
+      return Maybe.fromResult(Just(a).toResult()).equals(Just(a));
     });
-    property('Nothing#fromEither', 'json', (a) => {
-      return Maybe.fromEither(Nothing().toEither()).equals(Nothing());
+    property('Nothing#fromResult', 'json', (a) => {
+      return Maybe.fromResult(Nothing().toResult()).equals(Nothing());
     });
   });
 
@@ -101,15 +101,15 @@ describe('Data.Maybe', () => {
     });
   });
 
-  describe('#toEither(b)', () => {
-    const { Left, Right } = require('folktale/data/either');
+  describe('#toResult(b)', () => {
+    const { Error, Ok } = require('folktale/data/result');
     
-    property('Just(a).toEither(b) = Right(a)', 'json', 'json', (a, b) => {
-      return Just(a).toEither(b).equals(Right(a));
+    property('Just(a).toResult(b) = Right(a)', 'json', 'json', (a, b) => {
+      return Just(a).toResult(b).equals(Ok(a));
     });
 
-    property('Nothing().toEither(b) = Left(b)', 'json', 'json', (a, b) => {
-      return Nothing().toEither(b).equals(Left(b));
+    property('Nothing().toResult(b) = Error(b)', 'json', 'json', (a, b) => {
+      return Nothing().toResult(b).equals(Error(b));
     });
   });
 

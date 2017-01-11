@@ -27,17 +27,17 @@ const returns = (types) => (value) => bless({
   show: (type) => type.toString()
 });
 
-const { maybe, either, validation, future, task } = require('folktale').data
+const { maybe, result, validation, future, task } = require('folktale').data
 
 module.exports = {
-  monad: returns([maybe, either, Text]),
-  bifunctor: returns([validation, either]),
-  functor: returns([maybe, either, validation, Text]),
-  applicative: returns([maybe, either, validation, Text]),
+  monad: returns([maybe, result, Text]),
+  bifunctor: returns([validation, result]),
+  functor: returns([maybe, result, validation, Text]),
+  applicative: returns([maybe, result, validation, Text]),
   semigroup: returns([Text]),
   monoid: returns([Text]),
   maybe: returns([maybe]),
-  either: returns([either]),
+  result: returns([result]),
   validation: returns([validation]),
   future: returns([future]),
   task: returns([task])
