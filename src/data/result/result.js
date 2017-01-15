@@ -1,3 +1,12 @@
+//----------------------------------------------------------------------
+//
+// This source file is part of the Folktale project.
+//
+// Licensed under MIT. See LICENCE for full licence information.
+// See CONTRIBUTORS for the list of contributors to the project.
+//
+//----------------------------------------------------------------------
+
 const assertType = require('folktale/helpers/assertType');
 const assertFunction = require('folktale/helpers/assertFunction');
 const { data, setoid, show, serialize } = require('folktale/core/adt/');
