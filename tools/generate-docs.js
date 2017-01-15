@@ -1,3 +1,12 @@
+//----------------------------------------------------------------------
+//
+// This source file is part of the Folktale project.
+//
+// Licensed under MIT. See LICENCE for full licence information.
+// See CONTRIBUTORS for the list of contributors to the project.
+//
+//----------------------------------------------------------------------
+
 const Interface  = require('metamagical-interface');
 const Folktale   = require('../');
 const staticDocs = require('metamagical-static-docs');
