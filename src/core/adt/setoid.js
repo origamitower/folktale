@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------
 
 // --[ Dependencies ]---------------------------------------------------
-const assertType = require('folktale/helpers/assertType');
+const assertType = require('folktale/helpers/assert-type');
 const flEquals = require('folktale/core/fantasy-land/equals');
 const fl = require('folktale/helpers/fantasy-land');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');

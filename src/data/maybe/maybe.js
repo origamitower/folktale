@@ -7,11 +7,11 @@
 //
 //----------------------------------------------------------------------
 
-const assertType = require('folktale/helpers/assertType');
-const assertFunction = require('folktale/helpers/assertFunction');
+const assertType = require('folktale/helpers/assert-type');
+const assertFunction = require('folktale/helpers/assert-function');
 const { data, show, setoid, serialize } = require('folktale/core/adt');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
-const warnDeprecation = require('folktale/helpers/warnDeprecation');
+const warnDeprecation = require('folktale/helpers/warn-deprecation');
 
 
 const Maybe = data('folktale:Data.Maybe', {

@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------
 
-const deprecated = require('./warnDeprecation');
+const deprecated = require('./warn-deprecation');
 
 module.exports = (methodName) => (result) => {
   deprecated(`Type.${methodName}() is being deprecated in favour of Type['fantasy-land/${methodName}'](). 

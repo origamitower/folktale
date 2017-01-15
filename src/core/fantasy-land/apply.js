@@ -9,7 +9,7 @@
 
 const { ap } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
-const warn = require('folktale/helpers/warn-deprecated')('ap');
+const warn = require('folktale/helpers/warn-deprecated-method')('ap');
 const unsupported = require('folktale/helpers/unsupported-method')('ap');
 
 const isNew = (a) => typeof a[ap] === 'function';
