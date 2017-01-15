@@ -9,7 +9,7 @@
 
 const { map:flMap } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
-const warn = require('folktale/helpers/warn-deprecated')('map');
+const warn = require('folktale/helpers/warn-deprecated-method')('map');
 const unsupported = require('folktale/helpers/unsupported-method')('map');
 
 

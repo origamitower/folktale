@@ -9,7 +9,7 @@
 
 const { chain:flChain } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
-const warn = require('folktale/helpers/warn-deprecated')('chain');
+const warn = require('folktale/helpers/warn-deprecated-method')('chain');
 const unsupported = require('folktale/helpers/unsupported-method')('chain');
 
 const isNew = (a) => typeof a[flChain] === 'function';

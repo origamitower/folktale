@@ -9,7 +9,7 @@
 
 const { of:flOf } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
-const warn = require('folktale/helpers/warn-deprecated')('of');
+const warn = require('folktale/helpers/warn-deprecated-method')('of');
 const unsupported = require('folktale/helpers/unsupported-method')('of');
 
 

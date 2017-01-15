@@ -9,7 +9,7 @@
 
 const { equals:flEquals } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
-const warn = require('folktale/helpers/warn-deprecated')('equals');
+const warn = require('folktale/helpers/warn-deprecated-method')('equals');
 const unsupported = require('folktale/helpers/unsupported-method')('equals');
 
 

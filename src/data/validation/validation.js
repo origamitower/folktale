@@ -7,8 +7,8 @@
 //
 //----------------------------------------------------------------------
 
-const assertType = require('folktale/helpers/assertType');
-const assertFunction = require('folktale/helpers/assertFunction');
+const assertType = require('folktale/helpers/assert-type');
+const assertFunction = require('folktale/helpers/assert-function');
 const { data, setoid, show } = require('folktale/core/adt/');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const constant = require('folktale/core/lambda/constant');

@@ -9,7 +9,7 @@
 
 const { concat:flConcat } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
-const warn = require('folktale/helpers/warn-deprecated')('concat');
+const warn = require('folktale/helpers/warn-deprecated-method')('concat');
 const unsupported = require('folktale/helpers/unsupported-method')('concat');
 
 const isNewSemigroup = (a) => typeof a[flConcat] === 'function';

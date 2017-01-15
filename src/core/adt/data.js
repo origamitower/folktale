@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------
 
 // --[ Dependencies ]---------------------------------------------------
-const warnDeprecation = require('folktale/helpers/warnDeprecation');
+const warnDeprecation = require('folktale/helpers/warn-deprecation');
 
 
 // --[ Constants and Aliases ]------------------------------------------

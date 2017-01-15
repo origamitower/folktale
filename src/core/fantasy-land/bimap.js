@@ -9,7 +9,7 @@
 
 const { bimap:flBimap } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
-const warn = require('folktale/helpers/warn-deprecated')('bimap');
+const warn = require('folktale/helpers/warn-deprecated-method')('bimap');
 const unsupported = require('folktale/helpers/unsupported-method')('bimap');
 
 
