@@ -199,6 +199,7 @@ Just.prototype.getOrElse = function(_default_) {
 
 
 /*~
+ * ---
  * category: Recovering from errors
  * type: |
  *   forall a: (Maybe a).((a) => Maybe a) => Maybe a
@@ -208,6 +209,7 @@ Nothing.prototype.orElse = function(handler) {
 };
 
 /*~
+ * ---
  * category: Recovering from errors
  * type: |
  *   forall a: (Maybe a).((a) => Maybe a) => Maybe a
