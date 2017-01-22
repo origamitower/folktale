@@ -165,6 +165,18 @@ adtMethods(Validation, {
       assertFunction('Validation.Failure#failureMap', transformation);
       return this;
     }
+  },
+
+  cata: {
+    Failure(pattern) {
+      warnDeprecation('`.cata(pattern)` is deprecated. Use `.matchWith(pattern)` instead.');
+      return pattern.Failure(this.value);
+    },
+
+    Success(pattern) {
+      warnDeprecation('`.cata(pattern)` is deprecated. Use `.matchWith(pattern)` instead.');
+      return pattern.Success(this.value);
+    }
   }
 });
 
