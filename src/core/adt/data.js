@@ -117,34 +117,6 @@ function defineVariants(typeId, patterns, adt) {
 instead to check if a value belongs to the ADT variant.`);
         return true;
       },
-
-      /*~
-       * Selects an operation based on this Variant's tag.
-       *
-       * The `cata`morphism operation allows a very limited form of
-       * pattern matching, by selecting an operation depending on this
-       * value's tag.
-       *
-       * ---
-       * category : Transforming
-       * type: |
-       *   ('a is Variant).({ 'b: (Object Any) => 'c }) => 'c
-       *   where 'b = 'a[`@@folktale:adt:tag]
-       *
-       * deprecated:
-       *   version: 2.0.0
-       *   replacedBy: .matchWith(pattern)
-       *   reason: |
-       *     `.cata()` is not a very intuitive name, and most people are
-       *     not familiar with the term `catamorphism` either. `.matchWith()`
-       *     is more familiar and conveys more information to more people.
-       * 
-       * ~belongsTo: constructor
-       */
-      cata(pattern) {
-        warnDeprecation('`.cata(pattern)` is deprecated. Use `.matchWith(pattern)` instead.');
-        return this.matchWith(pattern);
-      },
       
       /*~
        * Selects an operation based on this Variant's tag.

@@ -188,6 +188,34 @@ adtMethods(Maybe, {
       assertFunction('Maybe.Nothing#orElse', handler);
       return this;
     }
+  },
+
+
+  /*~
+   * ---
+   * category: Pattern matching
+   * signature: cata(pattern)
+   * type: |
+   *   forall a, b:
+   *     (Maybe a).({
+   *       Nothing: () => b,
+   *       Just: (a) => b
+   *     }) => b
+   */
+  cata: {
+    /*~
+     */
+    Nothing(pattern) {
+      warnDeprecation('`.cata(pattern)` is deprecated. Use `.matchWith(pattern)` instead.');
+      return pattern.Nothing();
+    },
+
+    /*~
+     */
+    Just(pattern) {
+      warnDeprecation('`.cata(pattern)` is deprecated. Use `.matchWith(pattern)` instead.');
+      return pattern.Just(this.value);
+    }
   }
 });
 
