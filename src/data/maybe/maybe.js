@@ -12,6 +12,7 @@ const assertFunction = require('folktale/helpers/assert-function');
 const { data, show, setoid, serialize } = require('folktale/core/adt');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const warnDeprecation = require('folktale/helpers/warn-deprecation');
+const adtMethods = require('folktale/helpers/define-adt-methods');
 
 
 const Maybe = data('folktale:Data.Maybe', {
@@ -40,206 +41,204 @@ const { Nothing, Just } = Maybe;
 const assertMaybe = assertType(Maybe);
 
 
-// -- Functor ----------------------------------------------------------
 /*~
  * ---
- * category: Transforming Maybe values
- * type: |
- *   forall a, b: (Maybe a).((a) => b) => Maybe b
+ * ~belongsTo: Maybe
  */
-Nothing.prototype.map = function(transformation) {
-  assertFunction('Maybe.Nothing#map', transformation);
-  return this;
-};
+adtMethods(Maybe, {
+  /*~
+   * ---
+   * category: Transforming
+   * signature: map(transformation)
+   * type: |
+   *   forall a, b: (Maybe a).((a) => b) => Maybe b
+   */
+  map: {
+    /*~
+     */
+    Nothing(transformation) {
+      assertFunction('Maybe.Nothing#map', transformation);
+      return this;
+    },
 
-/*~
- * ---
- * category: Transforming Maybe values
- * type: |
- *   forall a, b: (Maybe a).((a) => b) => Maybe b
- */
-Just.prototype.map = function(transformation) {
-  assertFunction('Maybe.Nothing#map',  transformation);
-  return Just(transformation(this.value));
-};
-
-
-// -- Apply ------------------------------------------------------------
-/*~
- * ---
- * category: Transforming Maybe values
- * type: |
- *   forall a, b: (Maybe (a) => b).(Maybe a) => Maybe b
- */
-Nothing.prototype.apply = function(aMaybe) {
-  assertMaybe('Maybe.Nothing#apply', aMaybe);
-  return this;
-};
-
-/*~
- * ---
- * category: Transforming Maybe values
- * type: |
- *   forall a, b: (Maybe (a) => b).(Maybe a) => Maybe b
- */
-Just.prototype.apply = function(aMaybe) {
-  assertMaybe('Maybe.Just#apply', aMaybe);
-  return aMaybe.map(this.value);
-};
-
-// -- Applicative ------------------------------------------------------
-/*~
- * ---
- * category: Constructing
- * type: |
- *   forall a: (a) => Maybe a
- */
-Maybe.of = function(value) {
-  return Just(value);
-};
+    /*~
+     */
+    Just(transformation) {
+      assertFunction('Maybe.Just#map', transformation);
+      return Just(transformation(this.value));
+    }
+  },
 
 
-// -- Chain ------------------------------------------------------------
-/*~
- * ---
- * category: Transforming Maybes
- * type: |
- *   forall a: (Maybe a).((a) => Maybe b) => Maybe b
- */
-Nothing.prototype.chain = function(transformation) {
-  assertFunction('Maybe.Nothing#chain', transformation);
-  return this;
-};
+  /*~
+   * ---
+   * category: Transforming
+   * signature: apply(aMaybe)
+   * type: |
+   *   forall a, b: (Maybe (a) => b).(Maybe a) => Maybe b
+   */
+  apply: {
+    /*~
+     */
+    Nothing(aMaybe) {
+      assertMaybe('Maybe.Nothing#apply', aMaybe);
+      return this;
+    },
 
-/*~
- * ---
- * category: Transforming Maybes
- * type: |
- *   forall a: (Maybe a).((a) => Maybe b) => Maybe b
- */
-Just.prototype.chain = function(transformation) {
-  assertFunction('Maybe.Just#chain', transformation);
-  return transformation(this.value);
-};
-
-// -- Extracting values and recovering ---------------------------------
-
-/*~
- * ---
- * category: Extracting values
- * stability: deprecated
- * type: |
- *   forall a: (Maybe a).() => a :: (throws TypeError)
- */
-Nothing.prototype.get = function() {
-  warnDeprecation('`.get()` is deprecated, and has been renamed to `.unsafeGet()`.');
-  return this.unsafeGet();
-};
-
-/*~
- * ---
- * category: Extracting values
- * stability: deprecated
- * type: |
- *   forall a: (Maybe a).() => a :: (throws TypeError)
- */
-Just.prototype.get = function() {
-  warnDeprecation('`.get()` is deprecated, and has been renamed to `.unsafeGet()`.');
-  return this.unsafeGet();
-};
-
-/*~
- * ---
- * category: Extracting values
- * type: |
- *   forall a: (Maybe a).() => a :: (throws TypeError)
- */
-Nothing.prototype.unsafeGet = function() {
-  throw new TypeError(`Can't extract the value of a Nothing.
-
-Since Nothing holds no values, it's not possible to extract one from them.
-You might consider switching from Maybe#get to Maybe#getOrElse, or some other method
-that is not partial.
-  `);
-};
-
-/*~
- * ---
- * category: Extracting values
- * type: |
- *   forall a: (Maybe a).() => a :: (throws TypeError)
- */
-Just.prototype.unsafeGet = function() {
-  return this.value;
-}
+    /*~
+     */
+    Just(aMaybe) {
+      assertMaybe('Maybe.Just#apply', aMaybe);
+      return aMaybe.map(this.value);
+    }
+  },
 
 
-/*~
- * ---
- * category: Extracting values
- * type: |
- *   forall a: (Maybe a).(a) => a
- */
-Nothing.prototype.getOrElse = function(default_) {
-  return default_;
-};
+  /*~
+   * ---
+   * category: Transforming
+   * signature: chain(transformation)
+   * type: |
+   *   forall a, b: (Maybe a).((a) => Maybe b) => Maybe b
+   */
+  chain: {
+    /*~
+     */
+    Nothing(transformation) {
+      assertFunction('Maybe.Nothing#chain', transformation);
+      return this;
+    },
 
-/*~
- * ---
- * category: Extracting values
- * type: |
- *   forall a: (Maybe a).(a) => a
- */
-Just.prototype.getOrElse = function(_default_) {
-  return this.value;
-};
-
-
-/*~
- * ---
- * category: Recovering from errors
- * type: |
- *   forall a: (Maybe a).((a) => Maybe a) => Maybe a
- */
-Nothing.prototype.orElse = function(handler) {
-  return handler();
-};
-
-/*~
- * ---
- * category: Recovering from errors
- * type: |
- *   forall a: (Maybe a).((a) => Maybe a) => Maybe a
- */
-Just.prototype.orElse = function() {
-  return this;
-};
+    /*~
+     */
+    Just(transformation) {
+      assertFunction('Maybe.Just#chain', transformation);
+      return transformation(this.value);
+    }
+  },
 
 
-// -- Conversions -------------------------------------------------
+  /*~
+   * ---
+   * category: Extracting values
+   * signature: unsafeGet()
+   * type: |
+   *   forall a: (Maybe a).() => a :: (throws TypeError)
+   */
+  unsafeGet: {
+    /*~
+     */
+    Nothing() {
+      throw new TypeError(`Can't extract the value of a Nothing.
 
-/*~
- * ---
- * category: Converting
- * type: |
- *   forall a, b: (Maybe a).(b) => Result b a
- */
-Maybe.toResult = function(fallbackValue) {
-  return require('folktale/data/conversions/maybe-to-result')(this, fallbackValue);
-};
+    Since Nothing holds no values, it's not possible to extract one from them.
+    You might consider switching from Maybe#get to Maybe#getOrElse, or some other method
+    that is not partial.
+      `);
+    },
 
-/*~
- * ---
- * category: Converting
- * type: |
- *   forall a, b: (Maybe a).(b) => Validation b a
- */
-Maybe.toValidation = function(fallbackValue) {
-  return require('folktale/data/conversions/maybe-to-validation')(this, fallbackValue);
-};
+    /*~
+     */
+    Just() {
+      return this.value;
+    }
+  },
 
 
-// -- Exports ----------------------------------------------------------
+  /*~
+   * ---
+   * category: Extracting values
+   * signature: getOrElse(default)
+   * type: |
+   *   forall a: (Maybe a).(a) => a
+   */
+  getOrElse: {
+    /*~
+     */
+    Nothing(default_) {
+      return default_;
+    },
+
+    /*~
+     */
+    Just(default_) {
+      return this.value;
+    }
+  },
+
+
+  /*~
+   * ---
+   * category: Recovering from errors
+   * signature: orElse(handler)
+   * type: |
+   *   forall a: (Maybe a).((a) => Maybe a) => Maybe a
+   */
+  orElse: {
+    /*~
+     */
+    Nothing(handler) {
+      assertFunction('Maybe.Nothing#orElse', handler);
+      return handler(this.value);
+    },
+
+    /*~
+     */
+    Just(handler) {
+      assertFunction('Maybe.Nothing#orElse', handler);
+      return this;
+    }
+  }
+});
+
+
+Object.assign(Maybe, {
+  /*~
+   * ---
+   * category: Constructing
+   * type: |
+   *   forall a: (a) => Maybe a
+   */
+  of(value) {
+    return Just(value);
+  },
+
+
+  /*~
+   * ---
+   * category: Extracting values
+   * stability: deprecated
+   * type: |
+   *   forall a: (Maybe a).() => a :: (throws TypeError)
+   */
+  'get'() {
+    warnDeprecation('`.get()` is deprecated, and has been renamed to `.unsafeGet()`.');
+    return this.unsafeGet();
+  },
+
+
+  /*~
+   * ---
+   * category: Converting to other types
+   * type: |
+   *   forall a, b: (Maybe a).(b) => Result b a
+   */
+  toResult(fallbackValue) {
+    return require('folktale/data/conversions/maybe-to-result')(this, fallbackValue);  
+  },
+
+  /*~
+   * ---
+   * category: Converting to other types
+   * type: |
+   *   forall a, b: (Maybe a).(b) => Result b a
+   */
+  toValidation(fallbackValue) {
+    return require('folktale/data/conversions/maybe-to-validation')(this, fallbackValue);
+  }
+});
+
+
 provideAliases(Just.prototype);
 provideAliases(Nothing.prototype);
 provideAliases(Maybe);
