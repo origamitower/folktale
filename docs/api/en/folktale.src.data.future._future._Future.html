@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li></ul></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">Future</h1><div class="highlight-summary"><div><p>Represents an eventual value, like Promise, but without a recursive
 <code>.then</code>.</p>
@@ -22,8 +22,7 @@ use the Deferred or Task objects.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-fantasy-land">Fantasy Land</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.helpers.provide-fantasy-land-aliases.ap.html">ap(that)</a><div class="doc-summary"><div><p>Fantasy Land&#39;s Apply <code>ap</code></p>
 </div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.src.helpers.provide-fantasy-land-aliases.fantasy-land/ap.html">fantasy-land/ap(that)</a><div class="doc-summary"><div><p>Fantasy Land&#39;s Apply <code>ap</code></p>
 </div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.src.helpers.provide-fantasy-land-aliases.fantasy-land/of.html">fantasy-land/of(value)</a><div class="doc-summary"><div><p>Fantasy Land&#39;s Applicative <code>of</code></p>
-</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">name</div><div class="doc-summary"><div><p>A String.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/future/_future.js at line 32, column 0</div><pre class="source-code"><code class="language-javascript">class Future {
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/future/_future.js at line 32, column 0</div><pre class="source-code"><code class="language-javascript">class Future {
   constructor() {
     define(this, '_state', Pending());
     define(this, '_listeners', []);
