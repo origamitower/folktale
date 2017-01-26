@@ -66,7 +66,7 @@
     "marked": "^0.3.6",
     "metamagical-interface": "^3.4.0",
     "metamagical-mocha-bridge": "^0.3.0",
-    "metamagical-static-docs": "^0.1.0",
+    "metamagical-static-docs": "^0.2.0",
     "mocha": "^2.4.5",
     "uglify-js": "^2.7.3"
   },
