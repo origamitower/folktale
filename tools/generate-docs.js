@@ -42,7 +42,13 @@ const files = staticDocs.formatters.html(entities, {
   documentationTitle: _('span.doc-title',
     _('span.product-name', 'Folktale'),
     _('span.version', `v${pkg.version}`)
-  )
+  ),
+  navigation: [
+    {
+      text: 'GitHub',
+      url: 'https://github.com/origamitower/folktale'
+    }
+  ]
 });
 staticDocs.generate(files, {
   outputDirectory: path.join(__dirname, '../docs/api', lang),
