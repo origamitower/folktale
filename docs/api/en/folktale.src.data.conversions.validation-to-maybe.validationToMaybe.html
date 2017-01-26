@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li></ul></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">validationToMaybe</h1><div class="highlight-summary"><div><p>Converts a <code>Validation</code> to a <code>Maybe</code>. <code>Failure</code>s map to <code>Nothing</code>s,
 <code>Success</code>es map to <code>Just</code>s.</p>
@@ -24,8 +24,7 @@ const { Nothing, Just } = require(&#39;folktale/data/maybe&#39;);
 
 validationToMaybe(Failure(1));  // ==&gt; Nothing()
 validationToMaybe(Success(1));  // ==&gt; Just(1)
-</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">length</div><div class="doc-summary"><div><p>A Number.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/conversions/validation-to-maybe.js at line 27, column 0</div><pre class="source-code"><code class="language-javascript">(aValidation) =&gt;
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/conversions/validation-to-maybe.js at line 24, column 0</div><pre class="source-code"><code class="language-javascript">(aValidation) =&gt;
   aValidation.matchWith({
     Failure:  () =&gt; Nothing(),
     Success:  ({ value }) =&gt; Just(value)

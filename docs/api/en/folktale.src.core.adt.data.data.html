@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li></ul></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">data</h1><div class="highlight-summary"><div><p>Constructs a tagged union data structure.</p>
 </div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">data(typeId, patterns)</div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">(String, Object (Array String)) =&gt; ADT</code></pre></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Constructs a tagged union data structure.</p>
@@ -418,10 +418,9 @@ Nil().toJSON()
 Cons(1, Nil()).toJSON()
 // ==&gt; { tag: &quot;List:Cons&quot;, value: 1, rest: { &quot;tag&quot;: &quot;List:Nil&quot; }}
 </code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-data-structures">Data Structures</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.core.adt.data.ADT.html">ADT</a><div class="doc-summary"><div><p>The basis of all algebraic data types.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">length</div><div class="doc-summary"><div><p>A Number.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">tagSymbol</div><div class="doc-summary"><div><p>A Symbol.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">tagSymbol</div><div class="doc-summary"><div><p>A Symbol.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">typeSymbol</div><div class="doc-summary"><div><p>A Symbol.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/data.js at line 294, column 0</div><pre class="source-code"><code class="language-javascript">(typeId, patterns) =&gt; {
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/data.js at line 266, column 0</div><pre class="source-code"><code class="language-javascript">(typeId, patterns) =&gt; {
   const ADTNamespace = Object.create(ADT);
   const variants     = defineVariants(typeId, patterns, ADTNamespace);
 

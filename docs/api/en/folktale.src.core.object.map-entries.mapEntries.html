@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li></ul></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">mapEntries</h1><div class="highlight-summary"><div><p>Transforms own properties of an object using a mapping function.</p>
 </div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">mapEntries(object, transform, define)</div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">(
@@ -54,8 +54,7 @@ things like prototypical delegation, symbols, and non-enumerable
 properties.</p>
 </div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-transforming">Transforming</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.core.object.map-entries.overwrite.html">overwrite(object, transform)</a><div class="doc-summary"><div><p>Transforms own properties of an object using a mapping function.</p>
 </div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.src.core.object.map-entries.unique.html">unique(object, transform)</a><div class="doc-summary"><div><p>Transforms own properties of an object using a mapping function.</p>
-</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">length</div><div class="doc-summary"><div><p>A Number.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/object/map-entries.js at line 27, column 0</div><pre class="source-code"><code class="language-javascript">(object, transform, define) =&gt;
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/object/map-entries.js at line 27, column 0</div><pre class="source-code"><code class="language-javascript">(object, transform, define) =&gt;
         Object.keys(object).reduce((result, key) =&gt; {
           const [newKey, newValue] = transform([key, object[key]]);
           return define(result, newKey, newValue);

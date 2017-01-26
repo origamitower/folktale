@@ -8,9 +8,10 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li></ul></div>
     </div>
-    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">curry</h1><div class="highlight-summary"><div></div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">curry(arity, fn)</div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">(Number, (Any...) =&gt; 'a) =&gt; Any... =&gt; 'a or ((Any...) =&gt; 'a)</code></pre></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Transforms functions of arity N into a chain of N unary functions</p>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">curry</h1><div class="highlight-summary"><div><p>Transforms functions of arity N into a chain of N unary functions</p>
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">curry(arity, fn)</div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">(Number, (Any...) =&gt; 'a) =&gt; Any... =&gt; 'a or ((Any...) =&gt; 'a)</code></pre></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Transforms functions of arity N into a chain of N unary functions</p>
 <h2 id="example-">Example:</h2>
 <pre><code>const curry = require(&#39;folktale/core/lambda/curry&#39;);
 
@@ -252,8 +253,7 @@ discouraged.</p>
 <p>One also must consider the overhead of introducing <code>curry</code> in a codebase.
 For most code, this overhead is negligible, but <code>curry</code> should be avoided
 in code paths that require more performance.</p>
-</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">length</div><div class="doc-summary"><div><p>A Number.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/lambda/curry.js at line 21, column 0</div><pre class="source-code"><code class="language-javascript">(arity, fn) =&gt; {
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/lambda/curry.js at line 21, column 0</div><pre class="source-code"><code class="language-javascript">(arity, fn) =&gt; {
   const curried = (oldArgs) =&gt; (...newArgs) =&gt; {
     const allArgs  = oldArgs.concat(newArgs);
     const argCount = allArgs.length;

@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li></ul></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">serialize</h1><div class="highlight-summary"><div><p>Provides JSON serialisation and parsing for ADTs.</p>
 </div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">serialize(variant, adt)</div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">(Variant, ADT) =&gt; Void</code></pre></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Provides JSON serialisation and parsing for ADTs.</p>
@@ -91,8 +91,7 @@ data. This way, <code>.toJSON()</code> produces values of this interface, and
   &quot;@@tag&quot;:   String,
   &quot;@@value&quot;: Object Any
 }
-</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">length</div><div class="doc-summary"><div><p>A Number.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/serialize.js at line 124, column 0</div><pre class="source-code"><code class="language-javascript">(variant, adt) =&gt; {
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/serialize.js at line 124, column 0</div><pre class="source-code"><code class="language-javascript">(variant, adt) =&gt; {
   const typeName = adt[typeSymbol];
   const tagName = variant.prototype[tagSymbol];
 

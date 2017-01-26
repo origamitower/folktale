@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li></ul></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/core/lambda</h1><div class="highlight-summary"><div><p>Core.Lambda provides you tools for transforming and combining
 functions.</p>
@@ -75,7 +75,8 @@ executing the function before the rest is provided.</p>
 </div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-combinators">Combinators</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.core.lambda.constant.constant.html">constant(value)</a><div class="doc-summary"><div><p>The constant combinator; always returns the first argument given.</p>
 </div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.src.core.lambda.identity.identity.html">identity(value)</a><div class="doc-summary"><div><p>The identity combinator; always returns the argument given.</p>
 </div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-combining">Combining</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.core.lambda.compose.compose.html">compose(f, g)(value)</a><div class="doc-summary"><div><p>Composes two functions.</p>
-</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-currying-and-partialisation">Currying and Partialisation</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.core.lambda.curry.curry.html">curry(arity, fn)</a><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.core.lambda.partialise.partialise.html">partialise(arity, fn)</a><div class="doc-summary"><div><p>Creates a new function where some of the arguments are specified.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-currying-and-partialisation">Currying and Partialisation</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.core.lambda.curry.curry.html">curry(arity, fn)</a><div class="doc-summary"><div><p>Transforms functions of arity N into a chain of N unary functions</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.core.lambda.partialise.partialise.html">partialise(arity, fn)</a><div class="doc-summary"><div><p>Creates a new function where some of the arguments are specified.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/lambda/index.js at line 15, column 0</div><pre class="source-code"><code class="language-javascript">{
   identity: require('./identity'),
   constant: require('./constant'),
