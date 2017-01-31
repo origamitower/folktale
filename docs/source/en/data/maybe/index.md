@@ -420,7 +420,7 @@ instruction succeeds, and either instructions may fail.
     // ==> Maybe.Nothing()
     
     
-@annotate-multi: [folktale.data.maybe.Nothing.prototype.get, folktale.data.maybe.Just.prototype.get]
+@annotate: folktale.data.maybe.get
 deprecated:
   version: '2.0.0'
   replacedBy: unsafeGet()
