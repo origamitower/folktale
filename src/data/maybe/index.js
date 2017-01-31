@@ -17,6 +17,24 @@
  */
 module.exports = {
   ...require('./maybe'),
-  fromResult: require('folktale/data/conversions/result-to-maybe'),
-  fromValidation: require('folktale/data/conversions/validation-to-maybe')
+
+  /*~
+   * ---
+   * category: Converting from other types
+   * type: |
+   *   forall a, b: (Result a b) => Maybe b
+   */
+  fromResult(aResult) {
+    return require('folktale/data/conversions/result-to-maybe')(aResult);
+  },
+
+  /*~
+   * ---
+   * category: Converting from other types
+   * type: |
+   *   forall a, b: (Validation a b) => Maybe b
+   */
+  fromValidation(aValidation) {
+    return require('folktale/data/conversions/validation-to-maybe')(aValidation);
+  }
 };
