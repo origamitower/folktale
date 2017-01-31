@@ -540,4 +540,44 @@ A convenience method for the `folktale/data/conversions/maybe-to-validation` mod
     // ==> Validation.Success(1)
 
     Maybe.Nothing().toValidation(0)
-    // ==> Validation.Failure(0)    
+    // ==> Validation.Failure(0)
+    
+    
+@annotate: folktale.data.maybe.fromResult
+---
+
+A convenience method for the `folktale/data/conversions/result-to-maybe` module.
+
+Note that `Error` values are discarded, since `Nothing` can't hold a value.
+
+
+## Example::
+
+    const Maybe = require('folktale/data/maybe');
+    const Result = require('folktale/data/result');
+    
+    Maybe.fromResult(Result.Ok(1));
+    // ==> Maybe.Just(1)
+    
+    Maybe.fromResult(Result.Error(1));
+    // ==> Maybe.Nothing()
+    
+    
+@annotate: folktale.data.maybe.fromValidation
+---
+
+A convenience method for the `folktale/data/conversions/validation-to-maybe` module.
+
+Note that `Failure` values are discarded, since `Nothing` can't hold a value.
+
+## Example::
+
+    const Maybe = require('folktale/data/maybe');
+    const Validation = require('folktale/data/validation');
+    
+    Maybe.fromValidation(Validation.Success(1));
+    // ==> Maybe.Just(1)
+    
+    Maybe.fromValidation(Validation.Failure(1));
+    // ==> Maybe.Nothing()
+    
