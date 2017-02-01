@@ -19,7 +19,7 @@ an `Error(value)`, which contains an error.
       DivisionByZero(dividend) {
         return { dividend };
       }
-    }).deriving(setoid, show);
+    }).derive(setoid, show);
     
     const { DivisionByZero } = DivisionErrors;
     
@@ -90,7 +90,7 @@ over again::
     // ==> 'Please provide a valid email'
     
     validateBranching({
-      nam: 'Alissa',
+      name: 'Alissa',
       type: 'email',
       email: 'alissa@somedomain'
     });
