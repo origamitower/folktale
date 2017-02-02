@@ -68,7 +68,7 @@ If we have maybe, we can change our code from::
     find1([1, 2, 3], (x) => x > 2); // ==> 3
     find1([1, 2, 3], (x) => x > 3); // ==> null
     
-To:
+To::
 
     const Maybe = require('folktale/data/maybe');
 
@@ -128,7 +128,7 @@ We'll see each of these categories in more details below.
 
 If we're wrapping a value in a Maybe, then we can use the value by extracting it
 from that container. Folktale lets you do this through the `getOrElse(default)`
-method:
+method::
 
     const Maybe = require('folktale/data/maybe');
 
@@ -161,7 +161,7 @@ UI elements with the data from that object, but the list can be empty so you
 have to handle that error first. We can't use `getOrElse()` here because if we
 have an error, we don't want to render that error in the same way. Instead, we
 can use `map(transformation)` to apply our rendering logic only to successful
-values:
+values::
 
     const Maybe = require('folktale/data/maybe');
 
@@ -175,7 +175,7 @@ values:
     }
     
     first([{ title: 'Hello' }]).map(render);
-    // ==> Maybe.Just(['item', ['title', 'Hello']])
+    // => Maybe.Just(['item', ['title', 'Hello']])
     
     first([]).map(render);
     // ==> Maybe.Nothing()
