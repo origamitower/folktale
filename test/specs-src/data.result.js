@@ -99,12 +99,12 @@ describe('Data.Result', function() {
       return _.Ok(a).bimap(id, f).equals(_.Ok(f(a)))
     });
 
-    property('Error#errorMap', 'json', 'json -> json', (a, f) => {
-      return _.Error(f(a)).equals(_.Error(a).errorMap(f))
+    property('Error#mapError', 'json', 'json -> json', (a, f) => {
+      return _.Error(f(a)).equals(_.Error(a).mapError(f))
     });
     
-    property('Ok#errorMap', 'json', 'json -> json', (a, f) => {
-      return _.Ok(a).errorMap(f).equals(_.Ok(a))
+    property('Ok#mapError', 'json', 'json -> json', (a, f) => {
+      return _.Ok(a).mapError(f).equals(_.Ok(a))
     });
   });
   describe('Conversions', () => {
