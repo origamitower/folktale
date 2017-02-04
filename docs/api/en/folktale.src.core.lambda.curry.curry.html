@@ -165,8 +165,10 @@ joinedBy2(&#39;,&#39;, [&#39;a&#39;], &#39;b&#39;);
 <p>How can <code>curry</code> construct functions that support such different styles
 of passing arguments? The secret is in how <code>curry</code> does unrolling. A
 function constructed by <code>curry</code> takes two arguments:</p>
-<p> 1) The number of arguments that are expected for that function (arity);
- 2) The function that should be called when those arguments are collected.</p>
+<ol>
+<li>The number of arguments that are expected for that function (arity);</li>
+<li>The function that should be called when those arguments are collected.</li>
+</ol>
 <p>In return, <code>curry</code> gives you back a function that, at first, only collects
 arguments. That is, until we reach the amount of arguments expected (arity),
 applying the <code>curry</code>ed function gives you back a new function that you

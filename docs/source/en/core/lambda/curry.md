@@ -218,8 +218,8 @@ How can `curry` construct functions that support such different styles
 of passing arguments? The secret is in how `curry` does unrolling. A
 function constructed by `curry` takes two arguments:
 
- 1) The number of arguments that are expected for that function (arity);
- 2) The function that should be called when those arguments are collected.
+1. The number of arguments that are expected for that function (arity);
+2. The function that should be called when those arguments are collected.
 
 In return, `curry` gives you back a function that, at first, only collects
 arguments. That is, until we reach the amount of arguments expected (arity),
