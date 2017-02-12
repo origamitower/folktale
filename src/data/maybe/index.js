@@ -22,6 +22,16 @@ module.exports = {
    * ---
    * category: Converting from other types
    * type: |
+   *   forall a: (a or void) => Maybe a
+   */
+  fromNullable(aNullable) {
+    return require('folktale/data/conversions/nullable-to-maybe')(aNullable);
+  },
+
+  /*~
+   * ---
+   * category: Converting from other types
+   * type: |
    *   forall a, b: (Result a b) => Maybe b
    */
   fromResult(aResult) {
