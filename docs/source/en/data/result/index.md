@@ -941,7 +941,7 @@ with the raised exception.
 
     function successor(natural) {
       if (natural < 0) {
-        throw `Not a natural number: ${nat}`;
+        throw `Not a natural number: ${natural}`;
       } else {
         return natural + 1;
       }
