@@ -581,3 +581,21 @@ Note that `Failure` values are discarded, since `Nothing` can't hold a value.
     Maybe.fromValidation(Validation.Failure(1));
     // ==> Maybe.Nothing()
     
+    
+@annotate: folktale.data.maybe.fromNullable
+---
+
+A convenience method for the `folktale/data/conversions/nullable-to-maybe` module.
+
+## Example::
+
+    const Maybe = require('folktale/data/maybe');
+    
+    Maybe.fromNullable(1);
+    // ==> Maybe.Just(1)
+    
+    Maybe.fromNullable(null);
+    // ==> Maybe.Nothing()
+    
+    Maybe.fromNullable(undefined);
+    // ==> Maybe.Nothing()
