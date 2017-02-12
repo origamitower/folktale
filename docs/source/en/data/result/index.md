@@ -955,3 +955,57 @@ with the raised exception.
     Result.try(() => successor(1));
     // ==> Result.Ok(2)
     
+
+@annotate: folktale.data.result.fromNullable
+---
+
+A convenience method for the `folktale/data/conversions/nullable-to-result`
+module.
+
+## Example::
+
+    const Result = require('folktale/data/result');
+    
+    Result.fromNullable(1);
+    // ==> Result.Ok(1)
+    
+    Result.fromNullable(null);
+    // ==> Result.Error(null)
+    
+    Result.fromNullable(undefined);
+    // ==> Result.Error(undefined)
+    
+    
+@annotate: folktale.data.result.fromValidation
+---
+
+A convenience method for the `folktale/data/conversions/validation-to-result`
+module.
+
+## Example::
+
+    const Result = require('folktale/data/result');
+    const Validation = require('folktale/data/validation');
+    
+    Result.fromValidation(Validation.Success(1));
+    // ==> Result.Ok(1)
+    
+    Result.fromValidation(Validation.Failure(1));
+    // ==> Result.Error(1)
+    
+    
+@annotate: folktale.data.result.fromMaybe
+---
+
+A convenience method for the `folktale/data/conversions/maybe-to-result` module.
+
+## Example::
+
+    const Result = require('folktale/data/result');
+    const Maybe = require('folktale/data/maybe');
+    
+    Result.fromMaybe(Maybe.Just(1), 'error');
+    // ==> Result.Ok(1)
+    
+    Result.fromMaybe(Maybe.Nothing(), 'error');
+    // ==> Result.Error('error')
