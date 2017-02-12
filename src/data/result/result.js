@@ -12,6 +12,7 @@ const assertFunction = require('folktale/helpers/assert-function');
 const { data, setoid, show, serialize } = require('folktale/core/adt/');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const adtMethods = require('folktale/helpers/define-adt-methods');
+const extend = require('folktale/helpers/extend');
 
 
 /*~
@@ -43,6 +44,35 @@ const Result = data('folktale:Data.Result', {
 const { Error, Ok } = Result;
 
 const assertResult = assertType(Result);
+
+
+
+extend(Error.prototype, {
+  /*~
+   * ---
+   * isRequired: true
+   * category: State and configuration
+   * type: |
+   *   forall a, b: get (Result a b) => a
+   */
+  get value() {
+    throw new TypeError('`value` can’t be accessed in an abstract instance of Result.Error');
+  }
+});
+
+
+extend(Ok.prototype, {
+  /*~
+   * ---
+   * isRequired: true
+   * category: State and configuration
+   * type: |
+   *   forall a, b: get (Result a b) => b
+   */
+  get value() {
+    throw new TypeError('`value` can’t be accessed in an abstract instance of Result.Ok');
+  }  
+})
 
 
 /*~
