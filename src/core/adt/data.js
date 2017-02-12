@@ -120,7 +120,7 @@ instead to check if a value belongs to the ADT variant.`);
 
     function makeInstance(...args) {
       let result = new InternalConstructor();
-      Object.assign(result, constructor(...args));
+      extend(result, constructor(...args) || {});
       return result;
     }
 

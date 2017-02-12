@@ -1009,3 +1009,41 @@ A convenience method for the `folktale/data/conversions/maybe-to-result` module.
     
     Result.fromMaybe(Maybe.Nothing(), 'error');
     // ==> Result.Error('error')
+
+
+@annotate: Object.getOwnPropertyDescriptor(folktale.data.result.Error.prototype, 'value').get
+---
+
+The value contained in an Error instance of the Result structure.
+
+This is usually used to destructure the instance in a `.matchWith` call.
+
+## Example::
+
+    const Result = require('folktale/data/result');
+
+    Result.Error(1).matchWith({
+      Error: ({ value }) => value,    // equivalent to (x) => x.value
+      Ok:    ({ value }) => 'nothing'
+    });
+    // ==> 1
+
+
+@annotate: Object.getOwnPropertyDescriptor(folktale.data.result.Ok.prototype, 'value').get
+---
+
+The value contained in an Ok instance of the Result structure.
+
+This is usually used to destructure the instance in a `.matchWith` call.
+
+## Example::
+
+    const Result = require('folktale/data/result');
+
+    Result.Ok(1).matchWith({
+      Error: ({ value }) => 'nothing',
+      Ok:    ({ value }) => value    // equivalent to (x) => x.value
+    });
+    // ==> 1
+
+

@@ -13,6 +13,7 @@ const { data, show, setoid, serialize } = require('folktale/core/adt');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const warnDeprecation = require('folktale/helpers/warn-deprecation');
 const adtMethods = require('folktale/helpers/define-adt-methods');
+const extend = require('folktale/helpers/extend');
 
 
 const Maybe = data('folktale:Data.Maybe', {
@@ -39,6 +40,20 @@ const Maybe = data('folktale:Data.Maybe', {
 
 const { Nothing, Just } = Maybe;
 const assertMaybe = assertType(Maybe);
+
+
+extend(Just.prototype, {
+  /*~
+   * ---
+   * isRequired: true
+   * category: State and configuration
+   * type: |
+   *   forall a: get (Maybe a) => a
+   */
+  get value() {
+    throw new TypeError('`value` can’t be accessed in an abstract instance of Maybe.Just');
+  }
+});
 
 
 /*~

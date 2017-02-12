@@ -599,3 +599,21 @@ A convenience method for the `folktale/data/conversions/nullable-to-maybe` modul
     
     Maybe.fromNullable(undefined);
     // ==> Maybe.Nothing()
+
+
+@annotate: Object.getOwnPropertyDescriptor(folktale.data.maybe.Just.prototype, 'value').get
+---
+
+The value contained in a Just instance of the Maybe structure.
+
+This is usually used to destructure the instance in a `.matchWith` call.
+
+## Example::
+
+    const Maybe = require('folktale/data/maybe');
+
+    Maybe.Just(1).matchWith({
+      Just: ({ value }) => value, // equivalent to (x) => x.value
+      Nothing: () => 'nothing'
+    });
+    // ==> 1
