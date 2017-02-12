@@ -159,7 +159,7 @@ function render(item) {
 }
 
 first([{ title: &#39;Hello&#39; }]).map(render);
-// ==&gt; Maybe.Just([&#39;item&#39;, [&#39;title&#39;, &#39;Hello&#39;]])
+// =&gt; Maybe.Just([&#39;item&#39;, [&#39;title&#39;, &#39;Hello&#39;]])
 
 first([]).map(render);
 // ==&gt; Maybe.Nothing()
@@ -270,29 +270,57 @@ first([]).matchWith({
 </div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-constructing">Constructing</h3><div class="member-list"><div class="member"><a class="member-name" href="(unknown module).Folktale.data.maybe.Just.html">Just(value)</a><div class="doc-summary"><div><p>Constructs a Maybe value that represents a successful value (a <code>Just</code>).</p>
 </div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="(unknown module).Folktale.data.maybe.Just.prototype.Nothing.html">Nothing()</a><div class="doc-summary"><div><p>Constructs a Maybe value that represents a failure (a <code>Nothing</code>).</p>
 </div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.src.data.maybe.maybe.of.html">of(value)</a><div class="doc-summary"><div><p>Constructs a Maybe value that represents a successful value (a <code>Just</code>).</p>
-</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-result">Converting from Result</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.conversions.result-to-maybe.resultToMaybe.html">fromResult: resultToMaybe(aResult)</a><div class="doc-summary"><div><p>Converts an <code>Result</code> structure to a Maybe structure. <code>Error</code>s map to <code>Nothing</code>s,
-<code>Ok</code>s map to <code>Just</code>s.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-validation">Converting from Validation</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.conversions.validation-to-maybe.validationToMaybe.html">fromValidation: validationToMaybe(aValidation)</a><div class="doc-summary"><div><p>Converts a <code>Validation</code> to a <code>Maybe</code>. <code>Failure</code>s map to <code>Nothing</code>s,
-<code>Success</code>es map to <code>Just</code>s.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-to-other-types">Converting to other types</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.maybe.maybe.toResult.html">toResult(fallbackValue)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/data/conversions/maybe-to-result</code> module.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-other-types">Converting from other types</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.maybe.fromNullable.html">fromNullable(aNullable)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/data/conversions/nullable-to-maybe</code> module.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.src.data.maybe.fromResult.html">fromResult(aResult)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/data/conversions/result-to-maybe</code> module.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.src.data.maybe.fromValidation.html">fromValidation(aValidation)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/data/conversions/validation-to-maybe</code> module.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-to-other-types">Converting to other types</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.maybe.maybe.toResult.html">toResult(fallbackValue)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/data/conversions/maybe-to-result</code> module.</p>
 </div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.src.data.maybe.maybe.toValidation.html">toValidation(fallbackValue)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/data/conversions/maybe-to-validation</code> module.</p>
 </div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-debug-representation">Debug Representation</h3><div class="member-list"><div class="member"><a class="member-name" href="(unknown module).Folktale.data.maybe.inspect.html">inspect: toString()</a><div class="doc-summary"><div><p>Returns a textual representation of the ADT.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="(unknown module).Folktale.data.maybe.inspect.html">toString()</a><div class="doc-summary"><div><p>Returns a textual representation of the ADT.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-extracting-values">Extracting values</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.maybe.maybe.get.html">get()</a><div class="doc-summary"></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-fantasy-land">Fantasy Land</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.helpers.provide-fantasy-land-aliases.fantasy-land/of.html">fantasy-land/of(value)</a><div class="doc-summary"><div><p>Fantasy Land&#39;s Applicative <code>of</code></p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-extracting-values">Extracting values</h3><div class="member-list"><div class="member deprecated"><a class="member-name" href="folktale.src.data.maybe.maybe.get.html">get()</a><div class="doc-summary"><div><p>This method has been renamed to <code>unsafeGet()</code>.    </p>
+</div></div><div class="special-tags"><span class="tagged deprecated">Deprecated</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-fantasy-land">Fantasy Land</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.helpers.provide-fantasy-land-aliases.fantasy-land/of.html">fantasy-land/of(value)</a><div class="doc-summary"><div><p>Fantasy Land&#39;s Applicative <code>of</code></p>
 </div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-members">Members</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.core.adt.data.variants.html">variants</a><div class="doc-summary"><div><p>The variants present in this ADT.</p>
 </div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-serialisation">Serialisation</h3><div class="member-list"><div class="member"><a class="member-name" href="(unknown module).Folktale.data.maybe.Just.prototype.Nothing.prototype.fromJSON.html">fromJSON(value, parsers = {
   [typeName]: adt
 }, keysIndicateType = false)</a><div class="doc-summary"><div><p>Parses a previously serialised ADT into a rich ADT object.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/maybe/index.js at line 18, column 0</div><pre class="source-code"><code class="language-javascript">{
   ...require('./maybe'),
-  fromResult: require('folktale/data/conversions/result-to-maybe'),
-  fromValidation: require('folktale/data/conversions/validation-to-maybe')
+
+  /*~
+   * ---
+   * category: Converting from other types
+   * type: |
+   *   forall a: (a or void) =&gt; Maybe a
+   */
+  fromNullable(aNullable) {
+    return require('folktale/data/conversions/nullable-to-maybe')(aNullable);
+  },
+
+  /*~
+   * ---
+   * category: Converting from other types
+   * type: |
+   *   forall a, b: (Result a b) =&gt; Maybe b
+   */
+  fromResult(aResult) {
+    return require('folktale/data/conversions/result-to-maybe')(aResult);
+  },
+
+  /*~
+   * ---
+   * category: Converting from other types
+   * type: |
+   *   forall a, b: (Validation a b) =&gt; Maybe b
+   */
+  fromValidation(aValidation) {
+    return require('folktale/data/conversions/validation-to-maybe')(aValidation);
+  }
 }</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">deprecated</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/src/data/maybe</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
 </div></a></li><li class="toc-item"><a href="#why-use-maybe-" title="Why use Maybe?"><div><p>Why use Maybe?</p>
 </div></a></li><li class="toc-item"><a href="#working-with-maybe-values" title="Working with Maybe values"><div><p>Working with Maybe values</p>
 </div></a></li><li class="toc-item"><a href="#error-handling" title="Error handling"><div><p>Error handling</p>
 </div></a></li><li class="toc-item"><a href="#pattern-matching" title="Pattern matching"><div><p>Pattern matching</p>
-</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-comparing-and-testing">Comparing and Testing</a></li><li class="toc-item"><a href="#cat-constructing">Constructing</a></li><li class="toc-item"><a href="#cat-converting-from-result">Converting from Result</a></li><li class="toc-item"><a href="#cat-converting-from-validation">Converting from Validation</a></li><li class="toc-item"><a href="#cat-converting-to-other-types">Converting to other types</a></li><li class="toc-item"><a href="#cat-debug-representation">Debug Representation</a></li><li class="toc-item"><a href="#cat-extracting-values">Extracting values</a></li><li class="toc-item"><a href="#cat-fantasy-land">Fantasy Land</a></li><li class="toc-item"><a href="#cat-members">Members</a></li><li class="toc-item"><a href="#cat-serialisation">Serialisation</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>@boris-marinov</li><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-comparing-and-testing">Comparing and Testing</a></li><li class="toc-item"><a href="#cat-constructing">Constructing</a></li><li class="toc-item"><a href="#cat-converting-from-other-types">Converting from other types</a></li><li class="toc-item"><a href="#cat-converting-to-other-types">Converting to other types</a></li><li class="toc-item"><a href="#cat-debug-representation">Debug Representation</a></li><li class="toc-item"><a href="#cat-extracting-values">Extracting values</a></li><li class="toc-item"><a href="#cat-fantasy-land">Fantasy Land</a></li><li class="toc-item"><a href="#cat-members">Members</a></li><li class="toc-item"><a href="#cat-serialisation">Serialisation</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>@boris-marinov</li><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
     <script>
 void function() {
   var xs = document.querySelectorAll('.documentation pre code');

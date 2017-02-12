@@ -10,24 +10,29 @@
     <div id="header">
       <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li></ul></div>
     </div>
-    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">_try</h1><div class="highlight-summary"><div><p>Runs a function that may raise an exception, trapping it, and returning
-an Result representing the result.</p>
-</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">_try(f)</div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">forall a, b: (() =&gt; b :: throws a) =&gt; Result a b</code></pre></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Runs a function that may raise an exception, trapping it, and returning
-an Result representing the result.</p>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">_try</h1><div class="highlight-summary"><div><p>Runs a function that may raise an exception, trapping it. Returns an <code>Ok</code> with
+the return value of the function, if it has finished successfully, or an <code>Error</code>
+with the raised exception.</p>
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">_try(f)</div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">forall a, b: (() =&gt; b :: throws a) =&gt; Result a b</code></pre></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Runs a function that may raise an exception, trapping it. Returns an <code>Ok</code> with
+the return value of the function, if it has finished successfully, or an <code>Error</code>
+with the raised exception.</p>
 <h2 id="example-">Example:</h2>
-<pre><code>function succ(nat) {
-  if (nat &lt; 0) {
-    throw `Not a natural number: ${nat}`;
+<pre><code>function successor(natural) {
+  if (natural &lt; 0) {
+    throw `Not a natural number: ${natural}`;
   } else {
-    return nat + 1;
+    return natural + 1;
   }
 }
 
-const { Error, Ok } = require(&#39;folktale/data/result&#39;);
+const Result = require(&#39;folktale/data/result&#39;);
 
-_try(() =&gt; succ(-1));  // ==&gt; Error(&#39;Not a natural number: -1&#39;)
-_try(() =&gt; succ(1));   // ==&gt; Ok(2)
-</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/result/try.js at line 40, column 0</div><pre class="source-code"><code class="language-javascript">(f) =&gt; {
+Result.try(() =&gt; successor(-1));
+// ==&gt; Result.Error(&#39;Not a natural number: -1&#39;)
+
+Result.try(() =&gt; successor(1));
+// ==&gt; Result.Ok(2)
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/result/try.js at line 22, column 0</div><pre class="source-code"><code class="language-javascript">(f) =&gt; {
   try {
     return Ok(f());
   } catch (e) {
