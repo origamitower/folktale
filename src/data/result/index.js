@@ -24,7 +24,7 @@ module.exports = {
    *   forall a, b: (b or null) => Result a b
    */
   fromNullable(aNullable) {
-    return require('folktale/data/conversions/nullable-to-result');
+    return require('folktale/data/conversions/nullable-to-result')(aNullable);
   },
 
   /*~
@@ -34,7 +34,7 @@ module.exports = {
    *   forall a, b: (Validation a b) => Result a b
    */
   fromValidation(aValidation) {
-    return require('folktale/data/conversions/validation-to-result');
+    return require('folktale/data/conversions/validation-to-result')(aValidation);
   },
 
   /*~
