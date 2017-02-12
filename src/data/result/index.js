@@ -16,7 +16,34 @@
 module.exports = {
   ...require('./result'),
   try: require('./try'),
-  fromNullable: require('folktale/data/conversions/nullable-to-result'),
-  fromValidation: require('folktale/data/conversions/validation-to-result'),
-  fromMaybe: require('folktale/data/conversions/maybe-to-result')
+
+  /*~
+   * ---
+   * category: Converting from other types
+   * type: |
+   *   forall a, b: (b or null) => Result a b
+   */
+  fromNullable(aNullable) {
+    return require('folktale/data/conversions/nullable-to-result');
+  },
+
+  /*~
+   * ---
+   * category: Converting from other types
+   * type: |
+   *   forall a, b: (Validation a b) => Result a b
+   */
+  fromValidation(aValidation) {
+    return require('folktale/data/conversions/validation-to-result');
+  },
+
+  /*~
+   * ---
+   * category: Converting from other types
+   * type: |
+   *   forall a, b: (Maybe b, a) => Result a b
+   */
+  fromMaybe(aMaybe, failureValue) {
+    return require('folktale/data/conversions/maybe-to-result')(aMaybe, failureValue);
+  }
 };
