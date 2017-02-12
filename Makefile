@@ -86,7 +86,7 @@ documentation: compile compile-documentation
 	node tools/generate-docs.js en
 
 lint:
-	$(eslint) .
+	$(eslint) src/
 
 
 .PHONY: help bundle compile compile-test compile-documentation clean test lint documentation test-minimal test-documentation test-browser test-sauce all-tests
