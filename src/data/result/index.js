@@ -21,7 +21,7 @@ module.exports = {
    * ---
    * category: Converting from other types
    * type: |
-   *   forall a, b: (b or null) => Result a b
+   *   forall a: (a or None) => Result None a
    */
   fromNullable(aNullable) {
     return require('folktale/data/conversions/nullable-to-result')(aNullable);
