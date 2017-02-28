@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li></ul></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/data/result</h1><div class="highlight-summary"><div><p>A data structure that models the result of operations that may fail. A <code>Result</code>
 helps with representing errors and propagating them, giving users a more
@@ -548,7 +548,8 @@ module.</p>
 </div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-debug-representation">Debug Representation</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.result.inspect.html">inspect: toString()</a><div class="doc-summary"><div><p>Returns a textual representation of the ADT.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.src.data.result.inspect.html">toString()</a><div class="doc-summary"><div><p>Returns a textual representation of the ADT.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-extracting-values">Extracting values</h3><div class="member-list"><div class="member deprecated"><a class="member-name" href="folktale.src.data.result.result.get.html">get()</a><div class="doc-summary"><div><p>This method has been renamed to <code>unsafeGet()</code>.</p>
-</div></div><div class="special-tags"><span class="tagged deprecated">Deprecated</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-fantasy-land">Fantasy Land</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.helpers.provide-fantasy-land-aliases.fantasy-land/of.html">fantasy-land/of(value)</a><div class="doc-summary"><div><p>Fantasy Land&#39;s Applicative <code>of</code></p>
+</div></div><div class="special-tags"><span class="tagged deprecated">Deprecated</span></div></div><div class="member"><a class="member-name" href="folktale.src.data.result.result.merge.html">merge()</a><div class="doc-summary"><div><p>Returns the value inside of the Result structure, regardless of its state.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-fantasy-land">Fantasy Land</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.helpers.provide-fantasy-land-aliases.fantasy-land/of.html">fantasy-land/of(value)</a><div class="doc-summary"><div><p>Fantasy Land&#39;s Applicative <code>of</code></p>
 </div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-handling-exceptions">Handling exceptions</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.src.data.result.try.try.html">try: _try(f)</a><div class="doc-summary"><div><p>Runs a function that may raise an exception, trapping it. Returns an <code>Ok</code> with
 the return value of the function, if it has finished successfully, or an <code>Error</code>
 with the raised exception.</p>
@@ -564,7 +565,7 @@ with the raised exception.</p>
    * ---
    * category: Converting from other types
    * type: |
-   *   forall a, b: (b or null) =&gt; Result a b
+   *   forall a: (a or None) =&gt; Result None a
    */
   fromNullable(aNullable) {
     return require('folktale/data/conversions/nullable-to-result')(aNullable);
