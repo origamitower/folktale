@@ -13,6 +13,7 @@ const { data, setoid, show, serialize } = require('folktale/core/adt/');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const constant = require('folktale/core/lambda/constant');
 const adtMethods = require('folktale/helpers/define-adt-methods');
+const extend = require('folktale/helpers/extend');
 
 
 const Validation = data('folktale:Data.Validation', {

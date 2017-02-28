@@ -612,7 +612,8 @@ Constructs a Result whose value represents a success.
 See the documentation for the Result structure to understand how to use this.
 
 
-@annotate-multi: [folktale.data.result.Error.prototype.map, folktale.data.result.Ok.prototype.map]
+@annotate: folktale.data.result.Error.prototype.map
+@annotate: folktale.data.result.Ok.prototype.map
 ---
 
 Transforms the value inside of a Result structure with an unary function without
@@ -634,7 +635,8 @@ changing the context of the computation. That is, `Error` values continue to be
     // ==> Result.Error(2)
     
     
-@annotate-multi: [folktale.data.result.Error.prototype.apply, folktale.data.result.Ok.prototype.apply]
+@annotate: folktale.data.result.Error.prototype.apply
+@annotate: folktale.data.result.Ok.prototype.apply
 ---
 
 Applies the function contained in one Result to the value in another Result.
@@ -666,7 +668,8 @@ Note that `Result.Ok(x => x + 1).apply(Result.Ok(1))` is equivalent to
     // ==> Result.Error(increment)
     
     
-@annotate-multi: [folktale.data.result.Error.prototype.chain, folktale.data.result.Ok.prototype.chain]
+@annotate: folktale.data.result.Error.prototype.chain
+@annotate: folktale.data.result.Ok.prototype.chain
 ---
 
 Transforms the value and context of a Result computation with an unary function.
@@ -710,7 +713,8 @@ deprecated:
 This method has been renamed to `unsafeGet()`.
 
 
-@annotate-multi: [folktale.data.result.Error.prototype.unsafeGet, folktale.data.result.Ok.prototype.unsafeGet]
+@annotate: folktale.data.result.Error.prototype.unsafeGet
+@annotate: folktale.data.result.Ok.prototype.unsafeGet
 ---
 
 Extracts the value from a `Result` structure.
@@ -736,7 +740,8 @@ Extracts the value from a `Result` structure.
     }
     
 
-@annotate-multi: [folktale.data.result.Error.prototype.getOrElse, folktale.data.result.Ok.prototype.getOrElse]
+@annotate: folktale.data.result.Error.prototype.getOrElse
+@annotate: folktale.data.result.Ok.prototype.getOrElse
 ---
 
 Extracts the value of a `Result` structure, if it exists (i.e.: is an `Ok`),
@@ -754,7 +759,8 @@ otherwise returns the provided default value.
     // ==> 2
     
     
-@annotate-multi: [folktale.data.result.Error.prototype.orElse, folktale.data.result.Ok.prototype.orElse]
+@annotate: folktale.data.result.Error.prototype.orElse
+@annotate: folktale.data.result.Ok.prototype.orElse
 ---
 
 Allows recovering from `Error` values with a handler function.
@@ -779,7 +785,8 @@ value.
     // ==> Result.Error(3)
     
     
-@annotate-multi: [folktale.data.result.Error.prototype.fold, folktale.data.result.Ok.prototype.fold]
+@annotate: folktale.data.result.Error.prototype.fold
+@annotate: folktale.data.result.Ok.prototype.fold
 ---
 
 Applies a function to each case of a Result.
@@ -798,7 +805,8 @@ Applies a function to each case of a Result.
     // ==> dec(1)
     
 
-@annotate-multi: [folktale.data.result.Error.prototype.merge, folktale.data.result.Ok.prototype.merge]
+@annotate: folktale.data.result.Error.prototype.merge
+@annotate: folktale.data.result.Ok.prototype.merge
 ---
 
 Returns the value inside of the Result structure, regardless of its state.
@@ -815,7 +823,8 @@ Returns the value inside of the Result structure, regardless of its state.
     // ==> 1
     
     
-@annotate-multi: [folktale.data.result.Error.prototype.swap, folktale.data.result.Ok.prototype.swap]
+@annotate: folktale.data.result.Error.prototype.swap
+@annotate: folktale.data.result.Ok.prototype.swap
 ---
 
 Inverts the context of a Result value such that Errors are transformed into Oks,
@@ -834,7 +843,8 @@ Result.
     // ==> Result.Ok(1)
     
     
-@annotate-multi: [folktale.data.result.Error.prototype.bimap, folktale.data.result.Ok.prototype.bimap]
+@annotate: folktale.data.result.Error.prototype.bimap
+@annotate: folktale.data.result.Ok.prototype.bimap
 ---
 
 Transforms each side of a Result with a function, without changing the context
@@ -857,7 +867,8 @@ Oks.
     // ==> Result.Error(inc(1))
     
 
-@annotate-multi: [folktale.data.result.Error.prototype.mapError, folktale.data.result.Ok.prototype.mapError]
+@annotate: folktale.data.result.Error.prototype.mapError
+@annotate: folktale.data.result.Ok.prototype.mapError
 ---
 
 Transforms the value inside an Error without changing the context of the

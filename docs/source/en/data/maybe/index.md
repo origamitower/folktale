@@ -325,7 +325,8 @@ Constructs a Maybe value that represents a successful value (a `Just`).
 See the documentation for the Maybe structure to understand how to use this.
 
 
-@annotate-multi: [folktale.data.maybe.Nothing.prototype.map, folktale.data.maybe.Just.prototype.map]
+@annotate: folktale.data.maybe.Nothing.prototype.map
+@annotate: folktale.data.maybe.Just.prototype.map
 ---
 
 Transforms the value inside a Maybe structure with an unary function. Only
@@ -347,7 +348,8 @@ result.
     // ==> Maybe.Nothing()
 
 
-@annotate-multi: [folktale.data.maybe.Nothing.prototype.apply, folktale.data.maybe.Just.prototype.apply]
+@annotate: folktale.data.maybe.Nothing.prototype.apply
+@annotate: folktale.data.maybe.Just.prototype.apply
 ---
 
 Transforms a Maybe value using a function contained in another Maybe. As with
@@ -387,7 +389,8 @@ Constructs a Maybe value that represents a successful value (a `Just`).
 See the documentation for the Maybe structure to understand how to use this.
 
 
-@annotate-multi: [folktale.data.maybe.Nothing.prototype.chain, folktale.data.maybe.Just.prototype.chain]
+@annotate: folktale.data.maybe.Nothing.prototype.chain
+@annotate: folktale.data.maybe.Just.prototype.chain
 ---
 
 Transforms an entire Maybe structure with the provided function. As with
@@ -435,7 +438,8 @@ deprecated:
 This method has been renamed to `unsafeGet()`.    
 
 
-@annotate-multi: [folktale.data.maybe.Nothing.prototype.unsafeGet, folktale.data.maybe.Just.prototype.unsafeGet]
+@annotate: folktale.data.maybe.Nothing.prototype.unsafeGet
+@annotate: folktale.data.maybe.Just.prototype.unsafeGet
 ---
 
 Extracts the value from a `Just` structure.
@@ -459,7 +463,8 @@ Extracts the value from a `Just` structure.
     }
 
 
-@annotate-multi: [folktale.data.maybe.Nothing.prototype.getOrElse, folktale.data.maybe.Just.prototype.getOrElse]
+@annotate: folktale.data.maybe.Nothing.prototype.getOrElse
+@annotate: folktale.data.maybe.Just.prototype.getOrElse
 ---
 
 Extracts the value of a Maybe structure, if it exists (i.e.: is a `Just`),
@@ -473,7 +478,8 @@ otherwise returns the provided default value.
     Maybe.Nothing().getOrElse(2); // ==> 2
 
 
-@annotate-multi: [folktale.data.maybe.Nothing.prototype.orElse, folktale.data.maybe.Just.prototype.orElse]
+@annotate: folktale.data.maybe.Nothing.prototype.orElse
+@annotate: folktale.data.maybe.Just.prototype.orElse
 ---
 
 Allows recovering from from failed Maybe values.

@@ -35,6 +35,10 @@ const append = (list, item) =>
   item != null ? [...list, item]
 : /* _ */        list;
 
+const intoArray = (x) =>
+  Array.isArray(x) ?  x
+: /* else */          [x]
+
 const parseJs = (source, options = {}) => {
   try {
     return babylonParse(source, options);
@@ -111,7 +115,6 @@ const withMetaFD = parseJs(__metamagical_withMeta.toString()).program.body[0];
 // --[ Parser ]--------------------------------------------------------
 const classifyLine = (line) =>
   /^\@annotate:/.test(line)       ? ['Entity', line.match(/^\@annotate:\s*(.+)/m)[1]]
-: /^\@annotate-multi:/.test(line) ? ['Entities', line.match(/^\@annotate-multi:\s*(.+)/m)[1]]
 : /^---+\s*$/.test(line)          ? ['Separator']
 : /* otherwise */                   ['Line', line];
 
@@ -120,19 +123,29 @@ const parse = (source) =>
   append(source.split(/\r\n|\n\r|\r|\n/).map(classifyLine), ['EOF'])
     .reduce((ctx, node, i) => match(node, {
       Entity(ref) {
-        return {
-          annotation: true,
-          current: { ref, meta: '', doc: '', multi: false },
-          ast: append(ctx.ast, ctx.current)
-        };
-      },
-
-      Entities(refs) {
-        return {
-          annotation: true,
-          current: { ref: refs, meta: '', doc: '', multi: false },
-          ast: append(ctx.ast, ctx.current)
-        };
+        if (ctx.annotation) {
+          if (!ctx.current.sealed) {
+            return {
+              annotation: true,
+              current: { 
+                ref: intoArray(ctx.current.ref).concat([ref]),
+                meta: '',
+                doc: '',
+                multi: true,
+                sealed: false
+              },
+              ast: ctx.ast
+            };
+          } else {
+            throw new Error(`Multiple annotations have to follow each other immediately. Annotation in meta found at line ${i + 1}`);
+          }
+        } else {
+          return {
+            annotation: true,
+            current: { ref, meta: '', doc: '', multi: false, sealed: false },
+            ast: append(ctx.ast, ctx.current)
+          };
+        }
       },
 
       Separator() {
@@ -162,14 +175,14 @@ const parse = (source) =>
           const { ref, meta, doc, multi } = ctx.current;
           return {
             annotation: true,
-            current: { ref, meta: meta + '\n' + line, doc, multi },
+            current: { ref, meta: meta + '\n' + line, doc, multi, sealed: true },
             ast: ctx.ast
           };
         } else {
           const { ref, meta, doc, multi } = ctx.current;
           return {
             annotation: false,
-            current: { ref, meta, doc: doc + '\n' + line, multi },
+            current: { ref, meta, doc: doc + '\n' + line, multi, sealed: true },
             ast: ctx.ast
           };
         }
