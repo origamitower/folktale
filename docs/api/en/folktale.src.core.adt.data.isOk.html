@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li></ul></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha3</span></span></a></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">(Anonymous)</h1><div class="highlight-summary"><div><p>True if a value belongs to the ADT variant.</p>
 </div></div><div class="deprecation-section"><strong class="deprecation-title">Deprecated since 2.0.0</strong><div><p>Having a <code>value.isFoo</code> property doesn&#39;t allow people to
@@ -16,7 +16,7 @@ differentiate two variants from different ADTs that have the
 same name. So, instead, now variants and ADTs come with a
 static <code>.hasInstance(value)</code> method.</p>
 </div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>True if a value belongs to the ADT variant.</p>
-</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/data.js at line 92, column 42</div><pre class="source-code"><code class="language-javascript">get [`is${name}`]() {
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/data.js at line 55, column 42</div><pre class="source-code"><code class="language-javascript">get [`is${name}`]() {
         warnDeprecation(`.is${name} is deprecated. Use ${name}.hasInstance(value)
 instead to check if a value belongs to the ADT variant.`);
         return true;
