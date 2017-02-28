@@ -236,25 +236,6 @@ or some other method that is not partial.
 
   /*~
    * ---
-   * category: Extracting values
-   * stability: experimental
-   * signature: merge()
-   * type: |
-   *   forall a, b: (Result a b).() => a or b
-   */
-  merge: {
-    Error() {
-      return this.value;
-    },
-
-    Ok() {
-      return this.value;
-    }
-  },
-
-
-  /*~
-   * ---
    * category: Transforming
    * stability: experimental
    * signature: swap()
@@ -340,6 +321,17 @@ Object.assign(Result, {
   'get'() {
     warnDeprecation('`.get()` is deprecated, and has been renamed to `.unsafeGet()`.');
     return this.unsafeGet();
+  },
+
+  /*~
+   * ---
+   * category: Extracting values
+   * stability: experimental
+   * type: |
+   *   forall a, b: (Result a b).() => a or b
+   */
+  merge(){
+    return this.value;
   },
 
   /*~
