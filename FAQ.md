@@ -233,19 +233,19 @@ Folktale 2 implements *both* unprefixed and prefixed methods, and thus supports 
 |                     | **Maybe** | **Result** | **Validation** | **Task**  | **Future** |
 | ------------------- | :-------: | :--------: | :------------: | :-------: | :--------: |
 | [Setoid][]          | ✅         | ✅         | ✅              | 🚫         | 🚫          |
-| [Semigroup][]       | 🕛         | 🕛         | ✅              | ❌        | ❌          |
+| [Semigroup][]       | 🔜         | 🔜         | ✅              | ❌        | ❌          |
 | [Monoid][]          | 🚫²        | 🚫²        | 🚫²            | ❌        | ❌          |
 | [Functor][]         | ✅         | ✅          | ✅              | ✅         | ✅          |
-| [Contravariant][]   | 🚫        | 🚫         | 🚫             | 🚫         | 🕛         |
+| [Contravariant][]   | 🚫        | 🚫         | 🚫             | 🚫         | 🔜         |
 | [Apply][]           | ✅         | ✅          | ✅              | ✅         | ✅          |
 | [Applicative][]     | ✅         | ✅          | ✅              | ✅         | ✅          |
-| [Alt][]             | 🕛         | 🕛         | 🕛             | 🕛        | 🕛        |
-| [Plus][]            | 🕛         | 🕛         | 🕛             | 🕛        | 🕛        |
-| [Alternative][]     | 🕛         | 🕛         | 🕛             | 🕛        | 🕛        |
+| [Alt][]             | 🔜         | 🔜         | 🔜             | 🔜        | 🔜        |
+| [Plus][]            | 🔜         | 🔜         | 🔜             | 🔜        | 🔜        |
+| [Alternative][]     | 🔜         | 🔜         | 🔜             | 🔜        | 🔜        |
 | [Foldable][]        | ❌         | ❌          | ❌             | ❌         | ❌         |
 | [Traversable][]     | ❌         | ❌          | ❌             | ❌         | ❌         |
 | [Chain][]           | ✅         | ✅          | 🚫⁴             | ✅         | ✅         |
-| [ChainRec][]        | 🕛         | 🕛          | 🚫⁴            | 🕛        | 🕛         |
+| [ChainRec][]        | 🔜         | 🔜          | 🚫⁴            | 🔜        | 🔜         |
 | [Monad][]           | ✅         | ✅          | 🚫⁴            | ✅         | ✅          |
 | [Extend][]          | 🚫⁵       | 🚫⁵        | 🚫⁵            | 🚫⁵        | 🚫⁵         |
 | [Comonad][]         | 🚫⁵       | 🚫⁵        | 🚫⁵            | 🚫⁵        | 🚫⁵         |
@@ -259,7 +259,7 @@ Folktale 2 implements *both* unprefixed and prefixed methods, and thus supports 
 > - ✅: The algebra is implemented for this structure;
 > - ❌: The algebra is not implemented for this structure;
 > - 🚫: The algebra can't be implemented for this structure;
-> - 🕛: The algebra will be implemented for this structure in the future.
+> - 🔜: The algebra will be implemented for this structure in the future.
 >
 > ---
 >
