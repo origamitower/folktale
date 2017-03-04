@@ -236,7 +236,7 @@ Folktale 2 implements *both* unprefixed and prefixed methods, and thus supports 
 | [Semigroup][]       | 🔜         | 🔜         | ✅              | ❌        | ❌          |
 | [Monoid][]          | 🚫²        | 🚫²        | 🚫²            | ❌        | ❌          |
 | [Functor][]         | ✅         | ✅          | ✅              | ✅         | ✅          |
-| [Contravariant][]   | 🚫        | 🚫         | 🚫             | 🚫         | 🔜         |
+| [Contravariant][]   | 🚫        | 🚫         | 🚫             | 🚫         | 🚫         |
 | [Apply][]           | ✅         | ✅          | ✅              | ✅         | ✅          |
 | [Applicative][]     | ✅         | ✅          | ✅              | ✅         | ✅          |
 | [Alt][]             | 🔜         | 🔜         | 🔜             | 🔜        | 🔜        |
