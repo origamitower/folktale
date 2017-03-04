@@ -260,7 +260,9 @@ Folktale 2 implements *both* unprefixed and prefixed methods, and thus supports 
 > - ❌: The algebra is not implemented for this structure;
 > - 🚫: The algebra can't be implemented for this structure;
 > - 🕛: The algebra will be implemented for this structure in the future.
+>
 > ---
+>
 > - ¹: The Task instance of Monoid is non-deterministic, and the equivalent of Promise.race.
 > - ²: Implementing a generic Monoid would require return-type polymorphism. It's theoretically possible, but not practically possible (requires free monoids and late reifying). See https://eighty-twenty.org/2015/01/25/monads-in-dynamically-typed-languages for a detailed explanation.
 > - ³: Resolves Tasks in parallel, so may be observably different than the Monad instance if the ordering of effects matters.
