@@ -13,6 +13,6 @@ const copyDocumentation = (source, target, extensions = {}) => {
   if (process.env.FOLKTALE_DOCS !== 'false') {
     target[mm] = Object.assign({}, source[mm] || {}, extensions);
   }
-}
+};
 
 module.exports = copyDocumentation;

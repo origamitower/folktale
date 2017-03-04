@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------
 
-const { bimap:flBimap } = require('folktale/helpers/fantasy-land');
+const { bimap: flBimap } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
 const warn = require('folktale/helpers/warn-deprecated-method')('bimap');
 const unsupported = require('folktale/helpers/unsupported-method')('bimap');
@@ -49,7 +49,7 @@ const bimap = (bifunctor, transformLeft, transformRight) =>
  *     ((a) => c) => ((b) => d) => (F a b) => F c d
  *   where F is Bifunctor
  */
-bimap.curried = curry(3, (transformLeft, transformRight, bifunctor) => 
+bimap.curried = curry(3, (transformLeft, transformRight, bifunctor) =>    // eslint-disable-line no-magic-numbers
   bimap(bifunctor, transformLeft, transformRight)
 );
 

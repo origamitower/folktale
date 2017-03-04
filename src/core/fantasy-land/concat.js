@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------
 
-const { concat:flConcat } = require('folktale/helpers/fantasy-land');
+const { concat: flConcat } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
 const warn = require('folktale/helpers/warn-deprecated-method')('concat');
 const unsupported = require('folktale/helpers/unsupported-method')('concat');
@@ -48,7 +48,7 @@ const concat = (semigroupLeft, semigroupRight) =>
  *     (S a) => (S a) => S a
  *   where S is Semigroup
  */
-concat.curried = curry(2, (semigroupRight, semigroupLeft) => 
+concat.curried = curry(2, (semigroupRight, semigroupLeft) =>    // eslint-disable-line no-magic-numbers
   concat(semigroupLeft, semigroupRight)
 );
 

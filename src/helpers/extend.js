@@ -13,8 +13,6 @@ const defineProperty = Object.defineProperty;
 const property       = Object.getOwnPropertyDescriptor;
 
 
-const define = require('./define');
-
 /*~
  * Extends an objects with own enumerable key/value pairs from other sources.
  *

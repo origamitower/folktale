@@ -116,7 +116,7 @@ class Future {
    *   (Future 'f 's).(('s) => Future 's2) => Future 'f 's2
    */
   chain(transformation) {
-    let deferred = new Deferred();
+    let deferred = new Deferred();    // eslint-disable-line prefer-const
     this.listen({
       onCancelled: ()     => deferred.cancel(),
       onRejected:  reason => deferred.reject(reason),
@@ -195,7 +195,7 @@ class Future {
    *   (Future 'f 's).(('f) => 'f2, ('s) => 's2) => Future 'f2 's2
    */
   bimap(rejectionTransformation, successTransformation) {
-    let deferred = new Deferred();
+    let deferred = new Deferred();      // eslint-disable-line prefer-const
     this.listen({
       onCancelled: ()     => deferred.cancel(),
       onRejected:  reason => deferred.reject(rejectionTransformation(reason)),
@@ -245,7 +245,7 @@ class Future {
    *   (Future 'f 's).(('f) => Future 'f2 's2) => Future 'f2 's
    */
   recover(handler) {
-    let deferred = new Deferred();
+    let deferred = new Deferred();      // eslint-disable-line prefer-const
     this.listen({
       onCancelled: ()     => deferred.cancel(),
       onResolved:  value  => deferred.resolve(value),
@@ -293,11 +293,11 @@ class Future {
    *     (Future a b).(Pattern) => Future c d 
    */
   willMatchWith(pattern) {
-    let deferred = new Deferred();
+    let deferred = new Deferred();      // eslint-disable-line prefer-const
     const resolve = (handler) => (value) => handler(value).listen({
-      onCancelled: ()       => deferred.cancel(),
-      onResolved:  (value)  => deferred.resolve(value),
-      onRejected:  (reason) => deferred.reject(reason) 
+      onCancelled: ()         => deferred.cancel(),
+      onResolved:  (newValue) => deferred.resolve(newValue),
+      onRejected:  (reason)   => deferred.reject(reason) 
     });
     this.listen({
       onCancelled: resolve(pattern.Cancelled),
@@ -325,7 +325,7 @@ class Future {
    *   (Future 'f 's).() => Future 's 'f
    */
   swap() {
-    let deferred = new Deferred();
+    let deferred = new Deferred();    // eslint-disable-line prefer-const
     this.listen({
       onCancelled: ()     => deferred.cancel(),
       onRejected:  reason => deferred.resolve(reason),
@@ -391,7 +391,7 @@ Object.assign(Future, {
    *     (Future).(b) => Future a b
    */
   of(value) {
-    let result = new Future();
+    let result = new Future();    // eslint-disable-line prefer-const
     result._state = Resolved(value);
     return result;
   },
@@ -406,7 +406,7 @@ Object.assign(Future, {
    *   forall a, b: (Future).(a) => Future a b
    */
   rejected(reason) {
-    let result = new Future();
+    let result = new Future();      // eslint-disable-line prefer-const
     result._state = Rejected(reason);
     return result;
   }

@@ -170,13 +170,13 @@ adtMethods(Maybe, {
   getOrElse: {
     /*~
      */
-    Nothing(default_) {
-      return default_;
+    Nothing(_default) {
+      return _default;
     },
 
     /*~
      */
-    Just(default_) {
+    Just(_default) {
       return this.value;
     }
   },

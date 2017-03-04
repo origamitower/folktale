@@ -227,7 +227,7 @@ Deferred.prototype = {
    *   (Deferred 'f 's).() => Future 'f 's
    */
   future() {
-    let future = new (Future());
+    let future = new (Future());    // eslint-disable-line prefer-const
     this.listen({
       onCancelled: _      => moveToState(future, Cancelled()),
       onRejected:  reason => moveToState(future, Rejected(reason)),

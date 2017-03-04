@@ -98,7 +98,7 @@ const showValue = (value) =>
  * type: |
  *   (Variant, ADT) => Void
  */
-const show = (variant, adt) => {
+const show = (variant, adt) => {  // eslint-disable-line max-statements
   const typeName    = adt[typeSymbol];
   const variantName = `${adt[typeSymbol]}.${variant.prototype[tagSymbol]}`;
 

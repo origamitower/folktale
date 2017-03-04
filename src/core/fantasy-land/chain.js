@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------
 
-const { chain:flChain } = require('folktale/helpers/fantasy-land');
+const { chain: flChain } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
 const warn = require('folktale/helpers/warn-deprecated-method')('chain');
 const unsupported = require('folktale/helpers/unsupported-method')('chain');
@@ -48,7 +48,7 @@ const chain = (monad, transformation) =>
  *     ((a) => C b) => (C a) => C b
  *   where C is Chain
  */
-chain.curried = curry(2, (transformation, monad) =>
+chain.curried = curry(2, (transformation, monad) =>   // eslint-disable-line no-magic-numbers
   chain(monad, transformation)
 );
 

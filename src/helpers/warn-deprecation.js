@@ -7,13 +7,15 @@
 //
 //----------------------------------------------------------------------
 
-function warnDeprecation(reason) {
+const BLAME_FUNCTION_INDEX = 3; // [current, parent, *error*, caller to blame, …]
+
+function warnDeprecation(reason) {    // eslint-disable-line max-statements
   if (process.env.FOLKTALE_ASSERTIONS !== 'none') { 
     const stack = new Error('').stack;
     let offender;
     if (stack) {
       const lines = stack.split('\n');
-      offender = lines[3];
+      offender = lines[BLAME_FUNCTION_INDEX];
     }
 
     if (offender) {
