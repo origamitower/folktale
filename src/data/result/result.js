@@ -13,6 +13,7 @@ const { data, setoid, show, serialize } = require('folktale/core/adt/');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const adtMethods = require('folktale/helpers/define-adt-methods');
 const extend = require('folktale/helpers/extend');
+const warnDeprecation = require('folktale/helpers/warn-deprecation');
 
 
 /*~
@@ -72,7 +73,7 @@ extend(Ok.prototype, {
   get value() {
     throw new TypeError('`value` can’t be accessed in an abstract instance of Result.Ok');
   }  
-})
+});
 
 
 /*~
@@ -178,11 +179,11 @@ or some other method that is not partial.
    *   forall a, b: (Result a b).(b) => b
    */
   getOrElse: {
-    Error(default_) {
-      return default_;
+    Error(_default) {
+      return _default;
     },
 
-    Ok(default_) {
+    Ok(_default) {
       return this.value;
     }
   },
@@ -330,7 +331,7 @@ Object.assign(Result, {
    * type: |
    *   forall a, b: (Result a b).() => a or b
    */
-  merge(){
+  merge() {
     return this.value;
   },
 

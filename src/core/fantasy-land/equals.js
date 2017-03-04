@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------
 
-const { equals:flEquals } = require('folktale/helpers/fantasy-land');
+const { equals: flEquals } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
 const warn = require('folktale/helpers/warn-deprecated-method')('equals');
 const unsupported = require('folktale/helpers/unsupported-method')('equals');
@@ -49,7 +49,7 @@ const equals = (setoidLeft, setoidRight) =>
  *     (S a) => (S a) => Boolean
  *   where S is Setoid
  */
-equals.curried = curry(2, (setoidRight, setoidLeft) => 
+equals.curried = curry(2, (setoidRight, setoidLeft) =>    // eslint-disable-line no-magic-numbers
   equals(setoidLeft, setoidRight)
 );
 

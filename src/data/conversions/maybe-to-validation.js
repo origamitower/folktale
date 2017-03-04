@@ -28,4 +28,4 @@ const maybeToValidation = (aMaybe, failureValue) =>
   });
 
 
-module.exports = maybeToValidation
+module.exports = maybeToValidation;

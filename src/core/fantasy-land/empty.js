@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------
 
-const { empty:flEmpty } = require('folktale/helpers/fantasy-land');
+const { empty: flEmpty } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
 const warn = require('folktale/helpers/warn-deprecated-method')('empty');
 const unsupported = require('folktale/helpers/unsupported-method')('empty');
@@ -53,7 +53,7 @@ const empty = (monoid) =>
  *     (M) => M a
  *   where M is Monoid 
  */
-empty.curried = curry(1, empty);
+empty.curried = curry(1, empty);      // eslint-disable-line no-magic-numbers
 
 
 /*~

@@ -34,7 +34,7 @@ class Task {
               onCancelled: resolver.cancel,
               onRejected:  resolver.reject,
               onResolved:  resolver.resolve
-            })
+            });
           }
         });
         return execution;
@@ -52,7 +52,7 @@ class Task {
           onRejected:  resolver.reject,
           onResolved:  value => resolver.resolve(transformation(value))
         });
-        return execution
+        return execution;
       },
       execution => execution.cancel()
     );
@@ -100,7 +100,7 @@ class Task {
   swap() {
     return new Task(
       resolver => {
-        let execution = this.run();
+        let execution = this.run();   // eslint-disable-line prefer-const
         execution.listen({
           onCancelled: resolver.cancel,
           onRejected:  resolver.resolve,
@@ -115,8 +115,8 @@ class Task {
   or(that) {
     return new Task(
       resolver => {
-        let thisExecution = this.run();
-        let thatExecution = that.run();
+        let thisExecution = this.run();   // eslint-disable-line prefer-const
+        let thatExecution = that.run();   // eslint-disable-line prefer-const
         let done = false;
 
         const guard = (fn, execution) => (value) => {
@@ -150,9 +150,9 @@ class Task {
 
   and(that) {
     return new Task(
-      resolver => {
-        let thisExecution = this.run();
-        let thatExecution = that.run();
+      resolver => {   // eslint-disable-line max-statements
+        let thisExecution = this.run();   // eslint-disable-line prefer-const
+        let thatExecution = that.run();   // eslint-disable-line prefer-const
         let valueLeft = null;
         let valueRight = null;
         let doneLeft = false;
@@ -174,7 +174,7 @@ class Task {
           cancelled = true;
           execution.cancel();
           fn(value);
-        }
+        };
 
         thisExecution.listen({
           onRejected:  guardRejection(resolver.reject, thatExecution),
@@ -204,7 +204,7 @@ class Task {
   }
 
   run() {
-    let deferred = new Deferred();
+    let deferred = new Deferred();    // eslint-disable-line prefer-const
     deferred.listen({
       onCancelled: _ => {
         defer(_ => {
@@ -213,13 +213,13 @@ class Task {
         });
       },
 
-      onResolved: value => {
+      onResolved: _value => {
         defer(_ => {
           this._cleanup(resources);
         });
       },
 
-      onRejected: reason => {
+      onRejected: _reason => {
         defer(_ => {
           this._cleanup(resources);
         });

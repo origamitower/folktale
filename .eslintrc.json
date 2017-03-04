@@ -3,6 +3,9 @@
   "rules": {
     "no-trailing-spaces": "off",
     "new-cap": "off",
-    "max-len": ["warn", 120]
+    "max-len": ["warn", 120],
+    "prefer-reflect": "off",
+    "no-undef": "error",
+    "no-shadow": ["error", { "allow": ["_"] }]
   }
 }

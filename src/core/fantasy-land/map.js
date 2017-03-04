@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------
 
-const { map:flMap } = require('folktale/helpers/fantasy-land');
+const { map: flMap } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
 const warn = require('folktale/helpers/warn-deprecated-method')('map');
 const unsupported = require('folktale/helpers/unsupported-method')('map');
@@ -48,7 +48,7 @@ const map = (functor, transformation) =>
  *     ((a) => b) => (F a) => F b
  *   where F is Functor
  */
-map.curried = curry(2, (transformation, functor) => 
+map.curried = curry(2, (transformation, functor) =>     // eslint-disable-line no-magic-numbers
   map(functor, transformation)
 );
 

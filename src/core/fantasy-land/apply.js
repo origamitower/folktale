@@ -47,7 +47,7 @@ const apply = (applicativeFunction, applicativeValue) =>
  *     (F (a) => b) => (F a) => F b
  *   where F is Apply
  */
-apply.curried = curry(2, apply);
+apply.curried = curry(2, apply);    // eslint-disable-line no-magic-numbers
 
 
 /*~

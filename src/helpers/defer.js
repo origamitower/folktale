@@ -7,10 +7,10 @@
 //
 //----------------------------------------------------------------------
 
-const raise = (error) => { throw error };
-
+/* eslint-disable no-magic-numbers, max-statements-per-line */
 const defer = typeof setImmediate !== 'undefined' ?  (f) => setImmediate(f)
             : typeof process !== 'undefined'      ?  (f) => process.nextTick(f)
             : /* otherwise */                        (f) => setTimeout(f, 0);
+/* eslint-enable no-magic-numbers, max-statements-per-line */
 
 module.exports = defer;

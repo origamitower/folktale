@@ -11,9 +11,9 @@ const assertType = require('folktale/helpers/assert-type');
 const assertFunction = require('folktale/helpers/assert-function');
 const { data, setoid, show, serialize } = require('folktale/core/adt/');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
-const constant = require('folktale/core/lambda/constant');
 const adtMethods = require('folktale/helpers/define-adt-methods');
 const extend = require('folktale/helpers/extend');
+const warnDeprecation = require('folktale/helpers/warn-deprecation');
 
 
 const Validation = data('folktale:Data.Validation', {
@@ -118,8 +118,8 @@ adtMethods(Validation, {
      */
     Success: function map(aValidation) {
       assertValidation('Success#apply', aValidation);
-        return Failure.hasInstance(aValidation) ? aValidation
-        :      /* otherwise */                    aValidation.map(this.value);
+      return Failure.hasInstance(aValidation) ? aValidation
+      :      /* otherwise */                    aValidation.map(this.value);
     }
   },
 
@@ -158,13 +158,13 @@ adtMethods(Validation, {
   getOrElse: {
     /*~
      */
-    Failure: function getOrElse(default_) {
-      return default_;
+    Failure: function getOrElse(_default) {
+      return _default;
     },
 
     /*~
      */
-    Success: function getOrElse(default_) {
+    Success: function getOrElse(_default) {
       return this.value;
     }
   },

@@ -20,7 +20,7 @@ const defineAdtMethod = (adt, definitions) => {
       copyDocs(methods, method);
       variant.prototype[name] = method;
     });
-  })
+  });
 };
 
 module.exports = defineAdtMethod;

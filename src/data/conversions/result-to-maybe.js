@@ -23,7 +23,7 @@ const { Just, Nothing } = require('folktale/data/maybe/maybe');
  */
 const resultToMaybe = (aResult) =>
   aResult.matchWith({
-    Error: ({ value }) => Nothing(),
+    Error: ({ value: _ }) => Nothing(),
     Ok: ({ value }) => Just(value)
   });
 

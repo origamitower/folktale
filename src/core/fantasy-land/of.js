@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------
 
-const { of:flOf } = require('folktale/helpers/fantasy-land');
+const { of: flOf } = require('folktale/helpers/fantasy-land');
 const curry = require('folktale/core/lambda/curry');
 const warn = require('folktale/helpers/warn-deprecated-method')('of');
 const unsupported = require('folktale/helpers/unsupported-method')('of');
@@ -53,7 +53,7 @@ const of = (applicative, value) =>
  *     (F) => (a) => F a
  *   where F is Applicative
  */
-of.curried = curry(2, of);
+of.curried = curry(2, of);      // eslint-disable-line no-magic-numbers
 
 
 /*~
