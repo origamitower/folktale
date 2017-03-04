@@ -12,7 +12,7 @@
      - [When will Folktale 2 be released?](#when-will-folktale-2-be-released)
   - [Folktale and the JavaScript ecosystem](#folktale-and-the-javascript-ecosystem)
      - [Can I use Folktale with Flow or TypeScript?](#can-i-use-folktale-with-flow-or-typescript)
-     - 
+     - [Do Folktale structures implement Fantasy Land](#do-folktale-structures-implement-fantasy-land)
      
 
 # Common mistakes
