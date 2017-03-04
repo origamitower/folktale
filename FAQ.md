@@ -228,7 +228,7 @@ Folktale 1 implements only the non-prefixed methods of Fantasy Land v0.x~1.x.
 Folktale 2 implements *both* unprefixed and prefixed methods, and thus supports Fantasy Land v0.x~3.x.
 
 > **NOTE**  
-> The structures implement the old version of `.ap` (`fn.ap(value)`), and the new version of `."fantasy-land/ap"` (`value['fantasy-land/ap'](fn)`). Folktale actually made this breaking change without bumping the major version first. If some library expects the unprefixed method to implement the new argument order, things won't work nicely.
+> The structures implement the old version of `.ap` (`fn.ap(value)`), and the new version of `."fantasy-land/ap"` (`value['fantasy-land/ap'](fn)`). Fantasy Land actually made this breaking change without bumping the major version first. If some library expects the unprefixed method to implement the new argument order, things won't work nicely.
 
 |                     | **Maybe** | **Result** | **Validation** | **Task**  | **Future** |
 | ------------------- | :-------: | :--------: | :------------: | :-------: | :--------: |
