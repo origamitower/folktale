@@ -16,8 +16,6 @@ const isNew = (a) => typeof a[ap] === 'function';
 const isOld = (a) => typeof a.ap === 'function';
 
 /*~
- * ---
- * category: Fantasy Land
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -35,8 +33,6 @@ const apply = (applicativeFunction, applicativeValue) =>
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -51,8 +47,6 @@ apply.curried = curry(2, apply);    // eslint-disable-line no-magic-numbers
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - Quildreen Motta

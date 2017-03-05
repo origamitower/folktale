@@ -16,12 +16,9 @@ const extend = require('folktale/helpers/extend');
 const warnDeprecation = require('folktale/helpers/warn-deprecation');
 
 
-/*~
- */
+/*~ stability: experimental */
 const Result = data('folktale:Data.Result', {
   /*~
-   * ---
-   * category: Constructing
    * stability: experimental
    * type: |
    *   forall a, b: (a) => Result a b
@@ -31,8 +28,6 @@ const Result = data('folktale:Data.Result', {
   },
 
   /*~
-   * ---
-   * category: Constructing
    * stability: experimental
    * type: |
    *   forall a, b: (b) => Result a b
@@ -50,9 +45,7 @@ const assertResult = assertType(Result);
 
 extend(Error.prototype, {
   /*~
-   * ---
    * isRequired: true
-   * category: State and configuration
    * type: |
    *   forall a, b: get (Result a b) => a
    */
@@ -64,9 +57,7 @@ extend(Error.prototype, {
 
 extend(Ok.prototype, {
   /*~
-   * ---
    * isRequired: true
-   * category: State and configuration
    * type: |
    *   forall a, b: get (Result a b) => b
    */
@@ -77,26 +68,24 @@ extend(Ok.prototype, {
 
 
 /*~
- * ---
  * ~belongsTo: Result
  */
 adtMethods(Result, {
   /*~
-   * ---
-   * category: Transforming
    * stability: experimental
-   * signature: map(transformation)
    * type: |
    *   forall a, b, c:
    *     (Result a b).((b) => c) => Result a c
    */
   map: {
-    Error(f) {
+    /*~*/
+    Error: function map(f) {
       assertFunction('Result.Error#map', f);
       return this;
     },
 
-    Ok(f) {
+    /*~*/
+    Ok: function map(f) {
       assertFunction('Result.Ok#map', f);
       return Ok(f(this.value));
     }
@@ -104,21 +93,20 @@ adtMethods(Result, {
 
 
   /*~
-   * ---
-   * category: Transforming
    * stability: experimental
-   * signature: apply(anResult)
    * type: |
    *   forall a, b, c:
    *     (Result a ((b) => c)).(Result a b) => Result a c
    */
   apply: {
-    Error(anResult) {
+    /*~*/
+    Error: function apply(anResult) {
       assertResult('Result.Error#apply', anResult);
       return this;
     },
 
-    Ok(anResult) {
+    /*~*/
+    Ok: function apply(anResult) {
       assertResult('Result.Ok#apply', anResult);
       return anResult.map(this.value);
     }
@@ -126,36 +114,33 @@ adtMethods(Result, {
 
 
   /*~
-   * ---
-   * category: Transforming
-   * signature: chain(transformation)
    * stability: experimental
    * type: |
    *   forall a, b, c:
    *     (Result a b).((b) => Result a c) => Result a c
    */
   chain: {
-    Error(f) {
+    /*~*/
+    Error: function chain(f) {
       assertFunction('Result.Error#chain', f);
       return this;
     },
 
-    Ok(f) {
+    /*~*/
+    Ok: function chain(f) {
       assertFunction('Result.Ok#chain', f);
       return f(this.value);
     }
   },
 
   /*~
-   * ---
-   * category: Extracting values
    * stability: experimental
-   * signature: unsafeGet()
    * type: |
    *   forall a, b: (Result a b).() => b :: throws TypeError
    */
   unsafeGet: {
-    Error() {
+    /*~*/
+    Error: function unsafeGet() {
       throw new TypeError(`Can't extract the value of an Error.
 
 Error does not contain a normal value - it contains an error.
@@ -164,47 +149,46 @@ or some other method that is not partial.
       `);
     },
 
-    Ok() {
+    /*~*/
+    Ok: function unsafeGet() {
       return this.value;
     }
   },
 
 
   /*~
-   * ---
-   * category: Extracting values
    * stability: experimental
-   * signature: getOrElse(default)
    * type: |
    *   forall a, b: (Result a b).(b) => b
    */
   getOrElse: {
-    Error(_default) {
+    /*~*/
+    Error: function getOrElse(_default) {
       return _default;
     },
 
-    Ok(_default) {
+    /*~*/
+    Ok: function getOrElse(_default) {
       return this.value;
     }
   },
 
 
   /*~
-   * ---
-   * category: Recovering
    * stability: experimental
-   * signature: orElse(handler)
    * type: |
    *   forall a, b, c:
    *     (Result a b).((a) => Result c b) => Result c b
    */
   orElse: {
-    Error(handler) {
+    /*~*/
+    Error: function orElse(handler) {
       assertFunction('Result.Error#orElse', handler);
       return handler(this.value);
     },
 
-    Ok(handler) {
+    /*~*/
+    Ok: function orElse(handler) {
       assertFunction('Result.Ok#orElse', handler);
       return this;
     }
@@ -212,22 +196,21 @@ or some other method that is not partial.
 
 
   /*~
-   * ---
-   * category: Pattern matching
    * stability: experimental
-   * signature: fold(ErrorTransformation, OkTransformation)
    * type: |
    *   forall a, b, c:
    *     (Result a b).((a) => c, (b) => c) => c
    */
   fold: {
-    Error(f, g) {
+    /*~*/
+    Error: function fold(f, g) {
       assertFunction('Result.Error#fold', f);
       assertFunction('Result.Error#fold', g);
       return f(this.value);
     },
 
-    Ok(f, g) {
+    /*~*/
+    Ok: function fold(f, g) {
       assertFunction('Result.Ok#fold', f);
       assertFunction('Result.Ok#fold', g);
       return g(this.value);
@@ -236,40 +219,38 @@ or some other method that is not partial.
 
 
   /*~
-   * ---
-   * category: Transforming
    * stability: experimental
-   * signature: swap()
    * type: |
    *   forall a, b: (Result a b).() => Result b a
    */
   swap: {
-    Error() {
+    /*~*/
+    Error: function swap() {
       return Ok(this.value);
     },
 
-    Ok() {
+    /*~*/
+    Ok: function swap() {
       return Error(this.value);
     }
   },
 
 
   /*~
-   * ---
-   * category: Transforming
    * stability: experimental
-   * signature: bimap(ErrorTransformation, OkTransformation)
    * type: |
    *   (Result a b).((a) => c, (b) => d) => Result c d
    */
   bimap: {
-    Error(f, g) {
+    /*~*/
+    Error: function bimap(f, g) {
       assertFunction('Result.Error#bimap', f);
       assertFunction('Result.Error#bimap', g);
       return Error(f(this.value));
     },
 
-    Ok(f, g) {
+    /*~*/
+    Ok: function bimap(f, g) {
       assertFunction('Result.Ok#bimap', f);
       assertFunction('Result.Ok#bimap', g);
       return Ok(g(this.value));
@@ -278,21 +259,20 @@ or some other method that is not partial.
 
 
   /*~
-   * ---
-   * category: Transforming
    * stability: experimental
-   * signature: mapError(transformation)
    * type: |
    *   forall a, b, c:
    *     (Result a b).((a) => c) => Result c b
    */
   mapError: {
-    Error(f) {
+    /*~*/
+    Error: function mapError(f) {
       assertFunction('Result.Error#mapError', f);
       return Error(f(this.value));
     },
 
-    Ok(f) {
+    /*~*/
+    Ok: function mapError(f) {
       assertFunction('Result.Ok#mapError', f);
       return this;
     }
@@ -302,8 +282,6 @@ or some other method that is not partial.
 
 Object.assign(Result, {
   /*~
-   * ---
-   * category: Constructing
    * stability: experimental
    * type: |
    *   forall a, b: (b) => Result a b
@@ -313,9 +291,9 @@ Object.assign(Result, {
   },
 
   /*~
-   * ---
-   * category: Extracting values
-   * stability: deprecated
+   * deprecated:
+   *   since: 2.0.0
+   *   replacedBy: .unsafeGet()
    * type: |
    *   forall a, b: (Result a b).() => b :: (throws TypeError)
    */
@@ -325,8 +303,6 @@ Object.assign(Result, {
   },
 
   /*~
-   * ---
-   * category: Extracting values
    * stability: experimental
    * type: |
    *   forall a, b: (Result a b).() => a or b
@@ -336,8 +312,6 @@ Object.assign(Result, {
   },
 
   /*~
-   * ---
-   * category: Converting
    * stability: experimental
    * type: |
    *   forall a, b: (Result a b).() => Validation a b
@@ -348,8 +322,6 @@ Object.assign(Result, {
 
 
   /*~
-   * ---
-   * category: Converting
    * stability: experimental
    * type: |
    *   forall a, b: (Result a b).() => Maybe b

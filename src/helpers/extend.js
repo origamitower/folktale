@@ -13,7 +13,7 @@ const defineProperty = Object.defineProperty;
 const property       = Object.getOwnPropertyDescriptor;
 
 
-/*~
+/*
  * Extends an objects with own enumerable key/value pairs from other sources.
  *
  * This is used to define objects for the ADTs througout this file, and there

@@ -10,9 +10,7 @@
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 /*~
- * ---
- * category    : Transforming
- * stability   : stable
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  *
@@ -33,9 +31,7 @@ const mapEntries = (object, transform, define) =>
 
 // --[ Convenience ]---------------------------------------------------
 /*~
- * ---
- * category  : Transforming
- * stability : stable
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  *
@@ -51,9 +47,7 @@ mapEntries.overwrite = (object, transform) =>
 
 
 /*~
- * ---
- * category  : Transforming
- * stability : stable
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  *

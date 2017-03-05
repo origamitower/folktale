@@ -16,10 +16,9 @@ const adtMethods = require('folktale/helpers/define-adt-methods');
 const extend = require('folktale/helpers/extend');
 
 
+/*~ stability: unstable */
 const Maybe = data('folktale:Data.Maybe', {
   /*~
-   * ---
-   * category: Constructing
    * type: |
    *   forall a: () => Maybe a
    */
@@ -27,8 +26,6 @@ const Maybe = data('folktale:Data.Maybe', {
   },
 
   /*~
-   * ---
-   * category: Constructing
    * type: |
    *   forall a: (a) => Maybe a
    */
@@ -44,9 +41,7 @@ const assertMaybe = assertType(Maybe);
 
 extend(Just.prototype, {
   /*~
-   * ---
    * isRequired: true
-   * category: State and configuration
    * type: |
    *   forall a: get (Maybe a) => a
    */
@@ -56,29 +51,21 @@ extend(Just.prototype, {
 });
 
 
-/*~
- * ---
- * ~belongsTo: Maybe
- */
+/*~~belongsTo: Maybe */
 adtMethods(Maybe, {
   /*~
-   * ---
-   * category: Transforming
-   * signature: map(transformation)
    * type: |
    *   forall a, b: (Maybe a).((a) => b) => Maybe b
    */
   map: {
-    /*~
-     */
-    Nothing(transformation) {
+    /*~*/
+    Nothing: function map(transformation) {
       assertFunction('Maybe.Nothing#map', transformation);
       return this;
     },
 
-    /*~
-     */
-    Just(transformation) {
+    /*~*/
+    Just: function map(transformation) {
       assertFunction('Maybe.Just#map', transformation);
       return Just(transformation(this.value));
     }
@@ -86,23 +73,18 @@ adtMethods(Maybe, {
 
 
   /*~
-   * ---
-   * category: Transforming
-   * signature: apply(aMaybe)
    * type: |
    *   forall a, b: (Maybe (a) => b).(Maybe a) => Maybe b
    */
   apply: {
-    /*~
-     */
-    Nothing(aMaybe) {
+    /*~*/
+    Nothing: function apply(aMaybe) {
       assertMaybe('Maybe.Nothing#apply', aMaybe);
       return this;
     },
 
-    /*~
-     */
-    Just(aMaybe) {
+    /*~*/
+    Just: function apply(aMaybe) {
       assertMaybe('Maybe.Just#apply', aMaybe);
       return aMaybe.map(this.value);
     }
@@ -110,23 +92,18 @@ adtMethods(Maybe, {
 
 
   /*~
-   * ---
-   * category: Transforming
-   * signature: chain(transformation)
    * type: |
    *   forall a, b: (Maybe a).((a) => Maybe b) => Maybe b
    */
   chain: {
-    /*~
-     */
-    Nothing(transformation) {
+    /*~*/
+    Nothing: function chain(transformation) {
       assertFunction('Maybe.Nothing#chain', transformation);
       return this;
     },
 
-    /*~
-     */
-    Just(transformation) {
+    /*~*/
+    Just: function chain(transformation) {
       assertFunction('Maybe.Just#chain', transformation);
       return transformation(this.value);
     }
@@ -134,16 +111,12 @@ adtMethods(Maybe, {
 
 
   /*~
-   * ---
-   * category: Extracting values
-   * signature: unsafeGet()
    * type: |
    *   forall a: (Maybe a).() => a :: (throws TypeError)
    */
   unsafeGet: {
-    /*~
-     */
-    Nothing() {
+    /*~*/
+    Nothing: function unsafeGet() {
       throw new TypeError(`Can't extract the value of a Nothing.
 
     Since Nothing holds no values, it's not possible to extract one from them.
@@ -152,54 +125,43 @@ adtMethods(Maybe, {
       `);
     },
 
-    /*~
-     */
-    Just() {
+    /*~*/
+    Just: function unsafeGet() {
       return this.value;
     }
   },
 
 
   /*~
-   * ---
-   * category: Extracting values
-   * signature: getOrElse(default)
    * type: |
    *   forall a: (Maybe a).(a) => a
    */
   getOrElse: {
-    /*~
-     */
-    Nothing(_default) {
+    /*~*/
+    Nothing: function getOrElse(_default) {
       return _default;
     },
 
-    /*~
-     */
-    Just(_default) {
+    /*~*/
+    Just: function getOrElse(_default) {
       return this.value;
     }
   },
 
 
   /*~
-   * ---
-   * category: Recovering from errors
-   * signature: orElse(handler)
    * type: |
    *   forall a: (Maybe a).((a) => Maybe a) => Maybe a
    */
   orElse: {
-    /*~
-     */
-    Nothing(handler) {
+    /*~*/
+    Nothing: function orElse(handler) {
       assertFunction('Maybe.Nothing#orElse', handler);
       return handler(this.value);
     },
 
-    /*~
-     */
-    Just(handler) {
+    /*~*/
+    Just: function orElse(handler) {
       assertFunction('Maybe.Nothing#orElse', handler);
       return this;
     }
@@ -207,9 +169,10 @@ adtMethods(Maybe, {
 
 
   /*~
-   * ---
-   * category: Pattern matching
-   * signature: cata(pattern)
+   * deprecated:
+   *   since: 2.0.0
+   *   replacedBy: .matchWith(pattern)
+   * 
    * type: |
    *   forall a, b:
    *     (Maybe a).({
@@ -218,16 +181,14 @@ adtMethods(Maybe, {
    *     }) => b
    */
   cata: {
-    /*~
-     */
-    Nothing(pattern) {
+    /*~*/
+    Nothing: function cata(pattern) {
       warnDeprecation('`.cata(pattern)` is deprecated. Use `.matchWith(pattern)` instead.');
       return pattern.Nothing();
     },
 
-    /*~
-     */
-    Just(pattern) {
+    /*~*/
+    Just: function cata(pattern) {
       warnDeprecation('`.cata(pattern)` is deprecated. Use `.matchWith(pattern)` instead.');
       return pattern.Just(this.value);
     }
@@ -237,8 +198,6 @@ adtMethods(Maybe, {
 
 Object.assign(Maybe, {
   /*~
-   * ---
-   * category: Constructing
    * type: |
    *   forall a: (a) => Maybe a
    */
@@ -248,9 +207,9 @@ Object.assign(Maybe, {
 
 
   /*~
-   * ---
-   * category: Extracting values
-   * stability: deprecated
+   * deprecated:
+   *   since: 2.0.0
+   *   replacedBy: .unsafeGet()
    * type: |
    *   forall a: (Maybe a).() => a :: (throws TypeError)
    */
@@ -261,8 +220,6 @@ Object.assign(Maybe, {
 
 
   /*~
-   * ---
-   * category: Converting to other types
    * type: |
    *   forall a, b: (Maybe a).(b) => Result b a
    */
@@ -271,8 +228,6 @@ Object.assign(Maybe, {
   },
 
   /*~
-   * ---
-   * category: Converting to other types
    * type: |
    *   forall a, b: (Maybe a).(b) => Result b a
    */

@@ -8,9 +8,7 @@
 //----------------------------------------------------------------------
 
 /*~
- * ---
- * name: module folktale/data/maybe
- * category: Modelling failures
+ * stability: unstable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta
@@ -19,8 +17,6 @@ module.exports = {
   ...require('./maybe'),
 
   /*~
-   * ---
-   * category: Converting from other types
    * type: |
    *   forall a: (a or void) => Maybe a
    */
@@ -29,8 +25,6 @@ module.exports = {
   },
 
   /*~
-   * ---
-   * category: Converting from other types
    * type: |
    *   forall a, b: (Result a b) => Maybe b
    */
@@ -39,8 +33,6 @@ module.exports = {
   },
 
   /*~
-   * ---
-   * category: Converting from other types
    * type: |
    *   forall a, b: (Validation a b) => Maybe b
    */

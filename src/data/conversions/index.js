@@ -8,10 +8,7 @@
 //----------------------------------------------------------------------
 
 /*~
- * ---
- * name: module folktale/data/conversions
- * category: Converting data
- * stability: experimental
+ * stability: stable
  */
 module.exports = {
   resultToValidation: require('./result-to-validation'),

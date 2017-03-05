@@ -18,8 +18,6 @@ const isOld = (a) => typeof a.equals === 'function';
 
 
 /*~
- * ---
- * category: Fantasy Land
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -37,8 +35,6 @@ const equals = (setoidLeft, setoidRight) =>
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -55,8 +51,6 @@ equals.curried = curry(2, (setoidRight, setoidLeft) =>    // eslint-disable-line
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - Quildreen Motta

@@ -8,10 +8,7 @@
 //----------------------------------------------------------------------
 
 /*~
- * ---
- * category  : Currying and Partialisation
- * stability : experimental
- *
+ * stability: experimental
  * authors:
  *   - Quildreen Motta
  *

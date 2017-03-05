@@ -11,8 +11,6 @@ const { Nothing, Just } = require('folktale/data/maybe/maybe');
 
 
 /*~
- * ---
- * category: Converting from nullables
  * stability: experimental
  * authors:
  *   - Quildreen Motta

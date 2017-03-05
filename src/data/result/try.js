@@ -10,8 +10,6 @@
 const { Error, Ok } = require('./result');
 
 /*~
- * ---
- * category: Handling exceptions
  * stability: experimental
  * authors:
  *   - "@boris-marinov"

@@ -8,10 +8,7 @@
 //----------------------------------------------------------------------
 
 /*~
- * ---
- * category  : Combinators
- * stability : stable
- *
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  *

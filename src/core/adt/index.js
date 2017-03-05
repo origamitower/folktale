@@ -8,13 +8,9 @@
 //----------------------------------------------------------------------
 
 /*~
- * ---
- * name        : module folktale/core/adt
- * category    : Data Structures
+ * stability: experimental
  */
 module.exports = {
   data: require('./data'),
-  setoid: require('./setoid'),
-  show: require('./show'),
-  serialize: require('./serialize')
+  derivations: require('./derivations')
 };

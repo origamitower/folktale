@@ -9,9 +9,6 @@
 
 
 /*~
- * ---
- * name: module folktale/core/fantasy-land/infix
- * category: Convenience
  * stability: experimental
  */
 module.exports = {

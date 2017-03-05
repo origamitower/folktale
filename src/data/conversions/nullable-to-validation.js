@@ -11,8 +11,6 @@ const { Success, Failure } = require('folktale/data/validation/validation');
 
 
 /*~
- * ---
- * category: Converting from nullables
  * stability: experimental
  * authors:
  *   - "@boris-marinov"

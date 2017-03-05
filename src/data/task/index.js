@@ -9,9 +9,9 @@
 
 const Task = require('./_task');
 
+/*~ stability: experimental */
 module.exports = {
-  of: Task.of,
-  rejected: Task.rejected,
+  ...Task,
   task: require('./task'),
   _Task: Task,
   _TaskExecution: require('./_task-execution')

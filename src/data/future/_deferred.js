@@ -18,8 +18,6 @@ const { Pending, Cancelled, Rejected, Resolved } = require('./_execution-state')
 // --[ Helpers ]-------------------------------------------------------
 
 /*~
- * Moves a deferred to a resolved state.
- * ---
  * type: |
  *   ('a: Deferred 'f 's, ExecutionState 'f 's) => Void :: mutates 'a
  */
@@ -49,52 +47,7 @@ const moveToState = (deferred, newState) => {
 
 // --[ Implementation ]------------------------------------------------
 /*~
- * Deferreds allow creating containers for eventual values.
- * 
- * A deferred is a low-level structure to construct containers of
- * eventual values, and fill them with a value at a later point in
- * time. Most uses of deferred are better addressed by the `Task`
- * object.
- * 
- * ## Example::
- * 
- *     const delay = (ms) => {
- *       const deferred = new Deferred();
- *       setTimeout(() => deferred.resolve(), ms);
- *       return deferred.promise();
- *     };
- * 
- *     delay(100).then(() => {
- *       // do something after 100 ms
- *     });
- * 
- * 
- * ## Why not use Deferreds?
- * 
- * As mentioned above, a deferred is a low-level structure. While
- * it does allow cancellation and converting to a higher-level
- * structure (like Future or Promise), it does not provide important
- * facilities for asynchronous concurrency, like resource handling.
- * 
- * In this sense, a Task provides a simpler interface and more
- * guarantees for processes that must allocate resources and
- * collect them afterwards. For example, a cancellable delay
- * would look like this with a Task::
- * 
- *     const { task } = require('folktale/data/task');
- *     
- *     const delay = (ms) => task(resolver => {
- *       return setTimeout(() => resolver.resolve(), ms);
- *     }, {
- *       onCancelled: (timer) => { clearTimeout(timer) }
- *     });
- * 
- *     const execution = delay(100).run();
- *     execution.promise().then(() => {
- *       // do something after 100 ms
- *     });
- *     execution.cancel(); // cancels the execution and collects the timer
- * 
+ * stability: experimental
  */
 function Deferred() {
   define(this, '_state', Pending());
@@ -105,11 +58,7 @@ function Deferred() {
 Deferred.prototype = {
   // ---[ State and configuration ]------------------------------------
   /*~
-   * The current state of the deferred.
-   * 
-   * ---
    * isRequired: true
-   * category: State and configuration
    * type: |
    *   get (Deferred 'f 's) => ExecutionState 'f 's
    */
@@ -118,11 +67,7 @@ Deferred.prototype = {
   },
 
   /*~
-   * A list of functions to notify of state transitions in this deferred.
-   * 
-   * ---
    * isRequired: true
-   * category: State and configuration
    * type: |
    *   get (Deferred 'f 's) => Array (DeferredListener 'f 's)
    */
@@ -133,10 +78,6 @@ Deferred.prototype = {
 
   // ---[ Resolving a deferred ]---------------------------------------
   /*~
-   * Resolves a deferred with a successful value.
-   * 
-   * ---
-   * category: Resolving a deferred
    * type: |
    *   ('a: Deferred 'f 's).('s) => 'a :: mutates 'a
    */
@@ -146,10 +87,6 @@ Deferred.prototype = {
   },
 
   /*~
-   * Resolves a deferred with a failure.
-   * 
-   * ---
-   * category: Resolving a deferred
    * type: |
    *   ('a: Deferred 'f 's).('f) => 'a :: mutates 'a
    */
@@ -159,10 +96,6 @@ Deferred.prototype = {
   },
 
   /*~
-   * Resolves a deferred with a cancellation.
-   * 
-   * ---
-   * category: Resolving a deferred
    * type: |
    *   ('a: Deferred 'f 's).() => 'a :: mutates 'a
    */
@@ -171,6 +104,10 @@ Deferred.prototype = {
     return this;
   },
 
+  /*~
+   * type: |
+   *   ('a: Deferred 'f 's).() => 'a :: mutates 'a
+   */
   maybeCancel() {
     if (Pending.hasInstance(this._state)) {
       this.cancel();
@@ -181,10 +118,6 @@ Deferred.prototype = {
 
   // ---[ Reacting to events in a deferred ]---------------------------
   /*~
-   * Attaches a listener to be notified when the deferred resovles.
-   * 
-   * ---
-   * category: Reacting to events in a deferred
    * type: |
    *   ('a: Deferred 'f 's).(DeferredListener 'f 's) => Void
    */
@@ -201,10 +134,6 @@ Deferred.prototype = {
 
   // ---[ Working with deferred values ]-------------------------------
   /*~
-   * Returns the eventual value of a deferred as a promise.
-   * 
-   * ---
-   * category: Working with deferred values
    * type: |
    *   (Deferred 'f 's).() => Promise 'f 's
    */
@@ -219,10 +148,6 @@ Deferred.prototype = {
   },
 
   /*~
-   * Returns the eventual value of a deferred as a future.
-   * 
-   * ---
-   * category: Working with deferred values
    * type: |
    *   (Deferred 'f 's).() => Future 'f 's
    */
@@ -239,10 +164,6 @@ Deferred.prototype = {
 
   // ---[ Debugging ]--------------------------------------------------
   /*~
-   * Returns a textual representation of this object for debugging.
-   * 
-   * ---
-   * category: Debugging
    * type: |
    *   (Deferred 'f 's).() => String
    */
@@ -254,10 +175,6 @@ Deferred.prototype = {
   },
 
   /*~
-   * Returns a textual representation of this object for Node's REPL.
-   * 
-   * ---
-   * category: Debugging
    * type: |
    *   (Deferred 'f 's).() => String
    */

@@ -8,12 +8,10 @@
 //----------------------------------------------------------------------
 
 /*~
- * stability: stable
+ * stability: experimental
  */
 module.exports = {
-  identity: require('./identity'),
-  constant: require('./constant'),
-  curry: require('./curry'),
-  compose: require('./compose'),
-  partialize: require('./partialize')
+  serialization: require('./serialization'),
+  equality: require('./equality'),
+  debugRepresentation: require('./debug-representation')
 };

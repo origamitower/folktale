@@ -16,10 +16,9 @@ const extend = require('folktale/helpers/extend');
 const warnDeprecation = require('folktale/helpers/warn-deprecation');
 
 
+/*~ stability: experimental */
 const Validation = data('folktale:Data.Validation', {
   /*~
-   * ---
-   * category: Constructing
    * type: |
    *   forall a, b: (a) => Validation a b
    */
@@ -28,8 +27,6 @@ const Validation = data('folktale:Data.Validation', {
   },
 
   /*~
-   * ---
-   * category: Constructing
    * type: |
    *   forall a, b: (b) => Validation a b
    */
@@ -45,9 +42,7 @@ const assertValidation = assertType(Validation);
 
 extend(Failure.prototype, {
   /*~
-   * ---
    * isRequired: true
-   * category: State and configuration
    * type: |
    *   forall a, b: get (Validation a b) => a
    */
@@ -59,9 +54,7 @@ extend(Failure.prototype, {
 
 extend(Success.prototype, {
   /*~
-   * ---
    * isRequired: true
-   * category: State and configuration
    * type: |
    *   forall a, b: get (Validation a b) => b
    */
@@ -71,27 +64,20 @@ extend(Success.prototype, {
 });
 
 
-/*~
- * ---
- * ~belongsTo: Validation
- */
+/*~~belongsTo: Validation */
 adtMethods(Validation, {
   /*~
-   * ---
-   * category: Transforming
    * type: |
    *   forall a, b, c: (Validation a b).((b) => c) => Validation a c
    */
   map: {
-    /*~
-     */
+    /*~*/
     Failure: function map(transformation) {
       assertFunction('Validation.Failure#map', transformation);
       return this;
     },
 
-    /*~
-     */
+    /*~*/
     Success: function map(transformation) {
       assertFunction('Validation.Success#map', transformation);
       return Success(transformation(this.value));
@@ -100,23 +86,19 @@ adtMethods(Validation, {
 
 
   /*~
-   * ---
-   * category: Transforming
    * type: |
    *   forall a, b, c: (Validation (b) => c).(Validation a b) => Validation a c
    */
   apply: {
-    /*~
-     */
-    Failure: function map(aValidation) {
+    /*~*/
+    Failure: function apply(aValidation) {
       assertValidation('Failure#apply', aValidation);
       return Failure.hasInstance(aValidation) ? Failure(this.value.concat(aValidation.value))
       :      /* otherwise */                    this;
     },
 
-    /*~
-     */
-    Success: function map(aValidation) {
+    /*~*/
+    Success: function apply(aValidation) {
       assertValidation('Success#apply', aValidation);
       return Failure.hasInstance(aValidation) ? aValidation
       :      /* otherwise */                    aValidation.map(this.value);
@@ -124,14 +106,11 @@ adtMethods(Validation, {
   },
 
   /*~
-   * ---
-   * category: Extracting values
    * type: |
    *   forall a, b: (Validation a b).() => b :: throws TypeError
    */
   unsafeGet: {
-    /*~
-     */
+    /*~*/
     Failure: function unsafeGet() {
       throw new TypeError(`Can't extract the value of a Failure.
 
@@ -141,8 +120,7 @@ adtMethods(Validation, {
       `);
     },
 
-    /*~
-     */
+    /*~*/
     Success: function unsafeGet() {
       return this.value;
     }
@@ -150,20 +128,16 @@ adtMethods(Validation, {
 
 
   /*~
-   * ---
-   * category: Extracting values
    * type: |
    *   forall a, b: (Validation a b).(b) => b
    */
   getOrElse: {
-    /*~
-     */
+    /*~*/
     Failure: function getOrElse(_default) {
       return _default;
     },
 
-    /*~
-     */
+    /*~*/
     Success: function getOrElse(_default) {
       return this.value;
     }
@@ -171,21 +145,18 @@ adtMethods(Validation, {
 
 
   /*~
-   * category: Recovering
    * type: |
    *   forall a, b, c:
    *     (Validation a b).((a) => Validation c b) => Validation c b
    */
   orElse: {
-    /*~
-     */
+    /*~*/
     Failure: function orElse(handler) {
       assertFunction('Validation.Failure#orElse', handler);
       return handler(this.value);
     },
 
-    /*~
-     */
+    /*~*/
     Success: function orElse(handler) {
       assertFunction('Validation.Success#orElse', handler);
       return this;
@@ -194,16 +165,13 @@ adtMethods(Validation, {
 
 
   /*~
-   * ---
-   * category: Combining
    * type: |
    *   forall a, b:
    *     (Validation a b).(Validation a b) => Validation a b
    *   where a is Semigroup
    */
   concat: {
-    /*~
-     */
+    /*~*/
     Failure: function concat(aValidation) {
       assertValidation('Validation.Failure#concat', aValidation);
       if (Failure.hasInstance(aValidation)) {
@@ -213,8 +181,7 @@ adtMethods(Validation, {
       }
     },
 
-    /*~
-     */
+    /*~*/
     Success: function concat(aValidation) {
       assertValidation('Validation.Success#concat', aValidation);
       return aValidation;
@@ -223,22 +190,19 @@ adtMethods(Validation, {
 
 
   /*~
-   * category: Pattern matching
    * type: |
    *   forall a, b, c:
    *     (Validation a b).((a) => c, (b) => c) => c
    */
   fold: {
-    /*~
-     */
+    /*~*/
     Failure: function fold(failureTransformation, successTransformation) {
       assertFunction('Validation.Failure#fold', failureTransformation);
       assertFunction('Validation.Failure#fold', successTransformation);
       return failureTransformation(this.value);
     },
 
-    /*~
-     */
+    /*~*/
     Success: function fold(failureTransformation, successTransformation) {
       assertFunction('Validation.Success#fold', failureTransformation);
       assertFunction('Validation.Success#fold', successTransformation);
@@ -248,20 +212,16 @@ adtMethods(Validation, {
 
 
   /*~
-   * ---
-   * category: Transforming
    * type: |
    *   forall a, b: (Validation a b).() => Validation b a
    */
   swap: {
-    /*~
-     */
+    /*~*/
     Failure: function swap() {
       return Success(this.value);
     },
 
-    /*~
-     */
+    /*~*/
     Success: function swap() {
       return Failure(this.value);
     }
@@ -269,23 +229,19 @@ adtMethods(Validation, {
 
 
   /*~
-   * ---
-   * category: Transforming
    * type: |
    *   forall a, b, c, d:
    *     (Validation a b).((a) => c, (b) => d) => Validation c d
    */
   bimap: {
-    /*~
-     */
+    /*~*/
     Failure: function bimap(failureTransformation, successTransformation) {
       assertFunction('Validation.Failure#fold', failureTransformation);
       assertFunction('Validation.Failure#fold', successTransformation);
       return Failure(failureTransformation(this.value));
     },
 
-    /*~
-     */
+    /*~*/
     Success: function bimap(failureTransformation, successTransformation) {
       assertFunction('Validation.Success#fold', failureTransformation);
       assertFunction('Validation.Success#fold', successTransformation);
@@ -295,24 +251,20 @@ adtMethods(Validation, {
 
 
   /*~
-   * ---
-   * category: Transforming
    * type: |
    *   forall a, b, c:
    *     (Validation a b).((a) => c) Validation c b
    */
-  failureMap: {
-    /*~
-     */
-    Failure: function failureMap(transformation) {
-      assertFunction('Validation.Failure#failureMap', transformation);
+  mapFailure: {
+    /*~*/
+    Failure: function mapFailure(transformation) {
+      assertFunction('Validation.Failure#mapFailure', transformation);
       return Failure(transformation(this.value));
     },
 
-    /*~
-     */
-    Success: function failureMap(transformation) {
-      assertFunction('Validation.Failure#failureMap', transformation);
+    /*~*/
+    Success: function mapFailure(transformation) {
+      assertFunction('Validation.Failure#mapFailure', transformation);
       return this;
     }
   }
@@ -321,8 +273,6 @@ adtMethods(Validation, {
 
 Object.assign(Validation, {
   /*~
-   * ---
-   * category: Constructing
    * type: |
    *   forall a, b: (b) => Validation a b
    */
@@ -331,8 +281,6 @@ Object.assign(Validation, {
   },
 
   /*~
-   * ---
-   * category: Extracting values
    * type: |
    *   forall a, b: (Validation a b).() => b :: throws TypeError
    */
@@ -342,8 +290,6 @@ Object.assign(Validation, {
   },
 
   /*~
-   * ---
-   * category: Extracting values
    * type: |
    *   forall a, b: (Validation a b).() => a or b
    */
@@ -352,8 +298,6 @@ Object.assign(Validation, {
   },
 
   /*~
-   * ---
-   * category: Converting
    * type: |
    *   forall a, b: (Validation a b).() => Result a b
    */
@@ -362,8 +306,6 @@ Object.assign(Validation, {
   },
 
   /*~
-   * ---
-   * category: Converting
    * type: |
    *   forall a, b: (Validation a b).() => Maybe b
    */

@@ -9,17 +9,13 @@
 
 
 /*~
- * ---
- * name: module folktale/data/result
- * category: Modelling failures
+ * stability: experimental
  */
 module.exports = {
   ...require('./result'),
   try: require('./try'),
 
   /*~
-   * ---
-   * category: Converting from other types
    * type: |
    *   forall a: (a or None) => Result None a
    */
@@ -28,8 +24,6 @@ module.exports = {
   },
 
   /*~
-   * ---
-   * category: Converting from other types
    * type: |
    *   forall a, b: (Validation a b) => Result a b
    */
@@ -38,8 +32,6 @@ module.exports = {
   },
 
   /*~
-   * ---
-   * category: Converting from other types
    * type: |
    *   forall a, b: (Maybe b, a) => Result a b
    */
