@@ -10,6 +10,7 @@
 /*~ stability: experimental */
 module.exports = {
   ...require('./validation'),
+  collect: require('./collect'),
 
   /*~
    * type: |
