@@ -8,7 +8,9 @@
 //----------------------------------------------------------------------
 
 const { property } = require('jsverify');
-const {data, setoid, show, serialize} = require('folktale/core/adt')
+const { data, derivations } = require('folktale/core/adt');
+
+const { serialization, equality, debugRepresentation } = derivations;
 
 describe('Core.ADT', () => {
   describe('data(typeId, patterns)', () => {
@@ -148,11 +150,11 @@ describe('Core.ADT', () => {
   });
 
 
-  describe('Setoid', () => {
+  describe('Equality', () => {
     const { A, B } = data('AB', {
       A: (value) => ({ value }),
       B: (value) => ({ value })
-    }).derive(setoid)
+    }).derive(equality)
     
     property('Different simple values are NOT equal', 'json', (a) => {
       return !A(a).equals(B(a))
@@ -167,22 +169,22 @@ describe('Core.ADT', () => {
       return A(B(a)).equals(A(B(a)))
     });
 
-    describe('Setoid#withEquality', () => {
+    describe('Equality#withCustomComparison', () => {
 
       const { A } = data('A', {
         A: (value) => ({ value }),
-      }).derive(setoid.withEquality((a, b) => a.id === b.id));
+      }).derive(equality.withCustomComparison((a, b) => a.id === b.id));
       
       property('Values are compared using a custom function if provided', 'json', 'json', function(a, b) {
         return A({id:1, _irrelevantValue:a}).equals(A({id:1, _irrelevantValue: b}))
       });
     });
   });
-  describe('Show', () => {
+  describe('Debug Representation', () => {
     const AB = data('AB', {
       A: (value) => ({ value }),
       B: (value) => ({ value })
-    }).derive(show)
+    }).derive(debugRepresentation)
 
     property('Types have a string representation', () => {
       return AB.toString()  === 'AB';
@@ -213,16 +215,16 @@ describe('Core.ADT', () => {
       return AB.A({rec:AB.A(1)}).toString()  ===  'AB.A({ value: { rec: AB.A({ value: 1 }) } })'
     })
   });
-  describe('Serialize', () => {
+  describe('Serialization', () => {
     const AB = data('folktale:AB', {
       A: (value) => ({ value }),
       B: (value) => ({ value })
-    }).derive(serialize, setoid);
+    }).derive(serialization, equality);
     
     const CD = data('folktale:CD', {
       C: (value) => ({value}),
       D: (value) => ({value})
-    }).derive(serialize, setoid);
+    }).derive(serialization, equality);
 
     const {A, B} = AB;
     const {C, D} = CD;

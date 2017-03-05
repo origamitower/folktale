@@ -1,16 +1,16 @@
-@annotate: folktale.core.adt.setoid
+@annotate: folktale.core.adt.derivations.equality
 ---
 Provides structural equality for ADTs.
 
-The `setoid` derivation bestows Fantasy Land's `fantasy-land/equals`
+The `equality` derivation bestows Fantasy Land's `fantasy-land/equals`
 method upon ADTs constructed by Core.ADT, as well as an `equals`
 alias. This `equals` method performs structural equality, and may
-be configured on how to compare values that aren't themselves setoids.
+be configured on how to compare values that don't implement Equality.
 
 
 ## Example::
 
-    const { data, setoid } = require('folktale/core/adt');
+    const { data, derivations } = require('folktale/core/adt');
     const Result = data('Result', {
       Ok(value){
         return { value };
@@ -18,7 +18,7 @@ be configured on how to compare values that aren't themselves setoids.
       Error(value) {
         return { value };
       }
-    }).derive(setoid);
+    }).derive(derivations.equality);
     const { Ok, Error } = Result;
 
     Ok(1).equals(Ok(1));
@@ -40,10 +40,10 @@ same content.
 For simple ADTs this is pretty easy to see. For example, consider the
 following definition::
 
-    const { data, setoid } = require('folktale/core/adt');
+    const { data, derivations } = require('folktale/core/adt');
     const Id = data('Id', {
       Id(value){ return { value } }
-    }).derive(setoid);
+    }).derive(derivations.equality);
 
     const a = Id.Id(1);
     const b = Id.Id(1);
@@ -63,7 +63,7 @@ contents. This is because `===` compares values by their identity,
 and each object has a different identity.
 
 If we want to compare things by value, we can use the `equals` method
-provided by this setoid derivation instead::
+provided by this equality derivation instead::
 
     a.equals(b);        // ==> true
     a.equals(a);        // ==> true
@@ -84,7 +84,7 @@ Given two data structures, they are considered equal if:
 
 The following example shows these in practice::
 
-    const { data, setoid } = require('folktale/core/adt');
+    const { data, derivations } = require('folktale/core/adt');
 
     //                    ┌◦ TYPE
     //                  ┌╌┴╌╌╌╌┐
@@ -96,7 +96,7 @@ The following example shows these in practice::
     //   ┌◦ TAG               ┌◦ KEYS
     // ┌╌┴╌┐                ┌╌┴╌╌╌╌╌┐
        Error(value){ return { value } }
-    }).derive(setoid);
+    }).derive(derivations.equality);
 
     const { Ok, Error } = Result;
 
@@ -133,7 +133,7 @@ So if we compare these two for equality::
 
     const { Error: E } = data('Res', {
       Error(value){ return { value } }
-    }).derive(setoid);
+    }).derive(derivations.equality);
 
     E(1).equals(Error(1)); // ==> false
     // same tag, keys, and values. Different types ('Result' !== 'Res')
@@ -142,24 +142,24 @@ So if we compare these two for equality::
 ## How complex equality works?
 
 The values in an ADT aren't always a JS primitive, such as numbers and
-strings. Setoid's `equals` method handles these in two different ways:
+strings. Equality's `equals` method handles these in two different ways:
 
-  - If the values are a setoid, then the values are compared using the
-    left Setoid's `equals` method. This means that if all values are
-    setoids or primitives, then deep equality just works.
+  - If the values implement Equality, then the values are compared using the
+    left's `equals` method. This means that if all values implement Equality
+    or are primitives, deep equality just works.
 
-  - If the values are not a setoid, the provided equality comparison is
+  - If the values do not implement Equaity, the provided equality comparison is
     used to compare both values. By default, this comparison just uses
     reference equality, so it's the equivalent of `a === b`.
 
 Here's an example::
 
-    const { data, setoid } = require('folktale/core/adt');
+    const { data, derivations } = require('folktale/core/adt');
     const { Id } = data('Id', {
       Id(value){ return { value } }
-    }).derive(setoid);
+    }).derive(derivations.equality);
 
-    // This is fine, because all values are either Setoids or primitives
+    // This is fine, because all values implement Equality or are primitives
     Id(Id(1)).equals(Id(Id(1))); // ==> true
 
     // This is not fine, because it compares `[1] === [1]`
@@ -185,16 +185,16 @@ Here's an example of an equality function that checks array equality::
 
     const { Id: Id2 } = data('Id', {
       Id(value){ return { value } }
-    }).derive(setoid.withEquality(isEqual));
+    }).derive(derivations.equality.withCustomComparison(isEqual));
 
     Id2([1]).equals(Id2([1]));       // ==> true
     Id2(Id2(1)).equals(Id2(Id2(1))); // ==> true
     Id2(2).equals(Id2(1));           // ==> false
 
 
-## Setoid equality and the asymmetry problem::
+## Equality and the asymmetry problem::
 
-Because the Setoid `equals` method is defined directly in objects,
+Because the `equals` method is defined directly in objects,
 and invoked using the method call syntax, it creates an asymmetry
 problem. That is, if there are two objects, `a` and `b`, then
 `a equals b` is not the same as `b equals a`, since the `equals`
@@ -202,10 +202,10 @@ method may be different on those objects!
 
 Here's an example of the asymmetry problem::
 
-    const { data, setoid } = require('folktale/core/adt');
+    const { data, derivations } = require('folktale/core/adt');
     const { Id } = data('Id', {
       Id(value){ return { value } }
-    }).derive(setoid);
+    }).derive(derivations.equality);
 
     const bogus = {
       equals(that){ return that.value === this.value },
@@ -221,9 +221,9 @@ Here's an example of the asymmetry problem::
     // But this is not
     Id(bogus).equals(Id(Id(1))); // ==> true
 
-To avoid this problem all Setoid implementations should do type
+To avoid this problem all Equality implementations should do type
 checking and make sure that they have the same `equals` method.
-Setoid implementations derived by this derivation do so by
+Equality implementations derived by this derivation do so by
 checking the `type` and `tag` of the ADTs being compared.
 
 
@@ -235,13 +235,13 @@ This can be quite expensive for larger data structures.
 
 If you expect to be working with larger data structures, and check
 equality between them often, you are, usually, very out of luck. You
-may consider providing your own Setoid isntance with the following
+may consider providing your own Equality implementation with the following
 optimisations:
 
   - If two objects are the same reference, you don't need to check
-    them structurally, for they must be equal — Setoid does this,
-    but if you're providing your own equality function, you must
-    do this there as well;
+    them structurally, for they must be equal — Equality's `.equals` 
+    does this, but if you're providing your own equality function, 
+    you must do it there as well;
 
   - If two objects have the same type, but different hashes, then
     they must have different values (assuming you haven't messed up
@@ -256,7 +256,7 @@ Here's an example of this optimisation applied to linked lists that
 can only hold numbers (with a very naive hash function)::
 
     const hash = Symbol('hash code');
-    const { data, setoid } = require('folktale/core/adt');
+    const { data, derivations } = require('folktale/core/adt');
 
     const { Cons, Nil } = data('List', {
       Nil(){ return { [hash]: 0 } },

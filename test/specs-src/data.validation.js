@@ -104,12 +104,12 @@ describe('Data.Validation', () => {
       return _.Failure(a).bimap(f, id).equals(_.Failure(f(a)))
     });
 
-    property('Failure#failureMap', 'json', 'json -> json', (a, f) => {
-      return _.Failure(f(a)).equals(_.Failure(a).failureMap(f))
+    property('Failure#mapFailure', 'json', 'json -> json', (a, f) => {
+      return _.Failure(f(a)).equals(_.Failure(a).mapFailure(f))
     });
     
-    property('Success#failureMap', 'json', 'json -> json', (a, f) => {
-      return _.Success(a).failureMap(f).equals(_.Success(a))
+    property('Success#mapFailure', 'json', 'json -> json', (a, f) => {
+      return _.Success(a).mapFailure(f).equals(_.Success(a))
     });
   });
   describe('Conversions', () => {

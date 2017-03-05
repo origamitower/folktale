@@ -9,11 +9,13 @@
 
 const assertType = require('folktale/helpers/assert-type');
 const assertFunction = require('folktale/helpers/assert-function');
-const { data, setoid, show, serialize } = require('folktale/core/adt/');
+const { data, derivations } = require('folktale/core/adt/');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const adtMethods = require('folktale/helpers/define-adt-methods');
 const extend = require('folktale/helpers/extend');
 const warnDeprecation = require('folktale/helpers/warn-deprecation');
+
+const { equality, debugRepresentation, serialization } = derivations;
 
 
 /*~ stability: experimental */
@@ -33,7 +35,7 @@ const Validation = data('folktale:Data.Validation', {
   Success(value) { 
     return { value };
   }
-}).derive(setoid, show, serialize);
+}).derive(equality, debugRepresentation, serialization);
 
 
 const { Success, Failure } = Validation;

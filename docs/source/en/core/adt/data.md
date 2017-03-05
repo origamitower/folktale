@@ -286,19 +286,19 @@ of equality?
 That's where the concept of *derivation* comes in. A derivation is a
 function that provides a set of common functionality for an ADT and
 its variants. For example, if one wanted to add the notion of equality
-to an ADT, they could `derive` `Setoid` as follows::
+to an ADT, they could `derive` `Equality` as follows::
 
     const data = require('folktale/core/adt/data');
-    const Setoid = require('folktale/core/adt/setoid');
+    const Equality = require('folktale/core/adt/derivations/equality');
 
     const Either = data('Either', {
       Left(value) { return { value } },
       Right(value){ return { value } }
-    }).derive(Setoid);
+    }).derive(Equality);
 
-Note the `.derive(Setoid)` invocation. `derive` is a method that can
+Note the `.derive(Equality)` invocation. `derive` is a method that can
 be called at any time on the ADT to provide new common functionality
-to it. In this case, the `Setoid` derivation gives all variants an
+to it. In this case, the `Equality` derivation gives all variants an
 `equals()` method::
 
     Either.Left(1).equals(Either.Left(1));   // ==> true

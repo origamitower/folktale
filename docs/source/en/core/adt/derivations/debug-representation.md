@@ -1,18 +1,18 @@
-@annotate: folktale.core.adt.show
+@annotate: folktale.core.adt.derivations.debugRepresentation
 ---
 Provides a textual representation for ADTs.
 
-The `show` serialisation bestows ES2015's `Symbol.toStringTag`, used
+The `debugRepresentation` serialisation bestows ES2015's `Symbol.toStringTag`, used
 for the native `Object.prototype.toString`, along with a `.toString()`
 method and Node's REPL `.inspect()` method.
 
 
 ## Example::
 
-    const { data, show } = require('folktale/core/adt');
+    const { data, derivations } = require('folktale/core/adt');
     const { Id } = data('Id', {
       Id(value){ return { value } }
-    }).derive(show);
+    }).derive(derivations.debugRepresentation);
 
     Object.prototype.toString.call(Id(1));
     // => '[object Id.Id]'
