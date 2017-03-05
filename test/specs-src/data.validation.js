@@ -11,7 +11,32 @@ const { property, forall} = require('jsverify');
 const _ = require('folktale/data/validation');
 const laws = require('../helpers/fantasy-land-laws');
 
+
 describe('Data.Validation', () => {
+  describe('collect(validations)', () => {
+    it('failures are concatenated', () => {
+      const a = _.Failure('a');
+      const b = _.Failure('b');
+
+      $ASSERT(_.collect([a, b]) == _.Failure('ab'));
+    });
+
+    it('successes are ignored in the presence of failures', () => {
+      const a = _.Failure('a');
+      const b = _.Failure('b');
+      const c = _.Success('c');
+
+      $ASSERT(_.collect([a, b, c]) == _.Failure('ab'));
+    });
+
+    it('keeps the last success', () => {
+      const a = _.Success(1);
+      const b = _.Success(2);
+
+      $ASSERT(_.collect([a, b]) == _.Success(2));
+    });
+  });
+
   describe('Functor', () => {
     property('map', 'json', 'json -> json', (a, f) => {
       return _.of(f(a)).equals(_.of(a).map(f))
