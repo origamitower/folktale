@@ -22,17 +22,17 @@ const keys = Object.keys;
 
 // --[ Helpers ]--------------------------------------------------------
 
-/*~
- * Returns an array of own enumerable values in an object.
- */
+//
+// Returns an array of own enumerable values in an object.
+//
 function values(object) {
   return keys(object).map(key => object[key]);
 }
 
 
-/*~
- * Transforms own enumerable key/value pairs.
- */
+//
+// Transforms own enumerable key/value pairs.
+//
 function mapObject(object, transform) {
   return keys(object).reduce((result, key) => {
     result[key] = transform(key, object[key]);
@@ -43,9 +43,9 @@ function mapObject(object, transform) {
 
 // --[ Variant implementation ]-----------------------------------------
 
-/*~
- * Defines the variants given a set of patterns and an ADT namespace.
- */
+//
+// Defines the variants given a set of patterns and an ADT namespace.
+//
 function defineVariants(typeId, patterns, adt) {
   return mapObject(patterns, (name, constructor) => {
     // ---[ Variant Internals ]-----------------------------------------
@@ -56,24 +56,16 @@ function defineVariants(typeId, patterns, adt) {
       // This is internal, and we don't want the user to be messing with this.
       [TAG]: name,
 
-      // This is documented by the user, so we don't re-document it.
-      constructor: constructor,
+      /*~~inheritsMeta: constructor */
+      get constructor() {
+        return constructor;
+      },
 
       /*~
-       * True if a value belongs to the ADT variant.
-       * 
-       * ---
-       * category: Testing and Comparing
+       * ~belongsTo: constructor
        * deprecated:
        *   version: 2.0.0
-       *   replacedBy: .hasInstance(value)
-       *   reason: |
-       *     Having a `value.isFoo` property doesn't allow people to
-       *     differentiate two variants from different ADTs that have the
-       *     same name. So, instead, now variants and ADTs come with a
-       *     static `.hasInstance(value)` method.
-       * 
-       * ~belongsTo: constructor
+       *   replacedBy: .hasInstance(value)w
        */
       get [`is${name}`]() {
         warnDeprecation(`.is${name} is deprecated. Use ${name}.hasInstance(value)
@@ -82,36 +74,10 @@ instead to check if a value belongs to the ADT variant.`);
       },
       
       /*~
-       * Selects an operation based on this Variant's tag.
-       *
-       * The `matchWith` operation allows a very limited form of
-       * pattern matching, by selecting an operation depending on this
-       * value's tag.
-       * 
-       * 
-       * ## Example::
-       * 
-       *     const List = data('List', {
-       *       Nil:  ()           => ({}),
-       *       Cons: (head, tail) => ({ head, tail })
-       *     });
-       * 
-       *     const { Nil, Cons } = List;
-       * 
-       *     const sum = (list) => list.matchWith({
-       *       Nil:  ()               => 0,
-       *       Cons: ({ head, tail }) => head + sum(tail)  
-       *     });
-       * 
-       *     sum(Cons(1, Cons(2, Nil()))); // ==> 3
-       *
-       * ---
-       * category : Transforming
+       * ~belongsTo: constructor
        * type: |
        *   ('a is Variant).({ 'b: (Object Any) => 'c }) => 'c
        *   where 'b = 'a[`@@folktale:adt:tag]
-       *
-       * ~belongsTo: constructor
        */
       matchWith(pattern) {
         return pattern[name](this);
@@ -129,76 +95,28 @@ instead to check if a value belongs to the ADT variant.`);
       // wrapper, which is what the user will interact with most of the time.
       [META]: constructor[META],
 
-      /*~
-       * The unique tag for this variant within the ADT.
-       * 
-       * ---
-       * category: State and Configuration
-       * ~belongsTo: makeInstance
-       */
+      /*~~belongsTo: makeInstance */
       get tag() {
         return name;
       },
 
-      /*~
-       * The (ideally unique) type for the ADT. This is provided by the user
-       * creating the ADT, so we can't actually guarantee uniqueness.
-       * 
-       * ---
-       * category: State and Configuration
-       * ~belongsTo: makeInstance 
-       */
+      /*~~belongsTo: makeInstance */
       get type() {
         return typeId;
       },
 
-      /*~
-       * The internal constructor provided by the user, which transforms and
-       * validates the properties attached to objects constructed in this ADT.
-       * 
-       * ---
-       * category: Internal
-       * ~belongsTo: makeInstance 
-       */
+      /*~~belongsTo: makeInstance */
       get constructor() {
         return constructor;
       },
 
-      /*~
-       * The object that provides common behaviours for instances of this variant.
-       * 
-       * ---
-       * category: Internal
-       * ~belongsTo: makeInstance
-       */
+      /*~~belongsTo: makeInstance */
       prototype: InternalConstructor.prototype,
 
       /*~
-       * Checks if a value belongs to this Variant.
-       *
-       * This is similar to the `ADT.hasInstance` check, with the
-       * exception that we also check if the value is of the same
-       * variant (has the same tag) as this variant.
-       * 
-       * 
-       * ## Example::
-       * 
-       *     const Either = data('Either', {
-       *       Left:  (value) => ({ value }),
-       *       Right: (value) => ({ value })
-       *     });
-       * 
-       *     const { Left, Right } = Either;
-       *  
-       *     Left.hasInstance(Left(1));  // ==> true
-       *     Left.hasInstance(Right(1)); // ==> false
-       *
-       * ---
-       * category : Comparing and Testing
+       * ~belongsTo: makeInstance
        * type: |
        *   (Variant) => Boolean
-       *
-       * ~belongsTo: makeInstance
        */
       hasInstance(value) {
         return Boolean(value) 
@@ -217,12 +135,10 @@ instead to check if a value belongs to the ADT variant.`);
 // --[ ADT Implementation ]--------------------------------------------
 
 /*~
- * ---
- * category    : Constructing Data Structures
- * stability   : experimental
  * authors:
  *   - Quildreen Motta
- *
+ * 
+ * stability: experimental
  * type: |
  *   (String, Object (Array String)) => ADT
  */
@@ -235,31 +151,15 @@ const data = (typeId, patterns) => {
     [TYPE]: typeId,
 
     /*~
-     * The variants present in this ADT.
-     * 
-     * ---
-     * category: Members
      * type: Array Variant
      * ~belongsTo: ADTNamespace
      */
     variants: values(variants),
 
     /*~
-     * Checks if a value belongs to this ADT.
-     *
-     * Values are considered to belong to an ADT if they have the same
-     * `Symbol.for('@@folktale:adt:type')` property as the ADT's.
-     *
-     * If you don't want a structural check, you can test whether the
-     * ADT is in the prototype chain of the value, but keep in mind that
-     * this does not work cross-realm.
-     *
-     * ---
-     * category  : Comparing and Testing
+     * ~belongsTo: ADTNamespace
      * type: |
      *   ADT.(Variant) -> Boolean
-     *
-     * ~belongsTo: ADTNamespace
      */
     hasInstance(value) {
       return Boolean(value)
@@ -271,15 +171,9 @@ const data = (typeId, patterns) => {
 };
 
 
-/*~
- * ---
- * category   : Data Structures
- * ~belongsTo : data
- */
+/*~~belongsTo : data */
 const ADT = {
   /*~
-   * ---
-   * category : Extending ADTs
    * type: |
    *   ADT . (...(Variant, ADT) => Any) => ADT
    */

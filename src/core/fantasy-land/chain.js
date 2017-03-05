@@ -17,8 +17,6 @@ const isOld = (a) => typeof a.chain === 'function';
 
 
 /*~
- * ---
- * category: Fantasy Land
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -36,8 +34,6 @@ const chain = (monad, transformation) =>
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -54,9 +50,6 @@ chain.curried = curry(2, (transformation, monad) =>   // eslint-disable-line no-
 
 
 /*~
- * Transforms a monad with an unary function.
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - Quildreen Motta

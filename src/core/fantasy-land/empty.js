@@ -20,8 +20,6 @@ const isCtorOld = (a) => typeof a.constructor.empty === 'function';
 
 
 /*~
- * ---
- * category: Fantasy Land
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -41,8 +39,6 @@ const empty = (monoid) =>
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -57,8 +53,6 @@ empty.curried = curry(1, empty);      // eslint-disable-line no-magic-numbers
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - Quildreen Motta

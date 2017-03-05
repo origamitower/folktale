@@ -11,10 +11,7 @@ const hole = {};
 
 
 /*~
- * ---
- * since     : v2.0.0
- * category  : Currying and Partialisation
- * stability : experimental
+ * stability: experimental
  * authors:
  *   - Quildreen Motta
  *
@@ -60,10 +57,7 @@ const partialise = (arity, fn) => (...args) => {    //  eslint-disable-line max-
 
 
 // ---[ Special Values ]-----------------------------------------------
-/*~
- * ---
- * category: Special Values
- */
+/*~ stability: experimental */
 partialise.hole = hole;
 
 

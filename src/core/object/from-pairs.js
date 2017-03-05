@@ -11,10 +11,7 @@ const define = Object.defineProperty;
 
 
 /*~
- * ---
- * category    : Converting
- * stability   : stable
- *
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  *

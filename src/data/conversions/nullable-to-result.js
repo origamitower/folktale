@@ -11,8 +11,6 @@ const { Error, Ok } = require('folktale/data/result/result');
 
 
 /*~
- * ---
- * category: Converting from nullables
  * stability: experimental
  * authors:
  *   - "@boris-marinov"

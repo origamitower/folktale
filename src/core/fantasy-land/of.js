@@ -20,8 +20,6 @@ const isCtorOld = (a) => typeof a.constructor.of === 'function';
 
 
 /*~
- * ---
- * category: Fantasy Land
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -41,8 +39,6 @@ const of = (applicative, value) =>
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -57,8 +53,6 @@ of.curried = curry(2, of);      // eslint-disable-line no-magic-numbers
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - Quildreen Motta

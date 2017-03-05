@@ -15,13 +15,17 @@ const TaskExecution = require('./_task-execution');
 
 const noop = () => {};
 
+
+/*~ stability: experimental */
 class Task {
+  /*~*/
   constructor(computation, onCancel, cleanup) {
     this._computation = computation;
     this._onCancel    = onCancel || noop;
     this._cleanup     = cleanup  || noop;
   }
 
+  /*~*/
   chain(transformation) {
     return new Task(
       resolver => {
@@ -43,6 +47,7 @@ class Task {
     );
   }
 
+  /*~*/
   map(transformation) {
     return new Task(
       resolver => {
@@ -58,10 +63,12 @@ class Task {
     );
   }
 
+  /*~*/
   apply(task) {
     return this.chain(f => task.map(f));
   }
 
+  /*~*/
   bimap(rejectionTransformation, successTransformation) {
     return new Task(
       resolver => {
@@ -77,6 +84,7 @@ class Task {
     );
   }
 
+  /*~*/
   willMatchWith(pattern) {
     return new Task(
       resolver => {
@@ -97,6 +105,7 @@ class Task {
     );
   }
 
+  /*~*/
   swap() {
     return new Task(
       resolver => {
@@ -112,6 +121,7 @@ class Task {
     );
   }
 
+  /*~*/
   or(that) {
     return new Task(
       resolver => {
@@ -148,6 +158,7 @@ class Task {
     );
   }
 
+  /*~*/
   and(that) {
     return new Task(
       resolver => {   // eslint-disable-line max-statements
@@ -203,6 +214,7 @@ class Task {
     );
   }
 
+  /*~*/
   run() {
     let deferred = new Deferred();    // eslint-disable-line prefer-const
     deferred.listen({
@@ -236,11 +248,14 @@ class Task {
   }
 }
 
+
 Object.assign(Task, {
+  /*~*/
   of(value) {
     return new Task(resolver => resolver.resolve(value));
   },
 
+  /*~*/
   rejected(reason) {
     return new Task(resolver => resolver.reject(reason));
   }

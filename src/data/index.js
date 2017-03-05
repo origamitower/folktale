@@ -9,10 +9,7 @@
 
 
 /*~
- * ---
- * name: module folktale/data
- * category: Data Structures
- * stability: experimental
+ * stability: stable
  */
 module.exports = {
   conversions: require('./conversions'),

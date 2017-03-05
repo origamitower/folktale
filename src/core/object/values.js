@@ -8,8 +8,6 @@
 //----------------------------------------------------------------------
 
 /*~
- * ---
- * category  : Converting
  * stability : stable
  * authors:
  *   - Quildreen Motta

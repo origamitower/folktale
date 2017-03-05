@@ -9,9 +9,6 @@
 
 
 /*~
- * ---
- * name: module folktale/core/fantasy-land/curried
- * category: Convenience
  * stability: experimental
  */
 module.exports = {

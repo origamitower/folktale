@@ -17,8 +17,6 @@ const isNew = (a) => typeof a[flMap] === 'function';
 const isOld = (a) => typeof a.map === 'function';
 
 /*~
- * ---
- * category: Fantasy Land
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -36,8 +34,6 @@ const map = (functor, transformation) =>
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -54,8 +50,6 @@ map.curried = curry(2, (transformation, functor) =>     // eslint-disable-line n
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - Quildreen Motta

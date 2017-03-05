@@ -8,9 +8,7 @@
 //----------------------------------------------------------------------
 
 /*~
- * ---
- * name        : module folktale/core
- * category    : Essential Operations
+ * stability: stable
  */
 module.exports = {
   lambda: require('./lambda'),

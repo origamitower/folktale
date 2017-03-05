@@ -8,9 +8,7 @@
 //----------------------------------------------------------------------
 
 /*~
- * ---
- * category  : Combining
- * stability : stable
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  *
@@ -24,9 +22,7 @@ const compose = (f, g) => (value) => f(g(value));
 // --[ Convenience ]---------------------------------------------------
 
 /*~
- * ---
- * category  : Convenience
- * stability : experimental
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  *
@@ -39,9 +35,7 @@ compose.infix = function(that) {
 
 
 /*~
- * ---
- * category  : Convenience
- * stability : experimental
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  *

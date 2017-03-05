@@ -22,9 +22,6 @@ const valueJsonKey = '@@value';
 // --[ Helpers ]--------------------------------------------------------
 
 /*~
- * Creates a type lookup table from an array of types.
- * 
- * ---
  * type: ((Object 'a) => 'b) => ([Object 'a]) => Object 'b  
  */
 const arrayToObject = (extractKey) => (array) => 
@@ -35,27 +32,18 @@ const arrayToObject = (extractKey) => (array) =>
 
 
 /*~
- * Retrieves the property of an object.
- * 
- * ---
  * type: (String) => (Object 'a) => 'a | None 
  */
 const property = (propertyName) => (object) => object[propertyName];
 
 
 /*~
- * Specifies `arrayToObject`.
- * 
- * ---
  * type: ([Object 'a]) => Object 'a 
  */
 const indexByType = arrayToObject(property(typeSymbol));
 
 
 /*~
- * Tests a type identifier.
- * 
- * ---
  * type: (String, String) => Bool
  */
 const assertType = (given, expected) => {
@@ -69,9 +57,6 @@ const assertType = (given, expected) => {
 
 
 /*~
- * Attempts to parse a value using a type dictionary.
- * 
- * ---
  * type: |
  *   type JSONSerialisation = {
  *     "@@type":  String,
@@ -99,9 +84,6 @@ const parseValue = (parsers) => (value) => {
 
 
 /*~
- * Converts a value to its JSON representation.
- * 
- * ---
  * type: ('a) => JSON
  */
 const serializeValue = (value) =>
@@ -112,8 +94,6 @@ const serializeValue = (value) =>
 // --[ Implementation ]-------------------------------------------------
 
 /*~
- * ---
- * category: Derivation
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -121,26 +101,11 @@ const serializeValue = (value) =>
  * type: |
  *   (Variant, ADT) => Void 
  */
-const serialize = (variant, adt) => {
+const serialization = (variant, adt) => {
   const typeName = adt[typeSymbol];
   const tagName = variant.prototype[tagSymbol];
 
   /*~
-   * Serialises a variant to JSON.
-   * 
-   * ## Example::
-   * 
-   *     const { data, setoid } = require('folktale/core/adt');
-   *     const Id = data('Id', {
-   *       Id(value){ return { value } }
-   *     }).derive(serialize, setoid);
-   * 
-   *     Id.Id(1).toJSON();
-   *     // ==> { '@@type': 'Id', '@@tag': 'Id', '@@value': { value: 1 } }
-   *
-   * 
-   * ---
-   * category: Serialisation
    * stability: experimental
    * authors:
    *   - "@boris-marinov"
@@ -163,23 +128,6 @@ const serialize = (variant, adt) => {
   };
 
   /*~
-   * Parses a previously serialised ADT into a rich ADT object.
-   * 
-   * ## Example::
-   * 
-   *     const { data, setoid } = require('folktale/core/adt');
-   *     const Id = data('Id', {
-   *       Id(value){ return { value } }
-   *     }).derive(serialize, setoid);
-   * 
-   *     Id.Id(1).toJSON();
-   *     // ==> { '@@type': 'Id', '@@tag': 'Id', '@@value': { value: 1 } }
-   * 
-   *     Id.fromJSON(Id.Id(1).toJSON());
-   *     // ==> Id.Id(1)
-   * 
-   * ---
-   * category: Serialisation
    * stability: experimental
    * authors:
    *   - "@boris-marinov"
@@ -211,4 +159,4 @@ const serialize = (variant, adt) => {
 
 
 // --[ Exports ]--------------------------------------------------------
-module.exports = serialize;
+module.exports = serialization;

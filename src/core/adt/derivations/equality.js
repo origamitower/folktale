@@ -19,18 +19,12 @@ const { tagSymbol, typeSymbol } = require('./data');
 // --[ Helpers ]--------------------------------------------------------
 
 /*~
- * True if the value conforms to the Setoid interface.
- * 
- * ---
  * type: (Any) => Boolean
  */
 const isSetoid = (value) => value != null 
                          && (typeof value[fl.equals] === 'function' || typeof value.equals === 'function');
 
 /*~
- * True if two variant instances are of the same type/tag.
- * 
- * ---
  * type: (Variant, Variant) => Boolean
  */
 const sameType = (a, b) => a[typeSymbol] === b[typeSymbol] 
@@ -39,8 +33,6 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
 
 // --[ Implementation ]------------------------------------------------
 /*~
- * ---
- * category: Derivation
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -50,8 +42,6 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
  */
 const createDerivation = (valuesEqual) => {
   /*~
-   * Tests if two objects are equal.
-   * ---
    * type: ('a, 'a) => Boolean
    */
   const equals = (a, b) => {
@@ -72,8 +62,6 @@ const createDerivation = (valuesEqual) => {
 
 
   /*~
-   * Tests if two variants are equal.
-   * ---
    * type: (Object Any, Object Any, Array String) => Boolean
    */
   const compositesEqual = (a, b, keys) => {
@@ -90,9 +78,6 @@ const createDerivation = (valuesEqual) => {
 
   const derivation = (variant, adt) => {
     /*~
-     * Compares two setoids structurally.
-     * ---
-     * category: Comparing and testing
      * stability: experimental
      * authors:
      *   - "@boris-marinov"
@@ -120,5 +105,8 @@ const createDerivation = (valuesEqual) => {
 
 
 // --[ Exports ]-------------------------------------------------------
+
+/*~~inheritsMeta: createDerivation */
 module.exports = createDerivation((a, b) => a === b);
-module.exports.withEquality = createDerivation;
+
+module.exports.withCustomComparison = createDerivation;

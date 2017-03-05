@@ -18,8 +18,6 @@ const isOld = (a) => typeof a.bimap === 'function';
 
 
 /*~
- * ---
- * category: Fantasy Land
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -37,8 +35,6 @@ const bimap = (bifunctor, transformLeft, transformRight) =>
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -55,8 +51,6 @@ bimap.curried = curry(3, (transformLeft, transformRight, bifunctor) =>    // esl
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - Quildreen Motta

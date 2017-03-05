@@ -10,11 +10,7 @@
 const Future = require('./_future');
 
 /*~
- * Objects for working with eventual values.
- * 
- * ---
- * name: module folktale/data/future
- * category: Asynchronous Concurrency
+ * stability: experimental
  */
 module.exports = {
   of: Future.of,

@@ -8,9 +8,7 @@
 //----------------------------------------------------------------------
 
 /*~
- * ---
- * category  : Transforming
- * stability : stable
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  *
@@ -34,9 +32,7 @@ const mapValues = (object, transformation) => {
 // --[ Convenience ]---------------------------------------------------
 
 /*~
- * ---
- * category  : Convenience
- * stability : experimental
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  * 

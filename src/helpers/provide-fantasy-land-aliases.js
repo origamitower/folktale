@@ -11,9 +11,6 @@
 const aliases = {
   equals: {
     /*~
-     * Fantasy Land's Setoid `equals'.
-     * ---
-     * category: Fantasy Land
      * type: |
      *   ('S 'a).('S 'a) => Boolean
      *   where 'S is Setoid
@@ -25,9 +22,6 @@ const aliases = {
 
   concat: {
     /*~
-     * Fantasy Land's Semigroup `concat`.
-     * ---
-     * category: Fantasy Land
      * type: |
      *   ('S 'a).('S 'a) => 'S 'a
      *   where 'S is Semigroup
@@ -39,9 +33,6 @@ const aliases = {
 
   empty: {
     /*~
-     * Fnatasy Land's Monoid `empty`.
-     * ---
-     * category: Fantasy Land
      * type: |
      *   ('M).() => 'M a
      *   where 'M is Monoid
@@ -53,9 +44,6 @@ const aliases = {
 
   map: {
     /*~
-     * Fantasy Land's Functor `map`.
-     * ---
-     * category: Fantasy Land
      * type: |
      *   ('F 'a).(('a) => 'b) => 'F 'b
      *   where 'F is Functor
@@ -67,9 +55,6 @@ const aliases = {
 
   apply: {
     /*~
-     * Fantasy Land's Apply `ap`
-     * ---
-     * category: Fantasy Land
      * type: |
      *   ('F ('a) => b).('F 'a) => 'F 'b
      *   where 'F is Apply
@@ -79,9 +64,6 @@ const aliases = {
     },
 
     /*~
-     * Fantasy Land's Apply `ap`
-     * ---
-     * category: Fantasy Land
      * type: |
      *   ('F 'a).('F ('a) => 'b) => 'F 'b
      *   where 'F is Apply
@@ -93,9 +75,6 @@ const aliases = {
 
   of: {
     /*~
-     * Fantasy Land's Applicative `of`
-     * ---
-     * category: Fantasy Land
      * type: |
      *   forall F, a:
      *     (F).(a) => F a
@@ -108,9 +87,6 @@ const aliases = {
 
   reduce: {
     /*~
-     * Fantasy Land’s Foldable `reduce`.
-     * ---
-     * category: Fantasy Land
      * type: |
      *   forall F, a, b:
      *     (F a).((b, a) => b, b) => b
@@ -123,9 +99,6 @@ const aliases = {
 
   traverse: {
     /*~
-     * Fantasy Land’s Traversable `traverse`.
-     * ---
-     * category: Fantasy Land
      * type: |
      *   forall F, T, a, b:
      *     (T a).((a) => F b, (c) => F c) => F (T b)
@@ -138,9 +111,6 @@ const aliases = {
 
   chain: {
     /*~
-     * Fantasy Land’s Chain `chain`.
-     * ---
-     * category: Fantasy Land
      * type: |
      *   forall M, a, b:
      *     (M a).((a) => M b) => M b
@@ -153,9 +123,6 @@ const aliases = {
 
   chainRecursively: {
     /*~
-     * Fantasy Land’s ChainRec `chainRec`.
-     * ---
-     * category: Fantasy Land
      * type: |
      *   forall M, a, b, c:
      *     (M).(
@@ -169,9 +136,6 @@ const aliases = {
     },
 
     /*~
-     * Fantasy Land’s ChainRec `chainRec`.
-     * ---
-     * category: Fantasy Land
      * type: |
      *   forall M, a, b, c:
      *     (M).(
@@ -187,9 +151,6 @@ const aliases = {
 
   extend: {
     /*~
-     * Fantasy Land’s Extend `extend`
-     * ---
-     * category: Fantasy Land
      * type: |
      *   forall W, a, b:
      *     (W a).((W a) => b) => W b
@@ -202,9 +163,6 @@ const aliases = {
 
   extract: {
     /*~
-     * Fantasy Land’s Comonad `extract`
-     * ---
-     * category: Fantasy Land
      * type: |
      *   forall W, a, b:
      *     (W a).() => a
@@ -217,9 +175,6 @@ const aliases = {
 
   bimap: {
     /*~
-     * Fantasy Land’s Bifunctor `bimap`
-     * ---
-     * category: Fantasy Land
      * type: |
      *   forall F, a, b, c, d:
      *     (F a b).((a) => c, (b) => d) => F c d
@@ -232,9 +187,6 @@ const aliases = {
 
   promap: {
     /*~
-     * Fantasy Land’s Profunctor `promap`
-     * ---
-     * category: Fantasy Land
      * type: |
      *   forall P, a, b, c, d:
      *     (P a b).((c) => a, (b) => d) => P c d

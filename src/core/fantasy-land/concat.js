@@ -17,8 +17,6 @@ const isOldSemigroup = (a) => typeof a.concat === 'function';
 
 
 /*~
- * ---
- * category: Fantasy Land
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -36,8 +34,6 @@ const concat = (semigroupLeft, semigroupRight) =>
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -54,8 +50,6 @@ concat.curried = curry(2, (semigroupRight, semigroupLeft) =>    // eslint-disabl
 
 
 /*~
- * ---
- * category: Convenience
  * stability: experimental
  * authors:
  *   - Quildreen Motta

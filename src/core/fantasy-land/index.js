@@ -8,9 +8,6 @@
 //----------------------------------------------------------------------
 
 /*~
- * ---
- * name: module folktale/core/fantasy-land
- * category: Fantasy Land
  * stability: experimental
  */
 module.exports = {

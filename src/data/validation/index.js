@@ -7,12 +7,11 @@
 //
 //----------------------------------------------------------------------
 
+/*~ stability: experimental */
 module.exports = {
   ...require('./validation'),
 
   /*~
-   * ---
-   * category: Converting from other types
    * type: |
    *   forall a: (a or None) => Validation None a
    */
@@ -21,7 +20,6 @@ module.exports = {
   },
 
   /*~
-   * category: Converting from other types
    * type: |
    *   forall a, b: (Result a b) => Validation a b
    */
@@ -30,7 +28,6 @@ module.exports = {
   },
 
   /*~
-   * category: Converting from other types
    * type: |
    *   forall a, b: (Maybe b, a) => Validation a b
    */

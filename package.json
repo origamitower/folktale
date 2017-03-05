@@ -74,10 +74,15 @@
     "metamagical-interface": "^3.4.0",
     "metamagical-repl": "0.3.x"
   },
-  "meta:magical": {
-    "copyright": "(c) 2015-2016 Quildreen Motta, and CONTRIBUTORS",
-    "maintainers": [
-      "Quildreen Motta <queen@robotlolita.me> (http://robotlolita.me/)"
-    ]
+  "metamagical": {
+    "modulePath": {
+      "ignorePrefix": "src/"
+    },
+    "commonMetadata": {
+      "copyright": "(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS",
+      "maintainers": [
+        "Quildreen Motta <queen@robotlolita.me> (http://robotlolita.me/)"
+      ]
+    }
   }
 }

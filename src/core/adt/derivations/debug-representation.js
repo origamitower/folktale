@@ -13,9 +13,6 @@ const { tagSymbol, typeSymbol } = require('./data');
 
 // --[ Helpers ]--------------------------------------------------------
 /*~
- * Returns a string representing `key: value` pairs separated by
- * commas.
- * ---
  * type: (Object Any) => String
  */
 const objectToKeyValuePairs = (object) =>
@@ -24,8 +21,6 @@ const objectToKeyValuePairs = (object) =>
         .join(', ');
 
 /*~
- * Returns a presentation of a plain object.
- * ---
  * type: (Object Any).() => String
  */
 const plainObjectToString = function() {
@@ -33,8 +28,6 @@ const plainObjectToString = function() {
 };
 
 /*~
- * Returns a representation of an array.
- * ---
  * type: (Array Any).() => String
  */
 const arrayToString = function() {
@@ -42,29 +35,21 @@ const arrayToString = function() {
 };
 
 /*~
- * Returns a representation of a function's name.
- * ---
  * type: (Function) => String
  */
 const functionNameToString = (fn) => fn.name !== '' ? `: ${fn.name}` : '';
 
 /*~
- * Returns a representation of a function.
- * ---
  * type: (Function) => String
  */
 const functionToString = (fn) => `[Function${functionNameToString(fn)}]`;
 
 /*~
- * Returns a representation of a null value.
- * ---
  * type: () => String
  */
 const nullToString = () => 'null';
 
 /*~
- * Returns a representation of any JS object.
- * ---
  * type: (Null | Object Any) => String
  */
 const objectToString = (object) =>
@@ -75,8 +60,6 @@ const objectToString = (object) =>
 
 
 /*~
- * Returns a representation of any JS value.
- * ---
  * type: (Any) => String
  */
 const showValue = (value) =>
@@ -89,8 +72,6 @@ const showValue = (value) =>
 // --[ Implementation ]------------------------------------------------
 
 /*~
- * ---
- * category: Derivation
  * stability: experimental
  * authors:
  *   - "@boris-marinov"
@@ -98,7 +79,7 @@ const showValue = (value) =>
  * type: |
  *   (Variant, ADT) => Void
  */
-const show = (variant, adt) => {  // eslint-disable-line max-statements
+const debugRepresentation = (variant, adt) => {  // eslint-disable-line max-statements
   const typeName    = adt[typeSymbol];
   const variantName = `${adt[typeSymbol]}.${variant.prototype[tagSymbol]}`;
 
@@ -108,9 +89,6 @@ const show = (variant, adt) => {  // eslint-disable-line max-statements
 
   // (regular JavaScript representations)
   /*~
-   * Returns a textual representation of the ADT.
-   * ---
-   * category: Debug Representation
    * stability: experimental
    * authors:
    *   - "@boris-marinov"
@@ -121,9 +99,6 @@ const show = (variant, adt) => {  // eslint-disable-line max-statements
   adt.toString = () => typeName;
 
   /*~
-   * Returns a textual representation of the Variant.
-   * ---
-   * category: Debug Representation
    * stability: experimental
    * authors:
    *   - "@boris-marinov"
@@ -134,9 +109,6 @@ const show = (variant, adt) => {  // eslint-disable-line max-statements
   variant.toString = () => variantName;
 
   /*~
-   * Returns a textual representation of the ADT instance.
-   * ---
-   * category: Debug Representation
    * stability: experimental
    * authors:
    *   - "@boris-marinov"
@@ -157,4 +129,4 @@ const show = (variant, adt) => {  // eslint-disable-line max-statements
 };
 
 // --[ Exports ]-------------------------------------------------------
-module.exports = show;
+module.exports = debugRepresentation;

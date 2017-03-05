@@ -9,8 +9,6 @@
 
 
 /*~
- * ---
- * category  : Combining
  * stability : stable
  * authors:
  *   - Quildreen Motta
