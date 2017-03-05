@@ -194,6 +194,26 @@ adtMethods(Maybe, {
       warnDeprecation('`.cata(pattern)` is deprecated. Use `.matchWith(pattern)` instead.');
       return pattern.Just(this.value);
     }
+  },
+
+  /*~
+   * type: |
+   *   forall a, b: (Maybe a).(() => b, (a) => b) => b
+   */
+  fold: {
+    /*~*/
+    Nothing: function(transformNothing, transformJust) {
+      assertFunction('Maybe.Nothing#fold', transformNothing);
+      assertFunction('Maybe.Nothing#fold', transformJust);
+      return transformNothing();
+    },
+
+    /*~*/
+    Just: function(transformNothing, transformJust) {
+      assertFunction('Maybe.Just#fold', transformNothing);
+      assertFunction('Maybe.Just#fold', transformJust);
+      return transformJust(this.value);
+    }
   }
 });
 
