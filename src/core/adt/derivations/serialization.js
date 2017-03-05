@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------
 
 // --[ Dependencies ]---------------------------------------------------
-const { tagSymbol, typeSymbol } = require('./data');
+const { tagSymbol, typeSymbol } = require('../data');
 const mapValues = require('folktale/core/object/map-values');
 const values = require('folktale/core/object/values');
 

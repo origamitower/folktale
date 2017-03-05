@@ -8,7 +8,9 @@
 //----------------------------------------------------------------------
 
 // --[ Dependencies ]--------------------------------------------------
-const { data, show, setoid } = require('folktale/core/adt');
+const { data, derivations } = require('folktale/core/adt');
+
+const { equality, debugRepresentation } = derivations;
 
 
 // --[ Implementation ]------------------------------------------------
@@ -34,7 +36,7 @@ const ExecutionState = data('folktale:ExecutionState', {
   Rejected(reason) {
     return { reason };
   }
-}).derive(show, setoid);
+}).derive(equality, debugRepresentation);
 
 
 // --[ Exports ]-------------------------------------------------------

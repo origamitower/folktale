@@ -182,24 +182,24 @@ without its drawbacks, however, as now `join` has to be called as
 >
 > See `folktale/core/lambda/curry` for details.
 
-Another way to work around this problem is by using the `partialise`
+Another way to work around this problem is by using the `partialize`
 function provided by Folktale. This function creates a new function
 that specifies only parts of the argument for the original function::
 
-    const partialise = require('folktale/core/lambda/partialise');
-    const _          = partialise.hole;
+    const partialize = require('folktale/core/lambda/partialize');
+    const _          = partialize.hole;
 
     const upcase3 = (name) => name.toUpperCase();
-    const map3    = partialise(2, (transform, items) => items.map(transform));
-    const join3   = partialise(2, (separator, items) => items.join(separator));
+    const map3    = partialize(2, (transform, items) => items.map(transform));
+    const join3   = partialize(2, (separator, items) => items.join(separator));
 
     const showNames3 = compose(
       join3(', ', _),
       map3(upcase, _)
     );
 
-See `folktale/core/lambda/partialise` for more information on how the
-`partialise` function works.
+See `folktale/core/lambda/partialize` for more information on how the
+`partialize` function works.
 
 
 ## Composing More Than Two Functions

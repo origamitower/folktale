@@ -13,7 +13,7 @@ const flEquals = require('folktale/core/fantasy-land/equals');
 const fl = require('folktale/helpers/fantasy-land');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const copyDocs = require('folktale/helpers/copy-documentation');
-const { tagSymbol, typeSymbol } = require('./data');
+const { tagSymbol, typeSymbol } = require('../data');
 
 
 // --[ Helpers ]--------------------------------------------------------

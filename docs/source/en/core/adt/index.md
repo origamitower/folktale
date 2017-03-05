@@ -32,11 +32,11 @@ goal::
 Tagged unions constructed by this module allow one to easily bestow
 common functionality in them through the `derive` function. For example,
 one could add the concept of equality to the `Maybe` data structure
-constructed previously by using the `Setoid` derivation, which is also
+constructed previously by using the `Equality` derivation, which is also
 provided by this module::
 
-    const Setoid = require('folktale/core/adt/setoid');
-    Maybe.derive(Setoid);
+    const Equality = require('folktale/core/adt/derivations/equality');
+    Maybe.derive(Equality);
 
     Maybe.Some(1).equals(Maybe.Some(1)); // ==> true
     Maybe.Some(2).equals(Maybe.Some(1)); // ==> false

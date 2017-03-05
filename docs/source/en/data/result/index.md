@@ -13,13 +13,16 @@ an `Error(value)`, which contains an error.
 ## Example::
 
     const Result = require('folktale/data/result');
-    const { data, setoid, show } = require('folktale/core/adt');
+    const { data, derivations } = require('folktale/core/adt');
     
     const DivisionErrors = data('division-errors', {
       DivisionByZero(dividend) {
         return { dividend };
       }
-    }).derive(setoid, show);
+    }).derive(
+      derivations.equality,
+      derivations.debugRepresentation
+    );
     
     const { DivisionByZero } = DivisionErrors;
     
@@ -59,7 +62,7 @@ preference has to be provided, but any other info is optional::
     const isValidPhone = (phone) => /^\d+$/.test(phone);
 
     // Objects representing each possible failure in the validation
-    const { data, setoid } = require('folktale/core/adt');
+    const { data, derivations } = require('folktale/core/adt');
     
     const ValidationErrors = data('validation-errors', {
       Required(field) {
@@ -81,7 +84,7 @@ preference has to be provided, but any other info is optional::
       Optional(error) {
         return { error };
       }
-    }).derive(setoid);
+    }).derive(derivations.equality);
     
     const { 
       Required, 
@@ -632,7 +635,7 @@ changing the context of the computation. That is, `Error` values continue to be
     // ==> Result.Ok(2)
     
     Result.Error(1).map(increment);
-    // ==> Result.Error(2)
+    // ==> Result.Error(1)
     
     
 @annotate: folktale.data.result.Error.prototype.apply
@@ -683,8 +686,8 @@ result of the method.
     const Result = require('folktale/data/result');
     
     const divideBy = (a) => (b) =>
-      b === 0        ?  Result.Error('division by zero')
-    : /* otherwise */   Result.Ok(a / b);
+      a === 0        ?  Result.Error('division by zero')
+    : /* otherwise */   Result.Ok(b / a);
     
 
     Result.Ok(4).chain(divideBy(2));
@@ -776,7 +779,7 @@ value.
     const Result = require('folktale/data/result');
     
     Result.Ok(4).orElse(error => Result.Ok(error + 1));
-    // ==> Result.Ok(2)
+    // ==> Result.Ok(4)
     
     Result.Error(4).orElse(error => Result.Ok(error + 1));
     // ==> Result.Ok(5)

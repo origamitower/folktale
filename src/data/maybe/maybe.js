@@ -9,11 +9,13 @@
 
 const assertType = require('folktale/helpers/assert-type');
 const assertFunction = require('folktale/helpers/assert-function');
-const { data, show, setoid, serialize } = require('folktale/core/adt');
+const { data, derivations } = require('folktale/core/adt');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const warnDeprecation = require('folktale/helpers/warn-deprecation');
 const adtMethods = require('folktale/helpers/define-adt-methods');
 const extend = require('folktale/helpers/extend');
+
+const { equality, debugRepresentation, serialization } = derivations;
 
 
 /*~ stability: unstable */
@@ -32,7 +34,7 @@ const Maybe = data('folktale:Data.Maybe', {
   Just(value) {
     return { value };
   }
-}).derive(setoid, show, serialize);
+}).derive(equality, debugRepresentation, serialization);
 
 
 const { Nothing, Just } = Maybe;

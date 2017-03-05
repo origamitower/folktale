@@ -1,8 +1,8 @@
-@annotate: folktale.core.adt.serialize
+@annotate: folktale.core.adt.derivations.serialize
 ---
 Provides JSON serialisation and parsing for ADTs.
 
-The `serialize` derivation bestows `.toJSON()` and `.fromJSON(value)`
+The `serialization` derivation bestows `.toJSON()` and `.fromJSON(value)`
 upon ADTs constructed by Core.ADT. Both serialisation and parsing
 are recursive, and `.fromJSON` can automatically reify values of
 other types.
@@ -10,10 +10,13 @@ other types.
 
 ## Example::
 
-    const { data, setoid, serialize } = require('folktale/core/adt');
+    const { data, derivations } = require('folktale/core/adt');
     const Id = data('Id', {
       Id(value){ return { value } }
-    }).derive(serialize, setoid);
+    }).derive(
+      derivations.serialization,
+      derivations.equality
+    );
 
     Id.Id(1).toJSON();
     // ==> { '@@type': 'Id', '@@tag': 'Id', '@@value': { value: 1 } }
@@ -28,11 +31,11 @@ This derivation provides JSON serialisation through the `.toJSON` method,
 which converts rich ADTs into objects that can be safely serialised as
 JSON. For example::
 
-    const { data, serialize } = require('folktale/core/adt');
+    const { data, derivations } = require('folktale/core/adt');
     
     const { Id } = data('Id', {
       Id(value){ return { value } }
-    }).derive(serialize);
+    }).derive(derivations.serialization);
 
     Id(1).toJSON();
     // ==> { '@@type': 'Id', '@@tag': 'Id', '@@value': { value: 1 } }
@@ -60,11 +63,14 @@ The reverse process of serialisation is parsing, and the `.fromJSON` method
 provided by this derivation is able to reconstruct the proper ADT from
 serialised data::
 
-    const { data, setoid, serialize } = require('folktale/core/adt');
+    const { data, derivations } = require('folktale/core/adt');
     
     const Id = data('Id', {
       Id(value){ return { value } }
-    }).derive(serialize, setoid);
+    }).derive(
+      derivations.serialization,
+      derivations.equality
+    );
 
     const json = Id.Id(1).toJSON();
     Id.fromJSON(json);
@@ -82,7 +88,10 @@ ADT takes a list of parsers as argument::
 
     const A = data('A', { 
       A(value) { return { value } }
-    }).derive(serialize, setoid);
+    }).derive(
+      derivations.serialization,
+      derivations.equality
+    );
 
     const B = data('B', {
       B(value) { return { value } }

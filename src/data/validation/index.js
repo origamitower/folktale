@@ -31,7 +31,7 @@ module.exports = {
    * type: |
    *   forall a, b: (Maybe b, a) => Validation a b
    */
-  fromMaybe(aMaybe) {
-    return require('folktale/data/conversions/maybe-to-validation')(aMaybe);
+  fromMaybe(aMaybe, fallbackValue) {
+    return require('folktale/data/conversions/maybe-to-validation')(aMaybe, fallbackValue);
   }
 };

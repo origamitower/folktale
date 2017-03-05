@@ -1,4 +1,4 @@
-@annotate: folktale.core.lambda.partialise
+@annotate: folktale.core.lambda.partialize
 throws:
   - TypeError: when the number of arguments given doesn't match the arity.
 ---
@@ -7,15 +7,15 @@ Creates a new function where some of the arguments are specified.
 
 ## Example::
 
-    const partialise = require('folktale/core/lambda/partialise');
+    const partialize = require('folktale/core/lambda/partialize');
 
     const clamp = (min, max, number) =>
       number < min ?  min
     : number > max ?  max
     :                 number;
 
-    const _      = partialise.hole;
-    const clamp_ = partialise(3, clamp);
+    const _      = partialize.hole;
+    const clamp_ = partialize(3, clamp);
 
     const atLeast = clamp_(_, Infinity, _);
     const atMost  = clamp_(-Infinity, _, _);
@@ -41,17 +41,17 @@ manually::
     // ==> [6, 7, 8]
 
 And for most cases this is reasonable. For functions that take more
-parameters, this can be cumbersome, however. The `partialise` function
+parameters, this can be cumbersome, however. The `partialize` function
 allows creating a new function by specialising some of the arguments,
 and filling the remaining ones when the function is called.
 
 Places where the caller of the function should fill are specified as
-`hole`, which is a special constant used by `partialise`::
+`hole`, which is a special constant used by `partialize`::
 
-    const partialise = require('folktale/core/lambda/partialise');
+    const partialize = require('folktale/core/lambda/partialize');
 
-    const _ = partialise.hole;
-    const partialAdd5 = partialise(2, plus)(5, _);
+    const _ = partialize.hole;
+    const partialAdd5 = partialize(2, plus)(5, _);
     [1, 2, 3].map(partialAdd5);
     // ==> [6, 7, 8]
 
@@ -69,41 +69,41 @@ function expected by function you're calling. So, in essence, these
 techniques transform the shape of your function to make them "fit"
 some API.
 
-`partialise` and `curry` differ on how they achieve this, however.
+`partialize` and `curry` differ on how they achieve this, however.
 While `curry` creates N functions, and lets you specify arguments
-one by one, `partialise` requires you to specify all arguments at
+one by one, `partialize` requires you to specify all arguments at
 once, distinguishing which ones are fixed, and which ones have to
 be provided (using "holes").
 
 Because of this, `curry` can be more natural, but it requires that
 the APIs be designed thinking about currying before hand, and it
 often interacts poorly with JavaScript, due to the use of variadic
-functions. `partialise` does not have such problems.
+functions. `partialize` does not have such problems.
 
 
-## How `partialise` Works?
+## How `partialize` Works?
 
-The `partialise` function transforms regular functions into
+The `partialize` function transforms regular functions into
 functions that can accept holes for arguments that are not
 defined yet. Whenever a partial function receives a hole as
 an argument, it constructs a new function so the holes can
 be filled later::
 
-    const partialise = require('folktale/core/lambda/partialise');
+    const partialize = require('folktale/core/lambda/partialize');
 
     const clamp = (min, max, number) =>
       number < min ?  min
     : number > max ?  max
     :                 number
 
-    const partialClamp = partialise(3, clamp);
+    const partialClamp = partialize(3, clamp);
 
 In the example above, `partialClamp` is a function that takes
 arguments that may or may not be holes. A hole is a special
-constant defined by `partialise` itself. It's convenient to
+constant defined by `partialize` itself. It's convenient to
 bind such constant to the `_` binding::
 
-    const _ = partialise.hole;
+    const _ = partialize.hole;
 
 A partial function is considered saturated when, among the
 arguments provided to it, no hole exists. When a partial function
@@ -120,7 +120,7 @@ results in a new partial function::
     const atLeast5 = atLeast(5, _);
     atLeast5(3); // ==> 5
 
-Note that to prevent confusing behaviour, Folktale's `partialise`
+Note that to prevent confusing behaviour, Folktale's `partialize`
 forces you to always pass the exact number of arguments that the
 partial function expects. Passing more or less arguments to a
 partial function is a TypeError. This ensures that all new partial
@@ -128,16 +128,16 @@ functions can properly invoke the original behaviour when saturated,
 rather than returning previous unsaturated functions.
 
 
-## Drawbacks of Using `partialise`
+## Drawbacks of Using `partialize`
 
-`partialise` is a convenience function for transforming the shape
+`partialize` is a convenience function for transforming the shape
 of functions, and it relies on variadic application, as well as
 doing a fair bit of processing before each call to determine
-saturation. Combined, these make `partialise` a poor choice for
+saturation. Combined, these make `partialize` a poor choice for
 any code that needs to be performant.
 
 
-@annotate: folktale.core.lambda.partialise.hole
+@annotate: folktale.core.lambda.partialize.hole
 ---
 Represents a place in an argument list that needs to be filled.
 

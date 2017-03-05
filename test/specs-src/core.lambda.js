@@ -83,34 +83,34 @@ describe('Core.Lambda', () => {
     });
   });
 
-  describe('partialise(arity, f)', () => {
+  describe('partialize(arity, f)', () => {
     const f = (a, b, c) => a - b - c;
-    const $ = _.partialise.hole;
+    const $ = _.partialize.hole;
 
     it('invoking with the less arguments than the arity is an error', () => {
-      assert.throws(_ => { _.partialise(3, f)(1, 2) });
+      assert.throws(_ => { _.partialize(3, f)(1, 2) });
     });
 
     property('providing a hole creates a new partially specified function', 'nat', 'nat', 'nat', (a, b, c) =>
-       _.partialise(3, f)($, b, c)(a) === f(a, b, c)
-    && _.partialise(3, f)(a, $, c)(b) === f(a, b, c)
-    && _.partialise(3, f)(a, b, $)(c) === f(a, b, c)
+       _.partialize(3, f)($, b, c)(a) === f(a, b, c)
+    && _.partialize(3, f)(a, $, c)(b) === f(a, b, c)
+    && _.partialize(3, f)(a, b, $)(c) === f(a, b, c)
     );
 
     property('multiple holes may be provided', 'nat', 'nat', 'nat', (a, b, c) =>
-       _.partialise(3, f)($, $, c)(a, b) === f(a, b, c)
-    && _.partialise(3, f)(a, $, $)(b, c) === f(a, b, c)
-    && _.partialise(3, f)($, b, $)(a, c) === f(a, b, c)
+       _.partialize(3, f)($, $, c)(a, b) === f(a, b, c)
+    && _.partialize(3, f)(a, $, $)(b, c) === f(a, b, c)
+    && _.partialize(3, f)($, b, $)(a, c) === f(a, b, c)
     );
 
-    property('returned partial functions are partialised themselves', 'nat', 'nat', 'nat', (a, b, c) =>
-       _.partialise(3, f)($, $, c)($, b)(a) === f(a, b, c)
-    && _.partialise(3, f)(a, $, $)($, c)(b) === f(a, b, c)
-    && _.partialise(3, f)($, b, $)(a, $)(c) === f(a, b, c)
+    property('returned partial functions are partialized themselves', 'nat', 'nat', 'nat', (a, b, c) =>
+       _.partialize(3, f)($, $, c)($, b)(a) === f(a, b, c)
+    && _.partialize(3, f)(a, $, $)($, c)(b) === f(a, b, c)
+    && _.partialize(3, f)($, b, $)(a, $)(c) === f(a, b, c)
     );
 
     property('all arguments may be holes, which doen’t change the function', 'nat', 'nat', 'nat', (a, b, c) =>
-      _.partialise(3, f)($, $, $)(a, b, c) === f(a, b, c)
+      _.partialize(3, f)($, $, $)(a, b, c) === f(a, b, c)
     );
   });
 });
