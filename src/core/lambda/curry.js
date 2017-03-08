@@ -15,7 +15,8 @@
  * type: |
  *   (Number, (Any...) => 'a) => Any... => 'a or ((Any...) => 'a)
  */
-const curry = (arity, fn) => {
+const curry = (fn) => {
+  const arity = fn.length;
   const curried = (oldArgs) => (...newArgs) => {
     const allArgs  = oldArgs.concat(newArgs);
     const argCount = allArgs.length;
