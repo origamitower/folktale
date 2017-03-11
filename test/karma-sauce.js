@@ -24,7 +24,6 @@ module.exports = function(config) {
     [`sl_mob_${platform}_${v}`]: merge({
       base: 'SauceLabs',
       browserName: browser,
-      appiumVersion: '1.5.3',
       platformName: platform,
       platformVersion: v,
       deviceOrientation: 'portrait'
@@ -33,26 +32,28 @@ module.exports = function(config) {
 
   const customLaunchers = merge(
     // Desktop browsers
-    browser('Linux', 'chrome', [36, 42, 48]),
-    browser('Linux', 'firefox', [21, 33, 45]),
-    browser('OS X 10.8', 'safari', [6]),
-    browser('OS X 10.9', 'safari', [7]),
-    browser('OS X 10.10', 'safari', [8]),
-    browser('OS X 10.11', 'safari', [9]),
-    browser('Windows 7', 'opera', [12.12]),
-    browser('Windows 7', 'internet explorer', [9, 10, 11]),
-    browser('Windows 10', 'MicrosoftEdge', [13]),
+    browser('Linux', 'chrome', ['36', 'latest-2', 'latest']),
+    browser('Linux', 'firefox', ['21', 'latest-2', 'latest']),
+    browser('OS X 10.8', 'safari', ['6']),
+    browser('OS X 10.9', 'safari', ['7']),
+    browser('OS X 10.10', 'safari', ['8']),
+    browser('OS X 10.11', 'safari', ['9']),
+    browser('Windows 7', 'opera', ['12.12']),
+    browser('Windows 7', 'internet explorer', ['9', '10', '11']),
+    browser('Windows 10', 'MicrosoftEdge', ['13']),
 
     // Mobile browsers
-    mobile('Android', 'Browser', [4.4, 5, 5.1], {
+    mobile('Android', 'Browser', ['4.4', '5', '5.1'], {
       deviceName: 'Android Emulator',
       deviceType: 'phone',
-      deviceOrientation: 'portrait'
+      deviceOrientation: 'portrait',
+      appiumVersion: '1.5.3'
     }),
 
-    mobile('iOS', 'Safari', [7, 8.1, 9.3], {
+    mobile('iOS', 'Safari', ['8.4', '9.3', '10.2'], {
       deviceOrientation: 'portrait',
-      deviceName: 'iPhone Simulator'
+      deviceName: 'iPhone Simulator',
+      appiumVersion: '1.6.3'
     })
   );
 
@@ -97,7 +98,8 @@ module.exports = function(config) {
 
 
     sauceLabs: {
-        testName: `Folktale v${pkg.version}`
+        testName: `Folktale v${pkg.version}`,
+        build: pkg.version
     },
     customLaunchers: customLaunchers,
     browsers: Object.keys(customLaunchers),
@@ -106,7 +108,7 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: 1,
+    concurrency: 3,
 
     browserDiconnectTimeout: 60000,
     browserNoActivityTimeout: 180000
