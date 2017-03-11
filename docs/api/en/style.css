@@ -578,3 +578,39 @@ pre code[class*="language-"] {
   margin-left: 5px;
   font-variant: small-caps;
 }
+#header .navigation {
+  float: right;
+  font-size: 80%;
+  list-style: none;
+  margin: 0;
+}
+#header .navigation-item {
+  display: inline-block;
+  margin: 0 0 0 0.2em;
+  padding: 0 0.5em;
+  border-bottom: 0px solid #2c3e50;
+}
+#header .navigation-item:hover {
+  border-bottom-width: 5px;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  -ms-transition: none;
+  transition: none;
+}
+#header .navigation-item:hover a {
+  color: #fff;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  -ms-transition: none;
+  transition: none;
+}
+#header .navigation-item,
+#header a {
+  -webkit-transition: all 0.25s ease-out;
+  -moz-transition: all 0.25s ease-out;
+  -o-transition: all 0.25s ease-out;
+  -ms-transition: all 0.25s ease-out;
+  transition: all 0.25s ease-out;
+}
