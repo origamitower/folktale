@@ -35,6 +35,10 @@ Folktale can be installed through [npm][]:
 
   - Node 4.x, Node 6+ ([**Node 5.x is not supported**](https://github.com/origamitower/folktale/issues/47))
 
+The following table summarises tests executed on each supported Browser platform for the current version:
+
+[![Build Status](https://saucelabs.com/browser-matrix/robotlolita.svg)](https://saucelabs.com/u/robotlolita)
+
 **Browsers**:
   - Chrome 23+
   - Firefox 21+
