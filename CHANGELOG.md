@@ -15,6 +15,9 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 
 ---
 
+## [Unreleased]
+
+
 ## [2.0.0-alpha3] - 2017-03-11
 
 ### New features
