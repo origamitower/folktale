@@ -37,11 +37,6 @@ Folktale can be installed through [npm][]:
 
 
 **Browsers**:
-
-The following table summarises tests executed on each supported Browser platform for the current version:
-
-[![Build Status](https://saucelabs.com/browser-matrix/robotlolita.svg)](https://saucelabs.com/u/robotlolita)
-
   - Chrome 23+
   - Firefox 21+
   - Safari 6+
@@ -52,6 +47,11 @@ The following table summarises tests executed on each supported Browser platform
 **Mobile browsers**:
   - Android 4.4+
   - iOS 7+
+
+
+The following table summarises tests executed on each supported Browser platform for the current version:
+
+[![Build Status](https://saucelabs.com/browser-matrix/robotlolita.svg)](https://saucelabs.com/u/robotlolita)
 
 
 ## Support
