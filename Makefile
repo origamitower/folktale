@@ -137,5 +137,6 @@ publish: clean lint
 	git push --tags
 	git push origin "publish/$(VERSION)"
 	$(MAKE) _bundle
-	zip -r "folktale-$(VERSION).zip" package.json README.md LICENCE FAQ.md CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md CONTRIBUTORS test docs/index.html docs/prism.css docs/prism.js docs/style.css docs/api/ index.js helpers/ data/ core/ dist/
+	mkdir -p releases
+	zip -r "releases/folktale-$(VERSION).zip" package.json README.md LICENCE FAQ.md CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md CONTRIBUTORS test docs/index.html docs/prism.css docs/prism.js docs/style.css docs/api/ index.js helpers/ data/ core/ dist/
 	npm publish
