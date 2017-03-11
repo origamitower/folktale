@@ -109,10 +109,11 @@ describe('Data.Result', function() {
   });
   describe('Conversions', () => {
     property('Error#fromNullable', () => {
-      return _.fromNullable(null).equals(_.Error(null));
+      return _.fromNullable(null).equals(_.Error(null))
+      &&     _.fromNullable(undefined).equals(_.Error(undefined));
     });
 
-    property('Ok#fromNullable', 'json', (a) => {
+    property('Ok#fromNullable', 'number | string | bool | dict nat | array nat', (a) => {
       return _.fromNullable(a).equals(_.Ok(a));
     });
     property('Result#fromValidation', 'json', (a) => {

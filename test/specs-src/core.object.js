@@ -17,7 +17,7 @@ const uniq = (xs) => [...new Set(xs)];
 
 describe('Core.Object', () => {
   describe('toPairs(o)', () => {
-    property('returns (key, value) pairs in the object', 'json', (a) =>
+    property('returns (key, value) pairs in the object', 'dict nat', (a) =>
       _.toPairs(a).every(([k, v]) => a[k] === v)
     );
 

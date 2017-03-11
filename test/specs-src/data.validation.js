@@ -140,9 +140,10 @@ describe('Data.Validation', () => {
   describe('Conversions', () => {
     property('Failure#fromNullable', () => {
         return _.fromNullable(null).equals(_.Failure(null))
+        &&     _.fromNullable(undefined).equals(_.Failure(undefined));
     });
 
-    property('Success#fromNullable', 'json', (a) => {
+    property('Success#fromNullable', 'number | string | bool | dict nat | array nat', (a) => {
         return _.fromNullable(a).equals(_.Success(a))
     }); 
     property('Validation#fromResult', 'json', (a) => {
