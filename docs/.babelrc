@@ -5,7 +5,7 @@
     "transform-object-rest-spread",
     "transform-assertion-comments",
     ["babel-plugin-module-alias", [
-      { "src": "./", "expose": "folktale" }
+      { "src": "./annotated", "expose": "folktale" }
     ]]
   ]
 }

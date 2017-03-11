@@ -35,7 +35,9 @@ help:
 	@echo "  bundle ................. Generates a Browser bundle of Folktale."
 	@echo "  compile ................ Compiles the project."
 	@echo "  clean .................. Removes build artifacts."
-	@echo "  test ................... Runs the tests for the project."
+	@echo "  test ................... Runs unit tests for the project."
+	@echo "  test-documentation ..... Tests the documentation examples in the project."
+	@echo "  test-all ............... Runs unit and documentation tests for the project."
 	@echo "  test-browser ........... Runs the tests in PhantomJS."
 	@echo "  test-sauce ............. Runs the tests in SauceLabs (requires sauceconnect + env vars)."
 	@echo "  lint ................... Lints all source files."
@@ -48,7 +50,10 @@ bundle:
 	$(uglify) --mangle - < dist/folktale.js > dist/folktale.min.js
 
 compile:
-	$(babel) src --source-map inline --out-dir .
+	DISABLE_MM_COMMENTS=true $(babel) src --source-map inline --out-dir .
+
+compile-annotated:
+	$(babel) src --source-map inline --out-dir annotated
 
 compile-test:
 	$(babel) test/specs-src --source-map inline --out-dir test/specs
@@ -58,35 +63,37 @@ compile-test:
 compile-documentation: $(DOCS_TGT)
 
 clean:
-	rm -rf core helpers data test/specs test/helpers index.js docs/build
+	rm -rf core helpers data test/specs test/helpers index.js docs/build annotated
 
-test: clean compile compile-test
+_prepare-test: clean compile compile-annotated compile-test
+
+test: _prepare-test
 	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd test/specs
 
-test-all: clean compile compile-test compile-documentation
+test-all: _prepare-test compile-documentation
 	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd test/specs
 
 test-minimal:
 	FOLKTALE_ASSERTIONS=none $(mocha) --require babel-polyfill --reporter dot --ui bdd test/specs
 
-test-documentation: clean compile compile-test compile-documentation
+test-documentation: _prepare-test compile-documentation
 	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd --grep "documentation examples" test/specs
 
-test-browser: compile compile-test
+test-browser: _prepare-test
 	$(karma) start test/karma-local.js
 
-test-sauce: compile compile-test
+test-sauce: _prepare-test
 	$(karma) start test/karma-sauce.js
 
 all-tests:
 	$(MAKE) test-all
 	$(karma) start test/karma-local.js
 
-documentation: compile compile-documentation
+documentation: compile-annotated compile-documentation
 	node tools/generate-docs.js en
 
 lint:
 	$(eslint) src/
 
 
-.PHONY: help bundle compile compile-test compile-documentation clean test lint documentation test-minimal test-documentation test-browser test-sauce all-tests
+.PHONY: help bundle compile compile-test compile-annotated compile-documentation clean test lint documentation test-minimal test-documentation test-browser test-sauce all-tests _prepare-test
