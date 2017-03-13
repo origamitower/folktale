@@ -7,7 +7,6 @@ Folktale
 [![NPM version](https://img.shields.io/npm/v/folktale.svg?style=flat-square)](https://npmjs.org/package/folktale)
 [![Dependencies status](https://img.shields.io/david/origamitower/folktale.svg?style=flat-square)](https://david-dm.org/origamitower/folktale)
 ![Licence](https://img.shields.io/npm/l/folktale.svg?style=flat-square&label=licence)
-![Stability: Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 
 Folktale is a standard library for functional programming in JavaScript.
