@@ -10,6 +10,7 @@
 
 /*~
  * stability: experimental
+ * name: module folktale/core/fantasy-land/curried
  */
 module.exports = {
   apply: require('./apply').curried,

@@ -1,4 +1,5 @@
 @annotate: folktale.core.object.values
+category: Extracting data
 ---
 Returns the values for all own enumerable properties in an object.
 

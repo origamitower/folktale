@@ -9,6 +9,7 @@
 
 /*~
  * stability: stable
+ * name: module folktale/core/object
  */
 module.exports = {
   mapEntries: require('./map-entries'),

@@ -1,4 +1,5 @@
 @annotate: folktale.core.object.fromPairs
+category: Converting from other types
 ---
 Constructs an object from an array of (key, value) pairs.
 

@@ -56,13 +56,14 @@ function defineVariants(typeId, patterns, adt) {
       // This is internal, and we don't want the user to be messing with this.
       [TAG]: name,
 
-      /*~~inheritsMeta: constructor */
+      /*~ ~inheritsMeta: constructor */
       get constructor() {
         return constructor;
       },
 
       /*~
        * ~belongsTo: constructor
+       * module: null
        * deprecated:
        *   version: 2.0.0
        *   replacedBy: .hasInstance(value)w
@@ -75,6 +76,7 @@ instead to check if a value belongs to the ADT variant.`);
       
       /*~
        * ~belongsTo: constructor
+       * module: null
        * type: |
        *   ('a is Variant).({ 'b: (Object Any) => 'c }) => 'c
        *   where 'b = 'a[`@@folktale:adt:tag]
@@ -95,26 +97,36 @@ instead to check if a value belongs to the ADT variant.`);
       // wrapper, which is what the user will interact with most of the time.
       [META]: constructor[META],
 
-      /*~~belongsTo: makeInstance */
+      /*~ 
+       * ~belongsTo: makeInstance 
+       * module: null
+       */
       get tag() {
         return name;
       },
 
-      /*~~belongsTo: makeInstance */
+      /*~ 
+       * ~belongsTo: makeInstance 
+       * module: null
+       */
       get type() {
         return typeId;
       },
 
-      /*~~belongsTo: makeInstance */
+      /*~ 
+       * ~belongsTo: makeInstance 
+       * module: null
+       */
       get constructor() {
         return constructor;
       },
 
-      /*~~belongsTo: makeInstance */
+      /*~ ~belongsTo: makeInstance */
       prototype: InternalConstructor.prototype,
 
       /*~
        * ~belongsTo: makeInstance
+       * module: null
        * type: |
        *   (Variant) => Boolean
        */
@@ -152,12 +164,14 @@ const data = (typeId, patterns) => {
 
     /*~
      * type: Array Variant
+     * module: null
      * ~belongsTo: ADTNamespace
      */
     variants: values(variants),
 
     /*~
      * ~belongsTo: ADTNamespace
+     * module: null
      * type: |
      *   ADT.(Variant) -> Boolean
      */
@@ -171,7 +185,7 @@ const data = (typeId, patterns) => {
 };
 
 
-/*~~belongsTo : data */
+/*~ ~belongsTo : data */
 const ADT = {
   /*~
    * type: |

@@ -1,4 +1,5 @@
 @annotate: folktale.core.lambda.curry
+category: Partialization / Currying
 seeAlso:
   - type: link
     title: Does Curry Help?

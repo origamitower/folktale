@@ -1,4 +1,5 @@
 @annotate: folktale.core
+category: Essential FP features
 ---
 Provides essential functionality for functional programs.
 

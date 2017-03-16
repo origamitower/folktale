@@ -9,6 +9,7 @@
 
 /*~
  * stability: stable
+ * name: module folktale/data/conversions
  */
 module.exports = {
   resultToValidation: require('./result-to-validation'),

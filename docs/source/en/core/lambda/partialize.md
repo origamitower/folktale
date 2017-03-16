@@ -1,4 +1,5 @@
 @annotate: folktale.core.lambda.partialize
+category: Partialization / Currying
 throws:
   - TypeError: when the number of arguments given doesn't match the arity.
 ---
@@ -138,6 +139,7 @@ any code that needs to be performant.
 
 
 @annotate: folktale.core.lambda.partialize.hole
+category: Special values
 ---
 Represents a place in an argument list that needs to be filled.
 

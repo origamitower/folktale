@@ -79,6 +79,7 @@ const createDerivation = (valuesEqual) => {
   const derivation = (variant, adt) => {
     /*~
      * stability: experimental
+     * module: null
      * authors:
      *   - "@boris-marinov"
      *   - Quildreen Motta

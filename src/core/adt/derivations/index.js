@@ -9,6 +9,7 @@
 
 /*~
  * stability: experimental
+ * name: module folktale/core/adt/derivations
  */
 module.exports = {
   serialization: require('./serialization'),

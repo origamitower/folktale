@@ -1,4 +1,5 @@
 @annotate: folktale.core.lambda.constant
+category: Functional combinators
 ---
 The constant combinator; always returns the first argument given.
 

@@ -7,12 +7,18 @@
 //
 //----------------------------------------------------------------------
 
+const Result = require('./result');
+
 
 /*~
- * stability: experimental
+ * stability: unstable
+ * name: module folktale/data/result
  */
 module.exports = {
-  ...require('./result'),
+  Error: Result.Error,
+  Ok: Result.Ok,
+  hasInstance: Result.hasInstance,
+  of: Result.of,
   try: require('./try'),
 
   /*~

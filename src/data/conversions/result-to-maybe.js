@@ -11,7 +11,7 @@ const { Just, Nothing } = require('folktale/data/maybe/maybe');
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *

@@ -11,7 +11,7 @@ const { Success, Failure } = require('folktale/data/validation/validation');
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  * 

@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------
 
 const Interface  = require('metamagical-interface');
-const Folktale   = require('../');
+const Folktale   = require('../annotated');
 const staticDocs = require('metamagical-static-docs');
 const glob       = require('glob').sync;
 
