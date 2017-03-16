@@ -90,6 +90,7 @@ const debugRepresentation = (variant, adt) => {  // eslint-disable-line max-stat
   // (regular JavaScript representations)
   /*~
    * stability: experimental
+   * module: null
    * authors:
    *   - "@boris-marinov"
    * 
@@ -100,6 +101,7 @@ const debugRepresentation = (variant, adt) => {  // eslint-disable-line max-stat
 
   /*~
    * stability: experimental
+   * mmodule: null
    * authors:
    *   - "@boris-marinov"
    * 
@@ -110,6 +112,7 @@ const debugRepresentation = (variant, adt) => {  // eslint-disable-line max-stat
 
   /*~
    * stability: experimental
+   * module: null
    * authors:
    *   - "@boris-marinov"
    * 

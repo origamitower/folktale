@@ -9,6 +9,7 @@
 
 /*~ 
  * stability: stable
+ * name: module folktale
  */
 module.exports = {
   core: require('./core'),

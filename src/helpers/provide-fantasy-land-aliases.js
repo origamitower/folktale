@@ -11,6 +11,7 @@
 const aliases = {
   equals: {
     /*~
+     * module: null
      * type: |
      *   ('S 'a).('S 'a) => Boolean
      *   where 'S is Setoid
@@ -22,6 +23,7 @@ const aliases = {
 
   concat: {
     /*~
+     * module: null
      * type: |
      *   ('S 'a).('S 'a) => 'S 'a
      *   where 'S is Semigroup
@@ -33,6 +35,7 @@ const aliases = {
 
   empty: {
     /*~
+     * module: null
      * type: |
      *   ('M).() => 'M a
      *   where 'M is Monoid
@@ -44,6 +47,7 @@ const aliases = {
 
   map: {
     /*~
+     * module: null
      * type: |
      *   ('F 'a).(('a) => 'b) => 'F 'b
      *   where 'F is Functor
@@ -55,6 +59,7 @@ const aliases = {
 
   apply: {
     /*~
+     * module: null
      * type: |
      *   ('F ('a) => b).('F 'a) => 'F 'b
      *   where 'F is Apply
@@ -64,6 +69,7 @@ const aliases = {
     },
 
     /*~
+     * module: null
      * type: |
      *   ('F 'a).('F ('a) => 'b) => 'F 'b
      *   where 'F is Apply
@@ -75,6 +81,7 @@ const aliases = {
 
   of: {
     /*~
+     * module: null
      * type: |
      *   forall F, a:
      *     (F).(a) => F a
@@ -87,6 +94,7 @@ const aliases = {
 
   reduce: {
     /*~
+     * module: null
      * type: |
      *   forall F, a, b:
      *     (F a).((b, a) => b, b) => b
@@ -99,6 +107,7 @@ const aliases = {
 
   traverse: {
     /*~
+     * module: null
      * type: |
      *   forall F, T, a, b:
      *     (T a).((a) => F b, (c) => F c) => F (T b)
@@ -111,6 +120,7 @@ const aliases = {
 
   chain: {
     /*~
+     * module: null
      * type: |
      *   forall M, a, b:
      *     (M a).((a) => M b) => M b
@@ -123,6 +133,7 @@ const aliases = {
 
   chainRecursively: {
     /*~
+     * module: null
      * type: |
      *   forall M, a, b, c:
      *     (M).(
@@ -136,6 +147,7 @@ const aliases = {
     },
 
     /*~
+     * module: null
      * type: |
      *   forall M, a, b, c:
      *     (M).(
@@ -151,6 +163,7 @@ const aliases = {
 
   extend: {
     /*~
+     * module: null
      * type: |
      *   forall W, a, b:
      *     (W a).((W a) => b) => W b
@@ -163,6 +176,7 @@ const aliases = {
 
   extract: {
     /*~
+     * module: null
      * type: |
      *   forall W, a, b:
      *     (W a).() => a
@@ -175,6 +189,7 @@ const aliases = {
 
   bimap: {
     /*~
+     * module: null
      * type: |
      *   forall F, a, b, c, d:
      *     (F a b).((a) => c, (b) => d) => F c d
@@ -187,6 +202,7 @@ const aliases = {
 
   promap: {
     /*~
+     * module: null
      * type: |
      *   forall P, a, b, c, d:
      *     (P a b).((c) => a, (b) => d) => P c d

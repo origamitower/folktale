@@ -3,6 +3,11 @@ seeAlso:
   - type  : link
     title : "Designing with types: Making illegal states unrepresentable"
     url   : http://fsharpforfunandprofit.com/posts/designing-with-types-making-illegal-states-unrepresentable/
+category: Data structures
+tags:
+  - algebraic data types
+  - union
+  - variants
 ---
 Constructs a tagged union data structure.
 
@@ -492,33 +497,3 @@ they could do so by using the `derive` functionality::
 
     Cons(1, Nil()).toJSON()
     // ==> { tag: "List:Cons", value: 1, rest: { "tag": "List:Nil" }}
-
-
-@annotate: folktale.core.adt.data.ADT
----
-The basis of all algebraic data types.
-
-ADT is used basically to share some methods for refining data structures
-created by this module, derivation being one of them.
-
-
-@annotate: folktale.core.adt.data.ADT.derive
----
-Allows a function to provide functionality to variants in an ADT.
-
-The `derive` method exists to support meta-programming on ADT objects,
-such that additional functionality (implementation of interfaces or
-protocols, for example) may be provided by libraries instead of having
-to be hand-coded by the user.
-
-The operation accepts many `derivation` functions, which will be invoked
-for each variant in the ADT, where a Variant is just an object with the
-following attributes:
-
-    interface Variant(Any...) -> 'a <: self.prototype {
-      tag         : String,
-      type        : Any,
-      constructor : Constructor,
-      prototype   : Object
-    }
-

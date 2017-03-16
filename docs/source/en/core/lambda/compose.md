@@ -1,4 +1,5 @@
 @annotate: folktale.core.lambda.compose
+category: Function composition
 ---
 Composes two functions.
 
@@ -278,6 +279,7 @@ Composition with the `all` convenience still happens from right to left.
 
 
 @annotate: folktale.core.lambda.compose.infix
+category: Convenience
 ---
 Conveniently composes function with the This-Binding syntax.
 
@@ -296,6 +298,7 @@ to be used with the [This-Binding Syntax][es-bind] proposal.
 
 
 @annotate: folktale.core.lambda.compose.all
+category: Convenience
 ---
 Conveniently composes multiple functions.
 

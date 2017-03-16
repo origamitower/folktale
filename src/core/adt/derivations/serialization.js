@@ -107,6 +107,7 @@ const serialization = (variant, adt) => {
 
   /*~
    * stability: experimental
+   * module: null
    * authors:
    *   - "@boris-marinov"
    * 
@@ -129,6 +130,7 @@ const serialization = (variant, adt) => {
 
   /*~
    * stability: experimental
+   * module: null
    * authors:
    *   - "@boris-marinov"
    * 

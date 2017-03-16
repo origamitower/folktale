@@ -56,6 +56,7 @@ extend(Just.prototype, {
 /*~~belongsTo: Maybe */
 adtMethods(Maybe, {
   /*~
+   * stability: stable
    * type: |
    *   forall a, b: (Maybe a).((a) => b) => Maybe b
    */
@@ -75,6 +76,7 @@ adtMethods(Maybe, {
 
 
   /*~
+   * stability: stable
    * type: |
    *   forall a, b: (Maybe (a) => b).(Maybe a) => Maybe b
    */
@@ -94,6 +96,7 @@ adtMethods(Maybe, {
 
 
   /*~
+   * stability: stable
    * type: |
    *   forall a, b: (Maybe a).((a) => Maybe b) => Maybe b
    */
@@ -220,6 +223,7 @@ adtMethods(Maybe, {
 
 Object.assign(Maybe, {
   /*~
+   * stability: stable
    * type: |
    *   forall a: (a) => Maybe a
    */
@@ -242,6 +246,7 @@ Object.assign(Maybe, {
 
 
   /*~
+   * stability: experimental
    * type: |
    *   forall a, b: (Maybe a).(b) => Result b a
    */
@@ -250,6 +255,7 @@ Object.assign(Maybe, {
   },
 
   /*~
+   * stability: experimental
    * type: |
    *   forall a, b: (Maybe a).(b) => Result b a
    */

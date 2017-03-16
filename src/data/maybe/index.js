@@ -7,16 +7,27 @@
 //
 //----------------------------------------------------------------------
 
+
+const Maybe = require('./maybe');
+
 /*~
  * stability: unstable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta
+ * 
+ * name: module folktale/data/maybe
  */
 module.exports = {
-  ...require('./maybe'),
+  Just: Maybe.Just,
+  Nothing: Maybe.Nothing,
+  hasInstance: Maybe.hasInstance,
+  of: Maybe.of,
+  fromJSON: Maybe.fromJSON,
+  ['fantasy-land/of']: Maybe['fantasy-land/of'],
 
   /*~
+   * stability: stable
    * type: |
    *   forall a: (a or void) => Maybe a
    */
@@ -25,6 +36,7 @@ module.exports = {
   },
 
   /*~
+   * stability: stable
    * type: |
    *   forall a, b: (Result a b) => Maybe b
    */
@@ -33,6 +45,7 @@ module.exports = {
   },
 
   /*~
+   * stability: stable
    * type: |
    *   forall a, b: (Validation a b) => Maybe b
    */

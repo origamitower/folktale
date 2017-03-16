@@ -10,6 +10,7 @@
 
 /*~
  * stability: stable
+ * name: module folktale/data
  */
 module.exports = {
   conversions: require('./conversions'),

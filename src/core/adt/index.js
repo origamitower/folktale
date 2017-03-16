@@ -9,6 +9,7 @@
 
 /*~
  * stability: experimental
+ * name: module folktale/core/adt
  */
 module.exports = {
   data: require('./data'),

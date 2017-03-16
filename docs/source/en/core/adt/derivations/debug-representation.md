@@ -1,4 +1,9 @@
 @annotate: folktale.core.adt.derivations.debugRepresentation
+category: Derivations
+tags:
+  - debug
+  - show
+  - toString
 ---
 Provides a textual representation for ADTs.
 

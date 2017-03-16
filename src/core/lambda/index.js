@@ -9,6 +9,7 @@
 
 /*~
  * stability: stable
+ * name: module folktale/core/lambda
  */
 module.exports = {
   identity: require('./identity'),

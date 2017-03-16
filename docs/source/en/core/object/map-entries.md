@@ -1,4 +1,5 @@
 @annotate: folktale.core.object.mapEntries
+category: Transforming
 ---
 Transforms own properties of an object using a mapping function.
 
@@ -52,6 +53,7 @@ properties.
 
 
 @annotate: folktale.core.object.mapEntries.overwrite
+category: Convenience
 ---
 Transforms own properties of an object using a mapping function.
 
@@ -69,6 +71,7 @@ properties that were inserted earlier.
 
 
 @annotate: folktale.core.object.mapEntries.unique
+category: Convenience
 ---
 Transforms own properties of an object using a mapping function.
 

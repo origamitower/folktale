@@ -1,4 +1,5 @@
 @annotate: folktale.core.object.mapValues
+category: Transforming
 ---
 Transforms values of an object with an unary function.
 
@@ -25,6 +26,7 @@ properties.
 
 
 @annotate: folktale.core.object.mapValues.infix
+category: Convenience
 ---
 Conveniently transforms values in an object using the This-Binding syntax.
 

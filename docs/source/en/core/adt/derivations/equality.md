@@ -1,4 +1,9 @@
 @annotate: folktale.core.adt.derivations.equality
+category: Derivations
+tags:
+  - equals
+  - setoid
+  - comparing
 ---
 Provides structural equality for ADTs.
 

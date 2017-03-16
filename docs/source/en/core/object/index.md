@@ -1,4 +1,5 @@
 @annotate: folktale.core.object
+category: Extensions for built-ins
 ---
 Core.Object provides utilities for working with objects as
 dictionaries and records.

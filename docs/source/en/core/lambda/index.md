@@ -1,4 +1,5 @@
 @annotate: folktale.core.lambda
+category: Extensions for built-ins
 ---
 Core.Lambda provides you tools for transforming and combining
 functions.

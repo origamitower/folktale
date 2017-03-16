@@ -1,4 +1,5 @@
 @annotate: folktale.core.lambda.identity
+category: Functional combinators
 ---
 The identity combinator; always returns the argument given.
 

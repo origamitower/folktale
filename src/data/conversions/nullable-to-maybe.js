@@ -11,7 +11,7 @@ const { Nothing, Just } = require('folktale/data/maybe/maybe');
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  * 

@@ -1,4 +1,5 @@
 @annotate: folktale.core.adt
+category: Data structures
 ---
 Provides utilities to define tagged unions.
 

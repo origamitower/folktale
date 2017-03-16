@@ -1,4 +1,8 @@
-@annotate: folktale.core.adt.derivations.serialize
+@annotate: folktale.core.adt.derivations.serialization
+category: Derivations
+tags:
+  - json
+  - storing ADTs
 ---
 Provides JSON serialisation and parsing for ADTs.
 

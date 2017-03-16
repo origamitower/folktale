@@ -11,7 +11,7 @@ const { Error, Ok } = require('folktale/data/result/result');
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  * 

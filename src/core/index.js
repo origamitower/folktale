@@ -9,6 +9,7 @@
 
 /*~
  * stability: stable
+ * name: module folktale/core
  */
 module.exports = {
   lambda: require('./lambda'),

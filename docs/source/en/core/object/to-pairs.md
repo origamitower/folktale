@@ -1,4 +1,5 @@
 @annotate: folktale.core.object.toPairs
+category: Converting to other types
 ---
 Returns pairs of `(key, value)` for all own enumerable properties in an object.
 
