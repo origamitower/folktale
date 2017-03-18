@@ -11,6 +11,7 @@
 const { tagSymbol, typeSymbol } = require('../data');
 const mapValues = require('folktale/core/object/map-values');
 const values = require('folktale/core/object/values');
+const extend = require('folktale/helpers/extend');
 
 
 // --[ Constants ]------------------------------------------------------
@@ -155,7 +156,7 @@ const serialization = (variant, adt) => {
           : /*otherwise*/                    indexByType(values(parsers));
 
     const parsedValue = mapValues(valueContents, parseValue(parsersByType));
-    return Object.assign(Object.create(adt[valueTagName].prototype), parsedValue);
+    return extend(Object.create(adt[valueTagName].prototype), parsedValue);
   };
 };
 
