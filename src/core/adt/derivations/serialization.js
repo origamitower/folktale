@@ -88,8 +88,9 @@ const parseValue = (parsers) => (value) => {
  * type: ('a) => JSON
  */
 const serializeValue = (value) =>
-  value !== null && typeof value.toJSON === 'function' ? value.toJSON()
-  : /* otherwise */                                      value;
+  value === undefined                                  ?  null
+: value !== null && typeof value.toJSON === 'function' ?  value.toJSON()
+: /* otherwise */                                         value;
 
 
 // --[ Implementation ]-------------------------------------------------
