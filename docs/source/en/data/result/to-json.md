@@ -15,5 +15,8 @@ See the docs for `core/adt/derivations/serialization` for more details.
     Result.Ok(1).toJSON();
     // ==> { '@@type': 'folktale:Data.Result', '@@tag': 'Ok', '@@value': { value: 1 } }
 
-    Result.Error().toJSON();
+    Result.Error(1).toJSON();
     // ==> { '@@type': 'folktale:Data.Result', '@@tag': 'Error', '@@value': { value: 1 } }
+
+    Result.Error(undefined).toJSON();
+    // ==> { '@@type': 'folktale:Data.Result', '@@tag': 'Error', '@@value': { value: null } }
