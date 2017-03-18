@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>fold</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">fold</h1><div class="highlight-summary"><div><p>Applies a function to each case of a Result.</p>
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature"></div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">forall a, b, c:
+  (Result a b).((a) =&gt; c, (b) =&gt; c) =&gt; c</code></pre></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Applies a function to each case of a Result.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const Result = require(&#39;folktale/data/result&#39;);
+
+const inc = (x) =&gt; x + 1;
+const dec = (x) =&gt; x - 1;
+
+Result.Error(1).fold(inc, dec);
+// ==&gt; inc(1)
+
+Result.Ok(1).fold(inc, dec);
+// ==&gt; dec(1)
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/result/result.js at line 75, column 19</div><pre class="source-code"><code class="language-javascript">{
+    /*~*/
+    Error: function fold(f, g) {
+      assertFunction('Result.Error#fold', f);
+      assertFunction('Result.Error#fold', g);
+      return f(this.value);
+    },
+
+    /*~*/
+    Ok: function fold(f, g) {
+      assertFunction('Result.Ok#fold', f);
+      assertFunction('Result.Ok#fold', g);
+      return g(this.value);
+    }
+  }</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/data/result/result</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat--uncategorised-">(Uncategorised)</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

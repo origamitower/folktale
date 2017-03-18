@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>module folktale/core/object</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/core/object</h1><div class="highlight-summary"><div><p>Core.Object provides utilities for working with objects as
+dictionaries and records.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Core.Object provides utilities for working with objects as
+dictionaries and records.</p>
+<h2 id="why-">Why?</h2>
+<p>JS historically lacked data structures designed specifically for
+representing records and dictionaries, and objects just doubled
+as those for the common use cases. While JS has added Map and
+Set structures natively, using objects as records and dictionaries
+is still common place, and there aren&#39;t many tools to use them
+for those use cases natively.</p>
+<p>For example, these objects are used as options for configuring
+operations, like babylon&#39;s <code>parse</code> operation, or Node&#39;s <code>readFile</code>.
+They&#39;re used to represent headers in most HTTP libraries, or to
+represent environment variables in Node, etc.</p>
+<p>Folktale&#39;s Core.Object primarily aims to provide common tools for
+using objects as dictionaries. In doing so, most of the operations
+in this module are only concerned about own, enumerable properties,
+and don&#39;t respect the original object&#39;s shape. That is, a
+transformation such as:</p>
+<pre><code>toPairs(fromPairs(object))
+</code></pre><p>Doesn&#39;t return a value necessarily equivalent to <code>object</code>. Because
+all transformations are pure, objects get a new identity, they also
+lose all symbols and non-enumerable properties, as well as the
+<code>[[Prototype]]</code> field.</p>
+<h2 id="what-s-in-core-object-">What&#39;s in Core.Object?</h2>
+<p>Currently Core.Object provides operations for converting from and to
+objects, and transforming objects. These operations are categorised
+as follows:</p>
+<ul>
+<li><p><strong>Converting</strong>: Operations that convert the data in the object
+to other types.</p>
+</li>
+<li><p><strong>Transforming</strong>: Operations that transform the data in the
+object, giving you a new object.</p>
+</li>
+</ul>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-converting-from-other-types">Converting from other types</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.core.object.from-pairs.fromPairs.html">fromPairs(pairs)</a><div class="doc-summary"><div><p>Constructs an object from an array of (key, value) pairs.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-to-other-types">Converting to other types</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.core.object.to-pairs.toPairs.html">toPairs(object)</a><div class="doc-summary"><div><p>Returns pairs of <code>(key, value)</code> for all own enumerable properties in an object.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-extracting-data">Extracting data</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.core.object.values.values.html">values(object)</a><div class="doc-summary"><div><p>Returns the values for all own enumerable properties in an object.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-transforming">Transforming</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.core.object.map-entries.mapEntries.html">mapEntries(object, transform, define)</a><div class="doc-summary"><div><p>Transforms own properties of an object using a mapping function.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.core.object.map-values.mapValues.html">mapValues(object, transformation)</a><div class="doc-summary"><div><p>Transforms values of an object with an unary function.</p>
+</div></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/object/index.js at line 14, column 0</div><pre class="source-code"><code class="language-javascript">{
+  mapEntries: require('./map-entries'),
+  mapValues: require('./map-values'),
+  values: require('./values'),
+  toPairs: require('./to-pairs'),
+  fromPairs: require('./from-pairs')
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">stable</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/core/object</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#why-" title="Why?"><div><p>Why?</p>
+</div></a></li><li class="toc-item"><a href="#what-s-in-core-object-" title="What's in Core.Object?"><div><p>What&#39;s in Core.Object?</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-converting-from-other-types">Converting from other types</a></li><li class="toc-item"><a href="#cat-converting-to-other-types">Converting to other types</a></li><li class="toc-item"><a href="#cat-extracting-data">Extracting data</a></li><li class="toc-item"><a href="#cat-transforming">Transforming</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
