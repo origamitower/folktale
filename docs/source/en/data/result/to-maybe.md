@@ -1,4 +1,5 @@
-@annotate: folktale.data.result.toMaybe
+@annotate: folktale.data.result.Ok.prototype.toMaybe
+@annotate: folktale.data.result.Error.prototype.toMaybe
 category: Converting to other types
 ---
 

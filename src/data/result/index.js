@@ -19,6 +19,7 @@ module.exports = {
   Ok: Result.Ok,
   hasInstance: Result.hasInstance,
   of: Result.of,
+  fromJSON: Result.fromJSON,
   try: require('./try'),
 
   /*~
