@@ -8,6 +8,7 @@
 //----------------------------------------------------------------------
 
 const Result = require('./result');
+const { typeSymbol } = require('folktale/core/adt/data');
 
 
 /*~
@@ -20,6 +21,7 @@ module.exports = {
   hasInstance: Result.hasInstance,
   of: Result.of,
   fromJSON: Result.fromJSON,
+  [typeSymbol]: Result[typeSymbol],
   try: require('./try'),
 
   /*~

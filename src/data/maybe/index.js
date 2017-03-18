@@ -9,6 +9,8 @@
 
 
 const Maybe = require('./maybe');
+const { typeSymbol } = require('folktale/core/adt/data');
+
 
 /*~
  * stability: unstable
@@ -24,6 +26,7 @@ module.exports = {
   hasInstance: Maybe.hasInstance,
   of: Maybe.of,
   fromJSON: Maybe.fromJSON,
+  [typeSymbol]: Maybe[typeSymbol],
   ['fantasy-land/of']: Maybe['fantasy-land/of'],
 
   /*~
