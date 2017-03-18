@@ -1,0 +1,339 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>createDerivation</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">createDerivation</h1><div class="highlight-summary"><div><p>Provides structural equality for ADTs.</p>
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">createDerivation(valuesEqual)</div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">(Variant, ADT) =&gt; Void</code></pre></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Provides structural equality for ADTs.</p>
+<p>The <code>equality</code> derivation bestows Fantasy Land&#39;s <code>fantasy-land/equals</code>
+method upon ADTs constructed by Core.ADT, as well as an <code>equals</code>
+alias. This <code>equals</code> method performs structural equality, and may
+be configured on how to compare values that don&#39;t implement Equality.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const { data, derivations } = require(&#39;folktale/core/adt&#39;);
+const Result = data(&#39;Result&#39;, {
+  Ok(value){
+    return { value };
+  },
+  Error(value) {
+    return { value };
+  }
+}).derive(derivations.equality);
+const { Ok, Error } = Result;
+
+Ok(1).equals(Ok(1));
+// ==&gt; true
+
+Ok(1).equals(Error(1));
+// ==&gt; false
+
+Error(Error(1)).equals(Error(Error(1)));
+// ==&gt; true
+</code></pre><h2 id="structural-equality">Structural equality</h2>
+<p>The <code>equals</code> method provided by this derivation checks for structural
+equivalence. That is, two values are considered equal if they have the
+same content.</p>
+<p>For simple ADTs this is pretty easy to see. For example, consider the
+following definition:</p>
+<pre><code>const { data, derivations } = require(&#39;folktale/core/adt&#39;);
+const Id = data(&#39;Id&#39;, {
+  Id(value){ return { value } }
+}).derive(derivations.equality);
+
+const a = Id.Id(1);
+const b = Id.Id(1);
+</code></pre><p>Here we have an ADT with a single case, <code>Id</code>, and we&#39;ve made two
+instances of this data structure, each containing the value <code>1</code>.
+However, if we try to compare them using JavaScript standard
+operators, we&#39;ll not be comparing their contents, but rather whether
+or not they are the same object:</p>
+<pre><code>a === a; // ==&gt; true
+b === b; // ==&gt; true
+a === b; // ==&gt; false
+</code></pre><p>So <code>a === b</code> is false, even though both <code>a</code> and <code>b</code> have the same
+contents. This is because <code>===</code> compares values by their identity,
+and each object has a different identity.</p>
+<p>If we want to compare things by value, we can use the <code>equals</code> method
+provided by this equality derivation instead:</p>
+<pre><code>a.equals(b);        // ==&gt; true
+a.equals(a);        // ==&gt; true
+a.equals(Id.Id(2)); // ==&gt; false
+</code></pre><p>When comparing with the <code>equals</code> method, two values are considered
+equal if they represent the same value. This is called <em>structural
+equality</em>.</p>
+<h2 id="equality-in-details">Equality in details</h2>
+<p>Given two data structures, they are considered equal if:</p>
+<ul>
+<li>They have the same <em>type</em>;</li>
+<li>They have the same <em>tag</em>;</li>
+<li>They have the same keys, and these keys have the same values;</li>
+</ul>
+<p>The following example shows these in practice:</p>
+<pre><code>const { data, derivations } = require(&#39;folktale/core/adt&#39;);
+
+//                    ┌◦ TYPE
+//                  ┌╌┴╌╌╌╌┐
+const Result = data(&#39;Result&#39;, {
+//  ┌◦ TAG             ┌◦ KEYS
+// ┌┴┐               ┌╌┴╌╌╌╌╌┐
+   Ok(value){ return { value } },
+
+//   ┌◦ TAG               ┌◦ KEYS
+// ┌╌┴╌┐                ┌╌┴╌╌╌╌╌┐
+   Error(value){ return { value } }
+}).derive(derivations.equality);
+
+const { Ok, Error } = Result;
+</code></pre><p>So here we have the <code>Result</code> ADT. Values created from this ADT always
+have the same type: &quot;Result&quot;. A type is expected to be unique within
+all ADTs in a program:</p>
+<pre><code>Ok(1)[data.typeSymbol];    // ==&gt; &#39;Result&#39;
+Error(1)[data.typeSymbol]; // ==&gt; &#39;Result&#39;
+</code></pre><p>Each variant has its own tag, which is the name you give to the
+constructor. A tag is unique within an ADT, but not necessarily unique
+amongst other ADTs:</p>
+<pre><code>Ok(1)[data.tagSymbol];     // ==&gt; &#39;Ok&#39;
+Error(1)[data.tagSymbol];  // ==&gt; &#39;Error&#39;
+</code></pre><p>Finally, the keys in an ADT are the same as the keys in the constructor
+returns. So, in this case, both Ok and Errors have <code>[value]</code> as the key:</p>
+<pre><code>Object.keys(Ok(1));    // ==&gt; [&#39;value&#39;]
+Object.keys(Error(1)); // ==&gt; [&#39;value&#39;]
+</code></pre><p>So if we compare these two for equality:</p>
+<pre><code>Ok(1).equals(Ok(1)); // ==&gt; true
+// same type, tag, keys and values.
+
+Ok(1).equals(Ok(2)); // ==&gt; false
+// same type, tag, and keys. Different values (1 !== 2).
+
+Ok(1).equals(Error(1)); // ==&gt; false
+// same type, keys, and values. Different tags (&#39;Ok&#39; !== &#39;Error&#39;).
+
+const { Error: E } = data(&#39;Res&#39;, {
+  Error(value){ return { value } }
+}).derive(derivations.equality);
+
+E(1).equals(Error(1)); // ==&gt; false
+// same tag, keys, and values. Different types (&#39;Result&#39; !== &#39;Res&#39;)
+</code></pre><h2 id="how-complex-equality-works-">How complex equality works?</h2>
+<p>The values in an ADT aren&#39;t always a JS primitive, such as numbers and
+strings. Equality&#39;s <code>equals</code> method handles these in two different ways:</p>
+<ul>
+<li><p>If the values implement Equality, then the values are compared using the
+left&#39;s <code>equals</code> method. This means that if all values implement Equality
+or are primitives, deep equality just works.</p>
+</li>
+<li><p>If the values do not implement Equaity, the provided equality comparison is
+used to compare both values. By default, this comparison just uses
+reference equality, so it&#39;s the equivalent of <code>a === b</code>.</p>
+</li>
+</ul>
+<p>Here&#39;s an example:</p>
+<pre><code>const { data, derivations } = require(&#39;folktale/core/adt&#39;);
+const { Id } = data(&#39;Id&#39;, {
+  Id(value){ return { value } }
+}).derive(derivations.equality);
+
+// This is fine, because all values implement Equality or are primitives
+Id(Id(1)).equals(Id(Id(1))); // ==&gt; true
+
+// This is not fine, because it compares `[1] === [1]`
+Id([1]).equals(Id([1]));     // ==&gt; false
+</code></pre><p>To handle complex JS values, one must provide their own deep equality
+function. Folktale does not have a deep equality function yet, but
+most functional libraries have a <code>equals</code> function for that.</p>
+<p>Here&#39;s an example of an equality function that checks array equality:</p>
+<pre><code>const isEqual = (a, b) =&gt;
+  Array.isArray(a) &amp;&amp; Array.isArray(b) ?  arrayEquals(a, b)
+: a == null                            ?  a === b
+: a[&#39;fantasy-land/equals&#39;]             ?  a[&#39;fantasy-land/equals&#39;](b)
+: a.equals                             ?  a.equals(b)
+:                                         a === b;
+
+const arrayEquals = (a, b) =&gt;
+   Array.isArray(a) &amp;&amp; Array.isArray(b)
+&amp;&amp; a.length === b.length
+&amp;&amp; a.every((x, i) =&gt; isEqual(x, b[i]));
+
+const { Id: Id2 } = data(&#39;Id&#39;, {
+  Id(value){ return { value } }
+}).derive(derivations.equality.withCustomComparison(isEqual));
+
+Id2([1]).equals(Id2([1]));       // ==&gt; true
+Id2(Id2(1)).equals(Id2(Id2(1))); // ==&gt; true
+Id2(2).equals(Id2(1));           // ==&gt; false
+</code></pre><h2 id="equality-and-the-asymmetry-problem-">Equality and the asymmetry problem:</h2>
+<p>Because the <code>equals</code> method is defined directly in objects,
+and invoked using the method call syntax, it creates an asymmetry
+problem. That is, if there are two objects, <code>a</code> and <code>b</code>, then
+<code>a equals b</code> is not the same as <code>b equals a</code>, since the <code>equals</code>
+method may be different on those objects!</p>
+<p>Here&#39;s an example of the asymmetry problem:</p>
+<pre><code>const { data, derivations } = require(&#39;folktale/core/adt&#39;);
+const { Id } = data(&#39;Id&#39;, {
+  Id(value){ return { value } }
+}).derive(derivations.equality);
+
+const bogus = {
+  equals(that){ return that.value === this.value },
+  value: 1
+};
+
+// This is what you expect
+Id(1).equals(bogus); // ==&gt; false
+
+// And so is this
+Id(Id(1)).equals(Id(bogus)); // ==&gt; false
+
+// But this is not
+Id(bogus).equals(Id(Id(1))); // ==&gt; true
+</code></pre><p>To avoid this problem all Equality implementations should do type
+checking and make sure that they have the same <code>equals</code> method.
+Equality implementations derived by this derivation do so by
+checking the <code>type</code> and <code>tag</code> of the ADTs being compared.</p>
+<h2 id="performance-considerations">Performance considerations</h2>
+<p>There are no optimisations for deep equality provided by this method,
+thus you should expect it to visit every value starting from the root.
+This can be quite expensive for larger data structures.</p>
+<p>If you expect to be working with larger data structures, and check
+equality between them often, you are, usually, very out of luck. You
+may consider providing your own Equality implementation with the following
+optimisations:</p>
+<ul>
+<li><p>If two objects are the same reference, you don&#39;t need to check
+them structurally, for they must be equal — Equality&#39;s <code>.equals</code> 
+does this, but if you&#39;re providing your own equality function, 
+you must do it there as well;</p>
+</li>
+<li><p>If two objects have the same type, but different hashes, then
+they must have different values (assuming you haven&#39;t messed up
+your hash function);</p>
+</li>
+<li><p>If two objects have the same type, and the same hashes, then they
+<em>might</em> be equal, but you can&#39;t tell without looking at all of its
+values.</p>
+</li>
+</ul>
+<p>Here&#39;s an example of this optimisation applied to linked lists that
+can only hold numbers (with a very naive hash function):</p>
+<pre><code>const hash = Symbol(&#39;hash code&#39;);
+const { data, derivations } = require(&#39;folktale/core/adt&#39;);
+
+const { Cons, Nil } = data(&#39;List&#39;, {
+  Nil(){ return { [hash]: 0 } },
+  Cons(value, rest) {
+    return {
+      [hash]: value + rest[hash],
+      value, rest
+    }
+  }
+});
+
+Nil.prototype.equals = function(that) {
+  return Nil.hasInstance(that);
+}
+
+Cons.prototype.equals = function(that) {
+  if (this === that)              return true
+  if (!Cons.hasInstance(that))    return false
+  if (this[hash] !== that[hash])  return false
+
+  return this.value === that.value
+  &amp;&amp;     this.rest.equals(that.rest)
+}
+
+const a = Cons(1, Cons(2, Cons(3, Nil())));
+const b = Cons(1, Cons(2, Cons(3, Nil())));
+const c = Cons(1, b);
+
+a.equals(b); // ==&gt; true
+a.equals(c); // ==&gt; false
+</code></pre><blockquote>
+<p><strong>NOTE</strong>:<br>You should use a suitable hashing algorithm for your data structures.</p>
+</blockquote>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">withCustomComparison: createDerivation(valuesEqual)</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/derivations/equality.js at line 43, column 0</div><pre class="source-code"><code class="language-javascript">(valuesEqual) =&gt; {
+  /*~
+   * type: ('a, 'a) =&gt; Boolean
+   */
+  const equals = (a, b) =&gt; {
+    // identical objects must be equal
+    if (a === b)  return true;
+
+    // we require both values to be setoids if one of them is
+    const leftSetoid  = isSetoid(a);
+    const rightSetoid = isSetoid(b);
+    if (leftSetoid) {
+      if (rightSetoid)  return flEquals(a, b);
+      else              return false;
+    }
+
+    // fall back to the provided equality
+    return valuesEqual(a, b);
+  };
+
+
+  /*~
+   * type: (Object Any, Object Any, Array String) =&gt; Boolean
+   */
+  const compositesEqual = (a, b, keys) =&gt; {
+    for (let i = 0; i &lt; keys.length; ++i) {
+      const keyA = a[keys[i]];
+      const keyB = b[keys[i]];
+      if (!(equals(keyA, keyB))) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+
+  const derivation = (variant, adt) =&gt; {
+    /*~
+     * stability: experimental
+     * module: null
+     * authors:
+     *   - "@boris-marinov"
+     *   - Quildreen Motta
+     * 
+     * type: |
+     *   forall S, a:
+     *     (S a).(S a) =&gt; Boolean
+     *   where S is Setoid
+     */
+    variant.prototype.equals = function(value) {
+      assertType(adt)(`${this[tagSymbol]}#equals`, value);
+      return sameType(this, value) &amp;&amp; compositesEqual(this, value, Object.keys(this));
+    };
+    provideAliases(variant.prototype);
+    return variant;
+  };
+  copyDocs(createDerivation, derivation, {
+    type: '(Variant, ADT) =&gt; Void'
+  });
+
+
+  return derivation;
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/core/adt/derivations/equality</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li><li class="toc-item"><a href="#structural-equality" title="Structural equality"><div><p>Structural equality</p>
+</div></a></li><li class="toc-item"><a href="#equality-in-details" title="Equality in details"><div><p>Equality in details</p>
+</div></a></li><li class="toc-item"><a href="#how-complex-equality-works-" title="How complex equality works?"><div><p>How complex equality works?</p>
+</div></a></li><li class="toc-item"><a href="#equality-and-the-asymmetry-problem-" title="Equality and the asymmetry problem:"><div><p>Equality and the asymmetry problem:</p>
+</div></a></li><li class="toc-item"><a href="#performance-considerations" title="Performance considerations"><div><p>Performance considerations</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat--uncategorised-">(Uncategorised)</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>@boris-marinov</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

@@ -1,0 +1,469 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>data</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">data</h1><div class="highlight-summary"><div><p>Constructs a tagged union data structure.</p>
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">data(typeId, patterns)</div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">(String, Object (Array String)) =&gt; ADT</code></pre></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Constructs a tagged union data structure.</p>
+<h2 id="using-the-adt-module-">Using the ADT module:</h2>
+<pre><code>const data = require(&#39;folktale/core/adt/data&#39;);
+
+var List = data(&#39;List&#39;, {
+  Nil(){ },
+  Cons(value, rest) {
+    return { value, rest };
+  }
+});
+
+var { Nil, Cons } = List;
+
+Cons(&#39;a&#39;, Cons(&#39;b&#39;, Cons(&#39;c&#39;, Nil())));
+// ==&gt; { value: &#39;a&#39;, rest: { value: &#39;b&#39;, ..._ }}
+</code></pre><h2 id="why-use-tagged-unions-">Why use tagged unions?</h2>
+<p>Data modelling is a very important part of programming, directly
+affecting things like correctness and performance. Folktale is
+in general mostly interested in correctness, and providing tools
+for achieving that.</p>
+<p>When modelling data in a program, there are several different
+choices that one must make in an attempt to capture the rules of
+how that data is manipulated and what they represent. Data modeling
+tends to come in three different concepts:</p>
+<ul>
+<li><p><strong>Scalars</strong> represent concepts that have only one atomic
+value at a time. This value makes sense on its own, and can&#39;t
+be divided into further concepts. Examples of this are numers,
+strings, etc.</p>
+</li>
+<li><p><strong>Product</strong> represent bigger concepts that are made out of
+possibly several smaller concepts, each of which is independent
+of each other, and always present. An object that contains a
+person&#39;s <code>name</code> and <code>age</code> is an example of a product, arrays
+are another example.</p>
+</li>
+<li><p><strong>Unions</strong> represent one of out of many concepts, at any given
+time. JS doesn&#39;t have many data structure that captures the idea
+of an union, but there are many cases where this happens in a
+codebase: </p>
+<ul>
+<li><p>Reading a file may either give you the data in that
+file or an error object; </p>
+</li>
+<li><p>Accessing a property in an object may either give you the
+value or undefined;</p>
+</li>
+<li><p>Querying a database may give you a connection error (maybe
+we weren&#39;t able to contact the database), a query error
+(maybe the query wasn&#39;t well formed), a &quot;this value isn&#39;t
+here&quot; response, or the value you want.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Out of these, you&#39;re probably already familiar with products and scalars,
+because they&#39;re used everywhere in JavaScript, but maybe you&#39;re not
+familiar with unions, since JavaScript doesn&#39;t have many of them built-in.</p>
+<p>For example, when reading a file in Node, you have this:</p>
+<pre><code>fs.readFile(filename, (error, value) =&gt; {
+  if (error != null) {
+    handleError(error);
+  } else {
+    handleSuccess(value);
+  }
+});
+</code></pre><p>The callback function receives two arguments, <code>error</code> and <code>value</code>, but
+only one of them may ever be present at any given time. If you have a
+value, then <code>error</code> must be null, and if you have an error, then <code>value</code>
+must be null. Nothing in the representation of this data tells you
+that, or forces you to deal with it like that.</p>
+<p>If you compare it with an API like <code>fetch</code>, where you get a Promise
+instead, many of these problems are solved:</p>
+<pre><code>fetch(url).then(
+  (response) =&gt; handleSuccess(response),
+  (error)    =&gt; handleError(error)
+);
+</code></pre><p>Here the result of <code>fetch</code> can be either a response or an error, like in
+the <code>readFile</code> example, but the only way of getting to that value is
+through the <code>then</code> function, which requires you to define separate branches
+for handling each case. This way it&#39;s not possible to forget to deal with
+one of the cases, or make mistakes in the branching condition, such as
+<code>if (error == null) { handleError(...) }</code> — which the first version of
+this documentation had, in fact.</p>
+<h2 id="modelling-data-with-core-adt">Modelling data with Core.ADT</h2>
+<p>So, properly modelling your data helps making sure that a series of errors
+can&#39;t ever occurr in your program, which is great as you have to deal with
+less problems, but how does Core.ADT help you in that?</p>
+<h3 id="a-simple-failure-case">A simple failure case</h3>
+<p>To answer this question let&#39;s consider a very simple, everyday problem: you
+have a function that can return any value, but it can also fail. How do you
+differentiate failure from regular values?</p>
+<pre><code>const find = (predicate, items) =&gt; {
+  for (let i = 0; i &lt; items.length; ++i) {
+    const item = items[i];
+    if (predicate(item))  return item;
+  }
+  return null;
+};
+</code></pre><p>The example above returns the item if the predicate matches anything, or <code>null</code>
+if it doesn&#39;t. But <code>null</code> is also a valid JavaScript value:</p>
+<pre><code>find(x =&gt; true, [1, 2, 3]);    // ==&gt; 1
+find(x =&gt; false, [1, 2, 3]);   // ==&gt; null
+find(x =&gt; true, [null, 1, 2]); // ==&gt; null
+</code></pre><p>Now, there isn&#39;t a way of differentiating failure from success if your arrays
+have a <code>null</code> value. One could say &quot;this function works for arrays without
+nulls&quot;, but there isn&#39;t a separate type that can enforce those guarantees
+either. This confusing behaviour opens the door for bugs that are very
+difficult to find, since they&#39;re created way before they hit the <code>find</code>
+function.</p>
+<p>A more practical approach is to return something that can&#39;t be in the array.
+For example, if we return an object like: <code>{ found: Bool, value: Any }</code>, then
+we don&#39;t run into this issue:</p>
+<pre><code>const find2 = (predicate, items) =&gt; {
+  for (let i = 0; i &lt; items.length; ++i) {
+    const item = items[i];
+    if (predicate(item))  return { found: true, value: item };
+  }
+  return { found: false };
+};
+
+find2(x =&gt; true, [1, 2, 3]);    // ==&gt; { found: true, value: 1 }
+find2(x =&gt; false, [1, 2, 3]);   // ==&gt; { found: false }
+find2(x =&gt; true, [null, 1, 2]); // ==&gt; { found: true, value: null }
+</code></pre><p>We can differentiate between successes and failures now, but in order to
+use the value we need to unpack it. Now we have two problems: <code>found</code> and
+<code>value</code> aren&#39;t entirely related, and we have to create this ad-hoc relationship
+through an <code>if</code> statement. That&#39;s very easy to get wrong. Another problem is
+that nothing forces people to check <code>found</code> before looking at <code>value</code>.</p>
+<p>So, a better solution for this is to use tagged unions and pattern matching:</p>
+<pre><code>const data = require(&#39;folktale/core/adt/data&#39;);
+
+const Maybe = data(&#39;Maybe&#39;, {
+  None() { return {} },
+  Some(value) { return { value } }
+});
+
+const find3 = (predicate, items) =&gt; {
+  for (let i = 0; i &lt; items.length; ++i) {
+    const item = items[i];
+    if (predicate(item))  return Maybe.Some(item);
+  }
+  return Maybe.None();
+};
+
+find3(x =&gt; true, [1, 2, 3]);    // ==&gt; Maybe.Some(1)
+find3(x =&gt; false, [1, 2, 3]);   // ==&gt; Maybe.None()
+find3(x =&gt; true, [null, 1, 2]); // ==&gt; Maybe.Some(null)
+
+find3(x =&gt; true, [1, 2, 3]).matchWith({
+  None: ()          =&gt; &quot;Not found&quot;,
+  Some: ({ value }) =&gt; &quot;Found &quot; + value
+}); // ==&gt; &quot;Found 1&quot;
+</code></pre><h3 id="modelling-complex-cases">Modelling complex cases</h3>
+<p>Let&#39;s consider a more complex case. Imagine you&#39;re writing a function to
+handle communicating with some HTTP API. Like in the case presented in
+the previous section, a call to the API may succeed or fail. Unlike the
+previous example, here a failure has more information associated with it,
+and we can have different kinds of failures:</p>
+<ul>
+<li>The operation may succeed, and return a value;</li>
+<li>The operation may fail:<ul>
+<li>Because it wasn&#39;t possible to reach the API (due to a network error, for example);</li>
+<li>Because the return value of the API wasn&#39;t in the expected format (unable to parse);</li>
+<li>Because the API itself returned an error (e.g.: if the request had bad data in it).</li>
+</ul>
+</li>
+</ul>
+<p>A common way of writing this in Node would be like this:</p>
+<pre><code>api.method((error, response) =&gt; {
+  if (error != null) {
+    if (error.code === &quot;http&quot;) {
+      // handle network failures here
+    }
+    if (error.code === &quot;service&quot;) {
+      // handle service failures here
+    } 
+  } else {
+    try {
+      var data = normalise(response);
+      // handle success here 
+    } catch(e) { 
+      // handle invalid responses here
+    }
+  }
+});
+</code></pre><p>But again, in this style of programming it&#39;s easier to make mistakes that are hard
+to catch, since we&#39;re assigning meaning through control flow in an ad-hoc manner,
+and there&#39;s nothing to tell us if we&#39;ve got it wrong. It&#39;s also harder to abstract,
+because we can&#39;t capture these rules as data, so we have to add even more special
+control flow structures to handle the abstractions.</p>
+<p>Let&#39;s model it as a tagged union instead. We could make a single data structure
+that captures all 4 possible results, and that would be a reasonable way of modelling
+this. But on the other hand, we wouldn&#39;t be able to talk about failures <em>in general</em>,
+because this forces us to handle each failure case independently. Instead we&#39;ll have
+two tagged unions:</p>
+<pre><code>const data = require(&#39;folktale/core/adt/data&#39;);
+
+const Result = data(&#39;Result&#39;, {
+  Ok(value) {
+    return { value }; 
+  },
+  Error(reason) {
+    return { reason };
+  }
+});
+
+const APIError = data(&#39;APIError&#39;, {
+  NetworkError(error){
+    return { error };
+  },
+  ServiceError(code, message) {
+    return { code, message };
+  },
+  ParsingError(error, data) {
+    return { error, data };
+  }
+});
+</code></pre><p>Then we can construct these values in the API, and make sure people will handle
+all cases when using it:</p>
+<pre><code>function handleError(error) {
+  error.matchWith({
+    NetworkError: ({ error }) =&gt; { ... },
+    ServiceError: ({ code, message }) =&gt; { ... },
+    ParsingError: ({ error, data }) =&gt; { ... }
+  })
+}
+
+api.method(response =&gt; {
+  response.matchWith({
+    Error: ({ reason }) =&gt; handleError(reason),
+    Ok:    ({ value })  =&gt; { ... }
+  })
+});
+</code></pre><h2 id="providing-common-functionality">Providing common functionality</h2>
+<p>When you&#39;re modelling data with ADTs it&#39;s tempting to create a lot of
+very specific objects to capture correctly all of the choices that may
+exist in a particular domain, but Core.ADT only gives you construction
+and pattern matching, so what if you want your types to have a notion
+of equality?</p>
+<p>That&#39;s where the concept of <em>derivation</em> comes in. A derivation is a
+function that provides a set of common functionality for an ADT and
+its variants. For example, if one wanted to add the notion of equality
+to an ADT, they could <code>derive</code> <code>Equality</code> as follows:</p>
+<pre><code>const data = require(&#39;folktale/core/adt/data&#39;);
+const Equality = require(&#39;folktale/core/adt/derivations/equality&#39;);
+
+const Either = data(&#39;Either&#39;, {
+  Left(value) { return { value } },
+  Right(value){ return { value } }
+}).derive(Equality);
+</code></pre><p>Note the <code>.derive(Equality)</code> invocation. <code>derive</code> is a method that can
+be called at any time on the ADT to provide new common functionality
+to it. In this case, the <code>Equality</code> derivation gives all variants an
+<code>equals()</code> method:</p>
+<pre><code>Either.Left(1).equals(Either.Left(1));   // ==&gt; true
+Either.Left(1).equals(Either.Right(1));  // ==&gt; false
+Either.Right(1).equals(Either.Right(2)); // ==&gt; false
+Either.Right(2).equals(Either.Right(2)); // ==&gt; true
+</code></pre><p>While Core.ADT provides a set of common derivations (categorised
+<code>Derivation</code> in the documentation), one may create their own derivation
+functions to use with Folktale&#39;s ADTs. See the <a href="#extending-adts">Extending ADTs</a>
+section for details.</p>
+<h2 id="architecture">Architecture</h2>
+<p>The ADT module approaches this problem in a structural-type-ish way, which
+happens to be very similar to how OCaml&#39;s polymorphic variants work, and
+how different values are handled in untyped languages.</p>
+<p>In essence, calling <code>data</code> with a set of patterns results in the creation
+of N constructors, each with a distinct <strong>tag</strong>.</p>
+<p>Revisiting the previous <code>List</code> ADT example, when one writes:</p>
+<pre><code>const data = require(&#39;folktale/core/adt/data&#39;);
+
+var List = data(&#39;List&#39;, {
+  Nil:  () =&gt; {},
+  Cons: (value, rest) =&gt; ({ value, rest })
+})
+</code></pre><p>That&#39;s roughly equivalent to the idiomatic:</p>
+<pre><code>var List = {};
+
+function Nil() { }
+Nil.prototype = Object.create(List);
+
+function Cons(value, rest) {
+  this.value = value;
+  this.rest  = rest;
+}
+Cons.prototype = Object.create(List);
+</code></pre><p>The <code>data</code> function takes as arguments a type identifier (which can be any
+object, if you want it to be unique), and an object with the variants. Each
+property in this object is expected to be a function that returns the
+properties that&#39;ll be provided for the instance of that variant.</p>
+<p>The given variants are not returned directly. Instead, we return a wrapper
+that will construct a proper value of this type, and augment it with the
+properties provided by that variant initialiser.</p>
+<h2 id="reflection">Reflection</h2>
+<p>The ADT module relies on JavaScript&#39;s built-in reflective features first,
+and adds a couple of additional fields to this.</p>
+<h3 id="types-and-tags">Types and Tags</h3>
+<p>The provided type for the ADT, and the tag provided for the variant
+are both reified in the ADT structure and the constructed values. These
+allow checking the compatibility of different values structurally, which
+sidesteps the problems with realms.</p>
+<p>The type of the ADT is provided by the global symbol <code>@@folktale:adt:type</code>:</p>
+<pre><code>const data = require(&#39;folktale/core/adt/data&#39;);
+
+var Id = data(&#39;Identity&#39;, { Id: () =&gt; {} });
+Id[Symbol.for(&#39;@@folktale:adt:type&#39;)]
+// ==&gt; &#39;Identity&#39;
+</code></pre><p>The tag of the value is provided by the global symbol <code>@@folktale:adt:tag</code>:</p>
+<pre><code>var List = data(&#39;List&#39;, {
+  Nil: () =&gt; {},
+  Cons: (h, t) =&gt; ({ h, t })
+});
+List.Nil()[Symbol.for(&#39;@@folktale:adt:tag&#39;)]
+// ==&gt; &#39;Nil&#39;
+</code></pre><p>These symbols are also exported as properties of the <code>data</code> function
+itself, so you can use <code>data.typeSymbol</code> and <code>data.tagSymbol</code> instead
+of retrieving a symbol instance with the <code>Symbol.for</code> function.</p>
+<h3 id="-is-a-tests"><code>is-a</code> tests</h3>
+<p>Sometimes it&#39;s desirable to test if a value belongs to an ADT or
+to a variant. Out of the box the structures constructed by ADT
+provide a <code>hasInstance</code> check that verify if a value is structurally
+part of an ADT structure, by checking the Type and Tag of that value.</p>
+<h6 id="checking-if-a-value-belongs-to-an-adt-">checking if a value belongs to an ADT:</h6>
+<pre><code>const data = require(&#39;folktale/core/adt/data&#39;);
+
+var IdA = data(&#39;IdA&#39;, { Id: (x) =&gt; ({ x }) });
+var IdB = data(&#39;IdB&#39;, { Id: (x) =&gt; ({ x }) });
+
+IdA.hasInstance(IdA.Id(1))  // ==&gt; true
+IdA.hasInstance(IdB.Id(1))  // ==&gt; false
+</code></pre><h6 id="checking-if-a-value-belongs-to-a-variant-">checking if a value belongs to a variant:</h6>
+<pre><code>const data = require(&#39;folktale/core/adt/data&#39;);
+
+var Either = data(&#39;Either&#39;, {
+  Left:  value =&gt; ({ value }),
+  Right: value =&gt; ({ value })
+});
+var { Left, Right } = Either;
+
+Left.hasInstance(Left(1));  // ==&gt; true
+Left.hasInstance(Right(1)); // ==&gt; false
+</code></pre><p>Note that if two ADTs have the same type ID, they&#39;ll be considered
+equivalent by <code>hasInstance</code>. You may pass an object (like
+<code>Symbol(&#39;type name&#39;)</code>) to <code>data</code> to avoid this, however reference
+equality does not work across realms in JavaScript.</p>
+<p>Since all instances inherit from the ADT and the variant&#39;s prototype
+it&#39;s also possible to use <code>proto.isPrototypeOf(instance)</code> to check
+if an instance belongs to an ADT by reference equality, rather than
+structural equality.</p>
+<h2 id="extending-adts">Extending ADTs</h2>
+<p>Because all variants inherit from the ADT namespace, it&#39;s possible
+to provide new functionality to all variants by simply adding new
+properties to the ADT:</p>
+<pre><code>const data = require(&#39;folktale/core/adt/data&#39;);
+
+var List = data(&#39;List&#39;, {
+  Nil:  () =&gt; {},
+  Cons: (value, rest) =&gt; ({ value, rest })
+});
+
+var { Nil, Cons } = List;
+
+List.sum = function() {
+  return this.matchWith({
+    Nil:  () =&gt; 0,
+    Cons: ({ value, rest }) =&gt; value + rest.sum()
+  });
+};
+
+Cons(1, Cons(2, Nil())).sum();
+// ==&gt; 3
+</code></pre><p>A better approach, however, may be to use the <code>derive</code> function from
+the ADT to provide new functionality to every variant. <code>derive</code> accepts
+many derivation functions, which are just functions taking a variant and
+and ADT, and providing new functionality for that variant.</p>
+<p>If one wanted to define a JSON serialisation for each variant, for example,
+they could do so by using the <code>derive</code> functionality:</p>
+<pre><code>function ToJSON(variant, adt) {
+  var { tag, type } = variant;
+  variant.prototype.toJSON = function() {
+    var json = { tag: `${type}:${tag}` };
+    Object.keys(this).forEach(key =&gt; {
+      var value = this[key];
+      if (value &amp;&amp; typeof value.toJSON === &quot;function&quot;) {
+        json[key] = value.toJSON();
+      } else {
+        json[key] = value;
+      }
+    });
+    return json;
+  }
+}
+
+var List = data(&#39;List&#39;, {
+  Nil:  () =&gt; {},
+  Cons: (value, rest) =&gt; ({ value, rest })
+}).derive(ToJSON);
+
+var { Nil, Cons } = List;
+
+Nil().toJSON()
+// ==&gt; { tag: &quot;List:Nil&quot; }
+
+Cons(1, Nil()).toJSON()
+// ==&gt; { tag: &quot;List:Cons&quot;, value: 1, rest: { &quot;tag&quot;: &quot;List:Nil&quot; }}
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-supporting-objects">Supporting objects</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.core.adt.data.ADT.html">ADT</a><div class="doc-summary"><div><p>The basis of all algebraic data types.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">tagSymbol</div><div class="doc-summary"><div><p>A Symbol.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">typeSymbol</div><div class="doc-summary"><div><p>A Symbol.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/data.js at line 157, column 0</div><pre class="source-code"><code class="language-javascript">(typeId, patterns) =&gt; {
+  const ADTNamespace = Object.create(ADT);
+  const variants     = defineVariants(typeId, patterns, ADTNamespace);
+
+  extend(ADTNamespace, variants, {
+    // This is internal, and we don't really document it to the user
+    [TYPE]: typeId,
+
+    /*~
+     * type: Array Variant
+     * module: null
+     * ~belongsTo: ADTNamespace
+     */
+    variants: values(variants),
+
+    /*~
+     * ~belongsTo: ADTNamespace
+     * module: null
+     * type: |
+     *   ADT.(Variant) -&gt; Boolean
+     */
+    hasInstance(value) {
+      return Boolean(value)
+      &amp;&amp;     value[TYPE] === this[TYPE];
+    }
+  });
+
+  return ADTNamespace;
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/core/adt/data</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#using-the-adt-module-" title="Using the ADT module:"><div><p>Using the ADT module:</p>
+</div></a></li><li class="toc-item"><a href="#why-use-tagged-unions-" title="Why use tagged unions?"><div><p>Why use tagged unions?</p>
+</div></a></li><li class="toc-item"><a href="#modelling-data-with-core-adt" title="Modelling data with Core.ADT"><div><p>Modelling data with Core.ADT</p>
+</div></a></li><li class="toc-item"><a href="#providing-common-functionality" title="Providing common functionality"><div><p>Providing common functionality</p>
+</div></a></li><li class="toc-item"><a href="#architecture" title="Architecture"><div><p>Architecture</p>
+</div></a></li><li class="toc-item"><a href="#reflection" title="Reflection"><div><p>Reflection</p>
+</div></a></li><li class="toc-item"><a href="#extending-adts" title="Extending ADTs"><div><p>Extending ADTs</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-supporting-objects">Supporting objects</a></li><li class="toc-item"><a href="#cat--uncategorised-">(Uncategorised)</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
