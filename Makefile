@@ -109,6 +109,7 @@ _test-sauce:
 
 .PHONY: all-tests
 all-tests: tools _prepare-test
+	$(MAKE) compile-documentation
 	$(MAKE) _test-all
 	$(MAKE) _test-browser
 
