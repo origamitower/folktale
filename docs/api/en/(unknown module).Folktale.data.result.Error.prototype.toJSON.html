@@ -25,8 +25,11 @@ Variant . () =&gt; JSONSerialisation</code></pre></div></div><h2 class="section-
 Result.Ok(1).toJSON();
 // ==&gt; { &#39;@@type&#39;: &#39;folktale:Data.Result&#39;, &#39;@@tag&#39;: &#39;Ok&#39;, &#39;@@value&#39;: { value: 1 } }
 
-Result.Error().toJSON();
+Result.Error(1).toJSON();
 // ==&gt; { &#39;@@type&#39;: &#39;folktale:Data.Result&#39;, &#39;@@tag&#39;: &#39;Error&#39;, &#39;@@value&#39;: { value: 1 } }
+
+Result.Error(undefined).toJSON();
+// ==&gt; { &#39;@@type&#39;: &#39;folktale:Data.Result&#39;, &#39;@@tag&#39;: &#39;Error&#39;, &#39;@@value&#39;: { value: null } }
 </code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location"></div><pre class="source-code"><code class="language-javascript">function() {
     return { 
       [typeJsonKey]:  typeName, 

@@ -86,7 +86,10 @@ ADT takes a list of parsers as argument:</p>
 
 const B = data(&#39;B&#39;, {
   B(value) { return { value } }
-}).derive(serialize, setoid);
+}).derive(
+  derivations.serialization,
+  derivations.equality
+);
 
 A.fromJSON(A.A(B.B(1)).toJSON(), [A, B]);
 // ==&gt; A.A(B.B(1))
@@ -100,7 +103,7 @@ data. This way, <code>.toJSON()</code> produces values of this interface, and
   &quot;@@tag&quot;:   String,
   &quot;@@value&quot;: Object Any
 }
-</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/derivations/serialization.js at line 104, column 0</div><pre class="source-code"><code class="language-javascript">(variant, adt) =&gt; {
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/derivations/serialization.js at line 106, column 0</div><pre class="source-code"><code class="language-javascript">(variant, adt) =&gt; {
   const typeName = adt[typeSymbol];
   const tagName = variant.prototype[tagSymbol];
 
@@ -154,7 +157,7 @@ data. This way, <code>.toJSON()</code> produces values of this interface, and
           : /*otherwise*/                    indexByType(values(parsers));
 
     const parsedValue = mapValues(valueContents, parseValue(parsersByType));
-    return Object.assign(Object.create(adt[valueTagName].prototype), parsedValue);
+    return extend(Object.create(adt[valueTagName].prototype), parsedValue);
   };
 }</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/core/adt/derivations/serialization</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
 </div></a></li><li class="toc-item"><a href="#json-serialisation" title="JSON serialisation"><div><p>JSON serialisation</p>

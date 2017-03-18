@@ -277,12 +277,13 @@ first([]).matchWith({
 }, keysIndicateType = false)</a><div class="doc-summary"><div><p>Parses a JavaScript object previously serialised as <code>aMaybe.toJSON()</code> into a proper Maybe structure.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-variants">Variants</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.maybe.maybe.Just.html">Just(value)</a><div class="doc-summary"><div><p>Constructs a Maybe value that represents a successful value (a <code>Just</code>).</p>
 </div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.data.maybe.maybe.0.html">Nothing()</a><div class="doc-summary"><div><p>Constructs a Maybe value that represents a failure (a <code>Nothing</code>).</p>
-</div></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/maybe/index.js at line 21, column 0</div><pre class="source-code"><code class="language-javascript">{
+</div></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/maybe/index.js at line 23, column 0</div><pre class="source-code"><code class="language-javascript">{
   Just: Maybe.Just,
   Nothing: Maybe.Nothing,
   hasInstance: Maybe.hasInstance,
   of: Maybe.of,
   fromJSON: Maybe.fromJSON,
+  [typeSymbol]: Maybe[typeSymbol],
   ['fantasy-land/of']: Maybe['fantasy-land/of'],
 
   /*~

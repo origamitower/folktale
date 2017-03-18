@@ -552,12 +552,13 @@ with the raised exception.</p>
 }, keysIndicateType = false)</a><div class="doc-summary"><div><p>Parses a JavaScript object previously serialised as <code>aResult.toJSON()</code> into a proper Result structure.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-variants">Variants</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.result.result.Error.html">Error(value)</a><div class="doc-summary"><div><p>Constructs a Result whose value represents a failure.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.result.result.1.html">Ok(value)</a><div class="doc-summary"><div><p>Constructs a Result whose value represents a success.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/result/index.js at line 17, column 0</div><pre class="source-code"><code class="language-javascript">{
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/result/index.js at line 18, column 0</div><pre class="source-code"><code class="language-javascript">{
   Error: Result.Error,
   Ok: Result.Ok,
   hasInstance: Result.hasInstance,
   of: Result.of,
   fromJSON: Result.fromJSON,
+  [typeSymbol]: Result[typeSymbol],
   try: require('./try'),
 
   /*~
