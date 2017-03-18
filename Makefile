@@ -109,6 +109,9 @@ _test-sauce:
 
 .PHONY: all-tests
 all-tests: _prepare-test
+	git submodule init
+	git submodule update
+	$(MAKE) tools
 	$(MAKE) _test-all
 	$(MAKE) _test-browser
 
