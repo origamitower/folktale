@@ -1,0 +1,3 @@
+[submodule "metamagical"]
+	path = metamagical
+	url = git@github.com:origamitower/metamagical.git

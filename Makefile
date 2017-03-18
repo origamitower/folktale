@@ -140,3 +140,20 @@ publish: clean lint
 	mkdir -p releases
 	zip -r "releases/folktale-$(VERSION).zip" package.json README.md LICENCE FAQ.md CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md CONTRIBUTORS test docs/index.html docs/prism.css docs/prism.js docs/style.css docs/api/ index.js helpers/ data/ core/ dist/
 	npm publish
+
+.PHONY: tools
+tools:
+	cd metamagical && npm install
+	cd metamagical/packages/babel-plugin-assertion-comments && npm install && make build && npm link
+	npm link babel-plugin-transform-assertion-comments
+	cd metamagical/packages/babel-plugin-metamagical-comments && npm install && make build && npm link
+	npm link babel-plugin-transform-metamagical-comments
+	cd metamagical/packages/interface && npm install && make build && npm link
+	npm link metamagical-interface
+	cd metamagical/packages/mocha-bridge && npm install && make build && npm link
+	npm link metamagical-mocha-bridge
+	cd metamagical/packages/repl && npm install && make build && npm link
+	npm link metamagical-repl
+	cd metamagical/experimental/static-docs && npm install && make build && npm link
+	npm link metamagical-static-docs
+
