@@ -108,10 +108,7 @@ _test-sauce:
 	$(karma) start test/karma-sauce.js
 
 .PHONY: all-tests
-all-tests: _prepare-test
-	git submodule init
-	git submodule update
-	$(MAKE) tools
+all-tests: tools _prepare-test
 	$(MAKE) _test-all
 	$(MAKE) _test-browser
 
