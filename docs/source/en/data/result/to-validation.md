@@ -1,4 +1,5 @@
-@annotate: folktale.data.result.toValidation
+@annotate: folktale.data.result.Ok.prototype.toValidation
+@annotate: folktale.data.result.Error.prototype.toValidation
 category: Converting to other types
 ---
 
