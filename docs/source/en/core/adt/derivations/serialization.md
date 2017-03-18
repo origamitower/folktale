@@ -99,7 +99,10 @@ ADT takes a list of parsers as argument::
 
     const B = data('B', {
       B(value) { return { value } }
-    }).derive(serialize, setoid);
+    }).derive(
+      derivations.serialization,
+      derivations.equality
+    );
 
     A.fromJSON(A.A(B.B(1)).toJSON(), [A, B]);
     // ==> A.A(B.B(1))
