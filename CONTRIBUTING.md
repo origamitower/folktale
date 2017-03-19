@@ -33,7 +33,7 @@ so that we can support you.
               - [Arch (Linux)](#arch-linux)
               - [Fedora / Enterprise Linux](#fedora--enterprise-linux)
               - [Windows](#windows)
-      - [Working with Git and GitHub](#working-with-git-and-github)
+      - [Implementing your changes](#implementing-your-changes)
       - [Git commit guidelines](#git-commit-guidelines)
           - [Commit types](#commit-types)
           - [Referencing issues](#referencing-issues)
@@ -409,7 +409,7 @@ Below are instructions to install Make on common systems:
  5. Finally, run `install.bat` from that folder.
 
 
-### Working with Git and GitHub
+### Implementing your changes
 
 Folktale uses a common workflow where new development happens in topic branches,
 and then a Pull Request is made in order to merge those branches back into the
@@ -451,7 +451,7 @@ From here on, development pretty much follows the process below:
  4. Run `make lint` to ensure that your code conforms with the coding guidelines
     used by Folktale.
  5. Push your changes to your repository.
- 6. Create a pull request for the feature branch.
+ 6. [Create a pull request](https://help.github.com/articles/creating-a-pull-request/) for the feature branch.
  7. We review your code, and may ask you to make some changes.
  8. Finally, we accept or reject the pull request, and merge it into the master
     branch.
