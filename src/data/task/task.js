@@ -11,7 +11,10 @@ const Task = require('./_task');
 
 const noop = () => {};
 
-/*~ stability: experimental */
+/*~
+ * stability: experimental
+ * name: module folktale/data/task
+ */
 const task = (computation, handlers = { onCancelled: noop, cleanup: noop }) =>
   new Task(computation, handlers.onCancelled, handlers.cleanup);
 

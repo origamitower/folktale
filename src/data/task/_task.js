@@ -18,14 +18,32 @@ const noop = () => {};
 
 /*~ stability: experimental */
 class Task {
-  /*~*/
+  /*~
+   * stability: experimental
+   *
+   * type Resources = Any
+   *
+   * type Computation = ({ resolve: (value is Any) -> X, reject: (reason is Any) -> X , cancel: () -> X }) -> Resources
+   *
+   * type OnCancel = Resources -> Any
+   *
+   * type Cleanup = Resources -> Any
+   *
+   * type: |
+   *     (Computation, OnCancel, Cleanup) -> Task reason value
+   */
   constructor(computation, onCancel, cleanup) {
     this._computation = computation;
     this._onCancel    = onCancel || noop;
     this._cleanup     = cleanup  || noop;
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a, b, c:
+   *     (Task a b).((b) => Task a c) => Task a c
+   */
   chain(transformation) {
     return new Task(
       resolver => {
@@ -47,7 +65,12 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a, b, c:
+   *     (Task a b).((b) => c) => Task a c
+   */
   map(transformation) {
     return new Task(
       resolver => {
@@ -63,12 +86,21 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a, b, c:
+   *     (Task a ((b) => c)).(Task a b) => Task a c
+   */
   apply(task) {
     return this.chain(f => task.map(f));
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   (Task a b).((a) => c, (b) => d) => Task c d
+   */
   bimap(rejectionTransformation, successTransformation) {
     return new Task(
       resolver => {
@@ -84,7 +116,18 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a, b, c, d:
+   *     type Pattern = { r |
+   *       Cancelled: ()  => Task c d,
+   *       Resolved:  (b) => Task c d,
+   *       Rejected:  (a) => Task c d
+   *     }
+   *
+   *     (Task a b).(Pattern) => Task c d
+   */
   willMatchWith(pattern) {
     return new Task(
       resolver => {
@@ -105,7 +148,11 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a, b: (Task a b).() => Task b a
+   */
   swap() {
     return new Task(
       resolver => {
@@ -121,7 +168,12 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a, b, c, d:
+   *     (Task a b).(Task c d) => (Task a b) or (Task c d)
+   */
   or(that) {
     return new Task(
       resolver => {
@@ -158,7 +210,11 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a, b, c: (Task a b).(Task a c) => Task a (b, c)
+   */
   and(that) {
     return new Task(
       resolver => {   // eslint-disable-line max-statements
@@ -214,7 +270,11 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a, b: (Task a b).() => TaskExecution a b
+   */
   run() {
     let deferred = new Deferred();    // eslint-disable-line prefer-const
     deferred.listen({
@@ -250,12 +310,20 @@ class Task {
 
 
 Object.assign(Task, {
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a, b: (b) => Task a b
+   */
   of(value) {
     return new Task(resolver => resolver.resolve(value));
   },
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a, b: (a) => Task a b
+   */
   rejected(reason) {
     return new Task(resolver => resolver.reject(reason));
   }
