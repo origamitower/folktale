@@ -432,6 +432,10 @@ of the dependencies and development tools that Folktale uses:
 ```shell
 $ cd folktale
 $ npm install
+# Some of the tools are in a git subrepo
+$ git submodule init
+$ git submodule update
+$ make tools
 ```
 
 Finally, you'll want to create a new branch for your feature. This allows you to
@@ -698,12 +702,19 @@ The Folktale repository is organised as follows:
         — A list of all people who have contributed to Folktale.
       - `CHANGELOG.md`
         — A chronological list of changes made to the project, grouped by versions.
+      - `docs/source`
+        — Special markdown/YAML documentation files, separated by language.
+
 
 
     Developer tooling:
 
       - `Makefile`
         — Common development tasks.
+      - `tools`
+        — Custom tooling written for Folktale.
+      - `metamagical/`
+        — A set of tools to support documentation and tests.
 
 
     Source files:
@@ -712,6 +723,36 @@ The Folktale repository is organised as follows:
         — The implementation of Folktale libraries, in JavaScript.
       - `test/`
         — Unit tests for Folktale, using Mocha.
+
+
+    Auto-generated files:
+
+      - `index.js`, `core/`, `data/`, `helpers`
+        — Generated from the source code in `src/` through `make compile`. These are the library's code that gets loaded by requiring the package.
+
+      - `annotated/`
+        — Generated from the source code in `src/` through `make compile-annotated`. Contains special annotations for the documentation tooling.
+
+      - `dist/`
+        — Generated with `make bundle`. Distribution files for browser environments, compiled with Browserify.
+
+      - `docs/build/`
+        — Generated from documentation files in `docs/source/` through `make compile-documentation`. Used to generate documentation and test examples in the documentation.
+
+      - `docs/api/`
+        — Static HTML documentation, generated through `make documentation`.
+
+      - `node_modules/`
+        — Dependencies installed by npm.
+
+      - `test/helpers/` and `test/specs/`
+        — Generated from their `*-src/` folder through `make compile-test`. These are the test files that get actually ran by the testing tool.
+
+      - `test/browser/browser-tests.js`
+        — Generated from `test.js` through `make compile-test`. A bundle of the entire library and test files that can be loaded in a browser.
+
+      - `releases/`
+        — Generated through `publish`. Contains distribution packages.
 
 
 #### Source hierarchy
@@ -739,20 +780,22 @@ allows people to import bags of features, or a particular feature separately.
   - `data` — Provides implementations of data structures that are common in
     functional programming.
 
+      - `conversions` — Functions to convert between data types.
       - `maybe` — A structure for modelling the presence or absence of a value.
       - `result` — A structure for modelling a tagged disjunction of two values.
       - `validation` — A structure similar to Result, but designed for validations and supporting error aggregation.
       - `task` — A structure for modelling a potentially asynchronous action.
+      - `future` — A structure for modelling an eventual value. Used by `task`.
 
 
 #### Test hierarchy
 
-Folktale uses Mocha for testing, which expects tests to go in the `test/`
+Folktale uses Mocha for testing, which expects tests to go in the `test/specs-src/`
 folder. Right now all test files are placed directly in that folder.
 
-Test files are named `<category>.<subcategory>.es6` (e.g.: `core.lambda.es6`),
+Test files are named `<category>.<subcategory>.js` (e.g.: `core.lambda.es6`),
 and provide tests for all functionality defined in that category. When compiled,
-this generates `<category>.<subcategory>.js` files in the same folder.
+this generates `<category>.<subcategory>.js` files in the `test/specs/` folder.
 
 
 #### Build artefacts
@@ -767,9 +810,12 @@ When source code is compiled (from `src/`), the same structure you see under
 example, after compiling you'd have an `index.js` at the root, then an
 `core/lambda/identity.js` starting at the root, and so on, and so forth.
 
-When test cases are compiled (from `test/`), they generate files with the same
-name, but using the `.js` extension instead of the `.es6` extension used by the
-source.
+When test cases are compiled (from `test/specs-src/` and `test/helpers-src/`), they
+generate files with the same name in the `test/specs/` (and `test/helpers/`) folder.
+
+Documentation files, in `docs/source/` are compiled to regular JavaScript files
+that add special annotations to runtime objects. When compiled, the structure in
+`docs/source/` is replicated in `docs/build/`.
 
 You can always remove these files by running `make clean` from the root of the
 project.
@@ -781,15 +827,27 @@ As mentioned previously, Folktale uses GNU Make for development tooling. From
 there you can compile the source code, run tests, perform cleanup routines, or
 check your source code for style errors.
 
+Note: **before you can do anything in Folktale you must initialise the documentation tools**:
+
+```shell
+$ git submodule init
+$ git submmodule update
+$ make tools
+```
+
 Running `make` or `make help` will show you all of the available development
 tasks.
 
-Running `make compile` will compile the source code using Babel. After this you
-can import the objects in the REPL and interact with them.
+Running `make compile` will compile the source code using Babel. 
+After this you can import the objects in the REPL and interact with them.
 
-Running `make test` will compile the project and run all of the tests. This
-takes a while to start compiling, so you can run `make test-watch` instead if
-you want to re-run the tests after every modification you make to the tests.
+Running `make compile-annotated` will compile the source code with the special documentation
+marks. You can either use `make documentation` to generate HTML docs from that, or
+`require('./documentation')` in a Node REPL to read the docs from there.
+
+Running `make test` will compile the project and run all of the tests. Running
+`make test-all` will also test the examples in the documentation. You can run
+tests in a PhantomJS (a headless WebKit browser) using `make test-browser`.
 
 Running `make lint` will check all of the source code for style
 inconsistencies. The coding style used by Folktale is described later in this
@@ -802,47 +860,27 @@ compile` again to re-build the project.
 
 ### Writing documentation
 
+#### Marking objects for documentation
+
 Folktale uses Meta:Magical for attaching documentation to objects, which can be
 queried at runtime. There's a
 [comprehensive text on documenting objects with Meta:Magical](https://github.com/origamitower/conventions/blob/master/documentation/how-do-i-document-my-code.md),
 so this section will only focus on the basics to get you started.
 
-All functions, objects, and methods in Folktale should be properly annotated
-with
-[Meta:Magical comments](https://github.com/origamitower/metamagical/blob/master/babel-plugin/README.md). These
-comments should at the very least describe what the functionality is, and
-expectations such as signature and types.
+In the source code, functions, methods, modules, and objects should be annotated with
+[Meta:Magical comments](https://github.com/origamitower/metamagical/tree/master/packages/babel-plugin-metamagical-comments).
+These comments should describe who authored that functionality, what is its stability, and its type.
+When relevant, functions should also describe their complexity in [Big O notation](https://en.wikipedia.org/wiki/Big_O_notation).
 
 Here's an example of documentation for the `core/lambda/compose` function:
 
 ```js
 /*~
- * Composes two functions.
- *
- * The compose operation allows function composition. For example, if
- * you have two functions, `inc` and `double`, you can compose them
- * such that you get a new function which has the characteristics of
- * both.
- *
- *     const inc    = (x) => x + 1
- *     const double = (x) => x * 2
- *     const incDouble = compose(double, inc)
- *
- *     incDouble(3)
- *     // => double(inc(3))
- *     // => 8
- *
- * > **NOTE**
- * > Composition is done from right to left, rather than left to right.
- *
- * ---
- * signature: compose(f, g)(value)
- * type: (β -> γ, α -> β) -> α -> γ
- * category: Combinators
- * tags: ["Lambda Calculus"]
  * stability: stable
- * platforms: ["ECMAScript"]
- * licence: MIT
+ * authors:
+ *   - "@robotlolita"
+ * type: |
+ *   forall a, b, c: ((b) => c, (a) => b) => (a) => c
  */
 const compose = (f, g) => (value) => f(g(value))
 ```
@@ -851,15 +889,105 @@ A documentation comment is a block comment whose first line contain only the `~`
 character. Subsequent lines use `*` as an indentation marker, meaning that all
 content before that, and at most one space after that is ignored.
 
-The comment is broken down in two parts by a line containing at most 3 dash
-(`-`) characters, `---` in the example above. The first part of the comment is
-the documentation text. This should explain what the functionality is, and how
-you would use it. The second part of the comment is a
-[YAML](http://www.yaml.org/spec/1.2/spec.html) document with meta-data such as
-`signature`, `type`, `stability`, etc. The
-[documenting with Meta:Magical](https://github.com/origamitower/conventions/blob/master/documentation/how-do-i-document-my-code.md#metadata-with-metamagical)
-text documents all of the available meta-data fields, what they are for, and
-which values they accept.
+
+#### Writing documentation and examples
+
+Actual documentation prose and examples is placed in special Markdown files in
+the `docs/source/` folder. These files are separated by language identifier
+(e.g. `en` for English), and then by module. Currently only the English documentation
+is supported, but translating the documentation is planned for the next release.
+
+While the documentation tool allows an arbitrary number of entities to be
+documented in a single file, there's usually one file per entity (method, 
+function, object), as these may get quite long and the lack of better tooling
+than a text editor makes it a pain to edit larger files with more than one
+entity annotated.
+
+To document an entity, you create a `.md` file inside the `docs/source/<language>`
+folder, and use the special `@annotate: <JS expression>` line to point to the
+entity being documented. The `folktale` variable points to the root of the
+Folktale library.
+
+For example, documenting the compose function would use:
+
+```
+@annotate: folktale.core.lambda.compose
+```
+
+Annotating a getter is slightly more tricky, but those don't happen as often:
+
+```
+@annotate: Object.getOwnPropertyDescriptor(folktale.data.maybe.Just.prototype, 'isJust').get
+```
+
+It's possible to document more than one object at once by just putting more `@annotate` lines
+together:
+
+```
+@annotate: folktale.data.maybe.Just.prototype.map
+@annotate: folktale.data.maybe.Nothing.prototype.map
+```
+
+Following the `@annotate` line is an optional YAML document with metadata for
+that entity. The only required metadata is `category`, which allows us to
+group methods and functions in the documentation page.
+
+Finally, a `---` separates the metadata from the textual documentation. After
+`---`, you just write regular Markdown. Try [providing enough information](https://github.com/origamitower/conventions/blob/master/documentation/how-do-i-document-my-code.md#why-do-we-need-documentation) so people can understand what they're looking at, when and why they'd use it,
+and how they'd use it. A minimal documentation contains at least a short
+description of the functionality and one usage example.
+
+For example, here's how `map` for Data.Maybe could be documented:
+
+```md
+@annotate: folktale.data.maybe.Just.prototype.map
+@annotate: folktale.data.maybe.Nothing.prototype.map
+category: Transforming
+---
+
+Transforms the value inside a Maybe value with an unary function, if
+the Maybe structure is a `Just`. Does nothing for `Nothing` values.
+
+## Example::
+
+    const Maybe = require('folktale/data/maybe');
+
+    Maybe.Just(1).map(x => x + 1);
+    // ==> Maybe.Just(2)
+
+    Maybe.Nothing().map(x => x + 1);
+    // ==> Maybe.Nothing()
+```
+
+
+#### Testable examples in documentation
+
+Documentation examples should, ideally, be runnable. This way we ensure that
+all the examples contained in the documentation work with the code they're
+documenting.
+
+To mark an example as runnable, just write a regular Markdown codeblock and
+end the previous paragraph or heading with two colons (`::`). In the codeblock,
+you indicate the result of expressions using [arrow comments](https://github.com/origamitower/metamagical/tree/master/packages/babel-plugin-assertion-comments),
+which support structural (deep) equality.
+
+That is, you could use:
+
+```md
+This is a runnable example::
+
+    1 + 1;
+    // ==> 2
+```
+
+Or:
+
+```md
+# This is a runnable example::
+
+    [1].concat([2]);
+    // ==> [1, 2]
+```
 
 
 ### Writing tests
@@ -871,14 +999,14 @@ Laucher and Paul Snively have a very good
 [talk about when to use Property-based tests and when to use example-based tests](https://www.infoq.com/presentations/Types-Tests),
 which you can use as a basis to make this decision.
 
-Tests go in the proper `<category>.<subcategory>.es6` file in the `test/` folder
+Tests go in the proper `<category>.<subcategory>.js` file in the `test/specs-src/` folder
 for the category of the functionality you're writing tests for. For example,
 tests for the `compose` function of `core/lambda` would go in the
-`core.lambda.es6` file. If the file already exists, you only need to add a new
+`test/specs-src/core.lambda.js` file. If the file already exists, you only need to add a new
 test definition to it. Otherwise, you'll need to create a new file.
 
 Here's an example of how one would write tests for the `compose` function, in a
-`core.lambda.es6` file:
+`core.lambda.js` file:
 
 ```js
 // Import the jsverify library. This will be used to define the tests
@@ -887,13 +1015,13 @@ const { property } = require('jsverify');
 // Import the category we're testing (core.lambda). By convention, the
 // variable `_` is used to hold this object, since it has less visual
 // clutter.
-const _ = require('../').core.lambda;
+const _ = require('folktale').core.lambda;
 
 // Define the test case. Mocha adds the `describe` function to define
 // a test suite. You should create a suite for the category, and a
 // suite for the function being tested inside of that:
-describe('Core.Lambda', _ => {
-  describe('compose', _ => {
+describe('Core.Lambda', () => {
+  describe('compose', () => {
     // Finally, we define our test, using JSVerify's `property`
     property('Associativity', 'nat', (a) => {
       const f = (x) => x - 1;
@@ -919,7 +1047,7 @@ Node's native `assert` module:
 
 ```js
 const assert = require('assert');
-const _ = require('../').core.lambda;
+const _ = require('folktale').core.lambda;
 
 describe('Core.Lambda', _ => {
   describe('compose', _ => {
@@ -933,9 +1061,7 @@ describe('Core.Lambda', _ => {
 })
 ```
 
-To run tests, you can use `make test` from the root of the project. While
-working on a test, it might be better to run `make test-watch`, which will watch
-for changes on the test files, and recompile/re-run them when they happen.
+To run tests, you can use `make test` from the root of the project.
 
 
 ### Coding style
