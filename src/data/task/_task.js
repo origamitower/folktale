@@ -20,17 +20,12 @@ const noop = () => {};
 class Task {
   /*~
    * stability: experimental
-   *
-   * type Resources = Any
-   *
-   * type Computation = ({ resolve: (value is Any) -> X, reject: (reason is Any) -> X , cancel: () -> X }) -> Resources
-   *
-   * type OnCancel = Resources -> Any
-   *
-   * type Cleanup = Resources -> Any
-   *
-   * type: |
-   *     (Computation, OnCancel, Cleanup) -> Task reason value
+   * Task :: forall value, reason, resources:
+   *   new (
+   *     ({ resolve: (value) => Void, reject: (reason) => Void, cancel: () => Void }) => resources,
+   *     (resources) => Void,
+   *     (resources) => Void
+   *   ) => Task value reason resources
    */
   constructor(computation, onCancel, cleanup) {
     this._computation = computation;
@@ -41,8 +36,8 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall a, b, c:
-   *     (Task a b).((b) => Task a c) => Task a c
+   *   forall v1, v2, e, r:
+   *     (Task v1 e r).((v1) => Task v2 e r) => Task v2 e r
    */
   chain(transformation) {
     return new Task(
@@ -68,8 +63,8 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall a, b, c:
-   *     (Task a b).((b) => c) => Task a c
+   *   forall v1, v2, e, r:
+   *     (Task v1 e r).((v1) => v2) => Task v2 e r
    */
   map(transformation) {
     return new Task(
@@ -89,8 +84,8 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall a, b, c:
-   *     (Task a ((b) => c)).(Task a b) => Task a c
+   *   forall v1, v2, e, r:
+   *     (Task ((v1) => v2) e r).(Task v1 e r) => Task v2 e r
    */
   apply(task) {
     return this.chain(f => task.map(f));
@@ -99,7 +94,8 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   (Task a b).((a) => c, (b) => d) => Task c d
+   *   forall v1, v2, e1, e2, r:
+   *     (Task v1 e1 r).((e1) => e2, (v1) => v2) => Task v2 e2 r
    */
   bimap(rejectionTransformation, successTransformation) {
     return new Task(
@@ -119,14 +115,14 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall a, b, c, d:
-   *     type Pattern = { r |
-   *       Cancelled: ()  => Task c d,
-   *       Resolved:  (b) => Task c d,
-   *       Rejected:  (a) => Task c d
+   *   forall v1, v2, e1, e2, r:
+   *     type Pattern = { row |
+   *       Cancelled: ()  => Task v2 e2 r,
+   *       Resolved:  (b) => Task v2 e2 r,
+   *       Rejected:  (a) => Task v2 e2 r
    *     }
    *
-   *     (Task a b).(Pattern) => Task c d
+   *     (Task v1 e1 r).(Pattern) => Task v2 e2 r
    */
   willMatchWith(pattern) {
     return new Task(
@@ -151,7 +147,7 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall a, b: (Task a b).() => Task b a
+   *   forall v, e, r: (Task v e r).() => Task e v r
    */
   swap() {
     return new Task(
@@ -171,8 +167,8 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall a, b, c, d:
-   *     (Task a b).(Task c d) => (Task a b) or (Task c d)
+   *   forall v, e, r1, r2:
+   *     (Task v e r1).(Task v e r2) => Task v e (r1 and r2)
    */
   or(that) {
     return new Task(
@@ -213,7 +209,8 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall a, b, c: (Task a b).(Task a c) => Task a (b, c)
+   *   forall v1, v2, e, r1, r2:
+   *     (Task v1, e, r1).(Task v2, e, r2) => Task (v1, v2) e (r1 and r2)
    */
   and(that) {
     return new Task(
@@ -273,7 +270,7 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall a, b: (Task a b).() => TaskExecution a b
+   *   forall v, e, r: (Task v e r).() => TaskExecution v e r
    */
   run() {
     let deferred = new Deferred();    // eslint-disable-line prefer-const
@@ -313,7 +310,7 @@ Object.assign(Task, {
   /*~
    * stability: experimental
    * type: |
-   *   forall a, b: (b) => Task a b
+   *   forall v, e, r: (v) => Task v e r
    */
   of(value) {
     return new Task(resolver => resolver.resolve(value));
@@ -322,7 +319,7 @@ Object.assign(Task, {
   /*~
    * stability: experimental
    * type: |
-   *   forall a, b: (a) => Task a b
+   *   forall v, e, r: (e) => Task v e r
    */
   rejected(reason) {
     return new Task(resolver => resolver.reject(reason));
