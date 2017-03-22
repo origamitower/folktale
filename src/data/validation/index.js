@@ -7,7 +7,10 @@
 //
 //----------------------------------------------------------------------
 
-/*~ stability: experimental */
+/*~ 
+ * stability: unstable
+ * name: module folktale/data/validation
+ */
 module.exports = {
   ...require('./validation'),
   collect: require('./collect'),
