@@ -115,6 +115,7 @@ const withMetaFD = parseJs(__metamagical_withMeta.toString()).program.body[0];
 // --[ Parser ]--------------------------------------------------------
 const classifyLine = (line) =>
   /^\@annotate:/.test(line)       ? ['Entity', line.match(/^\@annotate:\s*(.+)/m)[1]]
+: /^\@guide:/.test(line)          ? ['Guide', line.match(/^\@guide:\s*(.+)/m)[1]]
 : /^---+\s*$/.test(line)          ? ['Separator']
 : /* otherwise */                   ['Line', line];
 
@@ -124,9 +125,12 @@ const parse = (source) =>
     .reduce((ctx, node, i) => match(node, {
       Entity(ref) {
         if (ctx.annotation) {
+          if (ctx.annotation !== 'entity') {
+            throw new Error(`Multiple annotations are only supported for entities. At line ${i + 1}`);
+          }
           if (!ctx.current.sealed) {
             return {
-              annotation: true,
+              annotation: 'entity',
               current: { 
                 ref: intoArray(ctx.current.ref).concat([ref]),
                 meta: '',
@@ -141,9 +145,27 @@ const parse = (source) =>
           }
         } else {
           return {
-            annotation: true,
+            annotation: 'entity',
             current: { ref, meta: '', doc: '', multi: false, sealed: false },
             ast: append(ctx.ast, ctx.current)
+          };
+        }
+      },
+
+      Guide(title) {
+        if (ctx.annotation) {
+          throw new Error(`Multiple annotations are not supported for guides. At line ${i + 1}`);
+        } else {
+          return {
+            annotation: 'guide',
+            current: {
+              title,
+              meta: '',
+              doc: '',
+              multi: false,
+              sealed: false
+            },
+            ast: ctx.ast
           };
         }
       },
@@ -153,7 +175,7 @@ const parse = (source) =>
           throw new Error(`Annotation separator found without a matching entity at line ${i + 1}`);
         }
         return {
-          annotation: false,
+          annotation: null,
           current: ctx.current,
           ast: ctx.ast
         };
@@ -161,7 +183,7 @@ const parse = (source) =>
 
       EOF() {
         return {
-          annotation: false,
+          annotation: null,
           current: null,
           ast: append(ctx.ast, ctx.current)
         };
@@ -172,24 +194,24 @@ const parse = (source) =>
           throw new Error(`Documentation found before an entity annotation at line ${i + 1}`);
         }
         if (ctx.annotation) {
-          const { ref, meta, doc, multi } = ctx.current;
+          const { title, ref, meta, doc, multi } = ctx.current;
           return {
-            annotation: true,
-            current: { ref, meta: meta + '\n' + line, doc, multi, sealed: true },
+            annotation: ctx.annotation,
+            current: { title, ref, meta: meta + '\n' + line, doc, multi, sealed: true },
             ast: ctx.ast
           };
         } else {
-          const { ref, meta, doc, multi } = ctx.current;
+          const { title, ref, meta, doc, multi } = ctx.current;
           return {
-            annotation: false,
-            current: { ref, meta, doc: doc + '\n' + line, multi, sealed: true },
+            annotation: null,
+            current: { title, ref, meta, doc: doc + '\n' + line, multi, sealed: true },
             ast: ctx.ast
           };
         }
       }
     }), {
       current: null,
-      annotation: false,
+      annotation: null,
       ast: []
     }).ast;
 
@@ -204,7 +226,7 @@ const parseMeta = (entity) => {
   if (entity.multi) {
     return entity.ref.map(ref => ({ ref, meta }));
   } else {
-    return [{ ref: entity.ref, meta }];
+    return [{ title: entity.title, ref: entity.ref, meta }];
   }
 };
 
@@ -318,6 +340,10 @@ const annotateEntity = template(
   `meta.for(ENTITY).update(OBJECT)`
 );
 
+const annotateGuide = template(`
+  meta.for(folktale._guides[GUIDE] = {}).update(OBJECT)
+`)
+
 const moduleExport = template(
   `module.exports = VALUE`
 );
@@ -386,11 +412,23 @@ const generate = (entities, options) =>
     )
   ).code;
 
-const generateEntity = (entity, options) =>
-  annotateEntity({
-    ENTITY: parseJsExpr(entity.ref, options),
-    OBJECT: mergeMeta(options, entity.meta)
-  });
+const generateEntity = (entity, options) => {
+  if (entity.ref) {
+    console.log('Annotate: ', entity.ref);
+    return annotateEntity({
+      ENTITY: parseJsExpr(entity.ref, options),
+      OBJECT: mergeMeta(options, entity.meta)
+    });
+  } else if (entity.title) {
+    return annotateGuide({
+      GUIDE: t.stringLiteral(entity.title),
+      OBJECT: mergeMeta(options, merge(entity.meta, {
+        name: entity.title,
+        module: 'guides'
+      }))
+    });
+  }
+};
 
 
 // --[ Main ]----------------------------------------------------------
