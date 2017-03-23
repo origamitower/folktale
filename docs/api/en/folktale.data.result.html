@@ -259,7 +259,7 @@ validateResult({
   type: &#39;email&#39;,
   email: &#39;alissa@somedomain&#39;
 });
-// =&gt; Result.Ok({ name: &#39;Alissa&#39;, type: &#39;email&#39;, phone: undefined, email: &#39;alissa@somedomain&#39; })
+// ==&gt; Result.Ok({ name: &#39;Alissa&#39;, type: &#39;email&#39;, phone: undefined, email: &#39;alissa@somedomain&#39; })
 </code></pre><p>So, Results give you simpler and more predictable forms of error handling, that
 still allow error propagation and composition to happen, as with regular
 JavaScript exceptions, at the cost of some additional syntactical overhead,
@@ -354,7 +354,7 @@ const digit = (input) =&gt; {
 };
 
 digit(&#39;012&#39;); 
-// =&gt; Result.Ok([&#39;0&#39;, &#39;12&#39;])
+// ==&gt; Result.Ok([&#39;0&#39;, &#39;12&#39;])
 
 digit(&#39;a12&#39;); 
 // ==&gt; Result.Error(&#39;Expected a digit (0..9), got &quot;a&quot;&#39;)
@@ -365,13 +365,13 @@ We can also only proceed to the next character if the first one succeeds
 <p>If we have a fixed number of digits that would look like the following:</p>
 <pre><code>const twoDigits = (input) =&gt;
   digit(input).chain(([char1, rest]) =&gt;
-    digit(rest).chain(([char2, rest]) =&gt;
+    digit(rest).map(([char2, rest]) =&gt;
       [char1 + char2, rest]
     )
   );
 
 twoDigits(&#39;012&#39;);
-// =&gt; Result.Ok([&#39;01&#39;, &#39;2&#39;])
+// ==&gt; Result.Ok([&#39;01&#39;, &#39;2&#39;])
 
 twoDigits(&#39;a12&#39;);
 // ==&gt; Result.Error(&#39;Expected a digit (0..9), got &quot;a&quot;&#39;)

@@ -30,7 +30,7 @@ to <code>Success</code>es.</p>
 <code>Nothing</code>, any other value maps to <code>Just</code>s.</p>
 </div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.data.conversions.nullable-to-result.nullableToResult.html">nullableToResult(a)</a><div class="doc-summary"><div><p>Converts a nullable value to a <code>Result</code>. <code>null</code> and <code>undefined</code> map to
 <code>Error</code>s, any other value maps to <code>Ok</code>s.</p>
-</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.data.conversions.nullable-to-validation.nullableToValidation.html">nullableToValidation(a)</a><div class="doc-summary"><div><p>Converts a nullable value to a <code>Validation</code>. <code>null</code> and <code>undefined</code>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.data.conversions.nullable-to-validation.nullableToValidation.html">nullableToValidation(a, fallbackValue)</a><div class="doc-summary"><div><p>Converts a nullable value to a <code>Validation</code>. <code>null</code> and <code>undefined</code>
 map to <code>Failure</code>s, any other type maps to <code>Success</code>es.</p>
 </div></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/conversions/index.js at line 14, column 0</div><pre class="source-code"><code class="language-javascript">{
   resultToValidation: require('./result-to-validation'),
