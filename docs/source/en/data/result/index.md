@@ -267,7 +267,7 @@ Using `Result`, the previous examples would look like this::
       type: 'email',
       email: 'alissa@somedomain'
     });
-    // => Result.Ok({ name: 'Alissa', type: 'email', phone: undefined, email: 'alissa@somedomain' })
+    // ==> Result.Ok({ name: 'Alissa', type: 'email', phone: undefined, email: 'alissa@somedomain' })
 
 
 So, Results give you simpler and more predictable forms of error handling, that
@@ -376,7 +376,7 @@ parse a single digit::
     };
     
     digit('012'); 
-    // => Result.Ok(['0', '12'])
+    // ==> Result.Ok(['0', '12'])
 
     digit('a12'); 
     // ==> Result.Error('Expected a digit (0..9), got "a"')
@@ -390,13 +390,13 @@ If we have a fixed number of digits that would look like the following::
 
     const twoDigits = (input) =>
       digit(input).chain(([char1, rest]) =>
-        digit(rest).chain(([char2, rest]) =>
+        digit(rest).map(([char2, rest]) =>
           [char1 + char2, rest]
         )
       );
 
     twoDigits('012');
-    // => Result.Ok(['01', '2'])
+    // ==> Result.Ok(['01', '2'])
     
     twoDigits('a12');
     // ==> Result.Error('Expected a digit (0..9), got "a"')

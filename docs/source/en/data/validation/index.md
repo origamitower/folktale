@@ -29,7 +29,7 @@ or a `Failure(value)`, which contains an error.
                .map(_ => password);
 
     isPasswordValid('foo');
-    // ==> Failure(['Password must have more than 6 characters', 'Password must contain a special character.'])
+    // ==> Failure(['Password must have more than 6 characters.', 'Password must contain a special character.'])
 
     isPasswordValid('rosesarered');
     // ==> Failure(['Password must contain a special character.'])
@@ -70,7 +70,7 @@ With branching, things get quickly out of hand, because it's difficult to abstra
       name: 'Alissa',
       password: 'alis'
     });
-    // ==> ['Password must have more than 6 characters', 'Password must contain a special character']
+    // ==> ['Password must have at least 6 characters', 'Password must contain a special character']
 
 
     validateForm({
@@ -85,18 +85,18 @@ You can manage this complexity by designing a special function for verifying if 
 
     const validators = {
       notEmpty(object, { property }) {
-        return object[property].trim() ?  [`${property} can't be empty']
-        :      /* else */                 [];
+        return !object[property].trim() ?  [`${property} can't be empty`]
+        :      /* else */                  [];
       },
 
       minLength(object, { property, min }) {
-        const value = object[property]
-        return value.length < min ?  [`${property} should be at least ${min} characters']
+        const value = object[property];
+        return value.length < min ?  [`${property} must have at least ${min} characters`]
         :      /* else */            [];
       },
 
       regexp(object, { property, regexp, message }) {
-        return !regex.test(object[property]) ?  [message]
+        return !regexp.test(object[property]) ?  [message]
         :      /* else */                       [];
       }
     };
@@ -122,22 +122,22 @@ You can manage this complexity by designing a special function for verifying if 
           rule: 'regexp',
           property: 'password',
           regexp: /\W/,
-          message: 'Password must contain a special character'
+          message: 'password must contain a special character'
         }
-      ]);
+      ])(data);
     }
     
     validateForm2({
       name: '',
       password: 'roses$are$red'
     });
-    // ==> ['Name is required']
+    // ==> ['name can\'t be empty']
 
     validateForm2({
       name: 'Alissa',
       password: 'alis'
     });
-    // ==> ['Password must have more than 6 characters', 'Password must contain a special character']
+    // ==> ['password must have at least 6 characters', 'password must contain a special character']
 
     validateForm2({
       name: 'Alissa',
@@ -154,19 +154,19 @@ Neither of those are very compelling. The Validation structure gives you a tool 
 
     const notEmpty = (field, value) =>
       value.trim() ?   Success(field)
-    : /* else */       Failure([`${field} can't be empty']);
+    : /* else */       Failure([`${field} can't be empty`]);
 
     const minLength = (field, min, value) =>
       value.length > min ?   Success(value)
-    : /* otherwise */        Failure(['${field} must have more than ${min} characters.']);
+    : /* otherwise */        Failure([`${field} must have at least ${min} characters`]);
 
     const matches = (field, regexp, value, message = '') =>
       regexp.test(value) ?  Success(value)
-    : /* otherwise */       Failure([message || '${field} must match ${regexp}']);
+    : /* otherwise */       Failure([message || `${field} must match ${regexp}`]);
 
     const isPasswordValid = (password) =>
-      Success().concat(minLength('password', password))
-               .concat(matches('password', /\W/))
+      Success().concat(minLength('password', 6, password))
+               .concat(matches('password', /\W/, password, 'password must contain a special character'))
                .map(_ => password);
 
     const isNameValid = (name) =>
@@ -181,17 +181,17 @@ Neither of those are very compelling. The Validation structure gives you a tool 
       name: '',
       password: 'roses$are$red'
     });
-    // ==> Failure(['name is required'])
+    // ==> Failure(['name can\'t be empty'])
 
     validateForm3({
       name: 'Alissa',
       password: 'alis'
     });
-    // ==> Failure(['password must have more than 6 characters', 'password must contain a special character'])
+    // ==> Failure(['password must have at least 6 characters', 'password must contain a special character'])
 
 
     validateForm3({
       name: 'Alissa',
       password: 'roses$are$red'
     });
-    // => Success({ name: 'Alissa', password: 'roses$are$red' })
+    // ==> Success({ name: 'Alissa', password: 'roses$are$red' })
