@@ -4,7 +4,7 @@ category: Handling failures
 
 A data structure that models the result of operations that may fail. A `Result`
 helps with representing errors and propagating them, giving users a more
-controllable form of sequencing operations with the power of constructs like
+controllable form of sequencing operations than that offered by constructs like
 `try/catch`.
 
 A `Result` may be either an `Ok(value)`, which contains a successful value, or

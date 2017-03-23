@@ -54,8 +54,8 @@ tends to come in three different concepts:
     are another example.
 
   - **Unions** represent one of out of many concepts, at any given
-    time. JS doesn't have many data structure that captures the idea
-    of an union, but there are many cases where this happens in a
+    time. JS doesn't have many data structures that capture the idea
+    of a union, but there are many cases where this happens in a
     codebase: 
 
       - Reading a file may either give you the data in that
@@ -464,7 +464,7 @@ properties to the ADT::
 A better approach, however, may be to use the `derive` function from
 the ADT to provide new functionality to every variant. `derive` accepts
 many derivation functions, which are just functions taking a variant and
-and ADT, and providing new functionality for that variant.
+ADT, and providing new functionality for that variant.
 
 If one wanted to define a JSON serialisation for each variant, for example,
 they could do so by using the `derive` functionality::
