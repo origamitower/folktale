@@ -17,6 +17,38 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 
 ## [Unreleased]
 
+### New features
+
+  - Equality derivation now uses a limited deep-equality (for arrays/objects) by default
+    ([373b518](https://github.com/origamitower/folktale/commit/373b518f6c44dd8ec3f52fe966152c0ad13baae9))
+
+
+### Bug fixes
+
+  - Fixes `fromJSON` in the presence of getters, where it'd fail when trying to set values in the reified structure
+    ([f4026e0](https://github.com/origamitower/folktale/commit/f4026e0e585e658877b45231653dfdff7d380f23))
+  - Serialises `undefined` as `null` so all keys are kept in the serialised structure
+    ([ffee127](https://github.com/origamitower/folktale/commit/ffee127d155a56eaabd788fa13c2b55b76016636))
+
+
+### BREAKING CHANGES
+
+  - ([da6c2e3](https://github.com/origamitower/folktale/commit/da6c2e3091ea070c200c6a8cbb15461981d9185f))
+    `nullable → validation` now takes a fallback value, so Failures are kept as semigroups. By default, if you don't pass anything, the fallback value will be `undefined`, so this only breaks things if you were relying on `nullableToValidation(null)` giving you `Failure(null)`. To fix it, simply pass an additional parameter:
+
+    ```js
+    // Before
+    nullableToValidation(null);
+    Validation.fromNullable(null);
+
+    // Now
+    nullableToValidation(null, null);
+    Validation.fromNullable(null, null);
+    ```
+
+    That said, you should keep your Failures as proper semigroups, so things like `.apply` and `.concat` will work correctly.
+    
+
 
 ## [2.0.0-alpha3] - 2017-03-11
 
