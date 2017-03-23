@@ -13,7 +13,7 @@ The design of the Folktale library is guided by the following principles:
   - **Favour a heavier use of arrow functions over currying**
     — Curried functions can be composed in several ways. And this is a good
     thing, because it means it's easier to create new functionality by combining
-    existing ones. However, in an untyped language, you have no ways of
+    existing ones. However, in an untyped language, you have no way of
     enforcing a correct composition of functions, so currying in JS tends to
     lead to silent or late errors. Coupled with JavaScript's heavy use of
     variadic functions, and the VM's unhelpful error reporting, these have the
@@ -28,7 +28,7 @@ The design of the Folktale library is guided by the following principles:
     — JavaScript's syntax is limited, but some of the proposed additions to it
     lead to programs that are easier to read. One of them is the
     [This-Binding syntax](https://github.com/zenparsing/es-function-bind), which
-    allows unsing functions in infix position:
+    allows using functions in infix position:
 
     ```js
     const _groupBy = require('folktale/core/iterator/group-by');
@@ -75,7 +75,7 @@ The design of the Folktale library is guided by the following principles:
       old versions of Maybe, Either, and Validation.
 
   - **Better support for interactive (REPL) development**
-    — One of the long-term goals with Folktale is to have a really good support
+    — One of the long-term goals with Folktale is to have really good support
     for interactive development in the REPL. The first step for that is to be
     able to view documentation directly from the REPL, which is being done by
     annotating objects with the

@@ -79,7 +79,7 @@ equal if they represent the same value. This is called *structural
 equality*.
 
 
-## Equality in details
+## Equality in detail
 
 Given two data structures, they are considered equal if:
 
@@ -119,8 +119,8 @@ amongst other ADTs::
     Ok(1)[data.tagSymbol];     // ==> 'Ok'
     Error(1)[data.tagSymbol];  // ==> 'Error'
 
-Finally, the keys in an ADT are the same as the keys in the constructor
-returns. So, in this case, both Ok and Errors have `[value]` as the key::
+Finally, the keys in an ADT are the same as the keys which the constructor
+returns. So, in this case, both Ok and Error have `[value]` as the key::
 
     Object.keys(Ok(1));    // ==> ['value']
     Object.keys(Error(1)); // ==> ['value']
@@ -146,7 +146,7 @@ So if we compare these two for equality::
 
 ## How complex equality works?
 
-The values in an ADT aren't always a JS primitive, such as numbers and
+The values in an ADT aren't always JS primitives, such as numbers and
 strings. Equality's `equals` method handles these in two different ways:
 
   - If the values implement Equality, then the values are compared using the
@@ -185,7 +185,7 @@ or `Symbol.toStringTag` properties.
 
 To handle complex JS values, one must provide their own deep equality
 function. Folktale does not have a deep equality function yet, but
-most functional libraries have a `equals` function for that.
+most functional libraries have an `equals` function for that.
 
 Here's an example of an equality function that checks array equality::
 

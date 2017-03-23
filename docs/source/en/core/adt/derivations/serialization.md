@@ -110,7 +110,7 @@ ADT takes a list of parsers as argument::
 
 ## The serialisation format
 
-In order to support the serialisatio and parsing of ADTs, this module
+In order to support the serialisation and parsing of ADTs, this module
 uses a specific format that encodes that information in the serialised
 data. This way, `.toJSON()` produces values of this interface, and
 `.fromJSON(value)` expects values of this interface:
