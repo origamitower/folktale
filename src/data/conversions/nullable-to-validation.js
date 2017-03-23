@@ -20,8 +20,8 @@ const { Success, Failure } = require('folktale/data/validation/validation');
  *     (a or None, b) => Validation b a
  */
 const nullableToValidation = (a, fallbackValue) =>
-  a != null ? Success(a)
-  :/*else*/   Failure(fallbackValue);
+  a != null ?  Success(a)
+  :/*else*/    Failure(fallbackValue);
 
 
 module.exports = nullableToValidation;
