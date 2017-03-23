@@ -33,13 +33,15 @@
 
 - (scoped) The scope of changes.
   - (core)              The Core package
-    - (adt)               The ADT package
-    - (lambda)            The Lambda package
-    - (object)            The Object package
-    - (fl)                The Fantasy Land package
+    - (adt)               The ADT module
+    - (lambda)            The Lambda module
+    - (object)            The Object module
+    - (fl)                The Fantasy Land module
   - (data)              The Data package
-    - (result)            The Result structure
-    - (maybe)             The Maybe structure
-    - (val validation)    The Validation structure
-    - (task)              The Task structure
+    - (convert)           The Conversions module
+    - (result)            The Result module
+    - (maybe)             The Maybe module
+    - (val validation)    The Validation module
+    - (task)              The Task module
+    - (future)            The Future module
   - (helpers)           The Helpers package
