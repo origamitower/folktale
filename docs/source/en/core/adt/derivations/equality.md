@@ -153,9 +153,9 @@ strings. Equality's `equals` method handles these in two different ways:
     left's `equals` method. This means that if all values implement Equality
     or are primitives, deep equality just works.
 
-  - If the values do not implement Equaity, the provided equality comparison is
-    used to compare both values. By default, this comparison just uses
-    reference equality, so it's the equivalent of `a === b`.
+  - If the values do not implement Equality, the provided equality comparison is
+    used to compare both values. By default, this comparison tests plain objects
+    and arrays structurally, and all other values with `===`.
 
 Here's an example::
 
@@ -167,8 +167,21 @@ Here's an example::
     // This is fine, because all values implement Equality or are primitives
     Id(Id(1)).equals(Id(Id(1))); // ==> true
 
-    // This is not fine, because it compares `[1] === [1]`
-    Id([1]).equals(Id([1]));     // ==> false
+    // This is not fine, because they're arrays
+    Id([1]).equals(Id([1])); // ==> true
+
+    // This is fine, because they're plain objects
+    Id({ a: 1 }).equals(Id({ a: 1 })); // ==> true
+
+    const { Other } = data('Other', { 
+      Other(value) { return { value } }
+    });
+
+    // This isn't fine, because they're not plain objects
+    Id({ value: 1 }).equals(Id(Other(1))); // ==> false
+
+A plain object is any object that doesn't overwrite the `.toString`
+or `Symbol.toStringTag` properties.
 
 To handle complex JS values, one must provide their own deep equality
 function. Folktale does not have a deep equality function yet, but

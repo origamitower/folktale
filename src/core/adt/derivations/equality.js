@@ -15,6 +15,9 @@ const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const copyDocs = require('folktale/helpers/copy-documentation');
 const { tagSymbol, typeSymbol } = require('../data');
 
+const toString = Object.prototype.toString;
+const prototypeOf = Object.getPrototypeOf;
+
 
 // --[ Helpers ]--------------------------------------------------------
 
@@ -29,6 +32,40 @@ const isSetoid = (value) => value != null
  */
 const sameType = (a, b) => a[typeSymbol] === b[typeSymbol] 
                         && a[tagSymbol] === b[tagSymbol];
+
+
+const isPlainObject = (object) =>
+   !prototypeOf(object)
+|| !object.toString
+|| (toString.call(object) === object.toString());
+
+
+const deepEquals = (a, b) => {
+  if (a === b)  return true;
+
+  const leftSetoid  = isSetoid(a);
+  const rightSetoid = isSetoid(b);
+  if (leftSetoid) {
+    if (rightSetoid)  return flEquals(a, b);
+    else              return false;
+  }
+
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return a.length === b.length
+    &&     a.every((x, i) => deepEquals(x, b[i]));
+  }
+
+  if (isPlainObject(a) && isPlainObject(b)) {
+    const keysA = Object.keys(a);
+    const keysB = Object.keys(b);
+    const setB = new Set(keysB);
+    return keysA.length === keysB.length
+    &&     prototypeOf(a) === prototypeOf(b)
+    &&     keysA.every(k => setB.has(k) && a[k] === b[k]);
+  }
+
+  return false;
+}
 
 
 // --[ Implementation ]------------------------------------------------
@@ -108,6 +145,6 @@ const createDerivation = (valuesEqual) => {
 // --[ Exports ]-------------------------------------------------------
 
 /*~~inheritsMeta: createDerivation */
-module.exports = createDerivation((a, b) => a === b);
+module.exports = createDerivation(deepEquals);
 
 module.exports.withCustomComparison = createDerivation;
