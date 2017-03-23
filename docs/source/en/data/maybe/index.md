@@ -176,7 +176,7 @@ values::
     }
     
     first([{ title: 'Hello' }]).map(render);
-    // => Maybe.Just(['item', ['title', 'Hello']])
+    // ==> Maybe.Just(['item', ['title', 'Hello']])
     
     first([]).map(render);
     // ==> Maybe.Nothing()
@@ -205,11 +205,11 @@ another Maybe value::
     }
 
     first([{ title: 'Hello' }]).map(render);
-    // => Maybe.Just(['item', ['title', 'Hello']])
+    // ==> Maybe.Just(['item', ['title', 'Hello']])
     
     first([{ title: 'Hello' }]).map(render)
                                .map(second);
-    // => Maybe.Just(Maybe.Just(['title', 'Hello']))
+    // ==> Maybe.Just(Maybe.Just(['title', 'Hello']))
       
 Ideally we'd like to get back `Maybe.Just(['title', 'Hello'])`, but `.map()`
 isn't the method for that. Instead, we can use the `.chain()` method. `.chain()`
@@ -220,7 +220,7 @@ the operation. Like `.map()`, `.chain()` only applies its function argument to
 
     first([{ title: 'Hello' }]).map(render)
                                .chain(second);
-    // => Maybe.Just(['title', 'Hello'])
+    // ==> Maybe.Just(['title', 'Hello'])
     
     first([]).map(render).chain(second);
     // ==> Maybe.Nothing()
