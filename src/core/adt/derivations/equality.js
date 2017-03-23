@@ -34,10 +34,13 @@ const sameType = (a, b) => a[typeSymbol] === b[typeSymbol]
                         && a[tagSymbol] === b[tagSymbol];
 
 
-const isPlainObject = (object) =>
-   !prototypeOf(object)
-|| !object.toString
-|| (toString.call(object) === object.toString());
+const isPlainObject = (object) => {
+  if (Object(object) !== object)  return false;
+
+  return !prototypeOf(object)
+  ||     !object.toString
+  ||     (toString.call(object) === object.toString());
+}
 
 
 const deepEquals = (a, b) => {
