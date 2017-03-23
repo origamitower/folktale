@@ -36,8 +36,8 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall v1, v2, e, r:
-   *     (Task v1 e r).((v1) => Task v2 e r) => Task v2 e r
+   *   forall e, v1, v2, r:
+   *     (Task e v1 r).((v1) => Task e v2 r) => Task e v2 r
    */
   chain(transformation) {
     return new Task(
@@ -63,8 +63,8 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall v1, v2, e, r:
-   *     (Task v1 e r).((v1) => v2) => Task v2 e r
+   *   forall e, v1, v2, r:
+   *     (Task e v1 r).((v1) => v2) => Task e v2 r
    */
   map(transformation) {
     return new Task(
@@ -84,8 +84,8 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall v1, v2, e, r:
-   *     (Task ((v1) => v2) e r).(Task v1 e r) => Task v2 e r
+   *   forall e, v1, v2, r:
+   *     (Task e ((v1) => v2) r).(Task e v1 r) => Task e v2 r
    */
   apply(task) {
     return this.chain(f => task.map(f));
@@ -94,8 +94,8 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall v1, v2, e1, e2, r:
-   *     (Task v1 e1 r).((e1) => e2, (v1) => v2) => Task v2 e2 r
+   *   forall e1, e2, v1, v2, r:
+   *     (Task e1 v1 r).((e1) => e2, (v1) => v2) => Task e2 v2 r
    */
   bimap(rejectionTransformation, successTransformation) {
     return new Task(
@@ -115,14 +115,14 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall v1, v2, e1, e2, r:
+   *   forall e1, e2, v1, v2, r:
    *     type Pattern = { row |
-   *       Cancelled: ()  => Task v2 e2 r,
-   *       Resolved:  (b) => Task v2 e2 r,
-   *       Rejected:  (a) => Task v2 e2 r
+   *       Cancelled: ()  => Task e2 v2 r,
+   *       Resolved:  (b) => Task e2 v2 r,
+   *       Rejected:  (a) => Task e2 v2 r
    *     }
    *
-   *     (Task v1 e1 r).(Pattern) => Task v2 e2 r
+   *     (Task e1 v1 r).(Pattern) => Task e2 v2 r
    */
   willMatchWith(pattern) {
     return new Task(
@@ -147,7 +147,7 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall v, e, r: (Task v e r).() => Task e v r
+   *   forall e, v, r: (Task e v r).() => Task v e r
    */
   swap() {
     return new Task(
@@ -167,8 +167,8 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall v, e, r1, r2:
-   *     (Task v e r1).(Task v e r2) => Task v e (r1 and r2)
+   *   forall e, v, r1, r2:
+   *     (Task e v r1).(Task e v r2) => Task e v (r1 and r2)
    */
   or(that) {
     return new Task(
@@ -209,8 +209,8 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall v1, v2, e, r1, r2:
-   *     (Task v1, e, r1).(Task v2, e, r2) => Task (v1, v2) e (r1 and r2)
+   *   forall e, v1, v2, r1, r2:
+   *     (Task e v1 r1).(Task e v2 r2) => Task e (v1 v2) (r1 and r2)
    */
   and(that) {
     return new Task(
@@ -270,7 +270,7 @@ class Task {
   /*~
    * stability: experimental
    * type: |
-   *   forall v, e, r: (Task v e r).() => TaskExecution v e r
+   *   forall e, v, r: (Task e v r).() => TaskExecution e v r
    */
   run() {
     let deferred = new Deferred();    // eslint-disable-line prefer-const
@@ -310,7 +310,7 @@ Object.assign(Task, {
   /*~
    * stability: experimental
    * type: |
-   *   forall v, e, r: (v) => Task v e r
+   *   forall e, v, r: (v) => Task e v r
    */
   of(value) {
     return new Task(resolver => resolver.resolve(value));
@@ -319,7 +319,7 @@ Object.assign(Task, {
   /*~
    * stability: experimental
    * type: |
-   *   forall v, e, r: (e) => Task v e r
+   *   forall e, v, r: (e) => Task e v r
    */
   rejected(reason) {
     return new Task(resolver => resolver.reject(reason));
