@@ -7,20 +7,29 @@
 //
 //----------------------------------------------------------------------
 
+const Validation = require('./validation');
+const { typeSymbol } = require('folktale/core/adt/data');
+
+
 /*~ 
  * stability: unstable
  * name: module folktale/data/validation
  */
 module.exports = {
-  ...require('./validation'),
+  Success: Validation.Success,
+  Failure: Validation.Failure,
+  hasInstance: Validation.hasInstance,
+  of: Validation.of,
+  fromJSON: Validation.fromJSON,
+  [typeSymbol]: Validation[typeSymbol],
   collect: require('./collect'),
 
   /*~
    * type: |
-   *   forall a: (a or None) => Validation None a
+   *   forall a, b: (a or None, b) => Validation b a
    */
-  fromNullable(aNullable) {
-    return require('folktale/data/conversions/nullable-to-validation')(aNullable);
+  fromNullable(aNullable, fallbackValue) {
+    return require('folktale/data/conversions/nullable-to-validation')(aNullable, fallbackValue);
   },
 
   /*~

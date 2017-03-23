@@ -16,12 +16,12 @@ const { Success, Failure } = require('folktale/data/validation/validation');
  *   - "@boris-marinov"
  * 
  * type: |
- *   forall a:
- *     (a or None) => Validation None a
+ *   forall a, b:
+ *     (a or None, b) => Validation b a
  */
-const nullableToValidation = (a) =>
+const nullableToValidation = (a, fallbackValue) =>
   a != null ? Success(a)
-  :/*else*/   Failure(a);
+  :/*else*/   Failure(fallbackValue);
 
 
 module.exports = nullableToValidation;

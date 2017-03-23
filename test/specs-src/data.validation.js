@@ -138,13 +138,13 @@ describe('Data.Validation', () => {
     });
   });
   describe('Conversions', () => {
-    property('Failure#fromNullable', () => {
-        return _.fromNullable(null).equals(_.Failure(null))
-        &&     _.fromNullable(undefined).equals(_.Failure(undefined));
+    property('Failure#fromNullable', 'string', (a) => {
+        return _.fromNullable(null, a).equals(_.Failure(a))
+        &&     _.fromNullable(undefined, a).equals(_.Failure(a));
     });
 
-    property('Success#fromNullable', 'number | string | bool | dict nat | array nat', (a) => {
-        return _.fromNullable(a).equals(_.Success(a))
+    property('Success#fromNullable', 'number | string | bool | dict nat | array nat', 'string', (a, b) => {
+        return _.fromNullable(a, b).equals(_.Success(a))
     }); 
     property('Validation#fromResult', 'json', (a) => {
       return _.fromResult(_.Success(a).toResult()).equals(_.Success(a));
