@@ -11,6 +11,7 @@ const { property, forall} = require('jsverify');
 const _ = require('folktale/data/result');
 const laws = require('../helpers/fantasy-land-laws');
 
+
 describe('Data.Result', function() {
 
   describe('constructors', () => {
@@ -34,8 +35,8 @@ describe('Data.Result', function() {
   });
 
   describe('Applicative', () => {
-    property('of', 'json', 'json', (a, b) => {
-      return (a === b) === (_.of(a).equals(_.of(b)))
+    property('of', 'json', (a) => {
+      return _.of(a).equals(_.Ok(a))
     });
 
     property('apply', 'json', 'json -> json', (a, f) => {
