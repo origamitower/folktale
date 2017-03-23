@@ -40,7 +40,7 @@ describe('core.fantasyLand', function() {
       return _.of(ma)(a).equals(ma['fantasy-land/of'](a))
     });
 
-    property('equals', 'functor json', 'functor json', env, function(a, b) {
+    property('equals', 'strict_setoid json', 'strict_setoid json', env, function(a, b) {
       return _.equals(b)(a) === a['fantasy-land/equals'](b)
     });
     property('bimap', 'bifunctor json', 'json -> json', 'json -> json', env, function(a, f, g) {

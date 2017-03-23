@@ -37,5 +37,6 @@ module.exports = {
   result: returns([result]),
   validation: returns([validation]),
   future: returns([future]),
-  task: returns([task])
+  task: returns([task]),
+  strict_setoid: returns([Text])
 };
