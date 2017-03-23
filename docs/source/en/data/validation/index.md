@@ -195,3 +195,134 @@ Neither of those are very compelling. The Validation structure gives you a tool 
       password: 'roses$are$red'
     });
     // ==> Success({ name: 'Alissa', password: 'roses$are$red' })
+
+
+## Working with Validation values
+
+A validation m ay be one of the following cases:
+
+  - `Success(value)` — represents a successful value (e.g.: the result of passing a validator);
+  - `Failure(value)` — represents an unsuccessful value (e.g.: the result of failing a validation rule);
+
+Validation functions just return one of these two cases instead of throwing errors or mutating other variables. Working with Validation values typically falls into one of the following categories:
+
+  - **Combining validations**: Sometimes we want to create more complex validation rules that reuse simpler ones. These functions let us take the result of those rules and put them together into a single Validation value.
+
+  - **Transforming values**: Sometimes we get a `Validation` value that isn't quite what we're looking for. We don't really want to change anything about the status of the validation (whether it passed or failed), but we'd like to tweak the *value* a little bit. This is the equivalent of applying functions in an expression.
+
+  - **Reacting to results**: Once we have a Validation value, we must be able to run pieces of code depending on whether the validation succeeded or failed, with access to the failure reason in the later case.
+
+We'll see each of these categories in more details below.
+
+
+### Combining validations
+
+Combining validations is the most common thing to do with the Validation structure once you have some more complex validations in place. There are a few options that may be more or less convenient for you.
+
+The simplest way of combining validations is through the `.concat` method. When concatenating validations, failures are themselves concatenated, but concatenating two successes just yields the latter one::
+
+    const { Success, Failure } = require('folktale/data/validation');
+
+    Failure('a').concat(Failure('b'));
+    // ==> Failure('ab')
+
+    Failure('a').concat(Success('b'));
+    // ==> Failure('a')
+
+    Success('a').concat(Success('b'));
+    // ==> Success('b')
+
+If you have a constructor for a data structure that can be curried, it's often more convenient to use the `.apply` method instead::
+
+    const curry = require('folktale/core/lambda/curry');
+
+    const Language = (name, compiler) => ({ name, compiler });
+
+    Success(curry(2, Language))
+      .apply(Success('Rust'))
+      .apply(Success('rustc'));
+    // ==> { name: 'Rust', compiler: 'rustc' }
+
+Finally, if you have an array of validations, it's convenient to use the module-level `collect` function::
+
+    const { collect } = require('folktale/data/validation');
+
+    collect([Failure('a'), Failure('b'), Success('c')]);
+    // ==> Failure('ab')
+
+`collect` uses `.concat` internally, so you end up with the last success if all validations succeed::
+
+    collect([Success('a'), Success('b')]);
+    // ==> Success('b')
+
+
+### Transforming values
+
+It's usually more convenient to use `.apply` when possible to get transformed values in one go, but sometimes you want to discard some of the values, or you may not know how many values you're getting in the validation. Sometimes you don't even want any of the success values in your resulting structure. For all of these cases, `.apply` makes less sense, and you have to transform the result after combining the validations. That's what `.map` is for::
+
+    const { Success, Failure } = require('folktale/data/validation');
+
+    Success(1).map(x => x + 1);
+    // ==> Success(2)
+
+    Failure('a').map(x => x + 1);
+    // ==> Failure('a')
+
+    Success(1).concat(Success(2)).map(_ => 'hello');
+    // ==> Success('hello')
+
+It's also possible to transform the failure values through the `.mapFailure` function::
+
+    Failure('a').map(x => x.toUpperCase());
+    // ==> Failure('A')
+
+    Success('a').map(x => x.toUpperCase());
+    // ==> Success('a')
+
+
+### Reacting to results
+
+Once you've combined all of the validations, you usually want to see if the overall validation succeeded or failed, and then take the appropriate path in your code for each case. The `.matchWith` function helps with this. `.matchWith` is a function provided for every union structure in Foltkale, and it lets you select a piece of code to run based on how the value you're interacting with is tagged. In the case of Validations, it lets you select a piece of code for failures, and a piece of code for successes::
+
+    const { Success, Failure } = require('folktale/data/validation');
+
+    Success(1).matchWith({
+      Success: ({ value }) => `Success: ${value}`,
+      Failure: ({ value }) => `Failure: ${value}`
+    });
+    // ==> 'Success: 1'
+
+    Failure(1).matchWith({
+      Success: ({ value }) => `Success: ${value}`,
+      Failure: ({ value }) => `Failure: ${value}`
+    });
+    // ==> 'Failure: 1'
+
+
+## How does Validation compare to Result?
+
+Result and Validation are pretty close structures. They both try to represent
+whether a particular thing has failed or succeeded, and even their vocabulary is
+very similar (`Error` vs. `Failure`, `Ok` vs. `Success`). The major difference
+is in some of their methods.
+
+A Result is a data structure that implements the Monad interface (`.chain`).
+This makes Result a pretty good structure to model a sequence of computations
+that may fail, where a computation may only run if the previous computation
+succeeded. In this sense, a Result's `.chain` method is very similar to
+JavaScript's `;` at the end of statements: the statement at the right of the
+semicolon only runs if the statement at the left did not throw an error.
+
+A Validation is a data structure that implements the Applicative interface
+(`.apply`), and does so in a way that if a failure is applied to another
+failure, then it results in a new validation that contains the failures of both
+validations. In other words, Validation is a data structure made for errors that
+can be aggregated, and it makes sense in the contexts of things like form
+validations, where you want to display to the user all of the fields that failed
+the validation rather than just stopping at the first failure.
+
+Validations can't be as easily used for sequencing operations because the
+`.apply` method takes two validations, so the operations that create them must
+have been executed already. While it is possible to use Validations in a
+sequential manner, it's better to leave the job to Result, a data structure made
+for that.
