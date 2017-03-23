@@ -241,7 +241,7 @@ If you have a constructor for a data structure that can be curried, it's often m
     Success(curry(2, Language))
       .apply(Success('Rust'))
       .apply(Success('rustc'));
-    // ==> { name: 'Rust', compiler: 'rustc' }
+    // ==> Success({ name: 'Rust', compiler: 'rustc' })
 
 Finally, if you have an array of validations, it's convenient to use the module-level `collect` function::
 
@@ -273,10 +273,10 @@ It's usually more convenient to use `.apply` when possible to get transformed va
 
 It's also possible to transform the failure values through the `.mapFailure` function::
 
-    Failure('a').map(x => x.toUpperCase());
+    Failure('a').mapFailure(x => x.toUpperCase());
     // ==> Failure('A')
 
-    Success('a').map(x => x.toUpperCase());
+    Success('a').mapFailure(x => x.toUpperCase());
     // ==> Success('a')
 
 

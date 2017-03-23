@@ -12,6 +12,11 @@ A nullable is a value that may be any type, or `null`/`undefined`.
     const nullableToValidation = require('folktale/data/conversions/nullable-to-validation');
     const { Failure, Success } = require('folktale/data/validation');
     
-    nullableToValidation(undefined); // ==> Failure(undefined)
-    nullableToValidation(null);      // ==> Failure(null)
-    nullableToValidation(1);         // ==> Success(1)
+    nullableToValidation(undefined, 'error');
+    // ==> Failure('error')
+
+    nullableToValidation(null, 'error');
+    // ==> Failure('error')
+
+    nullableToValidation(1, 'error');
+    // ==> Success(1)
