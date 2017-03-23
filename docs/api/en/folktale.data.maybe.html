@@ -159,7 +159,7 @@ function render(item) {
 }
 
 first([{ title: &#39;Hello&#39; }]).map(render);
-// =&gt; Maybe.Just([&#39;item&#39;, [&#39;title&#39;, &#39;Hello&#39;]])
+// ==&gt; Maybe.Just([&#39;item&#39;, [&#39;title&#39;, &#39;Hello&#39;]])
 
 first([]).map(render);
 // ==&gt; Maybe.Nothing()
@@ -184,11 +184,11 @@ function render(item) {
 }
 
 first([{ title: &#39;Hello&#39; }]).map(render);
-// =&gt; Maybe.Just([&#39;item&#39;, [&#39;title&#39;, &#39;Hello&#39;]])
+// ==&gt; Maybe.Just([&#39;item&#39;, [&#39;title&#39;, &#39;Hello&#39;]])
 
 first([{ title: &#39;Hello&#39; }]).map(render)
                            .map(second);
-// =&gt; Maybe.Just(Maybe.Just([&#39;title&#39;, &#39;Hello&#39;]))
+// ==&gt; Maybe.Just(Maybe.Just([&#39;title&#39;, &#39;Hello&#39;]))
 </code></pre><p>Ideally we&#39;d like to get back <code>Maybe.Just([&#39;title&#39;, &#39;Hello&#39;])</code>, but <code>.map()</code>
 isn&#39;t the method for that. Instead, we can use the <code>.chain()</code> method. <code>.chain()</code>
 is a method that operates on Maybe values, and expects a function that also
@@ -197,7 +197,7 @@ the operation. Like <code>.map()</code>, <code>.chain()</code> only applies its 
 <code>Just</code> cases:</p>
 <pre><code>first([{ title: &#39;Hello&#39; }]).map(render)
                            .chain(second);
-// =&gt; Maybe.Just([&#39;title&#39;, &#39;Hello&#39;])
+// ==&gt; Maybe.Just([&#39;title&#39;, &#39;Hello&#39;])
 
 first([]).map(render).chain(second);
 // ==&gt; Maybe.Nothing()

@@ -129,9 +129,9 @@ strings. Equality&#39;s <code>equals</code> method handles these in two differen
 left&#39;s <code>equals</code> method. This means that if all values implement Equality
 or are primitives, deep equality just works.</p>
 </li>
-<li><p>If the values do not implement Equaity, the provided equality comparison is
-used to compare both values. By default, this comparison just uses
-reference equality, so it&#39;s the equivalent of <code>a === b</code>.</p>
+<li><p>If the values do not implement Equality, the provided equality comparison is
+used to compare both values. By default, this comparison tests plain objects
+and arrays structurally, and all other values with <code>===</code>.</p>
 </li>
 </ul>
 <p>Here&#39;s an example:</p>
@@ -143,9 +143,21 @@ const { Id } = data(&#39;Id&#39;, {
 // This is fine, because all values implement Equality or are primitives
 Id(Id(1)).equals(Id(Id(1))); // ==&gt; true
 
-// This is not fine, because it compares `[1] === [1]`
-Id([1]).equals(Id([1]));     // ==&gt; false
-</code></pre><p>To handle complex JS values, one must provide their own deep equality
+// This is not fine, because they&#39;re arrays
+Id([1]).equals(Id([1])); // ==&gt; true
+
+// This is fine, because they&#39;re plain objects
+Id({ a: 1 }).equals(Id({ a: 1 })); // ==&gt; true
+
+const { Other } = data(&#39;Other&#39;, { 
+  Other(value) { return { value } }
+});
+
+// This isn&#39;t fine, because they&#39;re not plain objects
+Id({ value: 1 }).equals(Id(Other(1))); // ==&gt; false
+</code></pre><p>A plain object is any object that doesn&#39;t overwrite the <code>.toString</code>
+or <code>Symbol.toStringTag</code> properties.</p>
+<p>To handle complex JS values, one must provide their own deep equality
 function. Folktale does not have a deep equality function yet, but
 most functional libraries have a <code>equals</code> function for that.</p>
 <p>Here&#39;s an example of an equality function that checks array equality:</p>
@@ -257,7 +269,7 @@ a.equals(c); // ==&gt; false
 </code></pre><blockquote>
 <p><strong>NOTE</strong>:<br>You should use a suitable hashing algorithm for your data structures.</p>
 </blockquote>
-</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">withCustomComparison: createDerivation(valuesEqual)</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/derivations/equality.js at line 43, column 0</div><pre class="source-code"><code class="language-javascript">(valuesEqual) =&gt; {
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">prototype</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">withCustomComparison: createDerivation(valuesEqual)</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/derivations/equality.js at line 83, column 0</div><pre class="source-code"><code class="language-javascript">(valuesEqual) =&gt; {
   /*~
    * type: ('a, 'a) =&gt; Boolean
    */
