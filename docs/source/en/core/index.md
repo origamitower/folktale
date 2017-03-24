@@ -1,5 +1,5 @@
 @annotate: folktale.core
-category: API Reference
+category: 1. API Reference
 ---
 Provides essential functionality for functional programs.
 

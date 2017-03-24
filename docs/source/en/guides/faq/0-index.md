@@ -1,5 +1,5 @@
 @guide: Frequently Asked Questions
-category: Support
+category: 2. Support
 authors:
   - "@robotlolita"
 ---
