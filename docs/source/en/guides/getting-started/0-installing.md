@@ -1,5 +1,5 @@
 @guide: Installing Folktale
-category: Getting started
+category: 0. Getting started
 authors:
   - "@robotlolita"
 ---
