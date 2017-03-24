@@ -341,7 +341,7 @@ const annotateEntity = template(
 );
 
 const annotateGuide = template(`
-  meta.for(folktale._guides[GUIDE] = {}).update(OBJECT)
+  meta.for(PARENT[GUIDE] = {}).update(OBJECT)
 `)
 
 const moduleExport = template(
@@ -420,8 +420,10 @@ const generateEntity = (entity, options) => {
       OBJECT: mergeMeta(options, entity.meta)
     });
   } else if (entity.title) {
+    const parent = entity.meta.parent || 'folktale';
     return annotateGuide({
       GUIDE: t.stringLiteral(entity.title),
+      PARENT: parseJsExpr(parent, options),
       OBJECT: mergeMeta(options, merge(entity.meta, {
         name: entity.title,
         module: 'guides'
