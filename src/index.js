@@ -13,6 +13,5 @@
  */
 module.exports = {
   core: require('./core'),
-  data: require('./data'),
-  _guides: {}
+  data: require('./data')
 };

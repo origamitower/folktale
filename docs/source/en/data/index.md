@@ -1,4 +1,4 @@
 @annotate: folktale.data
-category: Data structures
+category: API Reference
 ---
 Implements common functional data structures in JavaScript.

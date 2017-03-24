@@ -1,5 +1,5 @@
 @annotate: folktale.core
-category: Essential FP features
+category: API Reference
 ---
 Provides essential functionality for functional programs.
 
