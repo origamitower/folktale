@@ -35,10 +35,7 @@ const entities = staticDocs.makeStatic(Interface, Folktale, 'Folktale', {
     Function.prototype,
     Object.prototype
   ]),
-  skipUndocumented: true,
-  links: {
-    typeNotation: 'guides.type-notation-used-in-signatures.html'
-  }
+  skipUndocumented: true
 });
 const files = staticDocs.formatters.html(entities, {
   rootPage: 'folktale.html',
@@ -51,7 +48,10 @@ const files = staticDocs.formatters.html(entities, {
       text: 'GitHub',
       url: 'https://github.com/origamitower/folktale'
     }
-  ]
+  ],
+  links: {
+    typeNotation: 'guides.type-notation-used-in-signatures.html'
+  }
 });
 staticDocs.generate(files, {
   outputDirectory: path.join(__dirname, '../docs/api', lang),

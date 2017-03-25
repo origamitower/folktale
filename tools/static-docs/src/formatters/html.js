@@ -148,15 +148,15 @@ const asList = (elements) =>
     elements.map(e => _('li', e))
   );
 
-const typeSignature = (type, { links }) =>
+const typeDefinition = (type, { links = {} }) =>
   !type ?     ''
-: /* else */ _('div.type-signature-container',
+: /* else */ _('div.type-definition-container',
     _('div.type-title-container',
       _('strong.type-title', 'Type'),
-      links && links.typeNotation ?  _('a.info', { href: links.typeNotation }, 'what is this?')
+      links.typeNotation ?  _('a.info', { href: links.typeNotation }, '(what is this?)')
       : /* else */                   ''
     ),
-    _('pre.type', _('code.language-haskell', (entity.type || '').trimRight()))
+    _('pre.type', _('code.language-haskell', (type || '').trimRight()))
   )
 
 // --[ Implementation ]------------------------------------------------
@@ -170,7 +170,7 @@ const render = (entity, references, options) => {
           _('h2#signature.section-title', 'Signature'),
           _('div.signature', entity.signature || ''),
           _('div.type-definition',
-            typeSignature(entity.type, options)
+            typeDefinition(entity.type, options)
           )
         )
       : '',
@@ -189,7 +189,7 @@ const render = (entity, references, options) => {
         'Stability': entity.stability,
         'Since':     entity.since,
         'Licence':   entity.licence,
-        'Module':      entity.module,
+        'Module':    entity.module,
         'Platforms': entity.platforms ? asList(entity.platforms) : null
       })),
 
