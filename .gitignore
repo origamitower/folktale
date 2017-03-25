@@ -17,4 +17,4 @@ npm-debug.log
 /annotated/
 /releases/
 /tools/static-docs/lib/
-/tools/static-docs/resources/*.css
+/tools/static-docs/resources/html/*.css
