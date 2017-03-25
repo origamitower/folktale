@@ -114,7 +114,7 @@ all-tests: tools _prepare-test
 	$(MAKE) _test-browser
 
 .PHONY: documentation _documentation
-documentation: compile-annotated compile-documentation _documentation
+documentation: compile compile-annotated compile-documentation _documentation
 _documentation:
 	node tools/generate-docs.js en
 
@@ -155,6 +155,6 @@ tools:
 	npm link metamagical-mocha-bridge
 	cd metamagical/packages/repl && npm install && make build && npm link
 	npm link metamagical-repl
-	cd metamagical/experimental/static-docs && npm install && make build && npm link
+	cd tools/static-docs && npm install && make build && npm link
 	npm link metamagical-static-docs
 
