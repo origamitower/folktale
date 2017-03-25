@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Setting up a development environment</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">Setting up a development environment</h1><div class="highlight-summary"><div><p>A step-by-step guide to set up a development environment for working on Folktale.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>A step-by-step guide to set up a development environment for working on Folktale.</p>
+<hr>
+<p>Configuring a development environment for Folktale is currently a little bit
+more complicated than it should in some systems, but this guide should help
+you achieve that anyway.</p>
+<h2 id="git">Git</h2>
+<p>First of all, you&#39;ll have to make sure you have <a href="https://git-scm.com/">Git</a>
+installed. Folktale uses Git repositories, and while while you can use things
+like <a href="http://hg-git.github.io/">hg-git</a> to interact with the repository from
+Mercurial, we can&#39;t support that.</p>
+<p>The Git website has a list of GUI clients for Git, if you&#39;re not comfortable
+using it from the command line.</p>
+<h2 id="node">Node</h2>
+<p>Next you&#39;ll need to install <a href="https://nodejs.org/en/">Node.js</a>. The website
+provides binaries for all supported platforms. All newer versions of Node come
+with npm as well, which you&#39;ll use to pull the dependencies of the project.</p>
+<p>Note that Folktale requires at least Node 4.x, so if you have an older version
+you&#39;ll need to upgrade.</p>
+<h2 id="make">Make</h2>
+<p>Folktale uses Make as its build system, and also relies on some common *NIX
+tools, like <code>find</code>. Because of this, it might be harder to configure a
+development environment for Windows.</p>
+<p>Below are instructions to install Make on common systems:</p>
+<blockquote>
+<p><strong>TODO</strong><br>Provide instructions for OS/X and *BSD systems.</p>
+</blockquote>
+<h3 id="debian-ubuntu-linux-">Debian/Ubuntu (Linux):</h3>
+<pre><code>$ apt-get install build-essential
+</code></pre><h3 id="arch-linux-">Arch (Linux):</h3>
+<pre><code>$ pacman -S base-devel
+</code></pre><h3 id="fedora-enterprise-linux-">Fedora / Enterprise Linux:</h3>
+<pre><code>$ yum install &quot;Development Tools&quot;
+</code></pre><h3 id="windows-">Windows:</h3>
+<ol>
+<li>Download the latest version of <a href="https://sourceforge.net/projects/getgnuwin32/files/">GnuWin32</a>. This should be something like <code>GetGnuWin32-*.exe</code>;</li>
+<li>Execute the application you just downloaded. You have to accept the licence to proceed;</li>
+<li>Select a folder to extract the components to;</li>
+<li>Run <code>download.bat</code> from the folder you extracted the components to;</li>
+<li>Finally, run <code>install.bat</code> from that folder.</li>
+</ol>
+<h2 id="cloning-and-initialising-the-repository">Cloning and initialising the repository</h2>
+<p>The first thing you&#39;ll want to do is
+<a href="https://guides.github.com/activities/forking/">forking Folktale</a>. This means
+you get a clone of the entire project that you have rights to change as you
+wish. Once you have forked Folktale, you can clone your fork:</p>
+<pre><code class="lang-shell">$ git clone https://github.com/YOUR_GITHUB_USERNAME/folktale.git
+</code></pre>
+<p>This will create a <code>folktale</code> folder containing all of the code in the
+project. The first thing you need to do is move in that folder and install all
+of the dependencies and development tools that Folktale uses:</p>
+<pre><code class="lang-shell">$ cd folktale
+$ npm install
+# Some of the tools are in a git subrepo
+$ git submodule init
+$ git submodule update
+$ make tools
+</code></pre>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">guides</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#git" title="Git"><div><p>Git</p>
+</div></a></li><li class="toc-item"><a href="#node" title="Node"><div><p>Node</p>
+</div></a></li><li class="toc-item"><a href="#make" title="Make"><div><p>Make</p>
+</div></a></li><li class="toc-item"><a href="#cloning-and-initialising-the-repository" title="Cloning and initialising the repository"><div><p>Cloning and initialising the repository</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>@robotlolita</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

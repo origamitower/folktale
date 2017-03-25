@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Design principles behind Folktale</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">Design principles behind Folktale</h1><div class="highlight-summary"><div><p>Describes the design principles behind Folktale.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Describes the design principles behind Folktale.</p>
+<hr>
+<p>The design of the Folktale library is guided by the following principles:</p>
+<ul>
+<li><p><strong>Favour a heavier use of arrow functions over currying</strong>
+— Curried functions can be composed in several ways. And this is a good
+thing, because it means it&#39;s easier to create new functionality by combining
+existing ones. However, in an untyped language, you have no ways of
+enforcing a correct composition of functions, so currying in JS tends to
+lead to silent or late errors. Coupled with JavaScript&#39;s heavy use of
+variadic functions, and the VM&#39;s unhelpful error reporting, these have the
+potential for being very frustrating, especially for people new to FP.</p>
+<p>ES2015 lessens a bit the burden of being more explicit with your
+composition, since arrow functions have less visual overhead, and can
+enforce some compositional constraints syntactically. They also side-step
+the problems with JavaScript&#39;s variadic functions to an extent.</p>
+</li>
+<li><p><strong>Provide separate free-method versions of functions</strong>
+— JavaScript&#39;s syntax is limited, but some of the proposed additions to it
+lead to programs that are easier to read. One of them is the
+<a href="https://github.com/zenparsing/es-function-bind">This-Binding syntax</a>, which
+allows unsing functions in infix position:</p>
+<p>```js
+const _groupBy = require(&#39;folktale/core/iterator/group-by&#39;);</p>
+<p>function groupBy(f) {
+  return _groupBy(this, f);
+}</p>
+</li>
+</ul>
+<pre><code>[1, 2, 3, 4, 5]::groupBy(isOdd)
+// =&gt; _groupBy([1, 2, 3, 4, 5], isOdd)
+
+// Some combinators may be provided specifically to use as infix
+list.sort(compare::on(first))
+// =&gt; list.sort(on(compare, first))
+```
+</code></pre><ul>
+<li><p><strong>Where possible, as long as laws aren&#39;t broken, reuse the language&#39;s native methods</strong>
+— This makes it easier to combine Folktale with existing projects and
+libraries, as they&#39;d have similar expectations.</p>
+</li>
+<li><p><strong>Monolithic package over several micro-libraries</strong>
+— There are plenty of advantages of micro-libraries. They are more modular,
+since they have to work with less expectations; they are easier to replace;
+we can make a better use of semantic versioning; and they are easier to
+understand.</p>
+<p>But there are plenty of drawbacks to them as well:</p>
+<ul>
+<li><p><strong>They&#39;re harder to use when you need to combine more than one
+module</strong>. For example, if you want an Either module to be able to convert
+its values to a Maybe structure, you need to provide the Either module
+with the Maybe structure to use. This, while modular, adds some friction
+for people to use these features, which goes against our aim to make
+functional programming easier to newcomers.</p>
+</li>
+<li><p><strong>They&#39;re harder to maintain</strong>. Keeping modules, tooling, and issues in
+sync between different modules takes much more effort, and it&#39;s easy to
+miss things. When all of the modules are related anyway, you&#39;ll have to
+keep them in sync all the time.</p>
+</li>
+<li><p><strong>They&#39;re less consistent</strong>. Because each module is independent, exposes
+its own API, and evolves at its own pace, it&#39;s easy to get inconsistent
+behaviour across them. This was the case with how methods worked in the
+old versions of Maybe, Either, and Validation.</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Better support for interactive (REPL) development</strong>
+— One of the long-term goals with Folktale is to have a really good support
+for interactive development in the REPL. The first step for that is to be
+able to view documentation directly from the REPL, which is being done by
+annotating objects with the
+<a href="https://github.com/origamitower/metamagical">Meta:Magical</a> library.</p>
+<p>As newer features get added to Meta:Magical, like searching functions by
+approximate type signature, Folktale and its users will benefit from them
+without having to do anything.</p>
+</li>
+<li><p><strong>Logically grouped, minimal modules</strong>
+— Each module should be entirely self-contained, and only provide the
+absolute minimum necessary for that particular functionality. Most of the
+time this will mean <code>one function = one module</code>, but not always. See the
+<code>folktale/core/adt</code> module, and the
+<a href="https://github.com/siren-lang/siren/blob/master/documentation/platform-design.md">Siren&#39;s Platform Design document</a>
+for examples.</p>
+<p>There are two reasons behind this:</p>
+<ol>
+<li><p>Extracting a minimal application from a large framework/environment
+(tree-shaking) requires full type inference in JavaScript, because
+modules are first class, and you need to know which properties of which
+objects are accessed where. For historical data on this, see the
+<a href="http://www.cs.cmu.edu/~aldrich/FOOL/FOOL1/FOOL1-report.pdf">report on Foundations of Object-Oriented Languages</a>
+and Aegesen at al&#39;s work on
+<a href="http://bibliography.selflanguage.org/type-inference.html">type inference for Self</a>.</p>
+</li>
+<li><p>Because all modules are annotated, inline, for the Meta:Magical library,
+even modules comprised of simple, one line functions end up being more
+than 40 lines of code when you consider documentation.</p>
+</li>
+</ol>
+</li>
+<li><p><strong>Modules are grouped in an hierarchy of categories</strong>
+— This is mostly to make using the libraries easier given the previous
+point. Modules that are higher in the hierarchy should re-export all
+features below it. This allows people to require a bag of things, like
+<code>require(&#39;folktale/data/result&#39;)</code>, or a very specific functionality, when
+they are concerned about the resulting size of the application (if they are
+deploying to a Browser, for example), like
+<code>require(&#39;folktale/data/result/from-nullable&#39;)</code>.</p>
+</li>
+</ul>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">guides</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>@robotlolita</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

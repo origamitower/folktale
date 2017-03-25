@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Development tasks and tooling</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">Development tasks and tooling</h1><div class="highlight-summary"><div><p><a href="guides.setting-up-a-development-environment.html">Folktale uses GNU Make for development tooling</a>. From
+there you can compile the source code, run tests, perform cleanup routines, or
+check your source code for style errors.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p><a href="guides.setting-up-a-development-environment.html">Folktale uses GNU Make for development tooling</a>. From
+there you can compile the source code, run tests, perform cleanup routines, or
+check your source code for style errors.</p>
+<p>Note: <strong>before you can do anything in Folktale you must initialise the documentation tools</strong>:</p>
+<pre><code class="lang-shell">$ git submodule init
+$ git submmodule update
+$ make tools
+</code></pre>
+<p>Running <code>make</code> or <code>make help</code> will show you all of the available development
+tasks.</p>
+<p>Running <code>make compile</code> will compile the source code using Babel. 
+After this you can import the objects in the REPL and interact with them.</p>
+<p>Running <code>make compile-annotated</code> will compile the source code with the special documentation
+marks. You can either use <code>make documentation</code> to generate HTML docs from that, or
+<code>require(&#39;./documentation&#39;)</code> in a Node REPL to read the docs from there.</p>
+<p>Running <code>make test</code> will compile the project and run all of the tests. Running
+<code>make test-all</code> will also test the examples in the documentation. You can run
+tests in a PhantomJS (a headless WebKit browser) using <code>make test-browser</code>.</p>
+<p>Running <code>make lint</code> will check all of the source code for style
+inconsistencies. The coding style used by Folktale is described later in this
+document.</p>
+<p>Finally, running <code>make clean</code> will remove any compiled files from your working
+directory, but will keep all other files intact. You can always run <code>make
+compile</code> again to re-build the project.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">guides</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>@robotlolita</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

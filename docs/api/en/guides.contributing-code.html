@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contributing code</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">Contributing code</h1><div class="highlight-summary"><div><p>Read this if you want to fix a bug in Folktale or implement a new feature.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Read this if you want to fix a bug in Folktale or implement a new feature.</p>
+<hr>
+<p>Before making your changes, you&#39;ll have to <a href="guides.setting-up-a-development-environment.html">set up a development environment</a>. You might also be interested in understanding <a href="guides.navigating-the-folktale-repository.html">how the repository is organised</a> and <a href="guides.git-commit-guidelines.html">how Git commits are annotated</a>.</p>
+<p>Note that Folktale uses a common workflow where new development happens in topic branches,
+and then a Pull Request is made in order to merge those branches back into the
+master branch. GitHub has a
+<a href="https://guides.github.com/introduction/flow/">nice description of this workflow</a>.</p>
+<h2 id="copyright-licence-and-contributors">Copyright, Licence, and Contributors</h2>
+<p>All JavaScript files in the project should start with the following preamble:</p>
+<pre><code class="lang-js">//----------------------------------------------------------------------
+//
+// This source file is part of the Folktale project.
+//
+// Licensed under MIT. See LICENCE for full licence information.
+// See CONTRIBUTORS for the list of contributors to the project.
+//
+//----------------------------------------------------------------------
+</code></pre>
+<p>Note, again, that Folktale is licensed under MIT, and <strong>by contributing patches,
+you agree to release your contribution under the MIT licence.</strong></p>
+<p>If you&#39;re making or have made a contribution to the project, please add yourself
+to the <code>CONTRIBUTORS</code> file if you haven&#39;t done so yet.</p>
+<h2 id="implementing-your-changes">Implementing your changes</h2>
+<p>Whether you&#39;re fixing a bug or adding a new feature, the process is roughly the same. You&#39;ll want to create a new branch for your feature. This allows you to
+work on more than one feature at a time, if necessary. Remember that working on
+a patch for a software project involves a lot of communication, and you might
+need to review your code a few times.</p>
+<p>Roughly the process follows these steps:</p>
+<ol>
+<li>You make your changes, either by fixing existing code or adding new features, and commit them to the repository.</li>
+<li>If adding a new feature, make sure to <a href="guides.improving-folktale-s-tests.html">write test cases</a> and <a href="guides.improving-folktale-s-documentation.html">add a minimal documentation</a>.</li>
+<li>Run <code>make test-all</code> to ensure that all tests pass. This will run your tests on both Node and a PhantomJS (WebKit) instance. Compiling everything may take a while…</li>
+<li>Run <code>make lint</code> to ensure that your code conforms with the <a href="guides.coding-style.html">coding style</a> used by Folktale.</li>
+<li>Push your changes to your repository.</li>
+<li><a href="https://help.github.com/articles/creating-a-pull-request/">Create a Pull Request</a> from your branch in your repo, to Folktale&#39;s <code>master</code> branch.</li>
+<li>This starts a code review and discussion. You might be asked to make some changes to your code (at which point you&#39;d just follow the steps 1~5 above).</li>
+<li>We accept your Pull Request and merge it into the master branch, or reject it with a justification.</li>
+</ol>
+<h2 id="documenting-new-features">Documenting new features</h2>
+<p>Folktale uses Meta:Magical for attaching documentation to objects, which can be
+queried at runtime. There&#39;s a
+<a href="https://github.com/origamitower/conventions/blob/master/documentation/how-do-i-document-my-code.md">comprehensive text on documenting objects with Meta:Magical</a>,
+so this section will only focus on the basics to get you started.</p>
+<p>In the source code, functions, methods, modules, and objects should be annotated with
+<a href="https://github.com/origamitower/metamagical/tree/master/packages/babel-plugin-metamagical-comments">Meta:Magical comments</a>.
+These comments should describe who authored that functionality, what is its stability, and its type.
+When relevant, functions should also describe their complexity in <a href="https://en.wikipedia.org/wiki/Big_O_notation">Big O notation</a>.</p>
+<p>Here&#39;s an example of documentation for the <code>core/lambda/compose</code> function:</p>
+<pre><code class="lang-js">/*~
+ * stability: stable
+ * authors:
+ *   - &quot;@robotlolita&quot;
+ * type: |
+ *   forall a, b, c: ((b) =&gt; c, (a) =&gt; b) =&gt; (a) =&gt; c
+ */
+const compose = (f, g) =&gt; (value) =&gt; f(g(value))
+</code></pre>
+<p>A documentation comment is a block comment whose first line contain only the <code>~</code>
+character. Subsequent lines use <code>*</code> as an indentation marker, meaning that all
+content before that, and at most one space after that is ignored.</p>
+<p>Once an entity has been marked to be documented, you can follow the <a href="guides.improving-folktale-s-documentation.html">documentation guide</a> to write documentation for it.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">guides</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#copyright-licence-and-contributors" title="Copyright, Licence, and Contributors"><div><p>Copyright, Licence, and Contributors</p>
+</div></a></li><li class="toc-item"><a href="#implementing-your-changes" title="Implementing your changes"><div><p>Implementing your changes</p>
+</div></a></li><li class="toc-item"><a href="#documenting-new-features" title="Documenting new features"><div><p>Documenting new features</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>@robotlolita</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
