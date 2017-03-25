@@ -148,6 +148,17 @@ const asList = (elements) =>
     elements.map(e => _('li', e))
   );
 
+const typeSignature = (type, { links }) =>
+  !type ?     ''
+: /* else */ _('div.type-signature-container',
+    _('div.type-title-container',
+      _('strong.type-title', 'Type'),
+      links && links.typeNotation ?  _('a.info', { href: links.typeNotation }, 'what is this?')
+      : /* else */                   ''
+    ),
+    _('pre.type', _('code.language-haskell', (entity.type || '').trimRight()))
+  )
+
 // --[ Implementation ]------------------------------------------------
 const render = (entity, references, options) => {
   return _('div#content-wrapper',
@@ -159,8 +170,7 @@ const render = (entity, references, options) => {
           _('h2#signature.section-title', 'Signature'),
           _('div.signature', entity.signature || ''),
           _('div.type-definition',
-            entity.type ? _('strong.type-title', 'Type') : '',
-            _('pre.type', _('code.language-haskell', (entity.type || '').trimRight()))
+            typeSignature(entity.type, options)
           )
         )
       : '',
