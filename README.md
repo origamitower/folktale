@@ -87,9 +87,9 @@ See the `LICENCE` file in this repository for detailed information.
 [npm]: https://www.npmjs.com
 [bug]: https://github.com/origamitower/folktale/issues/new
 [gitter]: https://gitter.im/folktale/discussion
-[install]: https://github.com/origamitower/folktale/wiki/Installing-Folktale
-[faq]: https://github.com/origamitower/folktale/wiki/FAQ
-[feat]: https://github.com/origamitower/folktale/blob/master/CONTRIBUTING.md#requesting-features
-[pr]: https://github.com/origamitower/folktale/blob/master/CONTRIBUTING.md#contributing-code
+[install]: http://origamitower.github.io/folktale/api/en/guides.installing-folktale.html
+[faq]: http://origamitower.github.io/folktale/api/en/guides.frequently-asked-questions.html
+[feat]: http://origamitower.github.io/folktale/api/en/guides.requesting-new-features.html
+[pr]: http://origamitower.github.io/folktale/api/en/folktale.html#cat-3-contributing
 [repl]: https://github.com/origamitower/folktale/wiki/REPL-documentation
 
