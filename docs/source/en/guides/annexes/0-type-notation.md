@@ -1,5 +1,5 @@
 @guide: Type notation used in signatures
-category: 3. Annexes
+category: 4. Annexes
 authors:
   - "@robotlolita"
 ---
