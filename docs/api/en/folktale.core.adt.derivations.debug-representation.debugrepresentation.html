@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>debugRepresentation</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">debugRepresentation</h1><div class="highlight-summary"><div><p>Provides a textual representation for ADTs.</p>
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">debugRepresentation(variant, adt)</div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="guides.type-notation-used-in-signatures.html">(what is this?)</a></div><pre class="type"><code class="language-haskell">(Variant, ADT) =&gt; Void</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Provides a textual representation for ADTs.</p>
+<p>The <code>debugRepresentation</code> serialisation bestows ES2015&#39;s <code>Symbol.toStringTag</code>, used
+for the native <code>Object.prototype.toString</code>, along with a <code>.toString()</code>
+method and Node&#39;s REPL <code>.inspect()</code> method.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const { data, derivations } = require(&#39;folktale/core/adt&#39;);
+const { Id } = data(&#39;Id&#39;, {
+  Id(value){ return { value } }
+}).derive(derivations.debugRepresentation);
+
+Object.prototype.toString.call(Id(1));
+// =&gt; &#39;[object Id.Id]&#39;
+
+Id(1).toString();
+// ==&gt; &#39;Id.Id({ value: 1 })&#39;
+
+Id(1).inspect();
+// ==&gt; &#39;Id.Id({ value: 1 })&#39;
+</code></pre><h2 id="es2015-s-tostringtag">ES2015&#39;s ToStringTag</h2>
+<p>This derivation defines ES2015&#39;s <code>ToStringTag</code> symbol, which is used
+by <a href="http://www.ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring">Object.prototype.toString</a> to construct a default textual
+representation of the object.</p>
+<p>This means that instead of getting <code>&#39;[object Object]&#39;</code>, you&#39;ll get
+a more helpful <code>&#39;[object &lt;Type&gt;.&lt;Tag&gt;]&#39;</code> representation, where this
+function is used.</p>
+<h2 id="textual-representation">Textual representation</h2>
+<p>This derivation defines a <code>.toString()</code> method. <code>.toString</code> is called
+in many places to define how to represent an object, but also called
+when JS operators want to convert an object to a String. This derivation
+only cares about representation that&#39;s suitable for debugging.</p>
+<p>The representation includes the type, tag, and key/value pairs of the
+data structure.</p>
+<h2 id="node-repl-representation">Node REPL representation</h2>
+<p>Node&#39;s REPL uses <code>.inspect()</code> instead of the regular <code>.toString()</code>.
+This derivation also provides the <code>.inspect()</code> method, but just as
+an alias for the <code>.toString()</code> method.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/core/adt/derivations/debug-representation.js at line 82, column 0</div><pre class="source-code"><code class="language-javascript">(variant, adt) =&gt; {  // eslint-disable-line max-statements
+  const typeName    = adt[typeSymbol];
+  const variantName = `${adt[typeSymbol]}.${variant.prototype[tagSymbol]}`;
+
+  // (for Object.prototype.toString)
+  adt[Symbol.toStringTag]               = typeName;
+  variant.prototype[Symbol.toStringTag] = variantName;
+
+  // (regular JavaScript representations)
+  /*~
+   * stability: experimental
+   * module: null
+   * authors:
+   *   - "@boris-marinov"
+   * 
+   * type: |
+   *   () =&gt; String
+   */
+  adt.toString = () =&gt; typeName;
+
+  /*~
+   * stability: experimental
+   * mmodule: null
+   * authors:
+   *   - "@boris-marinov"
+   * 
+   * type: |
+   *   () =&gt; String
+   */
+  variant.toString = () =&gt; variantName;
+
+  /*~
+   * stability: experimental
+   * module: null
+   * authors:
+   *   - "@boris-marinov"
+   * 
+   * type: |
+   *   (ADT).() =&gt; String
+   */
+  variant.prototype.toString = function() {
+    return `${variantName}(${plainObjectToString.call(this)})`;
+  };
+
+  // (Node REPL representations)
+  adt.inspect                = adt.toString;
+  variant.inspect            = variant.toString;
+  variant.prototype.inspect  = variant.prototype.toString;
+
+  return variant;
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/core/adt/derivations/debug-representation</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li><li class="toc-item"><a href="#es2015-s-tostringtag" title="ES2015's ToStringTag"><div><p>ES2015&#39;s ToStringTag</p>
+</div></a></li><li class="toc-item"><a href="#textual-representation" title="Textual representation"><div><p>Textual representation</p>
+</div></a></li><li class="toc-item"><a href="#node-repl-representation" title="Node REPL representation"><div><p>Node REPL representation</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>@boris-marinov</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
