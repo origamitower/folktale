@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Git commit guidelines</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">Git commit guidelines</h1><div class="highlight-summary"><div><p>Describes how Git commits are annotated.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Describes how Git commits are annotated.</p>
+<hr>
+<p>Folktale uses <a href="https://github.com/ELLIOTTCABLE/.gitlabels">.gitlabels</a> to
+tag commits so humans can better understand the scope of changes, and tools
+can help visualising changes.</p>
+<p>Commits often follow this format:</p>
+<pre><code>(&lt;tags&gt;) &lt;summary&gt;
+
+&lt;body&gt;
+
+&lt;footer&gt;
+</code></pre><p>Where:</p>
+<ul>
+<li><code>tags</code>: The <code>.gitlabels</code> tags defining the scope of changes. See the <code>.gitlabels</code> file for documentation;</li>
+<li><code>summary</code>: A very short description of the change.</li>
+<li><code>body</code>: A detailed description of the change.</li>
+<li><code>footer</code>: contains information about issue references and breaking changes.</li>
+</ul>
+<p>All text should be formatted using Markdown, and use the active, present
+tense. It&#39;s &quot;changes&quot;, rather than &quot;change&quot; or &quot;changed&quot;.</p>
+<p>For example, a commit that adds tests to the <code>folktale/core/lambda</code> module would
+look like:</p>
+<pre><code>(test lambda) Adds tests for compose
+
+`compose` was the only function in the module that didn&#39;t have tests.
+This provides a few example based tests, and property-based tests for
+common mathematical laws expected of function composition, such as
+associativity.
+
+Fixes #12
+</code></pre><h4 id="referencing-issues">Referencing issues</h4>
+<p>Issues may be referenced through the body of the commit, where relevant, by
+providing <code>(see #N)</code>, where <code>N</code> is the number of the issue. For example:</p>
+<pre><code>This is a first step in providing better documentation tools (see #91),
+but does not implement type searching and type summaries.
+</code></pre><p>Issues should be closed when the commit fully fixes the problem in that
+issue. This is done by listing these issues in the footer, using
+<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">GitHub&#39;s issue keywords</a>. For example:</p>
+<pre><code>Fixes #12, fixes #43, and fixes #46
+</code></pre><h4 id="breaking-changes">Breaking changes</h4>
+<p>All breaking changes should be detailed in the footer of the commit message. It
+should contain <code>BREAKING CHANGE:</code> followed by a short summary of what was
+broken, and a detailed justification of why it was broken, along with a
+migration path from the old feature to the new one. For example:</p>
+<pre><code>BREAKING CHANGE: makes `data` return an object with constructors,
+instead of the old interface.
+
+This makes creating new algebraic data structures a simpler task,
+and aligns better with the aim of making Folktale a welcoming
+library to people new to functional programming.
+
+Where one used to write:
+
+    const List = data({
+      Nil: [],
+      Cons: [&#39;value&#39;, &#39;rest&#39;]
+    });
+
+    const Nil = () =&gt; new List.Nil.constructor({});
+    const Cons = (value, rest) =&gt; new List.Cons.constructor({ value, rest })
+
+One would write:
+
+    const List = data({
+      Nil: [],
+      Cons: [&#39;value&#39;, &#39;rest&#39;]
+    });
+
+    const { Nil, Cons } = List;
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">guides</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>@robotlolita</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

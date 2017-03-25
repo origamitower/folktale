@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Coding style</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">Coding style</h1><div class="highlight-summary"><div><p>Describes the coding style used by the Folktale project.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Describes the coding style used by the Folktale project.</p>
+<hr>
+<blockquote>
+<p><strong>TODO</strong><br>This section is a stub and needs to be improved.</p>
+</blockquote>
+<p>The ESLint rules will catch most of the style issues, so you might just want to
+run <code>make lint</code> on your code. That said, there are a few idioms that aren&#39;t
+captured by ESLint rules:</p>
+<ul>
+<li><p>Prefer <code>const</code> for declaring names wherever possible. When a name or the
+value it refers to is mutated in the scope, use <code>let</code> instead. In this
+sense, we use <code>const</code> to indicate an immutable binding <em>and value</em>, and
+<code>let</code> for everything else.</p>
+</li>
+<li><p>Prefer arrow functions whenever possible. Regular JavaScript functions have
+many unnecessary properties for functional programming in general, such as
+<code>this</code>, <code>super</code> and <code>.prototype</code>. So, if you&#39;re not writing a method, where
+you&#39;ll want <code>this</code>, it should be an arrow function.</p>
+</li>
+<li><p>Use Lisp/Haskell-alignment for conditionals when using ternaries. For
+example:</p>
+<pre><code class="lang-js">return argCount &lt; arity   ?  curried(allArgs)
+:      argCount === arity ?  fn(...allArgs)
+:      /* otherwise */       unrollInvoke(fn, arity, allArgs);
+</code></pre>
+<p>The comment for the last <code>else</code> case is not optional, but can be shortened
+to <code>/* else */</code> for shorter conditions.</p>
+</li>
+</ul>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">guides</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>@robotlolita</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
