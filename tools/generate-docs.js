@@ -35,7 +35,10 @@ const entities = staticDocs.makeStatic(Interface, Folktale, 'Folktale', {
     Function.prototype,
     Object.prototype
   ]),
-  skipUndocumented: true
+  skipUndocumented: true,
+  links: {
+    typeNotation: 'guides.type-notation-used-in-signatures.html'
+  }
 });
 const files = staticDocs.formatters.html(entities, {
   rootPage: 'folktale.html',

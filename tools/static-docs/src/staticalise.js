@@ -21,7 +21,7 @@ const descriptor     = Object.getOwnPropertyDescriptor;
 // --[ Helpers ]-------------------------------------------------------
 const isObject = (value) => Object(value) === value;
 
-const dasherise = (name) => name.replace(/\W/g, '-');
+const dasherise = (name) => name.replace(/\W/g, '-').toLowerCase();
 
 const countNonInherentPrototypeProperties = (value) =>
   ownProperties(value.prototype).filter(k =>
