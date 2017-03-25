@@ -387,13 +387,19 @@ a:hover {
   font-family: monospace;
   font-size: 24px;
 }
-#content-panel .definition .type-title {
+#content-panel .definition .type-title-container {
   display: block;
   font-family: 'Raleway', sans-serif;
   color: #95a5a6;
-  text-transform: uppercase;
   font-size: 16px;
   margin-top: 1em;
+}
+#content-panel .definition .type-title-container .type-title {
+  text-transform: uppercase;
+}
+#content-panel .definition .type-title-container .info {
+  margin-left: 1em;
+  font-size: 12px;
 }
 #content-panel .definition pre.type {
   background: none;

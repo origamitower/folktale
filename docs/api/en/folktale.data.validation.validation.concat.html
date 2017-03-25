@@ -11,9 +11,9 @@
       <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">concat</h1><div class="highlight-summary"><div><p>Combines two validations together such that failures are aggregated.</p>
-</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature"></div><div class="type-definition"><strong class="type-title">Type</strong><pre class="type"><code class="language-haskell">forall a, b:
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature"></div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="guides.type-notation-used-in-signatures.html">(what is this?)</a></div><pre class="type"><code class="language-haskell">forall a, b:
   (Validation a b).(Validation a b) =&gt; Validation a b
-where a is Semigroup</code></pre></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Combines two validations together such that failures are aggregated.</p>
+where a is Semigroup</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Combines two validations together such that failures are aggregated.</p>
 <p>In cases where both validations contain a successful value, this method just selects the last validation.</p>
 <h2 id="example-">Example:</h2>
 <pre><code>const { Success, Failure } = require(&#39;folktale/data/validation&#39;);
