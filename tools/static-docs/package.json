@@ -1,6 +1,6 @@
 {
   "name": "metamagical-static-docs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Generates static documentation from Meta:Magical data",
   "main": "./lib/index.js",
   "repository": {

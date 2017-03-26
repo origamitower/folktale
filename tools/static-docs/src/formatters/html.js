@@ -239,7 +239,14 @@ const render = (entity, references, options) => {
 const wrapPage = (title, content, options) => {
   const titleElement = _('title', title);
   const docTitle = _('div.doc-title',
-    _('a', { href: options.rootPage }, options.documentationTitle)
+    _('a', { href: options.rootPage }, options.documentationTitle),
+    _('ul.navigation',
+      (options.navigation || []).map(link => 
+        _('li.navigation-item',
+          _('a', { href: link.url, title: link.altText || '' }, link.text)
+        )
+      )
+    )
   );
   const cssElement = _('link', {
     rel:  'stylesheet',
