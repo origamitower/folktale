@@ -30,7 +30,20 @@ const babelOptions = {
   ]
 };
 
-const babelCompileOptions = JSON.parse(fs.readFileSync(path.join(__dirname, '../.babelrc'), 'utf8'));
+const babelCompileOptions = {
+  "presets": ["es2015", "es2016", "es2017"],
+  "plugins": [
+    "transform-function-bind",
+    "transform-object-rest-spread",
+    ["babel-plugin-module-alias", [
+      { 
+        "src": "./annotated", 
+        "expose": "folktale",  
+        "cwd": path.resolve(__dirname, '..')
+      }
+    ]]
+  ]
+}
 
 
 // --[ Helpers ]-------------------------------------------------------
@@ -467,7 +480,11 @@ glob(path.join(input, '**/*.md')).forEach((file, index, files) => {
   const js = generate(analyse(parse(source)), merge(babelOptions, {
     sourceFilename: input
   }));
-  const { code } = babel.transform(js, babelCompileOptions);
+  const { code } = babel.transform(js, merge(babelCompileOptions, {
+    sourceRoot: __dirname,
+    filenameRelative: file,
+    filename: file
+  }));
   mkdirp(path.dirname(outPath));
   fs.writeFileSync(outPath, code);
   console.log(`[${index + 1}/${files.length}]`, file, '->', outPath);
