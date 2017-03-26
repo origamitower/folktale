@@ -81,7 +81,7 @@ The following table summarises tests executed on each supported Browser platform
 
 ## Licence
 
-Folktale is copyright (c) Quildreen Motta 2015-2016, and released under the MIT licence.
+Folktale is copyright (c) Quildreen Motta 2015-2017, and released under the MIT licence.
 See the `LICENCE` file in this repository for detailed information.
 
 [npm]: https://www.npmjs.com
