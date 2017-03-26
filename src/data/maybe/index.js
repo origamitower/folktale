@@ -13,7 +13,7 @@ const { typeSymbol } = require('folktale/core/adt/data');
 
 
 /*~
- * stability: unstable
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta

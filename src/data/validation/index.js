@@ -12,7 +12,7 @@ const { typeSymbol } = require('folktale/core/adt/data');
 
 
 /*~ 
- * stability: unstable
+ * stability: stable
  * name: module folktale/data/validation
  */
 module.exports = {
