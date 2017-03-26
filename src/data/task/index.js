@@ -9,7 +9,10 @@
 
 const Task = require('./_task');
 
-/*~ stability: experimental */
+/*~ 
+ * stability: experimental 
+ * name: module folktale/data/task
+ */
 module.exports = {
   ...Task,
   task: require('./task'),
