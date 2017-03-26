@@ -47,6 +47,14 @@ const files = staticDocs.formatters.html(entities, {
     {
       text: 'GitHub',
       url: 'https://github.com/origamitower/folktale'
+    },
+    {
+      text: 'Support',
+      url: 'folktale.html#cat-2-support'
+    },
+    {
+      text: 'Contributing',
+      url: 'folktale.html#cat-3-contributing'
     }
   ],
   links: {
