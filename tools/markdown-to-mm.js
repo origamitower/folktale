@@ -17,6 +17,7 @@ const template = require('babel-template');
 const babylonParse = require('babylon').parse;
 const t = require('babel-types');
 const generateJs = require('babel-generator').default;
+const babel = require('babel-core');
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob').sync;
@@ -28,6 +29,8 @@ const babelOptions = {
     'functionBind'
   ]
 };
+
+const babelCompileOptions = JSON.parse(fs.readFileSync(path.join(__dirname, '../.babelrc'), 'utf8'));
 
 
 // --[ Helpers ]-------------------------------------------------------
@@ -442,12 +445,14 @@ const input = process.argv[2];
 const output = process.argv[3];
 
 glob(path.join(input, '**/*.md')).forEach((file, index, files) => {
-  const outPath = path.join(output, path.relative(input, file));
+  const filename = path.relative(input, file)
+  const outPath = path.join(output, path.dirname(filename), path.basename(filename, path.extname(filename)) + '.js');
   const source = fs.readFileSync(file, 'utf8');
   const js = generate(analyse(parse(source)), merge(babelOptions, {
     sourceFilename: input
   }));
+  const { code } = babel.transform(js, babelCompileOptions);
   mkdirp(path.dirname(outPath));
-  fs.writeFileSync(outPath, js);
+  fs.writeFileSync(outPath, code);
   console.log(`[${index + 1}/${files.length}]`, file, '->', outPath);
 });
