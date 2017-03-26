@@ -245,6 +245,7 @@ class Raw {
 // Examples
 const intoExampleFunction = (source, ast, options) => {
   const body = ast.program.body;
+  
 
   return new Raw(withMeta({
     OBJECT: t.functionExpression(
@@ -260,10 +261,25 @@ const intoExampleFunction = (source, ast, options) => {
 
 const makeParser = (options) => (source) => parseJs(source, options || {});
 
+const parseWithAsync = (source, parse) => {
+  if (/\bawait\b/.test(source)) {
+    const ast = parse(`(async function(){\n ${source} \n})()`);
+    const body = ast.program.body;
+    const node = body[body.length - 1];
+    ast.program.body = [t.returnStatement(node.expression)];
+    return ast;
+  } else {
+    return parse(source);
+  }
+};
+
 const parseExample = ({ name, source }, options) => {
   let parse = makeParser(options || {});
-  return name        ? { name, call: intoExampleFunction(source, parse(source), options), inferred: true }
-  :      /* else */    { name: '', call: intoExampleFunction(source, parse(source), options), inferred: true };
+  return {
+    name: name || '',
+    call: intoExampleFunction(source, parseWithAsync(source, parse), options),
+    inferred: true
+  };
 };
 
 
