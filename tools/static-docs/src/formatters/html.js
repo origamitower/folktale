@@ -105,6 +105,14 @@ const renderDeprecation = ({ version, reason }) =>
     markdownToHtml(reason)
   );
 
+const renderExperimental = () =>
+  _('div.deprecation-section',
+    _('strong.deprecation-title', 'This feature is experimental!'),
+    _('p',
+      'This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.'
+    )
+  );
+
 const metaSection = (title, data) =>
   _('div.meta-section',
     title ? _('strong.meta-section-title', title) : '',
@@ -175,6 +183,7 @@ const render = (entity, references, options) => {
         )
       : '',
       entity.deprecated ? renderDeprecation(entity.deprecated) : '',
+      entity.stability === 'experimental' ? renderExperimental() : '',
       _('h2.section-title', 'Documentation'),
       _('div.documentation',
         markdownToHtml(entity.documentation)
