@@ -68,7 +68,7 @@ a.equals(Id.Id(2)); // ==&gt; false
 </code></pre><p>When comparing with the <code>equals</code> method, two values are considered
 equal if they represent the same value. This is called <em>structural
 equality</em>.</p>
-<h2 id="equality-in-details">Equality in details</h2>
+<h2 id="equality-in-detail">Equality in detail</h2>
 <p>Given two data structures, they are considered equal if:</p>
 <ul>
 <li>They have the same <em>type</em>;</li>
@@ -101,8 +101,8 @@ constructor. A tag is unique within an ADT, but not necessarily unique
 amongst other ADTs:</p>
 <pre><code>Ok(1)[data.tagSymbol];     // ==&gt; &#39;Ok&#39;
 Error(1)[data.tagSymbol];  // ==&gt; &#39;Error&#39;
-</code></pre><p>Finally, the keys in an ADT are the same as the keys in the constructor
-returns. So, in this case, both Ok and Errors have <code>[value]</code> as the key:</p>
+</code></pre><p>Finally, the keys in an ADT are the same as the keys which the constructor
+returns. So, in this case, both Ok and Error have <code>[value]</code> as the key:</p>
 <pre><code>Object.keys(Ok(1));    // ==&gt; [&#39;value&#39;]
 Object.keys(Error(1)); // ==&gt; [&#39;value&#39;]
 </code></pre><p>So if we compare these two for equality:</p>
@@ -122,7 +122,7 @@ const { Error: E } = data(&#39;Res&#39;, {
 E(1).equals(Error(1)); // ==&gt; false
 // same tag, keys, and values. Different types (&#39;Result&#39; !== &#39;Res&#39;)
 </code></pre><h2 id="how-complex-equality-works-">How complex equality works?</h2>
-<p>The values in an ADT aren&#39;t always a JS primitive, such as numbers and
+<p>The values in an ADT aren&#39;t always JS primitives, such as numbers and
 strings. Equality&#39;s <code>equals</code> method handles these in two different ways:</p>
 <ul>
 <li><p>If the values implement Equality, then the values are compared using the
@@ -159,7 +159,7 @@ Id({ value: 1 }).equals(Id(Other(1))); // ==&gt; false
 or <code>Symbol.toStringTag</code> properties.</p>
 <p>To handle complex JS values, one must provide their own deep equality
 function. Folktale does not have a deep equality function yet, but
-most functional libraries have a <code>equals</code> function for that.</p>
+most functional libraries have an <code>equals</code> function for that.</p>
 <p>Here&#39;s an example of an equality function that checks array equality:</p>
 <pre><code>const isEqual = (a, b) =&gt;
   Array.isArray(a) &amp;&amp; Array.isArray(b) ?  arrayEquals(a, b)
@@ -333,7 +333,7 @@ a.equals(c); // ==&gt; false
   return derivation;
 }</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/core/adt/derivations/equality</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
 </div></a></li><li class="toc-item"><a href="#structural-equality" title="Structural equality"><div><p>Structural equality</p>
-</div></a></li><li class="toc-item"><a href="#equality-in-details" title="Equality in details"><div><p>Equality in details</p>
+</div></a></li><li class="toc-item"><a href="#equality-in-detail" title="Equality in detail"><div><p>Equality in detail</p>
 </div></a></li><li class="toc-item"><a href="#how-complex-equality-works-" title="How complex equality works?"><div><p>How complex equality works?</p>
 </div></a></li><li class="toc-item"><a href="#equality-and-the-asymmetry-problem-" title="Equality and the asymmetry problem:"><div><p>Equality and the asymmetry problem:</p>
 </div></a></li><li class="toc-item"><a href="#performance-considerations" title="Performance considerations"><div><p>Performance considerations</p>

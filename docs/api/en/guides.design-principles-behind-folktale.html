@@ -18,7 +18,7 @@
 <li><p><strong>Favour a heavier use of arrow functions over currying</strong>
 — Curried functions can be composed in several ways. And this is a good
 thing, because it means it&#39;s easier to create new functionality by combining
-existing ones. However, in an untyped language, you have no ways of
+existing ones. However, in an untyped language, you have no way of
 enforcing a correct composition of functions, so currying in JS tends to
 lead to silent or late errors. Coupled with JavaScript&#39;s heavy use of
 variadic functions, and the VM&#39;s unhelpful error reporting, these have the
@@ -32,7 +32,7 @@ the problems with JavaScript&#39;s variadic functions to an extent.</p>
 — JavaScript&#39;s syntax is limited, but some of the proposed additions to it
 lead to programs that are easier to read. One of them is the
 <a href="https://github.com/zenparsing/es-function-bind">This-Binding syntax</a>, which
-allows unsing functions in infix position:</p>
+allows using functions in infix position:</p>
 <p>```js
 const _groupBy = require(&#39;folktale/core/iterator/group-by&#39;);</p>
 <p>function groupBy(f) {
@@ -79,7 +79,7 @@ old versions of Maybe, Either, and Validation.</p>
 </ul>
 </li>
 <li><p><strong>Better support for interactive (REPL) development</strong>
-— One of the long-term goals with Folktale is to have a really good support
+— One of the long-term goals with Folktale is to have really good support
 for interactive development in the REPL. The first step for that is to be
 able to view documentation directly from the REPL, which is being done by
 annotating objects with the

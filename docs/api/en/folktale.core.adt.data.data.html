@@ -48,8 +48,8 @@ person&#39;s <code>name</code> and <code>age</code> is an example of a product, 
 are another example.</p>
 </li>
 <li><p><strong>Unions</strong> represent one of out of many concepts, at any given
-time. JS doesn&#39;t have many data structure that captures the idea
-of an union, but there are many cases where this happens in a
+time. JS doesn&#39;t have many data structures that capture the idea
+of a union, but there are many cases where this happens in a
 codebase: </p>
 <ul>
 <li><p>Reading a file may either give you the data in that
@@ -386,7 +386,7 @@ Cons(1, Cons(2, Nil())).sum();
 </code></pre><p>A better approach, however, may be to use the <code>derive</code> function from
 the ADT to provide new functionality to every variant. <code>derive</code> accepts
 many derivation functions, which are just functions taking a variant and
-and ADT, and providing new functionality for that variant.</p>
+ADT, and providing new functionality for that variant.</p>
 <p>If one wanted to define a JSON serialisation for each variant, for example,
 they could do so by using the <code>derive</code> functionality:</p>
 <pre><code>function ToJSON(variant, adt) {
