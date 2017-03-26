@@ -19,6 +19,8 @@ const t = require('babel-types');
 const generateJs = require('babel-generator').default;
 const fs = require('fs');
 const path = require('path');
+const glob = require('glob').sync;
+const mkdirp = require('mkdirp').sync;
 
 const babelOptions = {
   plugins: [
@@ -414,7 +416,6 @@ const generate = (entities, options) =>
 
 const generateEntity = (entity, options) => {
   if (entity.ref) {
-    console.log('Annotate: ', entity.ref);
     return annotateEntity({
       ENTITY: parseJsExpr(entity.ref, options),
       OBJECT: mergeMeta(options, entity.meta)
@@ -435,10 +436,18 @@ const generateEntity = (entity, options) => {
 
 // --[ Main ]----------------------------------------------------------
 if (process.argv.length < 4) {
-  throw new Error('Usage: node markdown-to-mm.js <INPUT> <OUTPUT>');
+  throw new Error('Usage: node markdown-to-mm.js <INPUT-DIR> <OUTPUT-DIR>');
 }
 const input = process.argv[2];
 const output = process.argv[3];
-const source = fs.readFileSync(input, 'utf8');
-fs.writeFileSync(output, generate(analyse(parse(source)), merge(babelOptions, { sourceFilename: input })));
 
+glob(path.join(input, '**/*.md')).forEach((file, index, files) => {
+  const outPath = path.join(output, path.relative(input, file));
+  const source = fs.readFileSync(file, 'utf8');
+  const js = generate(analyse(parse(source)), merge(babelOptions, {
+    sourceFilename: input
+  }));
+  mkdirp(path.dirname(outPath));
+  fs.writeFileSync(outPath, js);
+  console.log(`[${index + 1}/${files.length}]`, file, '->', outPath);
+});
