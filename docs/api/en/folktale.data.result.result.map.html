@@ -14,7 +14,7 @@
 changing the context of the computation. That is, <code>Error</code> values continue to be
 <code>Error</code> values, and <code>Ok</code> values continue to be <code>Ok</code> values.</p>
 </div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature"></div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="guides.type-notation-used-in-signatures.html">(what is this?)</a></div><pre class="type"><code class="language-haskell">forall a, b, c:
-  (Result a b).((b) =&gt; c) =&gt; Result a c</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Transforms the value inside of a Result structure with an unary function without
+  (Result a b).((b) =&gt; c) =&gt; Result a c</code></pre></div></div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Transforms the value inside of a Result structure with an unary function without
 changing the context of the computation. That is, <code>Error</code> values continue to be
 <code>Error</code> values, and <code>Ok</code> values continue to be <code>Ok</code> values.</p>
 <h2 id="example-">Example:</h2>

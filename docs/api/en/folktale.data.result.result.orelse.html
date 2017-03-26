@@ -12,7 +12,7 @@
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">orElse</h1><div class="highlight-summary"><div><p>Allows recovering from <code>Error</code> values with a handler function.</p>
 </div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature"></div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="guides.type-notation-used-in-signatures.html">(what is this?)</a></div><pre class="type"><code class="language-haskell">forall a, b, c:
-  (Result a b).((a) =&gt; Result c b) =&gt; Result c b</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Allows recovering from <code>Error</code> values with a handler function.</p>
+  (Result a b).((a) =&gt; Result c b) =&gt; Result c b</code></pre></div></div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Allows recovering from <code>Error</code> values with a handler function.</p>
 <p>While <code>.chain()</code> allows one to sequence operations, such that the second
 operation is ran only if the first one succeeds, the <code>.orElse()</code> method allows
 one to recover from an <code>Error</code> by running a function that provides a new Result
