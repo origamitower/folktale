@@ -62,6 +62,7 @@
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-sauce-launcher": "^1.0.0",
     "marked": "^0.3.6",
+    "mkdirp": "^0.5.1",
     "mocha": "^2.4.5",
     "uglify-js": "^2.7.3"
   },

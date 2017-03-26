@@ -10,20 +10,7 @@ karma      := $(bin)/karma
 VERSION    := $(shell node -e 'console.log(require("./package.json").version)')
 
 
-# -- [ CONFIGURATION ]--------------------------------------------------
-DOCS_SRC_DIR := docs/source
-DOCS_TGT_DIR := docs/build
-DOCS_SRC := $(shell find $(DOCS_SRC_DIR)/ -name '*.md')
-DOCS_TGT := ${DOCS_SRC:$(DOCS_SRC_DIR)/%.md=$(DOCS_TGT_DIR)/%.js}
-
-
 # -- [ COMPILATION ] ---------------------------------------------------
-$(DOCS_TGT_DIR)/%.js: $(DOCS_SRC_DIR)/%.md
-	mkdir -p $(dir $@)
-	node tools/markdown-to-mm.js $< "$@.tmp"
-	$(babel) "$@.tmp" --out-file $@
-	rm "$@.tmp"
-
 node_modules: package.json
 	npm install
 
@@ -69,7 +56,8 @@ compile-test:
 	$(browserify) test/browser/browser-tests.js --source-map inline > test/browser/tests.js
 
 .PHONY: compile-documentation
-compile-documentation: $(DOCS_TGT)
+compile-documentation:
+	node tools/markdown-to-mm.js docs/source docs/build
 
 .PHONY: clean
 clean:
