@@ -18,14 +18,27 @@ const noop = () => {};
 
 /*~ stability: experimental */
 class Task {
-  /*~*/
+  /*~
+   * stability: experimental
+   * Task :: forall value, reason, resources:
+   *   new (
+   *     ({ resolve: (value) => Void, reject: (reason) => Void, cancel: () => Void }) => resources,
+   *     (resources) => Void,
+   *     (resources) => Void
+   *   ) => Task value reason resources
+   */
   constructor(computation, onCancel, cleanup) {
     this._computation = computation;
     this._onCancel    = onCancel || noop;
     this._cleanup     = cleanup  || noop;
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v1, v2, r:
+   *     (Task e v1 r).((v1) => Task e v2 r) => Task e v2 r
+   */
   chain(transformation) {
     return new Task(
       resolver => {
@@ -47,7 +60,12 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v1, v2, r:
+   *     (Task e v1 r).((v1) => v2) => Task e v2 r
+   */
   map(transformation) {
     return new Task(
       resolver => {
@@ -63,12 +81,22 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v1, v2, r:
+   *     (Task e ((v1) => v2) r).(Task e v1 r) => Task e v2 r
+   */
   apply(task) {
     return this.chain(f => task.map(f));
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e1, e2, v1, v2, r:
+   *     (Task e1 v1 r).((e1) => e2, (v1) => v2) => Task e2 v2 r
+   */
   bimap(rejectionTransformation, successTransformation) {
     return new Task(
       resolver => {
@@ -84,7 +112,18 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e1, e2, v1, v2, r:
+   *     type Pattern = { row |
+   *       Cancelled: ()  => Task e2 v2 r,
+   *       Resolved:  (b) => Task e2 v2 r,
+   *       Rejected:  (a) => Task e2 v2 r
+   *     }
+   *
+   *     (Task e1 v1 r).(Pattern) => Task e2 v2 r
+   */
   willMatchWith(pattern) {
     return new Task(
       resolver => {
@@ -105,7 +144,11 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v, r: (Task e v r).() => Task v e r
+   */
   swap() {
     return new Task(
       resolver => {
@@ -121,7 +164,12 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v, r1, r2:
+   *     (Task e v r1).(Task e v r2) => Task e v (r1 and r2)
+   */
   or(that) {
     return new Task(
       resolver => {
@@ -158,7 +206,12 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v1, v2, r1, r2:
+   *     (Task e v1 r1).(Task e v2 r2) => Task e (v1 v2) (r1 and r2)
+   */
   and(that) {
     return new Task(
       resolver => {   // eslint-disable-line max-statements
@@ -214,7 +267,11 @@ class Task {
     );
   }
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v, r: (Task e v r).() => TaskExecution e v r
+   */
   run() {
     let deferred = new Deferred();    // eslint-disable-line prefer-const
     deferred.listen({
@@ -250,12 +307,20 @@ class Task {
 
 
 Object.assign(Task, {
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v, r: (v) => Task e v r
+   */
   of(value) {
     return new Task(resolver => resolver.resolve(value));
   },
 
-  /*~*/
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v, r: (e) => Task e v r
+   */
   rejected(reason) {
     return new Task(resolver => resolver.reject(reason));
   }
