@@ -22,7 +22,7 @@ type JSONParser = {
   fromJSON: (JSONSerialisation, Array JSONParser) =&gt; Variant
 }
 
-(JSONSerialisation, Array JSONParser) =&gt; Variant</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Parses a JavaScript object previously serialised as <code>aValidation.toJSON()</code> into a proper Validation structure.</p>
+(JSONSerialisation, Array JSONParser) =&gt; Variant</code></pre></div></div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Parses a JavaScript object previously serialised as <code>aValidation.toJSON()</code> into a proper Validation structure.</p>
 <p>See the docs for <code>core/adt/derivations/serialization</code> for more details.</p>
 <h2 id="example-">Example:</h2>
 <pre><code>const Validation = require(&#39;folktale/data/validation&#39;);

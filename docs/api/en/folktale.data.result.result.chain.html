@@ -15,7 +15,7 @@ As with <code>.map()</code>, the transformation is only applied if the value is 
 but the transformation is expected a new <code>Result</code> value, which then becomes the
 result of the method.</p>
 </div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature"></div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="guides.type-notation-used-in-signatures.html">(what is this?)</a></div><pre class="type"><code class="language-haskell">forall a, b, c:
-  (Result a b).((b) =&gt; Result a c) =&gt; Result a c</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Transforms the value and context of a Result computation with an unary function.
+  (Result a b).((b) =&gt; Result a c) =&gt; Result a c</code></pre></div></div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Transforms the value and context of a Result computation with an unary function.
 As with <code>.map()</code>, the transformation is only applied if the value is an <code>Ok</code>,
 but the transformation is expected a new <code>Result</code> value, which then becomes the
 result of the method.</p>
