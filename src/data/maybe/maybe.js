@@ -18,7 +18,7 @@ const extend = require('folktale/helpers/extend');
 const { equality, debugRepresentation, serialization } = derivations;
 
 
-/*~ stability: unstable */
+/*~ stability: stable */
 const Maybe = data('folktale:Data.Maybe', {
   /*~
    * type: |
