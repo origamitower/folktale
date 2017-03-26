@@ -323,4 +323,32 @@ pre code[class*="language-"] {
     margin-left: 5px
     font-variant: small-caps
   }
+
+  .navigation {
+    float: right;
+    font-size: 80%;
+    list-style: none;
+    margin: 0;
+  }
+
+  .navigation-item {
+    display: inline-block;
+    margin: 0 0 0 0.2em;
+    padding: 0 0.5em;
+    border-bottom: 0px solid midnight;
+
+    &:hover {
+      border-bottom-width: 5px;
+      transition: none;
+    }
+
+    &:hover a {
+      color: #fff;
+      transition: none;
+    }
+  }
+
+  .navigation-item, a {
+    transition: all 0.25s ease-out;
+  }
 }
