@@ -7,17 +7,17 @@
 //
 //----------------------------------------------------------------------
 
-const Task = require('./_task');
+const { of } = require('./_task');
 
-/*~ 
- * stability: experimental 
- * name: module folktale/data/task
- */
-module.exports = {
-  ...Task,
-  task: require('./task'),
-  waitAny: require('./race'),
-  waitAll: require('./parallel'),
-  _Task: Task,
-  _TaskExecution: require('./_task-execution')
-};
+const waitAll = (tasks) => {
+  if (tasks.length === 0) {
+    throw new Error('Task.waitAll() requires a non-empty array of tasks.');
+  }
+
+  return tasks.reduce(
+    (a, b) => a.and(b).map(([xs, x]) => [...xs, x]),
+    of([])
+  )
+}
+
+module.exports = waitAll;
