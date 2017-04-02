@@ -311,15 +311,15 @@ describe('Data.Task', () => {
     });
   });
 
-  describe('parallel()', async () => {
+  it('parallel()', async () => {
     const result = await Task.parallel([Task.of(1), Task.of(2), Task.of(3)]).run().promise();
     $ASSERT(result == [1, 2, 3]);
 
-    const result = await Task.parallel([Task.of(1), Task.rejected(2), Task.of(3)]).run().promise().catch(e => e);
-    $ASSERT(result == 2);
+    const result2 = await Task.parallel([Task.of(1), Task.rejected(2), Task.of(3)]).run().promise().catch(e => e);
+    $ASSERT(result2 == 2);
   });
 
-  describe('or()', async () => {
+  it('or()', async () => {
     const delay = (ms) => Task.task((r) => setTimeout(() => r.resolve(ms), ms), {
       cleanup: (a) => clearTimeout(a)
     });
@@ -327,8 +327,8 @@ describe('Data.Task', () => {
     const result = await Task.race([delay(100), delay(30), delay(200)]).run().promise();
     $ASSERT(result == 30);
 
-    const result = await Task.race([delay(100), delay(200), delay(30)]).run().promise().catch(e => e == 30);
-    $ASSERT(result == true);
+    const result2 = await Task.race([delay(100), delay(200), delay(30)]).run().promise().catch(e => e == 30);
+    $ASSERT(result2 == true);
   });
 
   describe('#run()', () => {
