@@ -311,7 +311,7 @@ describe('Data.Task', () => {
     });
   });
 
-  describe('parallel()', () => {
+  describe('parallel()', async () => {
     const result = await Task.parallel([Task.of(1), Task.of(2), Task.of(3)]).run().promise();
     $ASSERT(result == [1, 2, 3]);
 
@@ -319,7 +319,7 @@ describe('Data.Task', () => {
     $ASSERT(result == 2);
   });
 
-  describe('or()', () => {
+  describe('or()', async () => {
     const delay = (ms) => Task.task((r) => setTimeout(() => r.resolve(ms), ms), {
       cleanup: (a) => clearTimeout(a)
     });
