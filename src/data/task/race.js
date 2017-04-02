@@ -7,17 +7,14 @@
 //
 //----------------------------------------------------------------------
 
-const Task = require('./_task');
 
-/*~ 
- * stability: experimental 
- * name: module folktale/data/task
- */
-module.exports = {
-  ...Task,
-  task: require('./task'),
-  race: require('./race'),
-  parallel: require('./parallel'),
-  _Task: Task,
-  _TaskExecution: require('./_task-execution')
+const race = (tasks) => {
+  if (tasks.length === 0) {
+    throw new Error(`Task.race() requires a non-empty array of tasks.`);
+  }
+
+  return tasks.reduce((a, b) => a.or(b));
 };
+
+
+module.exports = race;

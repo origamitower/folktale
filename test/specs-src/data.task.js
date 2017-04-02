@@ -311,6 +311,26 @@ describe('Data.Task', () => {
     });
   });
 
+  describe('parallel()', () => {
+    const result = await Task.parallel([Task.of(1), Task.of(2), Task.of(3)]).run().promise();
+    $ASSERT(result == [1, 2, 3]);
+
+    const result = await Task.parallel([Task.of(1), Task.rejected(2), Task.of(3)]).run().promise().catch(e => e);
+    $ASSERT(result == 2);
+  });
+
+  describe('or()', () => {
+    const delay = (ms) => Task.task((r) => setTimeout(() => r.resolve(ms), ms), {
+      cleanup: (a) => clearTimeout(a)
+    });
+
+    const result = await Task.race([delay(100), delay(30), delay(200)]).run().promise();
+    $ASSERT(result == 30);
+
+    const result = await Task.race([delay(100), delay(200), delay(30)]).run().promise().catch(e => e == 30);
+    $ASSERT(result == true);
+  });
+
   describe('#run()', () => {
     it('Executes the computation for the task', () => {
       let ran = false;
