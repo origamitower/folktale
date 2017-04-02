@@ -74,3 +74,80 @@ Promises, however, do not support cancellations. Since they represent values, no
 
 Task, on the other hand, works at the *computation* level, so it knows which resources a computation has allocated to do the work, and can safely collect those resources automatically when the computation is cancelled. Very similar to how killing a thread or process allows you to clean things up. Because Tasks abstract computations, and not values, things that aren't possible with Promises, like running operations sequentially, is supported natively by the Task API.
 
+
+## Constructing tasks
+
+The `task` function is how Tasks are generally created. It takes a computation (a function that will perform all of the work), and optionally an object defining handlers for how to clean up the resources allocated by the computation, and what to do if the task is cancelled.
+
+A task that simply resolves after a certain amount of time would look like this::
+
+    const { task } = require('folktale/data/task');
+
+    const delay = (time) => task(
+      (resolver) => {
+        return setTimeout(() => resolver.resolve(time), time);
+      },
+      {
+        cleanup(timerId) {
+          clearTimeout(timerId);
+        },
+        onCancelled(timerId) {
+          /* does nothing */
+        }
+      }
+    );
+
+    const result = await delay(100).run().promise();
+    $ASSERT(result == 100);
+
+Here the computation takes a `resolver` argument, which contains methods to change the state of the task execution. `resolver.resolve(value)` signals that the execution succeeded, and provides a return value for it. `resolver.reject(reason)` signals that the execution failed, and provides the reason of its failure. `resolver.cancel()` cancels the exection of the task.
+
+> **NOTE**  
+> While `.cancel()` will cancel the execution of the Task, the processes started by the task computation will not be automatically stopped. The task computation must stop those itself, as we'll see later in the section about cancelling tasks.
+
+The `onCancelled` and `cleanup` functions will receive any value returned by the task computation. Typically, the computation will allocate some resources, and return a handle to those resources such that `cleanup` and `onCancelled` may free those as they see fit. `cleanup` is always called once a Task finishes its execution, regardless of what state it ends up in (cancelled, rejected, or resolved). If not provided, Folktale just does nothing in response to those events.
+
+Sometimes Task functions expect a Task as input or result value, but you already have the value that should be computed. While you can always resolve a Task synchronously, like so::
+
+    const one = task(resolver => resolver.resolve(1));
+
+It's practical to use the `of()` and `rejected()` methods instead. The first creates a task that resolves successfuly with a value, whereas `rejected()` creates a task that resolves with a failure::
+
+    const { of, rejected } = require('folktale/data/task');
+
+    const one_ = of(1);
+    const two_ = rejected(2);
+
+
+## Running tasks
+
+Creating a Task does **not** start any computation, it only provides a description for how to do something. In a sense, they are similar to a function definition. In order to execute the operations a Task defines, one must run it::
+
+    const { task } = require('folktale/data/task');
+
+    const hello = task(resolver => resolver.resolve('hello'));
+
+    const helloExecution = hello.run();
+
+
+Running a Task with the `.run()` method returns a `TaskExecution` object. This object allows one to cancel the execution of the task, or query its eventual value either as JavaScript's Promise, or a Folktale's Future::
+
+    const value = await helloExecution.promise();
+    $ASSERT(value === 'hello');
+
+    helloExecution.future().map(value => {
+      $ASSERT(value === 'hello');
+    });
+
+> **NOTE**  
+> While Promises let you use JavaScript's `async/await` feature, it does not support nested promises, and cancellations are handled as rejections. Future is a simpler structure, which models all three states of a Task's eventual value, but does not support `async/await`.
+
+
+## Combining tasks
+
+
+
+
+
+
+
