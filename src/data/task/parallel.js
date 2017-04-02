@@ -15,7 +15,7 @@ const parallel = (tasks) => {
   }
 
   return tasks.reduce(
-    (a, b) => a.and(b).map((xs, x) => [...xs, x]),
+    (a, b) => a.and(b).map(([xs, x]) => [...xs, x]),
     of([])
   )
 }

@@ -327,7 +327,7 @@ describe('Data.Task', () => {
     const result = await Task.race([delay(100), delay(30), delay(200)]).run().promise();
     $ASSERT(result == 30);
 
-    const result2 = await Task.race([delay(100), delay(200), delay(30)]).run().promise().catch(e => e == 30);
+    const result2 = await Task.race([delay(100), delay(200), delay(30).swap()]).run().promise().catch(e => e == 30);
     $ASSERT(result2 == true);
   });
 
