@@ -16,8 +16,8 @@ const Task = require('./_task');
 module.exports = {
   ...Task,
   task: require('./task'),
-  race: require('./race'),
-  parallel: require('./parallel'),
+  waitAny: require('./race'),
+  waitAll: require('./parallel'),
   _Task: Task,
   _TaskExecution: require('./_task-execution')
 };

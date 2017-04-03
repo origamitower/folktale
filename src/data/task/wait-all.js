@@ -9,9 +9,9 @@
 
 const { of } = require('./_task');
 
-const parallel = (tasks) => {
+const waitAll = (tasks) => {
   if (tasks.length === 0) {
-    throw new Error('Task.parallel() requires a non-empty array of tasks.');
+    throw new Error('Task.waitAll() requires a non-empty array of tasks.');
   }
 
   return tasks.reduce(
@@ -20,4 +20,4 @@ const parallel = (tasks) => {
   )
 }
 
-module.exports = parallel;
+module.exports = waitAll;
