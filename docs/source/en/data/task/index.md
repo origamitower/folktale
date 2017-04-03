@@ -143,11 +143,61 @@ Running a Task with the `.run()` method returns a `TaskExecution` object. This o
 > While Promises let you use JavaScript's `async/await` feature, it does not support nested promises, and cancellations are handled as rejections. Future is a simpler structure, which models all three states of a Task's eventual value, but does not support `async/await`.
 
 
-## Combining tasks
+## Combining tasks concurrently
+
+Task's primary goal is helping with concurrency, or the ordering of independent processes within an application. There are three primary categories of operations for this in Folktale:
+
+  - **Sequencing**: when process A depends on process B, and thus must only be executed after A is done.
+  - **Choosing non-deterministically**: A and B are independent processes that provide a similar answer. The program chooses the first process that finishes.
+  - **Waiting related processes**: A and B are independent processes, but C depends on both, and thus must only be executed after A and B are done.
 
 
+### Sequencing tasks
+
+One task models and independent process that eventually computes a value. Sometimes one task depends on the result of another task, and as thus may only run if that task resolves successfully. In order to sequence tasks we use the `.chain()` method::
+
+    const { task, of } = require('folktale/data/task');
+
+    const concat = (a, b) => task(resolver => resolver.resolve(a + b));
+
+    const taskA = of('hello');
+    const taskB = of('world');
+
+    const theTask = taskA.chain(x => taskB.chain(y => concat(x, y)));
+
+    const result = await theTask.run().promise();
+    $ASSERT(result == 'helloworld');
+
+In this case, `taskB` only starts after `taskA` finishes executing successfully, and `concat` only starts after both `taskA` and `taskB` finish executing. It makes sense for `concat` to wait on both `taskA` and `taskB`, as it needs the two tasks to finish successfully before it can be executed, but there's no reason for `taskA` and `taskB` to wait for each other.
 
 
+### Choosing the first of N tasks
 
+Suppose you send a request to a server, but if you don't get a response in a couple of seconds the program should just give up. This scenario can be modelled as two independent processes: a request to a server, and a timer that fires after a couple of seconds. The program should pick whichever process resolves first. With Folktale's Task, this is done with the `.or()` method.
 
+The `.or()` method combines two tasks such that the resulting task assimilates the result of the first one to resolve::
+
+    const { task } = require('folktale/data/task');
+
+    const delay = (ms) => task(
+      resolver => setTimeout(() => resolver.resolve(ms), ms),
+      {
+        cleanup: (timer) => clearTimeout(timer)
+      }
+    );
+
+    const timeout = (ms) => task(
+      resolver => setTimeout(() => resolver.reject(ms), ms),
+      {
+        cleanup: (timer) => clearTimeout(timer)
+      }
+    );
+
+    const result = await delay(20).or(timeout(300))
+                     .run().promise();
+    $ASSERT(result == 20);
+
+    const result2 = await delay(200).or(timeout(100))
+                      .run().promise().catch(e => `timeout ${e}`);
+    $ASSERT(result == 'timeout 100');
 

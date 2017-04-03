@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>module folktale/data/task</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/data/task</h1><div class="highlight-summary"><div><p>A data structure that models asynchronous actions, supporting safe cancellation and automatic resource handling.</p>
+</div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>A data structure that models asynchronous actions, supporting safe cancellation and automatic resource handling.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const { task } = require(&#39;folktale/data/task&#39;);
+
+const delay = (ms) =&gt; task(
+  (resolver) =&gt; setTimeout(() =&gt; resolver.resolve(ms), ms),
+  {
+    cleanup: (timer) =&gt; clearTimeout(timer)
+  }
+);
+
+// waits 100ms
+const result = await delay(100).or(delay(2000)).run().promise();
+$ASSERT(result == 100);
+</code></pre><h2 id="why-use-task-">Why use Task?</h2>
+<p>Because JavaScript implementations are usually single-threaded, and there&#39;s no coroutine support, concurrent applications tend to use either callbacks (continuation-passing style) or Promise.</p>
+<p>Callbacks aren&#39;t very composable. In order to combine callbacks, an user has to write code specific to each place that will use them. While you can make code written using callbacks maintainable, their low-level nature forces you to deal with a fair amount of details that could be resolved by a library, including optimal concurrency:</p>
+<pre><code>const map = (list, fn, done) =&gt; {
+  let result = [];
+  let pending = list.length;
+  let resolved = false;
+
+  list.forEach((item, index) =&gt; {
+    fn(item, (error, value) =&gt; {
+      if (!resolved) {
+        if (error) {
+          resolved = true;
+          done(error, null);
+        } else {
+          pending -= 1;
+          result[index] = value;
+          if (pending === 0) {
+            done(null, result);
+          }
+        }
+      }
+    });
+  });
+};
+
+map([1, 2], (x, c) =&gt; c(null, x + 1), (e, v) =&gt; {
+  $ASSERT(e == null);
+  $ASSERT(v == []);
+});
+
+map([1, 2], (x, c) =&gt; c(x), (e, v) =&gt; {
+  $ASSERT(e == 1);
+  $ASSERT(v == null);
+});
+</code></pre><p>Because no function using callbacks ever returns a value to the caller, and so aren&#39;t usable with most functions. They are, of course, not usable with JavaScript control-flow constructs either, so it&#39;s not possible to write something like:</p>
+<pre><code>if (someAsyncPredicate(...)) {
+  ...
+}
+</code></pre><p>Since <code>someAsyncPredicate</code> never returns any value, but instead passes it as an argument to another function.</p>
+<p>Promises alleviate this a bit. Promises are first-class values, so regular synchronous functions may invoke functions yielding promises and get a value back. In some cases, that&#39;s not going to be the right value, but with <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await">async/await</a> you get a lot of the compositionality back, as you can mix promises and regular synchronous constructs freely in special (<code>async</code>) functions.</p>
+<p>Promises, however, do not support cancellations. Since they represent values, not computations, a Promise by itself has no concept of &quot;what to cancel&quot;, it only waits for an external process to provide a value to it. In JavaScript, promises also suffer from not being able to nest. This is not a problem for most common cases, but it makes writing some data structures much less convenient and more error-prone.</p>
+<p>Task, on the other hand, works at the <em>computation</em> level, so it knows which resources a computation has allocated to do the work, and can safely collect those resources automatically when the computation is cancelled. Very similar to how killing a thread or process allows you to clean things up. Because Tasks abstract computations, and not values, things that aren&#39;t possible with Promises, like running operations sequentially, is supported natively by the Task API.</p>
+<h2 id="constructing-tasks">Constructing tasks</h2>
+<p>The <code>task</code> function is how Tasks are generally created. It takes a computation (a function that will perform all of the work), and optionally an object defining handlers for how to clean up the resources allocated by the computation, and what to do if the task is cancelled.</p>
+<p>A task that simply resolves after a certain amount of time would look like this:</p>
+<pre><code>const { task } = require(&#39;folktale/data/task&#39;);
+
+const delay = (time) =&gt; task(
+  (resolver) =&gt; {
+    return setTimeout(() =&gt; resolver.resolve(time), time);
+  },
+  {
+    cleanup(timerId) {
+      clearTimeout(timerId);
+    },
+    onCancelled(timerId) {
+      /* does nothing */
+    }
+  }
+);
+
+const result = await delay(100).run().promise();
+$ASSERT(result == 100);
+</code></pre><p>Here the computation takes a <code>resolver</code> argument, which contains methods to change the state of the task execution. <code>resolver.resolve(value)</code> signals that the execution succeeded, and provides a return value for it. <code>resolver.reject(reason)</code> signals that the execution failed, and provides the reason of its failure. <code>resolver.cancel()</code> cancels the exection of the task.</p>
+<blockquote>
+<p><strong>NOTE</strong><br>While <code>.cancel()</code> will cancel the execution of the Task, the processes started by the task computation will not be automatically stopped. The task computation must stop those itself, as we&#39;ll see later in the section about cancelling tasks.</p>
+</blockquote>
+<p>The <code>onCancelled</code> and <code>cleanup</code> functions will receive any value returned by the task computation. Typically, the computation will allocate some resources, and return a handle to those resources such that <code>cleanup</code> and <code>onCancelled</code> may free those as they see fit. <code>cleanup</code> is always called once a Task finishes its execution, regardless of what state it ends up in (cancelled, rejected, or resolved). If not provided, Folktale just does nothing in response to those events.</p>
+<p>Sometimes Task functions expect a Task as input or result value, but you already have the value that should be computed. While you can always resolve a Task synchronously, like so:</p>
+<pre><code>const one = task(resolver =&gt; resolver.resolve(1));
+</code></pre><p>It&#39;s practical to use the <code>of()</code> and <code>rejected()</code> methods instead. The first creates a task that resolves successfuly with a value, whereas <code>rejected()</code> creates a task that resolves with a failure:</p>
+<pre><code>const { of, rejected } = require(&#39;folktale/data/task&#39;);
+
+const one_ = of(1);
+const two_ = rejected(2);
+</code></pre><h2 id="running-tasks">Running tasks</h2>
+<p>Creating a Task does <strong>not</strong> start any computation, it only provides a description for how to do something. In a sense, they are similar to a function definition. In order to execute the operations a Task defines, one must run it:</p>
+<pre><code>const { task } = require(&#39;folktale/data/task&#39;);
+
+const hello = task(resolver =&gt; resolver.resolve(&#39;hello&#39;));
+
+const helloExecution = hello.run();
+</code></pre><p>Running a Task with the <code>.run()</code> method returns a <code>TaskExecution</code> object. This object allows one to cancel the execution of the task, or query its eventual value either as JavaScript&#39;s Promise, or a Folktale&#39;s Future:</p>
+<pre><code>const value = await helloExecution.promise();
+$ASSERT(value === &#39;hello&#39;);
+
+helloExecution.future().map(value =&gt; {
+  $ASSERT(value === &#39;hello&#39;);
+});
+</code></pre><blockquote>
+<p><strong>NOTE</strong><br>While Promises let you use JavaScript&#39;s <code>async/await</code> feature, it does not support nested promises, and cancellations are handled as rejections. Future is a simpler structure, which models all three states of a Task&#39;s eventual value, but does not support <code>async/await</code>.</p>
+</blockquote>
+<h2 id="sequencing-tasks">Sequencing tasks</h2>
+<p>One task models and independent process that eventually computes a value. Sometimes one task depends on the result of another task, and as thus may only run if that task resolves successfully. In order to sequence tasks we use the <code>.chain()</code> method:</p>
+<pre><code>const { task, of } = require(&#39;folktale/data/task&#39;);
+
+const concat = (a, b) =&gt; task(resolver =&gt; resolver.resolve(a + b));
+
+const taskA = of(&#39;hello&#39;);
+const taskB = of(&#39;world&#39;);
+
+const theTask = taskA.chain(x =&gt; taskB.chain(y =&gt; concat(x, y)));
+
+const result = await theTask.run().promise();
+$ASSERT(result == &#39;helloworld&#39;);
+</code></pre><p>In this case, <code>taskB</code> only starts after <code>taskA</code> finishes executing successfully, and <code>concat</code> only starts after both <code>taskA</code> and <code>taskB</code> finish executing. It makes sense for <code>concat</code> to wait on both <code>taskA</code> and <code>taskB</code>, as it needs the two tasks to finish successfully before it can be executed, but there&#39;s no reason for <code>taskA</code> and <code>taskB</code> to wait for each other.</p>
+<h2 id="combining-tasks-concurrently">Combining tasks concurrently</h2>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-fantasy-land">Fantasy Land</h3><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.task.ap.html">ap(that)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 1.x. See the <code>apply</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.task.fantasy-land-ap.html">fantasy-land/ap(that)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 2.x+. See the <code>apply</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.task.fantasy-land-of.html">fantasy-land/of(value)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 2.x+. See the <code>of</code> method for details.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">_Task()</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">_TaskExecution()</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">of()</div><div class="doc-summary"></div><div class="special-tags"></div></div><div class="member"><div class="member-name no-link">rejected()</div><div class="doc-summary"></div><div class="special-tags"></div></div><div class="member"><div class="member-name no-link">task(computation, handlers = {
+  onCancelled: noop,
+  cleanup: noop
+})</div><div class="doc-summary"></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><div class="member-name no-link">waitAll()</div><div class="doc-summary"></div><div class="special-tags"></div></div><div class="member"><div class="member-name no-link">waitAny()</div><div class="doc-summary"></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/task/index.js at line 16, column 0</div><pre class="source-code"><code class="language-javascript">{
+  ...Task,
+  task: require('./task'),
+  waitAny: require('./race'),
+  waitAll: require('./parallel'),
+  _Task: Task,
+  _TaskExecution: require('./_task-execution')
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/data/task</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li><li class="toc-item"><a href="#why-use-task-" title="Why use Task?"><div><p>Why use Task?</p>
+</div></a></li><li class="toc-item"><a href="#constructing-tasks" title="Constructing tasks"><div><p>Constructing tasks</p>
+</div></a></li><li class="toc-item"><a href="#running-tasks" title="Running tasks"><div><p>Running tasks</p>
+</div></a></li><li class="toc-item"><a href="#sequencing-tasks" title="Sequencing tasks"><div><p>Sequencing tasks</p>
+</div></a></li><li class="toc-item"><a href="#combining-tasks-concurrently" title="Combining tasks concurrently"><div><p>Combining tasks concurrently</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-fantasy-land">Fantasy Land</a></li><li class="toc-item"><a href="#cat--uncategorised-">(Uncategorised)</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
