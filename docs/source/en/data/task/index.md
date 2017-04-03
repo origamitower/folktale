@@ -143,7 +143,27 @@ Running a Task with the `.run()` method returns a `TaskExecution` object. This o
 > While Promises let you use JavaScript's `async/await` feature, it does not support nested promises, and cancellations are handled as rejections. Future is a simpler structure, which models all three states of a Task's eventual value, but does not support `async/await`.
 
 
-## Combining tasks
+## Sequencing tasks
+
+One task models and independent process that eventually computes a value. Sometimes one task depends on the result of another task, and as thus may only run if that task resolves successfully. In order to sequence tasks we use the `.chain()` method::
+
+    const { task, of } = require('folktale/data/task');
+
+    const concat = (a, b) => task(resolver => resolver.resolve(a + b));
+
+    const taskA = of('hello');
+    const taskB = of('world');
+
+    const theTask = taskA.chain(x => taskB.chain(y => concat(x, y)));
+
+    const result = await theTask.run().promise();
+    $ASSERT(result == 'helloworld');
+
+In this case, `taskB` only starts after `taskA` finishes executing successfully, and `concat` only starts after both `taskA` and `taskB` finish executing. It makes sense for `concat` to wait on both `taskA` and `taskB`, as it needs the two tasks to finish successfully before it can be executed, but there's no reason for `taskA` and `taskB` to wait for each other.
+
+
+## Combining tasks concurrently
+
 
 
 
