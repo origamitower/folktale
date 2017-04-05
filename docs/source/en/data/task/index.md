@@ -199,5 +199,5 @@ The `.or()` method combines two tasks such that the resulting task assimilates t
 
     const result2 = await delay(200).or(timeout(100))
                       .run().promise().catch(e => `timeout ${e}`);
-    $ASSERT(result == 'timeout 100');
+    $ASSERT(result2 == 'timeout 100');
 
