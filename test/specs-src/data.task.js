@@ -311,23 +311,23 @@ describe('Data.Task', () => {
     });
   });
 
-  it('parallel()', async () => {
-    const result = await Task.parallel([Task.of(1), Task.of(2), Task.of(3)]).run().promise();
+  it('waitAll()', async () => {
+    const result = await Task.waitAll([Task.of(1), Task.of(2), Task.of(3)]).run().promise();
     $ASSERT(result == [1, 2, 3]);
 
-    const result2 = await Task.parallel([Task.of(1), Task.rejected(2), Task.of(3)]).run().promise().catch(e => e);
+    const result2 = await Task.waitAll([Task.of(1), Task.rejected(2), Task.of(3)]).run().promise().catch(e => e);
     $ASSERT(result2 == 2);
   });
 
-  it('or()', async () => {
+  it('waitAny()', async () => {
     const delay = (ms) => Task.task((r) => setTimeout(() => r.resolve(ms), ms), {
       cleanup: (a) => clearTimeout(a)
     });
 
-    const result = await Task.race([delay(100), delay(30), delay(200)]).run().promise();
+    const result = await Task.waitAny([delay(100), delay(30), delay(200)]).run().promise();
     $ASSERT(result == 30);
 
-    const result2 = await Task.race([delay(100), delay(200), delay(30).swap()]).run().promise().catch(e => e == 30);
+    const result2 = await Task.waitAny([delay(100), delay(200), delay(30).swap()]).run().promise().catch(e => e == 30);
     $ASSERT(result2 == true);
   });
 
