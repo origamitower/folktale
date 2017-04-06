@@ -216,3 +216,40 @@ As a convenience for combining a large or unknown amount of tasks, the `waitAny(
 
 ### Waiting many independent processes
 
+If some computation depends on the results of more than one process you could use a nested sequence of `.chain()` calls to describe these dependencies, but that could be inefficient. If you don't care about the ordering of these processes, `.chain()` would impose an order on them. In essence, you wouldn't be getting any concurrency performance out of it.
+
+Instead of sequencing unrelated tasks, you can combine them with the `.and()` operation. `a.and(b)` combines two tasks concurrently. That is, when you run this result, it'll start both `a` and `b` concurrently, and wait for their return without imposing any ordering on it. The result of the task will be a tuple containing the values of `a` and `b`::
+
+    const { task } = require('folktale/data/task');
+
+    const delay = (ms) => task(
+      resolver => setTimeout(() => resolver.resolve(ms), ms),
+      {
+        cleanup: (timer) => clearTimeout(timer)
+      }
+    );
+
+    // This takes 100ms
+    const result = await delay(60).chain(x => delay(40).map(y => [x, y])).run().promise();
+    $ASSERT(result == [60, 40]);
+
+    // This takes 60ms
+    const result2 = await delay(60).and(delay(40)).run().promise();
+    $ASSERT(result == [60, 40]);
+
+Because the tasks are started concurrently, and no ordering is imposed on them, the entire computation takes as long as the slowest of its processes. If you were to use `.chain()` to combine them, it would take the sum of all processes' times.
+
+As a convenience for combining a large or unknown amount of tasks, the `waitAll()` function receives an array of Tasks to "and" together. `waitAll()` returns a normalised array of the results instead of nested tuples::
+
+    const { waitAll } = require('folktale/data/task');
+
+    const result3 = await delay(10).and(delay(20).and(delay(30))).run().promise();
+    $ASSERT(result == [10, [20, 30]]);
+
+    const result4 = await waitAll([
+      delay(10),
+      delay(20),
+      delay(30)
+    ]).run().promise();
+    $ASSERT(result == [10, 20, 30]);
+
