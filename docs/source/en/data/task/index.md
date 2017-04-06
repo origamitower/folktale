@@ -201,3 +201,18 @@ The `.or()` method combines two tasks such that the resulting task assimilates t
                       .run().promise().catch(e => `timeout ${e}`);
     $ASSERT(result2 == 'timeout 100');
 
+
+As a convenience for combining a large or unknown amount of tasks, the `waitAny()` function receives an array of Tasks to "or" together::
+
+    const { waitAny } = require('folktale/data/task');
+
+    const result3 = await waitAny([
+      delay(10),
+      delay(20),
+      delay(30)
+    ]).run().promise(); // equivalent to `delay(10).or(delay(20).or(delay(30)))`
+    $ASSERT(result3 == 10);
+
+
+### Waiting many independent processes
+
