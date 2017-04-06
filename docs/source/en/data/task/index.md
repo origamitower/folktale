@@ -253,3 +253,6 @@ As a convenience for combining a large or unknown amount of tasks, the `waitAll(
     ]).run().promise();
     $ASSERT(result == [10, 20, 30]);
 
+
+## Error handling
+
