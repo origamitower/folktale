@@ -85,6 +85,27 @@ class Task {
   /*~
    * stability: experimental
    * type: |
+   *   forall e1, e2, v, r:
+   *     (Task e1 v r).((e1) => e2) => Task e2 v r
+   */
+  mapRejected(transformation) {
+    return new Task(
+      resolver => {
+        const execution = this.run();
+        execution.listen({
+          onCancelled: resolver.cancel,
+          onRejected:  reason => resolver.reject(transformation(reason)),
+          onResolved:  resolver.resolve
+        });
+        return execution;
+      },
+      execution => execution.cancel()
+    );
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
    *   forall e, v1, v2, r:
    *     (Task e ((v1) => v2) r).(Task e v1 r) => Task e v2 r
    */
