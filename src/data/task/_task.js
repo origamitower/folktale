@@ -168,6 +168,34 @@ class Task {
   /*~
    * stability: experimental
    * type: |
+   *   forall e, e2, v, r1, r2:
+   *     (Task e v r1).((e) => Task e2 v r2) => Task e2 v r2
+   */
+   orElse(handler) {
+    return new Task(
+      resolver => {
+        const execution = this.run();
+        execution.listen({
+          onCancelled: resolver.cancel,
+          onResolved:  resolver.resolve,
+          onRejected:  reason => {
+            handler(reason).run().listen({
+              onCancelled: resolver.cancel,
+              onRejected:  resolver.reject,
+              onResolved:  resolver.resolve
+            });
+          }
+        });
+        return execution;
+      },
+      execution => execution.cancel()
+    );     
+   }
+
+
+  /*~
+   * stability: experimental
+   * type: |
    *   forall e, v, r1, r2:
    *     (Task e v r1).(Task e v r2) => Task e v (r1 and r2)
    */

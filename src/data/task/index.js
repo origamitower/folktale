@@ -14,7 +14,8 @@ const Task = require('./_task');
  * name: module folktale/data/task
  */
 module.exports = {
-  ...Task,
+  of: Task.of,
+  rejected: Task.rejected,
   task: require('./task'),
   waitAny: require('./wait-any'),
   waitAll: require('./wait-all'),

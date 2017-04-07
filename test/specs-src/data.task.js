@@ -41,6 +41,19 @@ describe('Data.Task', () => {
       return execution.future() ::eq(cancelled());
     });
 
+    property('#orElse(f) transforms failed tasks', 'nat', 'nat -> task nat', env, (a, f) => {
+      return Task.rejected(a).orElse(f).run().future() ::eq(f(a).run().future());
+    });
+
+    property('#orElse(f) ignores successful tasks', 'nat', 'nat -> task nat', env, (a, f) => {
+      return Task.of(a).orElse(f).run().future() ::eq(Future.of(a));
+    });
+
+    property('#orElse(f) ignores cancellations', 'nat', 'nat -> task nat', env, (a, f) => {
+      const execution = Task.task(r => r.cancel()).run();
+      return execution.future() ::eq(cancelled());
+    });
+
     property('#map(f) transforms successful tasks', 'nat', 'nat -> nat', (a, f) => {
       return Task.of(a).map(f).run().future() ::eq(Future.of(f(a)));
     });
