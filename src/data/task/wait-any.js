@@ -8,6 +8,11 @@
 //----------------------------------------------------------------------
 
 
+/*~
+ * stability: experimental
+ * type: |
+ *   forall v, e: ([Task e v Any]) => Task e v Any
+ */
 const waitAny = (tasks) => {
   if (tasks.length === 0) {
     throw new Error(`Task.waitAny() requires a non-empty array of tasks.`);

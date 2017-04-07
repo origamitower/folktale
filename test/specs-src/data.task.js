@@ -37,7 +37,20 @@ describe('Data.Task', () => {
     });
 
     property('#chain(f) ignores cancellations', 'nat', 'nat -> task nat', env, (a, f) => {
-      const execution = Task.task(r => r.cancel()).run();
+      const execution = Task.task(r => r.cancel()).chain(f).run();
+      return execution.future() ::eq(cancelled());
+    });
+
+    property('#orElse(f) transforms failed tasks', 'nat', 'nat -> task nat', env, (a, f) => {
+      return Task.rejected(a).orElse(f).run().future() ::eq(f(a).run().future());
+    });
+
+    property('#orElse(f) ignores successful tasks', 'nat', 'nat -> task nat', env, (a, f) => {
+      return Task.of(a).orElse(f).run().future() ::eq(Future.of(a));
+    });
+
+    property('#orElse(f) ignores cancellations', 'nat', 'nat -> task nat', env, (a, f) => {
+      const execution = Task.task(r => r.cancel()).orElse(f).run();
       return execution.future() ::eq(cancelled());
     });
 
@@ -50,7 +63,19 @@ describe('Data.Task', () => {
     });
 
     property('#map(f) ignores cancellations', 'nat', 'nat -> nat', (a, f) => {
-      return Task.task(r => r.cancel()).run().future() ::eq(cancelled());
+      return Task.task(r => r.cancel()).map(f).run().future() ::eq(cancelled());
+    });
+
+    property('#mapRejected(f) transforms rejected tasks', 'nat', 'nat -> nat', (a, f) => {
+      return Task.rejected(a).mapRejected(f).run().future() ::eq(Future.rejected(f(a)));
+    });
+
+    property('#mapRejected(f) ignores successes', 'nat', 'nat -> nat', (a, f) => {
+      return Task.of(a).mapRejected(f).run().future() ::eq(Future.of(a));
+    });
+
+    property('#mapRejected(f) ignores cancellations', 'nat', 'nat -> nat', (a, f) => {
+      return Task.task(r => r.cancel()).mapRejected(f).run().future() ::eq(cancelled());
     });
 
     property('#apply(a) applies successes', 'nat', 'nat -> nat', (a, f) => {

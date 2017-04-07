@@ -244,15 +244,17 @@ As a convenience for combining a large or unknown amount of tasks, the `waitAll(
     const { waitAll } = require('folktale/data/task');
 
     const result3 = await delay(10).and(delay(20).and(delay(30))).run().promise();
-    $ASSERT(result == [10, [20, 30]]);
+    $ASSERT(result3 == [10, [20, 30]]);
 
     const result4 = await waitAll([
       delay(10),
       delay(20),
       delay(30)
     ]).run().promise();
-    $ASSERT(result == [10, 20, 30]);
+    $ASSERT(result4 == [10, 20, 30]);
 
 
 ## Error handling
+
+Sometimes processes will fail. You can recover from such failures using the `.orElse()` method. The method takes a function, passes to it the error value, if one happened, and expects it to return a new Task, whose state will be assimilated. In order to recover from the error you'd return a successful task, so computations that depend on it may proceed.
 
