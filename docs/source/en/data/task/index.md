@@ -142,6 +142,14 @@ Running a Task with the `.run()` method returns a `TaskExecution` object. This o
 > **NOTE**  
 > While Promises let you use JavaScript's `async/await` feature, it does not support nested promises, and cancellations are handled as rejections. Future is a simpler structure, which models all three states of a Task's eventual value, but does not support `async/await`.
 
+TaskExecution also allows one to react to the result of running a task with the `listen()` method. This is useful for handling cancellations or rejections at the top level, where one doesn't need to combine the task with anything else::
+
+    helloExecution.listen({
+      onCancelled: () => 'task was cancelled',
+      onRejected:  (reason) => 'task was rejected',
+      onResolved:  (value) => $ASSERT(value == 'hello')
+    });
+
 
 ## Combining tasks concurrently
 
@@ -258,3 +266,46 @@ As a convenience for combining a large or unknown amount of tasks, the `waitAll(
 
 Sometimes processes will fail. You can recover from such failures using the `.orElse()` method. The method takes a function, passes to it the error value, if one happened, and expects it to return a new Task, whose state will be assimilated. In order to recover from the error you'd return a successful task, so computations that depend on it may proceed.
 
+For example, this could be used to retry a particular computation::
+
+    const { task, of, rejected } = require('folktale/data/task');
+
+    let errors = [];
+
+    
+    const result = await rejected('nope').orElse(reason => {
+      errors.push(reason);
+      return of('yay');
+    }).run().promise();
+    
+    $ASSERT(result == 'yay');
+    $ASSERT(errors == ['nope']);
+    
+
+
+    errors = [];
+    const retry = (task, times) => {
+      return task.orElse(reason => {
+        errors.push(reason);
+        if (times > 0) {
+          return task
+        } else {
+          return Task.rejected('I give up');
+        }
+      });
+    };
+    
+    let runs = 0;
+    const ohNoes = task(r => {
+      runs += 1;
+      r.reject('fail');
+    });
+    
+    try {
+      const result2 = await retry(ohNoes, 3).run().promise();
+    } catch (error) {
+      $ASSERT(runs == 3);
+      $ASSERT(errors == ['fail', 'fail', 'fail']);
+      $ASSERT(error == 'I give up');
+    }
+    
