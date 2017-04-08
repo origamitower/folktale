@@ -17,8 +17,8 @@ Adds a functions to be called when the task settles for each possible state it c
     
     task(r => r.reject('hello')).run().listen({
       onCancelled: () => { throw 'never happens' },
-      onRejected: (error) => { $ASSERT(error == 'hello') }
-      onResolved: (value) => { throw 'never happens' },
+      onRejected: (error) => { $ASSERT(error == 'hello') },
+      onResolved: (value) => { throw 'never happens' }
     });
     
     task(r => r.cancel()).run().listen({
