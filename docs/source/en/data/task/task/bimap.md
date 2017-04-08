@@ -9,17 +9,17 @@ Transforms the rejected or resolved values of a Task with a function. The state 
 
     const { of, rejected } = require('folktale/data/task');
     
-    const result1 = of(1).bimap(
+    const result1 = await of(1).bimap(
       (error) => error + 1,
       (success) => success - 1
     ).run().promise();
     $ASSERT(result1 == 0);
     
     try {
-      const result2 = rejected(1).bimap(
+      const result2 = await rejected(1).bimap(
         (error) => error + 1,
         (success) => success - 1
       ).run().promise();
-    catch (error) {
+    } catch (error) {
       $ASSERT(error == 2);
     }
