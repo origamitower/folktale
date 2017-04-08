@@ -303,6 +303,7 @@ For example, this could be used to retry a particular computation::
     
     try {
       const result2 = await retry(ohNoes, 3).run().promise();
+      throw 'never happens';
     } catch (error) {
       $ASSERT(runs == 3);
       $ASSERT(errors == ['fail', 'fail', 'fail']);

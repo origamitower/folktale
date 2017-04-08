@@ -18,6 +18,7 @@ As with `.map()` the transformation only happens if the original task resolves s
     const world = of('hello').chain(v => rejected('world'));
     try {
       const result2 = await world.run().promise();
+      throw 'never happens';
     } catch (error) {
       $ASSERT(error == 'world');
     }
@@ -25,6 +26,7 @@ As with `.map()` the transformation only happens if the original task resolves s
     const hello = rejected('hello').chain(v => of('world'));
     try {
       const result3 = await hello.run().promise();
+      throw 'never happens';
     } catch (error) {
       $ASSERT(error == 'hello');
     }

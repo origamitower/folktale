@@ -16,6 +16,7 @@ Transforms the value of a successful task.
     const hello2 = rejected('hello').map(v => v.toUpperCase());
     try {
       const result2 = await hello2.run().promise();
+      throw 'never happens';
     } catch (error) {
       $ASSERT(error == 'hello');
     }

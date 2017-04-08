@@ -13,6 +13,7 @@ The value is computed eagerly. If you need the value to be computed only when th
     
     try {
       const result = await rejected('hello').run().promise();
+      throw 'never happens';
     } catch (error) {
       $ASSERT(error == 'hello');
     }

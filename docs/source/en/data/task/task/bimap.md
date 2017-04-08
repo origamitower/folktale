@@ -20,6 +20,7 @@ Transforms the rejected or resolved values of a Task with a function. The state 
         (error) => error + 1,
         (success) => success - 1
       ).run().promise();
+      throw 'never happens';
     } catch (error) {
       $ASSERT(error == 2);
     }

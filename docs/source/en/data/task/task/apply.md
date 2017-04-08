@@ -20,6 +20,7 @@ the tasks is cancelled, the result will be that cancellation.
     
     try {
       const result2 = await of(x => x + 1).apply(rejected(1)).run().promise();
+      throw 'never happens';
     } catch (error) {
       $ASSERT(error == 1);
     }

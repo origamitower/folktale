@@ -28,6 +28,7 @@ A simple, failed task::
     
     try {
       await nope.run().promise();
+      throw 'never happens';
     } catch (error) {
       $ASSERT(error == 'hello');
     }
@@ -68,6 +69,7 @@ A task with a cancellation handler::
       const execution = cancelMe.run();
       execution.cancel();
       const result3 = await execution.promise();
+      throw 'never happens';
     } catch (error) {
       $ASSERT(resolved == false);
     }
