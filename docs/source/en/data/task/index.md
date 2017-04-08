@@ -281,16 +281,16 @@ For example, this could be used to retry a particular computation::
     $ASSERT(result == 'yay');
     $ASSERT(errors == ['nope']);
     
-
+`.orElse()` can also return rejected or cancelled tasks, and their state will be assimilated likewise::
 
     errors = [];
     const retry = (task, times) => {
       return task.orElse(reason => {
         errors.push(reason);
-        if (times > 0) {
-          return task
+        if (times > 1) {
+          return retry(task, times - 1)
         } else {
-          return Task.rejected('I give up');
+          return rejected('I give up');
         }
       });
     };
