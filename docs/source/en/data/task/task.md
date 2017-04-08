@@ -48,7 +48,6 @@ An asynchronous task that allocates and frees resources::
     
 A task with a cancellation handler::
 
-    let cancelled = false;
     let resolved = false;
     const cancelMe = task(
       resolver => {
@@ -60,7 +59,7 @@ A task with a cancellation handler::
       {
         cleanup: (timer) => clearTimeout(timer),
         onCancelled: (timer) => {
-          cancelled = true;
+          'task was cancelled';
         }
       }
     );
@@ -70,6 +69,6 @@ A task with a cancellation handler::
       execution.cancel();
       const result3 = await execution.promise();
     } catch (error) {
-      $ASSERT(cancelled == true);
       $ASSERT(resolved == false);
     }
+
