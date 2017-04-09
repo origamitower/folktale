@@ -66,7 +66,7 @@ Because functions using callbacks don't return a value to the caller, they're no
       ...
     }
 
-Since `someAsyncPredicate`, instead of returning a value, passes the result of its computation to another function (the callback).
+Instead of returning a value, `someAsyncPredicate` passes the result of its computation to another function (the callback). Because of this, there's no value for the `if` statement to work with.
 
 Promises alleviate this a bit. Promises are first-class values, so regular synchronous functions may invoke functions yielding promises and get a value back. In some cases, that's not going to be the right value, but with [async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await) you get a lot of the compositionality back, as you can mix promises and regular synchronous constructs freely in special (`async`) functions.
 
