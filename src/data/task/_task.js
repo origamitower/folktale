@@ -192,7 +192,7 @@ class Task {
    *   forall e, e2, v, r1, r2:
    *     (Task e v r1).((e) => Task e2 v r2) => Task e2 v r2
    */
-   orElse(handler) {
+  orElse(handler) {
     return new Task(
       resolver => {
         const execution = this.run();
@@ -210,8 +210,8 @@ class Task {
         return execution;
       },
       execution => execution.cancel()
-    );     
-   }
+    );
+  }
 
 
   /*~

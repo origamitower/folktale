@@ -40,7 +40,7 @@ const isPlainObject = (object) => {
   return !prototypeOf(object)
   ||     !object.toString
   ||     (toString.call(object) === object.toString());
-}
+};
 
 
 const deepEquals = (a, b) => {
@@ -68,7 +68,7 @@ const deepEquals = (a, b) => {
   }
 
   return false;
-}
+};
 
 
 // --[ Implementation ]------------------------------------------------

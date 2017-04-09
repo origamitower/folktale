@@ -22,7 +22,7 @@ const waitAll = (tasks) => {
   return tasks.reduce(
     (a, b) => a.and(b).map(([xs, x]) => [...xs, x]),
     of([])
-  )
-}
+  );
+};
 
 module.exports = waitAll;
