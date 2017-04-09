@@ -15,7 +15,7 @@
  */
 const waitAny = (tasks) => {
   if (tasks.length === 0) {
-    throw new Error(`Task.waitAny() requires a non-empty array of tasks.`);
+    throw new Error('Task.waitAny() requires a non-empty array of tasks.');
   }
 
   return tasks.reduce((a, b) => a.or(b));
