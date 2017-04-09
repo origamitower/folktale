@@ -15,10 +15,26 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 
 ---
 
-## [Unreleased]
+## [2.0.0-alpha4] - 2017-04-08
+
+### Documentation
+
+  - Guides for installing and contributing to Folktale were added.
+  - An annex describing the type annotation used in Folktale was added.
+  - Documentation for Data.Task was added.
+  - Other documentation improvements were made.
+  - Top-level async/await is now supported in Documentation examples.
+  - Experimental features now have a section noting such in their pages.
+
 
 ### New features
 
+  - `.mapRejected()` was added as a counterpart of `.map()` for failed Tasks
+    ([35fbd0d](https://github.com/origamitower/folktale/commit/35fbd0d220454578eec365ad8309ba4c6f3d0b48))
+  - `.orElse()` was added as a convenient way of recovering from failed Tasks
+    ([35fbd0d](https://github.com/origamitower/folktale/commit/35fbd0d220454578eec365ad8309ba4c6f3d0b48))
+  - `waitAny` and `waitAll` have been added as convenience over `.or` and `.and` methods in Task
+    ([ea4d1c0](https://github.com/origamitower/folktale/commit/ea4d1c0c0f6908bbddb251af8d05848227d4b357))
   - Equality derivation now uses a limited deep-equality (for arrays/objects) by default
     ([373b518](https://github.com/origamitower/folktale/commit/373b518f6c44dd8ec3f52fe966152c0ad13baae9))
 
