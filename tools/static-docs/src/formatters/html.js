@@ -173,6 +173,8 @@ const render = (entity, references, options) => {
     _('div#content-panel',
       _('h1.entity-title', entity.name || '(Anonymous)'),
       _('div.highlight-summary', markdownToHtml(entity.summary)),
+      entity.deprecated ? renderDeprecation(entity.deprecated) : '',
+      entity.stability === 'experimental' ? renderExperimental() : '',
       entity.signature || entity.type ?
         _('div.definition',
           _('h2#signature.section-title', 'Signature'),
@@ -182,8 +184,6 @@ const render = (entity, references, options) => {
           )
         )
       : '',
-      entity.deprecated ? renderDeprecation(entity.deprecated) : '',
-      entity.stability === 'experimental' ? renderExperimental() : '',
       _('h2.section-title', 'Documentation'),
       _('div.documentation',
         markdownToHtml(entity.documentation)
