@@ -114,6 +114,7 @@ lint:
 publish: clean lint
 	rm -rf node_modules
 	npm install
+	$(MAKE) tools
 	$(MAKE) _prepare-test
 	$(MAKE) _test-all
 	$(MAKE) _test-browser
