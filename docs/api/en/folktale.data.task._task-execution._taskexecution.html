@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TaskExecution</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">TaskExecution</h1><div class="highlight-summary"><div><p>Represents the execution of a Task, with methods to cancel it, react to its
+results, and retrieve its eventual value. TaskExecution objects aren&#39;t created
+directly by users, but instead returned as a result from Task&#39;s <code>run()</code> method.
+b</p>
+</div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Represents the execution of a Task, with methods to cancel it, react to its
+results, and retrieve its eventual value. TaskExecution objects aren&#39;t created
+directly by users, but instead returned as a result from Task&#39;s <code>run()</code> method.
+b</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Static properties</h2><div class="member-category"><h4 class="category" id="cat-special-values">Special values</h4><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.task._taskexecution.prototype.html">prototype</a><div class="doc-summary"><div><p>The container for instance methods for the TaskExecution structure.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><h2 class="section-title" id="instance-properties">Instance (prototype) properties</h2><div class="member-category"><h4 class="category" id="cat-cancelling-tasks">Cancelling tasks</h4><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.task._taskexecution.prototype.cancel.html">cancel()</a><div class="doc-summary"><div><p>Cancels a task execution. Does nothing if the task has already been resolved.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h4 class="category" id="cat-extracting-eventual-values">Extracting eventual values</h4><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.task._taskexecution.prototype.future.html">future()</a><div class="doc-summary"><div><p>Gets the eventual value of a Task as a Folktale <code>Future</code>.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.task._taskexecution.prototype.promise.html">promise()</a><div class="doc-summary"><div><p>Gets the eventual value of the task as a JavaScript&#39;s <code>Promise</code>.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h4 class="category" id="cat-reacting-to-task-state-transitions">Reacting to Task state transitions</h4><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.task._taskexecution.prototype.listen.html">listen()</a><div class="doc-summary"><div><p>Adds a functions to be called when the task settles for each possible state it can transition to.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h4 class="category" id="cat-types">Types</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.task._task-execution._taskexecution.html">constructor()</a><div class="doc-summary"><div><p>Represents the execution of a Task, with methods to cancel it, react to its
+results, and retrieve its eventual value. TaskExecution objects aren&#39;t created
+directly by users, but instead returned as a result from Task&#39;s <code>run()</code> method.
+b</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/task/_task-execution.js at line 11, column 0</div><pre class="source-code"><code class="language-javascript">class TaskExecution {
+  /*~*/
+  constructor(task, deferred) {
+    this._task = task;
+    this._deferred = deferred;
+  }
+
+  /*~*/
+  cancel() {
+    this._deferred.maybeCancel();
+    return this;
+  }
+
+  /*~*/
+  listen(pattern) {
+    this._deferred.listen(pattern);
+    return this;
+  }
+
+  /*~*/
+  promise() {
+    return this._deferred.promise();
+  }
+
+  /*~*/
+  future() {
+    return this._deferred.future();
+  }
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/data/task/_task-execution</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-special-values">Special values</a></li></ul></li><li class="toc-item"><a href="#instance-properties">Instance properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-cancelling-tasks">Cancelling tasks</a></li><li class="toc-item"><a href="#cat-extracting-eventual-values">Extracting eventual values</a></li><li class="toc-item"><a href="#cat-reacting-to-task-state-transitions">Reacting to Task state transitions</a></li><li class="toc-item"><a href="#cat-types">Types</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

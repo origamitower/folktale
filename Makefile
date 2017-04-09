@@ -116,6 +116,7 @@ publish: clean lint
 	npm install
 	$(MAKE) tools
 	$(MAKE) _prepare-test
+	$(MAKE) compile-documentation
 	$(MAKE) _test-all
 	$(MAKE) _test-browser
 	# $(MAKE) _test-sauce
