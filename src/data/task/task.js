@@ -13,9 +13,18 @@ const noop = () => {};
 
 /*~
  * stability: experimental
- * name: module folktale/data/task
+ * type: |
+ *   forall value, reason, resources:
+ *     (
+ *       ({ resolve: (value) => Void, reject: (reason) => Void, cancel: () => Void }) => resources,
+ *       {
+ *         onCancelled: (resources) => Void,
+ *         cleanup: (resources) => Void
+ *       }
+ *     ) => Task reason value resources
  */
 const task = (computation, handlers = { onCancelled: noop, cleanup: noop }) =>
   new Task(computation, handlers.onCancelled, handlers.cleanup);
+
 
 module.exports = task;
