@@ -265,12 +265,13 @@ the first task to resolve is assimilated by the new task.</p>
   onCancelled: noop,
   cleanup: noop
 })</a><div class="doc-summary"><div><p>Constructs a Task and associates a computation to it. The computation is executed every time the Task is ran, and should provide the result of the task: a success or failure along with its value.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-types">Types</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.task._task._task.html">_Task: Task(computation, onCancel, cleanup)</a><div class="doc-summary"><div><p>Tasks model asynchronous processes with automatic resource handling. They are generally constructed with the <code>task</code> function.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-function-with-node-style-callback">Converting from function with Node-style callback</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.task.fromnodeback.html">fromNodeback(aNodeback)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/data/conversions/nodeback-to-task</code> module.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-types">Types</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.task._task._task.html">_Task: Task(computation, onCancel, cleanup)</a><div class="doc-summary"><div><p>Tasks model asynchronous processes with automatic resource handling. They are generally constructed with the <code>task</code> function.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.task._task-execution._taskexecution.html">_TaskExecution()</a><div class="doc-summary"><div><p>Represents the execution of a Task, with methods to cancel it, react to its
 results, and retrieve its eventual value. TaskExecution objects aren&#39;t created
 directly by users, but instead returned as a result from Task&#39;s <code>run()</code> method.
 b</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">fromNodeback()</div><div class="doc-summary"></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/task/index.js at line 16, column 0</div><pre class="source-code"><code class="language-javascript">{
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/task/index.js at line 16, column 0</div><pre class="source-code"><code class="language-javascript">{
   of: Task.of,
   rejected: Task.rejected,
   task: require('./task'),
@@ -279,6 +280,13 @@ b</p>
   _Task: Task,
   _TaskExecution: require('./_task-execution'),
 
+  /*~
+   * type: |
+   *    forall s, e, r:
+   *    ((Any..., (e, s) =&gt; Void) =&gt; Void)
+   *    =&gt; (Any...)
+   *    =&gt; Task e s r
+   */
   fromNodeback(aNodeback) {
     return require('folktale/data/conversions/nodeback-to-task')(aNodeback);
   }
@@ -288,7 +296,7 @@ b</p>
 </div></a></li><li class="toc-item"><a href="#running-tasks" title="Running tasks"><div><p>Running tasks</p>
 </div></a></li><li class="toc-item"><a href="#combining-tasks-concurrently" title="Combining tasks concurrently"><div><p>Combining tasks concurrently</p>
 </div></a></li><li class="toc-item"><a href="#error-handling" title="Error handling"><div><p>Error handling</p>
-</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-combining-tasks">Combining tasks</a></li><li class="toc-item"><a href="#cat-constructing">Constructing</a></li><li class="toc-item"><a href="#cat-types">Types</a></li><li class="toc-item"><a href="#cat--uncategorised-">(Uncategorised)</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-combining-tasks">Combining tasks</a></li><li class="toc-item"><a href="#cat-constructing">Constructing</a></li><li class="toc-item"><a href="#cat-converting-from-function-with-node-style-callback">Converting from function with Node-style callback</a></li><li class="toc-item"><a href="#cat-types">Types</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
     <script>
 void function() {
   var xs = document.querySelectorAll('.documentation pre code');

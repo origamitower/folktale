@@ -1,4 +1,4 @@
-@annotate: folktale.data.result.fromNodeback
+@annotate: folktale.data.task.fromNodeback
 category: Converting from function with Node-style callback
 ---
 
