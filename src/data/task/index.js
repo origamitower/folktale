@@ -20,5 +20,9 @@ module.exports = {
   waitAny: require('./wait-any'),
   waitAll: require('./wait-all'),
   _Task: Task,
-  _TaskExecution: require('./_task-execution')
+  _TaskExecution: require('./_task-execution'),
+
+  fromNodeback(aNodeback) {
+    return require('folktale/data/conversions/nodeback-to-task')(aNodeback);
+  }
 };

@@ -20,6 +20,7 @@ module.exports = {
   maybeToResult: require('./maybe-to-result'),
   nullableToValidation: require('./nullable-to-validation'),
   nullableToResult: require('./nullable-to-result'),
-  nullableToMaybe: require('./nullable-to-maybe')
+  nullableToMaybe: require('./nullable-to-maybe'),
+  nodebackToTask: require('./nodeback-to-task')
 };
 

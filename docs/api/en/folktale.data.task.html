@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha4</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha5</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/data/task</h1><div class="highlight-summary"><div><p>A data structure that models asynchronous actions, supporting safe cancellation and automatic resource handling.</p>
 </div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>A data structure that models asynchronous actions, supporting safe cancellation and automatic resource handling.</p>
@@ -270,21 +270,25 @@ the first task to resolve is assimilated by the new task.</p>
 results, and retrieve its eventual value. TaskExecution objects aren&#39;t created
 directly by users, but instead returned as a result from Task&#39;s <code>run()</code> method.
 b</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/task/index.js at line 16, column 0</div><pre class="source-code"><code class="language-javascript">{
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat--uncategorised-">(Uncategorised)</h3><div class="member-list"><div class="member"><div class="member-name no-link">fromNodeback()</div><div class="doc-summary"></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/task/index.js at line 16, column 0</div><pre class="source-code"><code class="language-javascript">{
   of: Task.of,
   rejected: Task.rejected,
   task: require('./task'),
   waitAny: require('./wait-any'),
   waitAll: require('./wait-all'),
   _Task: Task,
-  _TaskExecution: require('./_task-execution')
+  _TaskExecution: require('./_task-execution'),
+
+  fromNodeback(aNodeback) {
+    return require('folktale/data/conversions/nodeback-to-task')(aNodeback);
+  }
 }</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/data/task</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
 </div></a></li><li class="toc-item"><a href="#why-use-task-" title="Why use Task?"><div><p>Why use Task?</p>
 </div></a></li><li class="toc-item"><a href="#constructing-tasks" title="Constructing tasks"><div><p>Constructing tasks</p>
 </div></a></li><li class="toc-item"><a href="#running-tasks" title="Running tasks"><div><p>Running tasks</p>
 </div></a></li><li class="toc-item"><a href="#combining-tasks-concurrently" title="Combining tasks concurrently"><div><p>Combining tasks concurrently</p>
 </div></a></li><li class="toc-item"><a href="#error-handling" title="Error handling"><div><p>Error handling</p>
-</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-combining-tasks">Combining tasks</a></li><li class="toc-item"><a href="#cat-constructing">Constructing</a></li><li class="toc-item"><a href="#cat-types">Types</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-combining-tasks">Combining tasks</a></li><li class="toc-item"><a href="#cat-constructing">Constructing</a></li><li class="toc-item"><a href="#cat-types">Types</a></li><li class="toc-item"><a href="#cat--uncategorised-">(Uncategorised)</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
     <script>
 void function() {
   var xs = document.querySelectorAll('.documentation pre code');

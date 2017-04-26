@@ -542,4 +542,22 @@ describe('Data.Task', () => {
       });
     });
   });
+
+  describe('#fromNodeback', () => {
+    it('Returns the nodeback data after conversion to a task', async () => {
+      const fn = (str, str2, cb) => cb(null, str + str2 + 'processed');
+      const convertedFn = Task.fromNodeback(fn);
+      const task = convertedFn('test', '-was-');
+      const value = await task.run().promise();
+      $ASSERT(value === 'test-was-processed');
+    });
+
+    it('Returns the nodeback error after conversion to a task', async () => {
+      const error = 'failed';
+      const fn = (str, cb) => cb(error, '');
+      const convertedFn = Task.fromNodeback(fn);
+      const task = convertedFn('test');
+      await task.run().promise().catch(e => $ASSERT(e === error));
+    });
+  });
 });
