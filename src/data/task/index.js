@@ -22,6 +22,13 @@ module.exports = {
   _Task: Task,
   _TaskExecution: require('./_task-execution'),
 
+  /*~
+   * type: |
+   *    forall s, e, r:
+   *    ((Any..., (e, s) => Void) => Void)
+   *    => (Any...)
+   *    => Task e s r
+   */
   fromNodeback(aNodeback) {
     return require('folktale/data/conversions/nodeback-to-task')(aNodeback);
   }
