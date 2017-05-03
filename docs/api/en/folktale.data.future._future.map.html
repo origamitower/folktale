@@ -16,11 +16,11 @@
 <pre><code>const { of, rejected } = require(&#39;folktale/data/future&#39;);
 
 of(1).map(x =&gt; x + 1).listen({
-  Resolved: (value) =&gt; $ASSERT(value == 2)
+  onResolved: (value) =&gt; $ASSERT(value == 2)
 });
 
 rejected(1).map(x =&gt; x + 1).listen({
-  Rejected: (value) =&gt; $ASSERT(value == 1)
+  onRejected: (value) =&gt; $ASSERT(value == 1)
 });
 </code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/future/_future.js at line 23, column 0</div><pre class="source-code"><code class="language-javascript">map(transformation) {
     return this.chain(value =&gt; Future.of(transformation(value)));

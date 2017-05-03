@@ -13,9 +13,9 @@ Transforms both successful and failure values in a Future, without touching its 
     const dec = (x) => x - 1;
 
     of(1).bimap(inc, dec).listen({
-      Resolved: (x) => $ASSERT(x == 0)
+      onResolved: (x) => $ASSERT(x == 0)
     });
 
     rejected(1).bimap(inc, dec).listen({
-      Rejected: (x) => $ASSERT(x == 2)
+      onRejected: (x) => $ASSERT(x == 2)
     });

@@ -14,7 +14,7 @@ Limited pattern matching for futures.
       Rejected:  (x) => of(x + 1),
       Resolved:  (x) => of(x - 1)
     }).listen({
-      Resolved: (x) => $ASSERT(x == 0)
+      onResolved: (x) => $ASSERT(x == 0)
     });
 
 
@@ -23,5 +23,5 @@ Limited pattern matching for futures.
       Rejected:  (x) => of(x + 1),
       Resolved:  (x) => of(x - 1)
     }).listen({
-      Resolved: (x) => $ASSERT(x == 2)
+      onResolved: (x) => $ASSERT(x == 2)
     })

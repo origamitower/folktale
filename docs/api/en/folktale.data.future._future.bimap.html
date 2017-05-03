@@ -19,11 +19,11 @@ const inc = (x) =&gt; x + 1;
 const dec = (x) =&gt; x - 1;
 
 of(1).bimap(inc, dec).listen({
-  Resolved: (x) =&gt; $ASSERT(x == 0)
+  onResolved: (x) =&gt; $ASSERT(x == 0)
 });
 
 rejected(1).bimap(inc, dec).listen({
-  Rejected: (x) =&gt; $ASSERT(x == 2)
+  onRejected: (x) =&gt; $ASSERT(x == 2)
 });
 </code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/future/_future.js at line 23, column 0</div><pre class="source-code"><code class="language-javascript">bimap(rejectionTransformation, successTransformation) {
     let deferred = new Deferred();      // eslint-disable-line prefer-const

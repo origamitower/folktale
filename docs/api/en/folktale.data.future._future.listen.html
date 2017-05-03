@@ -17,9 +17,9 @@
 <pre><code>const { of } = require(&#39;folktale/data/future&#39;);
 
 of(&#39;hello&#39;).listen({
-  Cancelled: ()       =&gt; { throw &#39;never happens&#39; },
-  Rejected:  (reason) =&gt; { throw &#39;never happens&#39; },
-  Resolved:  (value)  =&gt; { $ASSERT(value == &#39;hello&#39;) }
+  onCancelled: ()       =&gt; { throw &#39;never happens&#39; },
+  onRejected:  (reason) =&gt; { throw &#39;never happens&#39; },
+  onResolved:  (value)  =&gt; { $ASSERT(value == &#39;hello&#39;) }
 });
 </code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/future/_future.js at line 23, column 0</div><pre class="source-code"><code class="language-javascript">listen(pattern) {
     this._state.matchWith({

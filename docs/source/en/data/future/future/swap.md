@@ -10,9 +10,9 @@ Inverts the state of a Future: successes become failures, failures become succes
     const { of, rejected } = require('folktale/data/future');
 
     of(1).swap().listen({
-      Rejected: (x) => $ASSERT(x == 1)
+      onRejected: (x) => $ASSERT(x == 1)
     });
 
     rejected(1).swap().listen({
-      Resolved: (x) => $ASSERT(x == 1)
+      onResolved: (x) => $ASSERT(x == 1)
     });

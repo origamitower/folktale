@@ -10,9 +10,9 @@ Transforms the successful value of a Future, without touching its state.
     const { of, rejected } = require('folktale/data/future');
 
     of(1).map(x => x + 1).listen({
-      Resolved: (value) => $ASSERT(value == 2)
+      onResolved: (value) => $ASSERT(value == 2)
     });
 
     rejected(1).map(x => x + 1).listen({
-      Rejected: (value) => $ASSERT(value == 1)
+      onRejected: (value) => $ASSERT(value == 1)
     });
