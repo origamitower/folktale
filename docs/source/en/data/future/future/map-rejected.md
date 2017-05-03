@@ -1,4 +1,4 @@
-@annotate: folktale.data.future._Future.prototype.mapRejection
+@annotate: folktale.data.future._Future.prototype.mapRejected
 category: Transforming
 ---
 
@@ -11,9 +11,9 @@ Transforms failure values in a Future without touching its state.
 
 
     of(1).mapRejected(x => x + 1).listen({
-      Resolved: (x) => $ASSERT(x == 1)
+      onResolved: (x) => $ASSERT(x == 1)
     });
 
     rejected(1).mapRejected(x => x + 1).listen({
-      Rejected: (x) => $ASSERT(x == 2)
+      onRejected: (x) => $ASSERT(x == 2)
     });

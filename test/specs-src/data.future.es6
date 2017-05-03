@@ -302,16 +302,16 @@ describe('Data.Future', function() {
       return cancelled().bimap(f, g) ::eq(cancelled());
     });
 
-    property('#mapRejection(f) ignores successes', 'nat', 'nat -> nat', (a, f) => {
-      return Future.of(a).mapRejection(f) ::eq(Future.of(a));
+    property('#mapRejected(f) ignores successes', 'nat', 'nat -> nat', (a, f) => {
+      return Future.of(a).mapRejected(f) ::eq(Future.of(a));
     });
 
-    property('#mapRejection(f) transforms rejections', 'nat', 'nat -> nat', (a, f) => {
-      return Future.rejected(a).mapRejection(f) ::eq(Future.rejected(f(a)));
+    property('#mapRejected(f) transforms rejections', 'nat', 'nat -> nat', (a, f) => {
+      return Future.rejected(a).mapRejected(f) ::eq(Future.rejected(f(a)));
     });
 
-    property('#mapRejection(f) ignores cancellations', 'nat', 'nat -> nat', (a, f) => {
-      return cancelled().mapRejection(f) ::eq(cancelled());
+    property('#mapRejected(f) ignores cancellations', 'nat', 'nat -> nat', (a, f) => {
+      return cancelled().mapRejected(f) ::eq(cancelled());
     });
 
     property('#recover(f) ignores successes', 'nat', 'nat -> future nat', env, (a, f) => {

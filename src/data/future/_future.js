@@ -126,7 +126,7 @@ class Future {
    * type: |
    *   (Future 'f 's).(('f) => 'f2) => Future 'f2 's
    */
-  mapRejection(transformation) {
+  mapRejected(transformation) {
     return this.bimap(transformation, x => x);
   }
 
