@@ -17,22 +17,26 @@ const { equality, debugRepresentation } = derivations;
 
 /*~ stability: experimental */
 const ExecutionState = data('folktale:ExecutionState', {
-  /*~*/
+  /*~
+   */
   Pending() {
     return {};
   },
 
-  /*~*/
+  /*~
+   */
   Cancelled() {
     return {};
   },
 
-  /*~*/
+  /*~
+   */
   Resolved(value) {
     return { value };
   },
 
-  /*~*/
+  /*~
+   */
   Rejected(reason) {
     return { reason };
   }

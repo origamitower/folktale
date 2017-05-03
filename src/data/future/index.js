@@ -11,6 +11,7 @@ const Future = require('./_future');
 
 /*~
  * stability: experimental
+ * name: module folktale/data/future
  */
 module.exports = {
   of: Future.of,
