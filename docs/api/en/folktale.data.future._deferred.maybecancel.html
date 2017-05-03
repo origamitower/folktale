@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>maybeCancel</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha5</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">maybeCancel</h1><div class="highlight-summary"><div><p>Resolves a deferred with a cancellation value, but doesn&#39;t throw if the deferred has already been resolved.</p>
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">maybeCancel()</div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="guides.type-notation-used-in-signatures.html">(what is this?)</a></div><pre class="type"><code class="language-haskell">('a: Deferred 'f 's).() =&gt; 'a :: mutates 'a</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Resolves a deferred with a cancellation value, but doesn&#39;t throw if the deferred has already been resolved.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/future/_deferred.js at line 58, column 21</div><pre class="source-code"><code class="language-javascript">maybeCancel() {
+    if (Pending.hasInstance(this._state)) {
+      this.cancel();
+    }
+    return this;
+  }</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/data/future/_deferred</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
