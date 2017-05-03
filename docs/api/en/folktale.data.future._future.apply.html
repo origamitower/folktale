@@ -18,15 +18,15 @@
 const inc = (x) =&gt; x + 1;
 
 of(inc).apply(of(1)).listen({
-  Resolved: (value) =&gt; $ASSERT(value == 2)
+  onResolved: (value) =&gt; $ASSERT(value == 2)
 });
 
 rejected(inc).apply(of(1)).listen({
-  Rejected: (reason) =&gt; $ASSERT(reason === inc)
+  onRejected: (reason) =&gt; $ASSERT(reason === inc)
 });
 
 of(inc).apply(rejected(1)).listen({
-  Rejected: (reason) =&gt; $ASSERT(reason == 1)
+  onRejected: (reason) =&gt; $ASSERT(reason == 1)
 });
 </code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/future/_future.js at line 23, column 0</div><pre class="source-code"><code class="language-javascript">apply(future) {
     return this.chain(fn =&gt; future.map(fn));

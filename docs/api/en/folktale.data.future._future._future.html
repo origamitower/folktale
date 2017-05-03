@@ -35,7 +35,7 @@
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future.bimap.html">bimap: value(rejectionTransformation, successTransformation)</a><div class="doc-summary"><div><p>Transforms both successful and failure values in a Future, without touching its state.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future.chain.html">chain: value(transformation)</a><div class="doc-summary"><div><p>Transforms a Future&#39;s successful value along with its state.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future.map.html">map: value(transformation)</a><div class="doc-summary"><div><p>Transforms the successful value of a Future, without touching its state.</p>
-</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future.maprejection.html">mapRejection: value(transformation)</a><div class="doc-summary"><div><p>Transforms failure values in a Future without touching its state.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future.maprejected.html">mapRejected: value(transformation)</a><div class="doc-summary"><div><p>Transforms failure values in a Future without touching its state.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-types">Types</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._future._future.html">constructor()</a><div class="doc-summary"><div><p>Models the eventual result of asynchronous computations.</p>
 </div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/future/_future.js at line 23, column 0</div><pre class="source-code"><code class="language-javascript">class Future {
   constructor() {
@@ -143,7 +143,7 @@
    * type: |
    *   (Future 'f 's).(('f) =&gt; 'f2) =&gt; Future 'f2 's
    */
-  mapRejection(transformation) {
+  mapRejected(transformation) {
     return this.bimap(transformation, x =&gt; x);
   }
 

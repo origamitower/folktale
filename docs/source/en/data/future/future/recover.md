@@ -9,14 +9,14 @@ Transforms a failed future into a new future.
 
     const { rejected, of } = require('folktale/data/future');
 
-    of(1).recovere(x => of(x + 1)).listen({
-      Resolved: (value) => $ASSERT(value == 1)
+    of(1).recover(x => of(x + 1)).listen({
+      onResolved: (value) => $ASSERT(value == 1)
     });
 
     rejected(1).recover(x => of(x + 1)).listen({
-      Resolved: (value) => $ASSERT(value == 2)
+      onResolved: (value) => $ASSERT(value == 2)
     });
 
     rejected(1).recover(x => rejected(x + 1)).listen({
-      Rejected: (value) => $ASSERT(value == 2)
+      onRejected: (value) => $ASSERT(value == 2)
     });

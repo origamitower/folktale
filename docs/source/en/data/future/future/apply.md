@@ -12,13 +12,13 @@ Transforms the succesful value of a future by using a function stored in another
     const inc = (x) => x + 1;
 
     of(inc).apply(of(1)).listen({
-      Resolved: (value) => $ASSERT(value == 2)
+      onResolved: (value) => $ASSERT(value == 2)
     });
 
     rejected(inc).apply(of(1)).listen({
-      Rejected: (reason) => $ASSERT(reason === inc)
+      onRejected: (reason) => $ASSERT(reason === inc)
     });
 
     of(inc).apply(rejected(1)).listen({
-      Rejected: (reason) => $ASSERT(reason == 1)
+      onRejected: (reason) => $ASSERT(reason == 1)
     });

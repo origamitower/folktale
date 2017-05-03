@@ -16,15 +16,15 @@
 <pre><code>const { of, rejected } = require(&#39;folktale/data/future&#39;);
 
 of(1).chain(x =&gt; of(x + 1)).listen({
-  Resolved: (value) =&gt; $ASSERT(value == 2)
+  onResolved: (value) =&gt; $ASSERT(value == 2)
 });
 
 of(1).chain(x =&gt; rejected(x)).listen({
-  Rejected: (reason) =&gt; $ASSERT(reason == 1)
+  onRejected: (reason) =&gt; $ASSERT(reason == 1)
 });
 
 rejected(1).chain(x =&gt; of(x + 1)).listen({
-  Rejected: (reason) =&gt; $ASSERT(reason == 1)
+  onRejected: (reason) =&gt; $ASSERT(reason == 1)
 });
 </code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/future/_future.js at line 23, column 0</div><pre class="source-code"><code class="language-javascript">chain(transformation) {
     let deferred = new Deferred();    // eslint-disable-line prefer-const

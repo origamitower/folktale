@@ -12,7 +12,7 @@ Listen allows reacting to changes in a Future, but is very imperative. In genera
     const { of } = require('folktale/data/future');
 
     of('hello').listen({
-      Cancelled: ()       => { throw 'never happens' },
-      Rejected:  (reason) => { throw 'never happens' },
-      Resolved:  (value)  => { $ASSERT(value == 'hello') }
+      onCancelled: ()       => { throw 'never happens' },
+      onRejected:  (reason) => { throw 'never happens' },
+      onResolved:  (value)  => { $ASSERT(value == 'hello') }
     });
