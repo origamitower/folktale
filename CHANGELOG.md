@@ -15,6 +15,37 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 
 ---
 
+## [Unreleased]
+
+### Documentation
+
+  - Documentation for Data.Future was added.
+  - Fixed some of the Data.Task documentation.
+
+
+### New features
+
+  - `nodebackToTask` (and `Task.fromNodeback`) allows converting callback-based functions in Node-style to Tasks automatically
+    ([PR #116](https://github.com/origamitower/folktale/pull/116) by @rpearce)
+
+
+### BREAKING CHANGES
+
+  - ([f43441b](https://github.com/origamitower/folktale/commit/f43441bba6e87b1d2923abce705a73bb0120c229))
+    `Future#mapRejection` has been renamed to `Future#mapRejected` for consistency. To fix just replace any
+    calls of `mapRejection` on Futures to `mapRejected`:
+
+    ```js
+    // Before
+    Future.rejected(1).mapRejection(x => x + 1);
+
+    // Now
+    Future.rejected(1).mapRejected(x => x + 1);
+    ```
+    
+
+
+
 ## [2.0.0-alpha4] - 2017-04-08
 
 ### Documentation
@@ -63,7 +94,6 @@ Each version entry is written as a heading in the format `[<version number>] - Y
     ```
 
     That said, you should keep your Failures as proper semigroups, so things like `.apply` and `.concat` will work correctly.
-    
 
 
 ## [2.0.0-alpha3] - 2017-03-11
