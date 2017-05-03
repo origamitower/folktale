@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Future</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha5</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">Future</h1><div class="highlight-summary"><div><p>Models the eventual result of asynchronous computations.</p>
+</div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Models the eventual result of asynchronous computations.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Static properties</h2><div class="member-category"><h4 class="category" id="cat-constructing">Constructing</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._future.of.html">of(value)</a><div class="doc-summary"><div><p>Constructs a Future holding a successful value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future.rejected.html">rejected(reason)</a><div class="doc-summary"><div><p>Constructs a future holding a failure value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-fantasy-land">Fantasy Land</h4><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.future._future.ap.html">ap(that)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 1.x. See the <code>apply</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.future._future.fantasy-land-ap.html">fantasy-land/ap(that)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 2.x+. See the <code>apply</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.future._future.fantasy-land-of.html">fantasy-land/of(value)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 2.x+. See the <code>of</code> method for details.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h4 class="category" id="cat-special-values">Special Values</h4><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.future._future.prototype.html">prototype</a><div class="doc-summary"><div><p>A container for methods of Futures.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><h2 class="section-title" id="instance-properties">Instance (prototype) properties</h2><div class="member-category"><h4 class="category" id="cat-debugging">Debugging</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._future.inspect.html">inspect: value()</a><div class="doc-summary"><div><p>Returns a textual representation of the Future.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future.tostring.html">toString: value()</a><div class="doc-summary"><div><p>Returns a textual representation of the Future.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-fantasy-land">Fantasy Land</h4><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.future._future.ap.html">ap(that)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 1.x. See the <code>apply</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.future._future.fantasy-land-ap.html">fantasy-land/ap(that)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 2.x+. See the <code>apply</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.future._future.prototype.fantasy-land-bimap.html">fantasy-land/bimap(f, g)</a><div class="doc-summary"><div><p>Part of the Bifunctor instance for Fantasy Land 2.x+. See the <code>bimap</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.future._future.prototype.fantasy-land-chain.html">fantasy-land/chain(transformation)</a><div class="doc-summary"><div><p>Part of the Monad instance for Fantasy Land 2.x+. See the <code>chain</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.data.future._future.prototype.fantasy-land-map.html">fantasy-land/map(transformation)</a><div class="doc-summary"><div><p>Part of the Functor instance for Fantasy Land 2.x+. See the <code>map</code> method for details.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h4 class="category" id="cat-internal-fields">Internal Fields</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._future._listeners.html">get _listeners</a><div class="doc-summary"><div><p>A list of visitors to be invoked when the state of the future changes.</p>
+</div></div><div class="special-tags"><span class="tagged required">Abstract</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future._state.html">get _state</a><div class="doc-summary"><div><p>The current state of the Future.</p>
+</div></div><div class="special-tags"><span class="tagged required">Abstract</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-pattern-matching">Pattern Matching</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._future.willmatchwith.html">willMatchWith: value(pattern)</a><div class="doc-summary"><div><p>Limited pattern matching for futures.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-reacting-to-futures">Reacting to Futures</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._future.listen.html">listen: value(pattern)</a><div class="doc-summary"><div><p>Adds a visitor to the Future, which will be invoked when the Future&#39;s state changes.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-recovering-from-errors">Recovering From Errors</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._future.recover.html">recover: value(handler)</a><div class="doc-summary"><div><p>Transforms a failed future into a new future.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future.swap.html">swap: value()</a><div class="doc-summary"><div><p>Inverts the state of a Future: successes become failures, failures become successes.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-transforming">Transforming</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._future.apply.html">apply: value(future)</a><div class="doc-summary"><div><p>Transforms the succesful value of a future by using a function stored in another future.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future.bimap.html">bimap: value(rejectionTransformation, successTransformation)</a><div class="doc-summary"><div><p>Transforms both successful and failure values in a Future, without touching its state.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future.chain.html">chain: value(transformation)</a><div class="doc-summary"><div><p>Transforms a Future&#39;s successful value along with its state.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future.map.html">map: value(transformation)</a><div class="doc-summary"><div><p>Transforms the successful value of a Future, without touching its state.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._future.maprejection.html">mapRejection: value(transformation)</a><div class="doc-summary"><div><p>Transforms failure values in a Future without touching its state.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-types">Types</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._future._future.html">constructor()</a><div class="doc-summary"><div><p>Models the eventual result of asynchronous computations.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in src/data/future/_future.js at line 23, column 0</div><pre class="source-code"><code class="language-javascript">class Future {
+  constructor() {
+    define(this, '_state', Pending());
+    define(this, '_listeners', []);
+  }
+
+
+  // ---[ State and configuration ]------------------------------------
+  /*~
+   * isRequired: true
+   * type: |
+   *   get (Future 'f 's) =&gt; ExecutionState 'f 's
+   */
+  get _state() {
+    throw new TypeError('Future.prototype._state should be implemented in an inherited object.');
+  }
+
+  /*~
+   * isRequired: true
+   * type: |
+   *   get (Future 'f 's) =&gt; Array (DeferredListener 'f 's)
+   */
+  get _listeners() {
+    throw new TypeError('Future.prototype._listeners should be implemented in an inherited object.');
+  }
+
+
+  // ---[ Reacting to Future events ]----------------------------------
+  /*~
+   * stability: experimental
+   * type: |
+   *   (Future 'f 's).(DeferredListener 'f 's) =&gt; Future 'f 's
+   */
+  listen(pattern) {
+    this._state.matchWith({
+      Pending:   ()           =&gt; this._listeners.push(pattern),
+      Cancelled: ()           =&gt; pattern.onCancelled(), 
+      Resolved:  ({ value })  =&gt; pattern.onResolved(value),
+      Rejected:  ({ reason }) =&gt; pattern.onRejected(reason)
+    });
+    return this;
+  }
+
+
+  // --[ Transforming Futures ]----------------------------------------
+  /*~
+   * stability: experimental
+   * type: |
+   *   (Future 'f 's).(('s) =&gt; Future 's2) =&gt; Future 'f 's2
+   */
+  chain(transformation) {
+    let deferred = new Deferred();    // eslint-disable-line prefer-const
+    this.listen({
+      onCancelled: ()     =&gt; deferred.cancel(),
+      onRejected:  reason =&gt; deferred.reject(reason),
+      onResolved:  value  =&gt; {
+        transformation(value).listen({
+          onCancelled: ()     =&gt; deferred.cancel(),
+          onRejected:  reason =&gt; deferred.reject(reason),
+          onResolved:  value2 =&gt; deferred.resolve(value2)
+        });
+      }
+    });
+
+    return deferred.future();
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   (Future 'f 's).(('s) =&gt; 's2) =&gt; Future 'f 's2
+   */
+  map(transformation) {
+    return this.chain(value =&gt; Future.of(transformation(value)));
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   (Future 'f 's).(Future 'f (('s) =&gt; 's2)) =&gt; Future 'f 's2
+   */
+  apply(future) {
+    return this.chain(fn =&gt; future.map(fn));
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   (Future 'f 's).(('f) =&gt; 'f2, ('s) =&gt; 's2) =&gt; Future 'f2 's2
+   */
+  bimap(rejectionTransformation, successTransformation) {
+    let deferred = new Deferred();      // eslint-disable-line prefer-const
+    this.listen({
+      onCancelled: ()     =&gt; deferred.cancel(),
+      onRejected:  reason =&gt; deferred.reject(rejectionTransformation(reason)),
+      onResolved:  value  =&gt; deferred.resolve(successTransformation(value))
+    });
+
+    return deferred.future();
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   (Future 'f 's).(('f) =&gt; 'f2) =&gt; Future 'f2 's
+   */
+  mapRejection(transformation) {
+    return this.bimap(transformation, x =&gt; x);
+  }
+
+
+  // ---[ Recovering from errors ]-------------------------------------
+  /*~
+   * stability: experimental
+   * type: |
+   *   (Future 'f 's).(('f) =&gt; Future 'f2 's2) =&gt; Future 'f2 's
+   */
+  recover(handler) {
+    let deferred = new Deferred();      // eslint-disable-line prefer-const
+    this.listen({
+      onCancelled: ()     =&gt; deferred.cancel(),
+      onResolved:  value  =&gt; deferred.resolve(value),
+      onRejected:  reason =&gt; {
+        handler(reason).listen({
+          onCancelled: ()        =&gt; deferred.cancel(),
+          onResolved:  value     =&gt; deferred.resolve(value),
+          onRejected:  newReason =&gt; deferred.reject(newReason)
+        });
+      }
+    });
+
+    return deferred.future();
+  }
+
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a, b, c, d:
+   *     type Pattern = { r |
+   *       Cancelled: ()  =&gt; Future c d,
+   *       Resolved:  (b) =&gt; Future c d,
+   *       Rejected:  (a) =&gt; Future c d
+   *     }
+   *     
+   *     (Future a b).(Pattern) =&gt; Future c d 
+   */
+  willMatchWith(pattern) {
+    let deferred = new Deferred();      // eslint-disable-line prefer-const
+    const resolve = (handler) =&gt; (value) =&gt; handler(value).listen({
+      onCancelled: ()         =&gt; deferred.cancel(),
+      onResolved:  (newValue) =&gt; deferred.resolve(newValue),
+      onRejected:  (reason)   =&gt; deferred.reject(reason) 
+    });
+    this.listen({
+      onCancelled: resolve(pattern.Cancelled),
+      onResolved:  resolve(pattern.Resolved),
+      onRejected:  resolve(pattern.Rejected)
+    });
+
+    return deferred.future();
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   (Future 'f 's).() =&gt; Future 's 'f
+   */
+  swap() {
+    let deferred = new Deferred();    // eslint-disable-line prefer-const
+    this.listen({
+      onCancelled: ()     =&gt; deferred.cancel(),
+      onRejected:  reason =&gt; deferred.resolve(reason),
+      onResolved:  value  =&gt; deferred.reject(value) 
+    });
+
+    return deferred.future();
+  }
+
+
+  // ---[ Debugging ]--------------------------------------------------
+  /*~
+   * stability: experimental
+   * type: |
+   *   (Future 'f 's).() =&gt; String
+   */
+  toString() {
+    const listeners = this._listeners.length;
+    const state     = this._state;
+
+    return `folktale:Future(${state}, ${listeners} listeners)`;
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   (Future 'f 's).() =&gt; String
+   */
+  inspect() {
+    return this.toString();
+  }
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/data/future/_future</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-constructing">Constructing</a></li><li class="toc-item"><a href="#cat-fantasy-land">Fantasy Land</a></li><li class="toc-item"><a href="#cat-special-values">Special Values</a></li></ul></li><li class="toc-item"><a href="#instance-properties">Instance properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-debugging">Debugging</a></li><li class="toc-item"><a href="#cat-fantasy-land">Fantasy Land</a></li><li class="toc-item"><a href="#cat-internal-fields">Internal Fields</a></li><li class="toc-item"><a href="#cat-pattern-matching">Pattern Matching</a></li><li class="toc-item"><a href="#cat-reacting-to-futures">Reacting to Futures</a></li><li class="toc-item"><a href="#cat-recovering-from-errors">Recovering From Errors</a></li><li class="toc-item"><a href="#cat-transforming">Transforming</a></li><li class="toc-item"><a href="#cat-types">Types</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

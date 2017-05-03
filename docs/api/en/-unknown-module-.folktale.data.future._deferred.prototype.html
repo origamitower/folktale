@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-alpha5</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">(Anonymous)</h1><div class="highlight-summary"><div><p>A container for methods of Deferreds.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>A container for methods of Deferreds.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-data-fields">Data Fields</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._deferred._listeners.html">get _listeners</a><div class="doc-summary"><div><p>An array of visitors providing functions to be ran when the deferred&#39;s state changes.</p>
+</div></div><div class="special-tags"><span class="tagged required">Abstract</span></div></div><div class="member"><a class="member-name" href="folktale.data.future._deferred._state.html">get _state</a><div class="doc-summary"><div><p>The current state of the deferred, as an ExecutionState.</p>
+</div></div><div class="special-tags"><span class="tagged required">Abstract</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-debugging">Debugging</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._deferred.inspect.html">inspect()</a><div class="doc-summary"><div><p>Returns a textual description of the object.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.data.future._deferred.tostring.html">toString()</a><div class="doc-summary"><div><p>Returns a textual description of the object.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-extracting-values">Extracting Values</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._deferred.future.html">future()</a><div class="doc-summary"><div><p>Retrieves the value of a deferred as a Future.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.data.future._deferred.promise.html">promise()</a><div class="doc-summary"><div><p>Retrieves the value of a deferred as a Promise. Cancellations are mapped to a rejected promise with a special object.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-reacting-to-deferreds">Reacting to Deferreds</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._deferred.listen.html">listen(pattern)</a><div class="doc-summary"><div><p>Adds a visitor to be invoked when the deferred&#39;s state changes.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-resolving">Resolving</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.data.future._deferred.cancel.html">cancel()</a><div class="doc-summary"><div><p>Resolves a deferred with a cancellation value.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.data.future._deferred.maybecancel.html">maybeCancel()</a><div class="doc-summary"><div><p>Resolves a deferred with a cancellation value, but doesn&#39;t throw if the deferred has already been resolved.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.data.future._deferred.reject.html">reject(reason)</a><div class="doc-summary"><div><p>Resolves a deferred with a failure value.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.data.future._deferred.resolve.html">resolve(value)</a><div class="doc-summary"><div><p>Resolves a deferred successfully with a value.</p>
+</div></div><div class="special-tags"></div></div></div></div></div></div><div id="meta-panel"><div class="meta-section"></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-data-fields">Data Fields</a></li><li class="toc-item"><a href="#cat-debugging">Debugging</a></li><li class="toc-item"><a href="#cat-extracting-values">Extracting Values</a></li><li class="toc-item"><a href="#cat-reacting-to-deferreds">Reacting to Deferreds</a></li><li class="toc-item"><a href="#cat-resolving">Resolving</a></li></ul></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
