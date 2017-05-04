@@ -247,6 +247,16 @@ Object.assign(Future, {
     let result = new Future();      // eslint-disable-line prefer-const
     result._state = Rejected(reason);
     return result;
+  },
+
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v: (Promise v e) => Future e v
+   */
+  fromPromise(aPromise) {
+    return require('folktale/data/conversions/promise-to-future')(aPromise);
   }
 });
 
