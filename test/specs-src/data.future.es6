@@ -16,6 +16,39 @@ const { _ExecutionState, _Deferred: Deferred } = Future;
 const { Resolved, Rejected } = _ExecutionState;
 
 describe('Data.Future', function() {
+  describe('conversions', () => {
+    property('Promise.resolve(v) → Future.resolve(v)', 'nat', (a) => {
+      return new Promise((ok, error) => {
+        Future.fromPromise(Promise.resolve(a)).listen({
+          onResolved: (v) => v === a ? ok(true) : error(`Assertion failed: ${a} === ${v}`),
+          onRejected: (v) => error(`Expected a resolved future with ${a}, got a rejected future with ${v}`),
+          onCancelled: () => error(`Expected a resolved future with ${a}, got a cancelled future`)
+        });
+      });
+    });
+
+    property('Promise.reject(v) → Future.reject(v)', 'nat', (a) => {
+      return new Promise((ok, error) => {
+        Future.fromPromise(Promise.reject(a)).listen({
+          onRejected: (v) => v === a ? ok(true) : error(`Assertion failed: ${a} === ${v}`),
+          onResolved: (v) => error(`Expected a rejected future with ${a}, got a resolved future with ${v}`),
+          onCancelled: () => error(`Expected a rejected future with ${a}, got a cancelled future`)
+        });
+      });
+    });
+    
+    property('Promise.reject(Cancelled()) → Future.cancel()', () => {
+      return new Promise((ok, error) => {
+        Future.fromPromise(Promise.reject(_ExecutionState.Cancelled())).listen({
+          onRejected: (v) => error(`Expected a cancelled future, got a rejected future with ${v}`),
+          onResolved: (v) => error(`Expected a cancelled future, got a resolved future with ${v}`),
+          onCancelled: () => ok(true)
+        });
+      });
+    });
+  });
+
+
   describe('Deferreds', function() {
     it('new Deferred() should start in a pending state', () => {
       let deferred = new Deferred();
