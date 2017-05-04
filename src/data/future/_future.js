@@ -221,6 +221,17 @@ class Future {
   inspect() {
     return this.toString();
   }
+
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v:
+   *     (Future e v).() => Promise v e
+   */
+  toPromise() {
+    return require('folktale/data/conversions/future-to-promise')(this);
+  }
 }
 
 

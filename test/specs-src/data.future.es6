@@ -46,6 +46,20 @@ describe('Data.Future', function() {
         });
       });
     });
+
+    property('Future.of(v) → Promise.resolve(v)', 'nat', async (a) => {
+      return (await Future.of(a).toPromise()) === a;
+    });
+
+    property('Future.rejected(v) → Promise.reject(v)', 'nat', async (a) => {
+      return await Future.rejected(a).toPromise().catch(v => v === a);
+    });
+
+    property('Future.cancel() → Promise.reject(Cancelled())', async () => {
+      const deferred = new Deferred();
+      deferred.cancel();
+      return await deferred.future().toPromise().catch(v => _ExecutionState.Cancelled.hasInstance(v));
+    });
   });
 
 
