@@ -23,13 +23,24 @@ module.exports = {
   _TaskExecution: require('./_task-execution'),
 
   /*~
+   * stability: experimental
    * type: |
    *    forall s, e, r:
-   *    ((Any..., (e, s) => Void) => Void)
-   *    => (Any...)
-   *    => Task e s r
+   *      ((Any..., (e, s) => Void) => Void)
+   *      => (Any...)
+   *      => Task e s r
    */
   fromNodeback(aNodeback) {
     return require('folktale/data/conversions/nodeback-to-task')(aNodeback);
+  },
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v, r:
+   *     ((Any...) => Promise v e) => (Any...) => Task e v r
+   */
+  fromPromised(aPromiseFn) {
+    return require('folktale/data/conversions/promised-to-task')(aPromiseFn)
   }
 };

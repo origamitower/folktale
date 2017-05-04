@@ -27,6 +27,17 @@ const eq = function(that) {
 
 
 describe('Data.Task', () => {
+
+  describe('Conversions', () => {
+    property('fromPromised(a => Promise.resolve(a)) → (a) => Task.of(a)', 'nat', async (a) => {
+      return (await Task.fromPromised(x => Promise.resolve(x))(a).run().promise()) === a
+    });
+
+    property('fromPromised(a => Promise.reject(a)) → (a) => Task.rejected(a)', 'nat', async (a) => {
+      return await Task.fromPromised(x => Promise.reject(x))(a).run().promise().catch(x => x === a);
+    });
+  });
+
   describe('Tasks', () => {
     property('#chain(f) transforms successful tasks', 'nat', 'nat -> task nat', env, (a, f) => {
       return Task.of(a).chain(f).run().future() ::eq(f(a).run().future());

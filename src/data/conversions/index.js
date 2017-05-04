@@ -23,6 +23,6 @@ module.exports = {
   nullableToMaybe: require('./nullable-to-maybe'),
   nodebackToTask: require('./nodeback-to-task'),
   futureToPromise: require('./future-to-promise'),
-  promiseToFuture: require('./promise-to-future')
+  promiseToFuture: require('./promise-to-future'),
+  promisedToTask: require('./promised-to-task')
 };
-
