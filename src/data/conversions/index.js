@@ -21,6 +21,8 @@ module.exports = {
   nullableToValidation: require('./nullable-to-validation'),
   nullableToResult: require('./nullable-to-result'),
   nullableToMaybe: require('./nullable-to-maybe'),
-  nodebackToTask: require('./nodeback-to-task')
+  nodebackToTask: require('./nodeback-to-task'),
+  futureToPromise: require('./future-to-promise'),
+  promiseToFuture: require('./promise-to-future')
 };
 
