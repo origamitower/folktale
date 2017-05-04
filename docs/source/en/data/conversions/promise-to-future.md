@@ -11,7 +11,7 @@ If a Promise contains a rejection with Folktale's special `Cancelled()` value, t
 
 ## Example::
 
-    const { futureToPromise } = require('folktale/data/conversions/promise-to-future');
+    const promiseToFuture = require('folktale/data/conversions/promise-to-future');
 
     promiseToFuture(Promise.resolve(1));
     // => Future.resolve(1)
