@@ -24,6 +24,6 @@ const futureToPromise = (aFuture) => {
       onCancelled: ()     => reject(Cancelled())
     });
   });
-}
+};
 
 module.exports = futureToPromise;

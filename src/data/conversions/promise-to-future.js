@@ -27,7 +27,7 @@ const promiseToFuture = (aPromise) => {
         deferred.reject(error);
       }
     }
-  )
+  );
   return deferred.future();
 };
 

@@ -41,6 +41,6 @@ module.exports = {
    *     ((Any...) => Promise v e) => (Any...) => Task e v r
    */
   fromPromised(aPromiseFn) {
-    return require('folktale/data/conversions/promised-to-task')(aPromiseFn)
+    return require('folktale/data/conversions/promised-to-task')(aPromiseFn);
   }
 };
