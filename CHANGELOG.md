@@ -15,7 +15,7 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 
 ---
 
-## [Unreleased]
+## [2.0.0-beta1] - 2017-05-03
 
 ### Documentation
 

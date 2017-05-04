@@ -122,7 +122,6 @@ publish: clean lint
 	$(MAKE) _test-sauce
 	git checkout -b "publish/$(VERSION)"
 	$(MAKE) _documentation
-	-git add --update
 	git commit -m "(release) Publishes version $(VERSION)" --allow-empty
 	git tag "release/$(VERSION)"
 	git push --tags
