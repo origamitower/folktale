@@ -21,8 +21,8 @@ const promisedToTask = (aPromiseFn) => {
     aPromiseFn(...args).then(
       (value) => resolver.resolve(value),
       (error) => resolver.reject(error)
-    )
+    );
   });
-}
+};
 
 module.exports = promisedToTask;
