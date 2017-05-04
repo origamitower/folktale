@@ -119,7 +119,7 @@ publish: clean lint
 	$(MAKE) compile-documentation
 	$(MAKE) _test-all
 	$(MAKE) _test-browser
-	# $(MAKE) _test-sauce
+	$(MAKE) _test-sauce
 	git checkout -b "publish/$(VERSION)"
 	$(MAKE) _documentation
 	-git add --update
