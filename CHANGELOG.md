@@ -28,7 +28,9 @@ Each version entry is written as a heading in the format `[<version number>] - Y
   - `nodebackToTask` (and `Task.fromNodeback`) allows converting callback-based functions in Node-style to Tasks automatically
     ([PR #116](https://github.com/origamitower/folktale/pull/116) by @rpearce)
   - `futureToPromise` and `promiseToFuture` allow converting between promises and futures. The conversion isn't strictly loss-less due to the difference in semantics
-    ([PR #119](https://github.com/origamitower/folktale/pull/119))
+    ([PR #119](https://github.com/origamitower/folktale/pull/119), details in [#98](https://github.com/origamitower/folktale/issues/98))
+  - `promisedToTask` (and `Task.fromPromised`) allows converting functions that return promises to functions that return tasks
+    ([PR #120](https://github.com/origamitower/folktale/pull/120), details in [#97](https://github.com/origamitower/folktale/issues/97))
 
 
 ### BREAKING CHANGES
