@@ -25,10 +25,10 @@ module.exports = {
   /*~
    * stability: experimental
    * type: |
-   *    forall s, e, r:
+   *    forall s, e:
    *      ((Any..., (e, s) => Void) => Void)
    *      => (Any...)
-   *      => Task e s r
+   *      => Task e s
    */
   fromNodeback(aNodeback) {
     return require('folktale/data/conversions/nodeback-to-task')(aNodeback);
@@ -37,8 +37,8 @@ module.exports = {
   /*~
    * stability: experimental
    * type: |
-   *   forall e, v, r:
-   *     ((Any...) => Promise v e) => (Any...) => Task e v r
+   *   forall e, v:
+   *     ((Any...) => Promise v e) => (Any...) => Task e v
    */
   fromPromised(aPromiseFn) {
     return require('folktale/data/conversions/promised-to-task')(aPromiseFn);

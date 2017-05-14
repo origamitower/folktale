@@ -181,12 +181,14 @@ describe('Data.Task', () => {
       let start = [false, false];
       const a = Task.task(r => {
         start[0] = true;
-        return setTimeout(_ => { done[0] = true; r.resolve(1); }, 150)
-      }, { cleanup: x => clearTimeout(x) });
+        const timer = setTimeout(_ => { done[0] = true; r.resolve(1); }, 150);
+        r.cleanup(() => clearTimeout(timer));
+      });
       const b = Task.task(r => {
         start[1] = true;
-        return setTimeout(_ => { done[1] = true; r.resolve(2); }, 100)
-      }, { cleanup: x => clearTimeout(x) });
+        const timer = setTimeout(_ => { done[1] = true; r.resolve(2); }, 100);
+        r.cleanup(() => clearTimeout(timer));
+      });
 
       const p = a.or(b).run().promise();
       $ASSERT(start == [true, true]);
@@ -197,61 +199,40 @@ describe('Data.Task', () => {
 
     it('Cancels the task that hasn’t resolved', async () => {
       let cancelled = [false, false];
-      let cleaned = 0;
-      let d = new Deferred();
-      const cleanup = (timer) => {
-        clearTimeout(timer);
-        cleaned++;
-        if (cleaned === 2) {
-          d.resolve();
-        }
-      };
 
       const a = Task.task(r => {
-        return setTimeout(r.resolve, 100);
-      }, {
-        onCancelled: _ => { cancelled[0] = true },
-        cleanup: cleanup
-      });
-      const b = Task.task(r => {
-        return setTimeout(r.resolve, 150);
-      }, {
-        onCancelled: _ => { cancelled[1] = true },
-        cleanup: cleanup
+        const timer = setTimeout(r.resolve, 100);
+        r.onCancelled(() => { cancelled[0] = true });
+        r.cleanup(() => clearTimeout(timer));
       });
 
-      a.or(b).run();
-      await d.promise();
+      const b = Task.task(r => {
+        const timer = setTimeout(r.resolve, 200);
+        r.onCancelled(() => { cancelled[1] = true });
+        r.cleanup(() => clearTimeout(timer));
+      });
+
+      await a.or(b).run().promise().catch(() => null);
       $ASSERT(cancelled == [false, true]);
     });
 
     it('When cancelled, should cancel both tasks', async () => {
       let cancelled = [false, false];
-      let done = 0;
-      const d = new Deferred();
-      const cleanup = (timer) => {
-        clearTimeout(timer);
-        done++;
-        if (done === 2) {
-          d.resolve();
-        }
-      };
 
       const a = Task.task(r => {
-        return setTimeout(r.resolve, 100)
-      }, {
-        onCancelled: _ => { cancelled[0] = true },
-        cleanup
+        const timer = setTimeout(r.resolve, 100);
+        r.onCancelled(() => { cancelled[0] = true });
+        r.cleanup(() => clearTimeout(timer));
       });
       const b = Task.task(r => {
-        return setTimeout(r.reject, 100)
-      }, {
-        onCancelled: _ => { cancelled[1] = true },
-        cleanup
+        const timer = setTimeout(r.reject, 100);
+        r.onCancelled(() => { cancelled[1] = true });
+        r.cleanup(() => clearTimeout(timer));
       });
 
-      a.or(b).run().cancel();
-      await d.promise();
+      const execution = a.or(b).run();
+      execution.cancel();
+      await execution.promise().catch(() => null);
       $ASSERT(cancelled == [true, true]);
     });
   });
@@ -259,15 +240,13 @@ describe('Data.Task', () => {
   describe('#and(that)', () => {
     it('waits for both values in parallel, maintains tuple ordering', async () => {
       const a = Task.task(r => {
-        return setTimeout(_ => r.resolve(1), 150);
-      }, {
-        cleanup: x => clearTimeout(x)
+        const timer = setTimeout(_ => r.resolve(1), 150);
+        r.cleanup(() => clearTimeout(timer));
       });
 
       const b = Task.task(r => {
-        return setTimeout(_ => r.resolve(2), 100);
-      }, {
-        cleanup: x => clearTimeout(x)
+        const timer = setTimeout(_ => r.resolve(2), 100);
+        r.cleanup(() => clearTimeout(timer));
       });
 
       const val = await a.and(b).run().promise();
@@ -276,70 +255,49 @@ describe('Data.Task', () => {
 
     it('When cancelled, should cancel both tasks', async () => {
       let cancelled = [false, false];
-      let done = 0;
-      const d = new Deferred();
-      const cleanup = (timer) => {
-        clearTimeout(timer);
-        done++;
-        if (done === 2) {
-          d.resolve();
-        }
-      };
 
       const a = Task.task(r => {
-        return setTimeout(r.resolve, 100)
-      }, {
-        onCancelled: _ => { cancelled[0] = true },
-        cleanup
+        const timer = setTimeout(r.resolve, 100);
+        r.onCancelled(() => { cancelled[0] = true });
+        r.cleanup(() => clearTimeout(timer));
       });
       const b = Task.task(r => {
-        return setTimeout(r.reject, 100)
-      }, {
-        onCancelled: _ => { cancelled[1] = true },
-        cleanup
+        const timer = setTimeout(r.reject, 100);
+        r.onCancelled(() => { cancelled[1] = true });
+        r.cleanup(() => clearTimeout(timer));
       });
 
-      a.and(b).run().cancel();
-      await d.promise();
+      const execution = a.and(b).run();
+      execution.cancel();
+      await execution.promise().catch(() => null);
       $ASSERT(cancelled == [true, true]);
     });
 
     it('Cancelling after partial resolution is okay', async () => {
       let resolved = [false, false];
       let cancellations = [false, false];
-      let done = 0;
-      let d = new Deferred();
-      const cleanup = (timer) => {
-        clearTimeout(timer);
-        done++;
-        if (done === 2) {
-          d.resolve();
-        }
-      };
 
       const a = Task.task(r => {
-        return setTimeout(_ => {
+        const timer = setTimeout(_ => {
           resolved[0] = true;
           r.resolve(1);
         }, 200);
-      }, {
-        onCancelled: _ => { cancellations[0] = true },
-        cleanup
+        r.onCancelled(() => { cancellations[0] = true });
+        r.cleanup(() => clearTimeout(timer));
       });
 
       const b = Task.task(r => {
-        return setTimeout(_ => {
+        const timer = setTimeout(_ => {
           resolved[1] = true;
           r.resolve(2);
         }, 100);
-      }, {
-        onCancelled: _ => { cancellations[1] = true },
-        cleanup
+        r.onCancelled(() => { cancellations[1] = true });
+        r.cleanup(() => clearTimeout(timer));
       });
 
       const ex = a.and(b).run();
       setTimeout(_ => { ex.cancel() }, 120);
-      await d.promise();
+      await ex.promise().catch(() => null);
 
       $ASSERT(ex.future() ::eq(cancelled()));
       $ASSERT(resolved == [false, true]);
@@ -384,12 +342,11 @@ describe('Data.Task', () => {
       let d = new Deferred();
       Task.task(r => { 
         stack.push(1);
-        r.resolve(1)
-      }, { 
-        cleanup: _ => { 
+        r.cleanup(() => {
           stack.push(2);
           d.resolve(2) 
-        }
+        });
+        r.resolve(1)
       }).run();
       await d.promise();
       $ASSERT(stack == [1, 2]);
@@ -398,12 +355,11 @@ describe('Data.Task', () => {
       d = new Deferred();
       Task.task(r => { 
         stack.push(3);
-        r.reject(1)
-      }, { 
-        cleanup: _ => { 
+        r.cleanup(() => {
           stack.push(4);
-          d.resolve(2) 
-        }
+          d.resolve(2);
+        });
+        r.reject(1)
       }).run();
       await d.promise();
       $ASSERT(stack == [3, 4]);
@@ -412,67 +368,66 @@ describe('Data.Task', () => {
       d = new Deferred();
       Task.task(r => { 
         stack.push(5);
-      }, { 
-        cleanup: _ => { 
+        r.cleanup(() => {
           stack.push(6);
-          d.resolve(2) 
-        }
+          d.resolve(2);
+        })
       }).run().cancel();
       await d.promise();
       $ASSERT(stack == [5, 6]);
     });
 
-    it('Invokes onCancel if the task is cancelled', async () => {
+    it('Invokes onCancelled callbacks if the task is cancelled', async () => {
       let stack = []; 
 
       let d = new Deferred();
       Task.task(r => { 
         stack.push(1);
-        r.resolve(1)
-      }, { 
-        cleanup: _ => { 
+        r.cleanup(() => {
           stack.push(2);
-          d.resolve(2) 
-        },
-        onCancelled: _ => {
-          stack.push(3);
-        }
+          d.resolve(2);
+        });
+        r.onCancelled(() => {
+          stack.push(r.isCancelled);
+        });
+        stack.push(r.isCancelled);
+        r.resolve(1);
       }).run().cancel();
       await d.promise();
-      $ASSERT(stack == [1, 2]);
+      $ASSERT(stack == [1, false, 2]);
 
       stack = [];
       d = new Deferred();
       Task.task(r => { 
         stack.push(3);
-        r.reject(1)
-      }, { 
-        cleanup: _ => { 
+        r.cleanup(() => {
           stack.push(4);
-          d.resolve(2) 
-        },
-        onCancelled: _ => {
-          stack.push(5);
-        }
+          d.resolve(2);
+        })
+        r.onCancelled(() => {
+          stack.push(r.isCancelled);
+        });
+        stack.push(r.isCancelled);
+        r.reject(1)
       }).run();
       await d.promise();
-      $ASSERT(stack == [3, 4]);
+      $ASSERT(stack == [3, false, 4]);
 
       stack = [];
       d = new Deferred();
       Task.task(r => { 
         stack.push(5);
-      }, { 
-        cleanup: _ => { 
+        stack.push(r.isCancelled);
+        r.cleanup(() => {
           stack.push(6);
-          d.resolve(2) 
-        },
-        onCancelled: _ => {
-          stack.push(7);
-        }
+          d.resolve(2)
+        });
+        r.onCancelled(() => {
+          stack.push(r.isCancelled);
+        });
       }).run().cancel();
       await d.promise();
-      $ASSERT(stack == [5, 7, 6]);
+      $ASSERT(stack == [5, false, true, 6]);
     });
   });
 

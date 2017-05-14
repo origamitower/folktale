@@ -10,9 +10,11 @@ A data structure that models asynchronous actions, supporting safe cancellation 
     const { task } = require('folktale/data/task');
 
     const delay = (ms) => task(
-      (resolver) => setTimeout(() => resolver.resolve(ms), ms),
-      {
-        cleanup: (timer) => clearTimeout(timer)
+      (resolver) => {
+        const timerId = setTimeout(() => resolver.resolve(ms), ms);
+        resolver.cleanup(() => {
+          clearTimeout(timerId);
+        });
       }
     );
 
@@ -77,7 +79,8 @@ Task, on the other hand, works at the *computation* level, so it knows which res
 
 ## Constructing tasks
 
-The `task` function is how Tasks are generally created. It takes a computation (a function that will perform all of the work), and optionally an object defining handlers for how to clean up the resources allocated by the computation, and what to do if the task is cancelled.
+The `task` function is how Tasks are generally created. It takes a computation (a function that will perform all of the work) and 
+provides that computation means of describing its result, cleaning up its allocated resources, and reacting to external cancellations.
 
 A task that simply resolves after a certain amount of time would look like this::
 
@@ -85,15 +88,15 @@ A task that simply resolves after a certain amount of time would look like this:
 
     const delay = (time) => task(
       (resolver) => {
-        return setTimeout(() => resolver.resolve(time), time);
-      },
-      {
-        cleanup(timerId) {
+        const timerId = setTimeout(() => resolver.resolve(time), time);
+        
+        resolver.cleanup(() => {
           clearTimeout(timerId);
-        },
-        onCancelled(timerId) {
+        });
+
+        resolver.onCancelled(() => {
           /* does nothing */
-        }
+        });
       }
     );
 
@@ -105,7 +108,9 @@ Here the computation takes a `resolver` argument, which contains methods to chan
 > **NOTE**  
 > While `.cancel()` will cancel the execution of the Task, the processes started by the task computation will not be automatically stopped. The task computation must stop those itself, as we'll see later in the section about cancelling tasks.
 
-The `onCancelled` and `cleanup` functions will receive any value returned by the task computation. Typically, the computation will allocate some resources, and return a handle to those resources such that `cleanup` and `onCancelled` may free those as they see fit. `cleanup` is always called once a Task finishes its execution, regardless of what state it ends up in (cancelled, rejected, or resolved). If not provided, Folktale just does nothing in response to those events.
+The `cleanup` function takes a callback to be invoked unconditionally once the Task finishes its execution or is cancelled. This gives the computation a chance of freeing the resources it has allocated while it was running. Resource handling with asynchronous exceptions and cancellations is difficult. While Task does help ensuring that the composition of asynchronous tasks will respect the proper resource lifecycles, it's limited to cases where a Task allocates a particular resource, and frees it at the end of its execution. Shared resources across different tasks are a bigger problem that this library does not try to solve.
+
+The `onCancelled` function takes a callback that'll be invoked when the task's execution is cancelled. The resolver also has an `isCancelled` boolean field that can be queried at any time to determine whether the task has been cancelled or not at that point in time.
 
 Sometimes Task functions expect a Task as input or result value, but you already have the value that should be computed. While you can always resolve a Task synchronously, like so::
 
@@ -188,16 +193,20 @@ The `.or()` method combines two tasks such that the resulting task assimilates t
     const { task } = require('folktale/data/task');
 
     const delay = (ms) => task(
-      resolver => setTimeout(() => resolver.resolve(ms), ms),
-      {
-        cleanup: (timer) => clearTimeout(timer)
+      resolver => {
+        const timerId = setTimeout(() => resolver.resolve(ms), ms);
+        resolver.cleanup(() => {
+          clearTimeout(timerId);
+        });
       }
     );
 
     const timeout = (ms) => task(
-      resolver => setTimeout(() => resolver.reject(ms), ms),
-      {
-        cleanup: (timer) => clearTimeout(timer)
+      resolver => {
+        const timerId = setTimeout(() => resolver.reject(ms), ms);
+        resolver.cleanup(() => {
+          clearTimeout(timerId);
+        })
       }
     );
 
@@ -231,9 +240,11 @@ Instead of sequencing unrelated tasks, you can combine them with the `.and()` op
     const { task } = require('folktale/data/task');
 
     const delay = (ms) => task(
-      resolver => setTimeout(() => resolver.resolve(ms), ms),
-      {
-        cleanup: (timer) => clearTimeout(timer)
+      resolver => {
+        const timerId = setTimeout(() => resolver.resolve(ms), ms);
+        resolver.cleanup(() => {
+          clearTimeout(timerId);
+        });
       }
     );
 

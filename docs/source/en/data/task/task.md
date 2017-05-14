@@ -6,9 +6,9 @@ Constructs a Task and associates a computation to it. The computation is execute
 
 A computation is required. For task, this is a function that receives one argument, the resolver, and does some work that may be asynchronous. Once done, the computation uses the resolver to `resolve()` a task succesfully, or `reject()` it with an error.
 
-Asynchronous computations that allocate some external resource (for example, starting an HTTP request) can return a handler for those resources and define a cleanup function. The `cleanup` function will be called with the resources returned, and will have the chance of disposing of them properly once the Task is finished, either properly, as a success or rejection, or eagerly, as a cancellation.
+Asynchronous computations that allocate some external resource (for example, starting an HTTP request) can provide a cleanup function. The `cleanup` function will be called with the resources returned, and will have the chance of disposing of them properly once the Task is finished, either properly, as a success or rejection, or eagerly, as a cancellation.
 
-Optionally, a Task may define an `onCancelled` function that will be called if the Task is cancelled, before the cleanup.
+Optionally, a Task may provide an `onCancelled` function that will be called if the Task is cancelled, before the cleanup.
 
 
 ## Example::
@@ -37,10 +37,10 @@ An asynchronous task that allocates and frees resources::
 
     const delay50 = task(
       resolver => {
-        return setTimeout(() => resolver.resolve('yay'), 50);
-      },
-      {
-        cleanup: (timer) => clearTimeout(timer)
+        const timerId = setTimeout(() => resolver.resolve('yay'), 50);
+        resolver.cleanup(() => {
+          clearTimeout(timerId);
+        });
       }
     );
     
@@ -52,16 +52,18 @@ A task with a cancellation handler::
     let resolved = false;
     const cancelMe = task(
       resolver => {
-        return setTimeout(() => {
+        const timerId = setTimeout(() => {
           resolved = true;
           resolver.resolve('yay');
         }, 50);
-      },
-      {
-        cleanup: (timer) => clearTimeout(timer),
-        onCancelled: (timer) => {
-          'task was cancelled';
-        }
+
+        resolver.cleanup(() => {
+          clearTimeout(timerId);
+        });
+
+        resolver.onCancelled(() => {
+          /* task was cancelled */
+        });
       }
     );
     

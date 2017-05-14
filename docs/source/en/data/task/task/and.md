@@ -16,9 +16,11 @@ If you need to combine more than two tasks concurrently, take a look at the `wai
     const { task } = require('folktale/data/task');
     
     const delay = (ms) => task(
-      resolver => setTimeout(() => resolver.resolve(ms), ms),
-      {
-        cleanup: (timer) => clearTimeout(timer)
+      resolver => {
+        const timerId = setTimeout(() => resolver.resolve(ms), ms);
+        resolver.cleanup(() => {
+          clearTimeout(timerId);
+        });
       }
     );
     
