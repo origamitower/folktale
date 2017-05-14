@@ -32,8 +32,8 @@ module.exports = function(config) {
 
   const customLaunchers = merge(
     // Desktop browsers
-    browser('Linux', 'chrome', ['36', 'latest-2', 'latest']),
-    browser('Linux', 'firefox', ['21', 'latest-2', 'latest']),
+    browser('Linux', 'chrome', ['36', 'latest']),
+    browser('Linux', 'firefox', ['21', 'latest']),
     browser('OS X 10.8', 'safari', ['6']),
     browser('OS X 10.9', 'safari', ['7']),
     browser('OS X 10.10', 'safari', ['8']),
@@ -43,14 +43,14 @@ module.exports = function(config) {
     browser('Windows 10', 'MicrosoftEdge', ['13']),
 
     // Mobile browsers
-    mobile('Android', 'Browser', ['4.4', '5', '5.1'], {
+    mobile('Android', 'Browser', ['4.4', '5'], {
       deviceName: 'Android Emulator',
       deviceType: 'phone',
       deviceOrientation: 'portrait',
       appiumVersion: '1.5.3'
     }),
 
-    mobile('iOS', 'Safari', ['8.4', '9.3', '10.2'], {
+    mobile('iOS', 'Safari', ['8.4', '9.3'], {
       deviceOrientation: 'portrait',
       deviceName: 'iPhone Simulator',
       appiumVersion: '1.6.3'
@@ -108,9 +108,10 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: 3,
+    concurrency: 1,
 
-    browserDiconnectTimeout: 60000,
-    browserNoActivityTimeout: 180000
+    captureTimeout: 180 * 1000,
+    browserDiconnectTimeout: 180 * 1000,
+    browserNoActivityTimeout: 180 * 1000
   });
 }
