@@ -19,9 +19,11 @@ any of the input tasks resolving will also cancel all of the other input tasks.
     const { task, waitAny } = require('folktale/data/task');
     
     const delay = (ms) => task(
-      resolver => setTimeout(() => resolver.resolve(ms), ms),
-      {
-        cleanup: (timer) => clearTimeout(timer)
+      resolver => {
+        const timerId = setTimeout(() => resolver.resolve(ms), ms);
+        resolver.cleanup(() => {
+          clearTimeout(timerId);
+        })
       }
     );
     

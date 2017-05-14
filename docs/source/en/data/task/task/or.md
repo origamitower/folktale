@@ -18,16 +18,20 @@ As a convenience for combining a large or unknown amount of tasks, the
     const { task } = require('folktale/data/task');
 
     const delay = (ms) => task(
-      resolver => setTimeout(() => resolver.resolve(ms), ms),
-      {
-        cleanup: (timer) => clearTimeout(timer)
+      resolver => {
+        const timerId = setTimeout(() => resolver.resolve(ms), ms);
+        resolver.cleanup(() => {
+          clearTimeout(timerId);
+        });
       }
     );
 
     const timeout = (ms) => task(
-      resolver => setTimeout(() => resolver.reject(ms), ms),
-      {
-        cleanup: (timer) => clearTimeout(timer)
+      resolver => {
+        const timerId = setTimeout(() => resolver.reject(ms), ms);
+        resolver.cleanup(() => {
+          clearTimeout(timerId);
+        });
       }
     );
 

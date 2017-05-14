@@ -14,17 +14,20 @@ const noop = () => {};
 /*~
  * stability: experimental
  * type: |
- *   forall value, reason, resources:
+ *   forall value, reason:
  *     (
- *       ({ resolve: (value) => Void, reject: (reason) => Void, cancel: () => Void }) => resources,
- *       {
- *         onCancelled: (resources) => Void,
- *         cleanup: (resources) => Void
- *       }
- *     ) => Task reason value resources
+ *       ({
+ *          resolve: (value) => Void,
+ *          reject: (reason) => Void,
+ *          cancel: () => Void,
+ *          cleanup: (() => Void) => Void,
+ *          onCancelled: (() => Void) => Void,
+ *          get isCancelled: Boolean
+ *        }) => Void
+ *     ) => Task reason value
  */
-const task = (computation, handlers = { onCancelled: noop, cleanup: noop }) =>
-  new Task(computation, handlers.onCancelled, handlers.cleanup);
+const task = (computation) =>
+  new Task(computation);
 
 
 module.exports = task;
