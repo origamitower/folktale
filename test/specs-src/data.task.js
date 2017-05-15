@@ -314,8 +314,9 @@ describe('Data.Task', () => {
   });
 
   it('waitAny()', async () => {
-    const delay = (ms) => Task.task((r) => setTimeout(() => r.resolve(ms), ms), {
-      cleanup: (a) => clearTimeout(a)
+    const delay = (ms) => Task.task((r) => {
+      const timer = setTimeout(() => r.resolve(ms), ms);
+      r.cleanup(() => clearTimeout(timer));
     });
 
     const result = await Task.waitAny([delay(100), delay(30), delay(200)]).run().promise();
