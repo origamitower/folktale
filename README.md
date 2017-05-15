@@ -36,7 +36,7 @@ Folktale can be installed through [npm][]:
 
 
 **Browsers**:
-  - Chrome 23+
+  - Chrome 36+
   - Firefox 21+
   - Safari 6+
   - Internet Explorer 9+
@@ -45,7 +45,7 @@ Folktale can be installed through [npm][]:
 
 **Mobile browsers**:
   - Android 4.4+
-  - iOS 7+
+  - iOS 8.3+
 
 
 The following table summarises tests executed on each supported Browser platform for the current version:
