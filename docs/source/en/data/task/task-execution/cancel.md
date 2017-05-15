@@ -11,12 +11,12 @@ Cancels a task execution. Does nothing if the task has already been resolved.
     
     let message = 'world';
     const helloIn50 = task(
-      resolver => setTimeout(() => {
-        message = 'hello';
-        resolver.resolve();
-      }, 50),
-      {
-        cleanup: (timer) => clearTimeout(timer)
+      resolver => {
+        const timerId = setTimeout(() => {
+          message = 'hello';
+          resolver.resolve();
+        }, 50);
+        resolver.cleanup(() => clearTimeout(timerId));
       }
     );
     
