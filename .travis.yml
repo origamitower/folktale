@@ -5,3 +5,5 @@ node_js:
 env:
   global:
     - NODE_ENV=test
+script:
+  - make travis-tests
