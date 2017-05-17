@@ -13,5 +13,10 @@
     "transform-assertion-comments",
     ["babel-plugin-module-alias", [
       { "src": "./src", "expose": "folktale" }
-    ]]]
+    ]]],
+  "env": {
+    "test": {
+      "plugins": ["istanbul"]
+    }
+  }
 }

@@ -7,6 +7,8 @@ mocha      := $(bin)/mocha
 browserify := $(bin)/browserify
 uglify     := $(bin)/uglifyjs
 karma      := $(bin)/karma
+nyc        := $(bin)/nyc
+coveralls  := $(bin)/coveralls
 VERSION    := $(shell node -e 'console.log(require("./package.json").version)')
 
 
@@ -85,6 +87,12 @@ test-documentation: _prepare-test compile-documentation _test-documentation
 _test-documentation:
 	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd --grep "documentation examples" test/specs
 
+.PHONY: coverage
+coverage:
+	NODE_ENV=test $(MAKE) _prepare-test
+	NODE_ENV=test $(MAKE) compile-documentation
+	FOLKTALE_ASSERTIONS=minimal NODE_ENV=test $(nyc) $(mocha) --require babel-polyfill --uid bdd test/specs
+
 .PHONY: test-browser _test-browser
 test-browser: _prepare-test _test-browser
 _test-browser:
@@ -95,11 +103,12 @@ test-sauce: _prepare-test _test-sauce
 _test-sauce:
 	$(karma) start test/karma-sauce.js
 
-.PHONY: all-tests
-all-tests: tools _prepare-test
+.PHONY: travis-tests
+travis-tests: tools _prepare-test
 	$(MAKE) compile-documentation
-	$(MAKE) _test-all
-	$(MAKE) _test-browser
+	FOLKTALE_ASSERTIONS=none $(nyc) $(mocha) --require babel-polyfill --ui bdd test/specs
+	$(nyc) $(karma) start test/karma-local.js
+	$(nyc) report --reporter=text-lcov | $(coveralls)
 
 .PHONY: documentation _documentation
 documentation: compile compile-annotated compile-documentation _documentation
