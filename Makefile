@@ -107,6 +107,7 @@ _test-sauce:
 travis-tests: tools
 	$(MAKE) clean
 	$(MAKE) compile-documentation
+	$(babel) test/helpers-src --source-map inline --out-dir test/helpers
 	FOLKTALE_ASSERTIONS=none $(nyc) $(mocha) --require babel-polyfill --ui bdd test/specs-src
 	NODE_ENV=dev $(MAKE) _prepare-test
 	NODE_ENV=dev $(karma) start test/karma-local.js
