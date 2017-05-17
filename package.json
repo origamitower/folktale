@@ -3,9 +3,6 @@
   "version": "2.0.0-beta2",
   "description": "A suite of libraries for generic functional programming in JavaScript that allows you to write elegant modular applications with fewer bugs and more reuse.",
   "main": "./index.js",
-  "scripts": {
-    "test": "make all-tests"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/origamitower/folktale"
