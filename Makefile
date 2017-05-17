@@ -107,7 +107,7 @@ _test-sauce:
 travis-tests: tools _prepare-test
 	$(MAKE) compile-documentation
 	FOLKTALE_ASSERTIONS=none $(nyc) $(mocha) --require babel-polyfill --ui bdd test/specs
-	$(nyc) $(karma) start test/karma-local.js
+	$(karma) start test/karma-local.js
 	$(nyc) report --reporter=text-lcov | $(coveralls)
 
 .PHONY: documentation _documentation
