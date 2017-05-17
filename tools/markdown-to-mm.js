@@ -37,7 +37,7 @@ const babelCompileOptions = {
     "transform-object-rest-spread",
     ["babel-plugin-module-alias", [
       { 
-        "src": "./annotated", 
+        "src": process.env.NODE_ENV === 'test' ? './src' : "./annotated", 
         "expose": "folktale",  
         "cwd": path.resolve(__dirname, '..')
       }

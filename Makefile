@@ -104,10 +104,12 @@ _test-sauce:
 	$(karma) start test/karma-sauce.js
 
 .PHONY: travis-tests
-travis-tests: tools _prepare-test
+travis-tests: tools
+	$(MAKE) clean
 	$(MAKE) compile-documentation
-	FOLKTALE_ASSERTIONS=none $(nyc) $(mocha) --require babel-polyfill --ui bdd test/specs
-	$(karma) start test/karma-local.js
+	FOLKTALE_ASSERTIONS=none $(nyc) $(mocha) --require babel-polyfill --ui bdd test/specs-src
+	NODE_ENV=dev $(MAKE) _prepare-test
+	NODE_ENV=dev $(karma) start test/karma-local.js
 	$(nyc) report --reporter=text-lcov | $(coveralls)
 
 .PHONY: documentation _documentation

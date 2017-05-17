@@ -83,7 +83,7 @@
       "babel-register"
     ],
     "include": [
-      "annotated/**/*.js"
+      "src/**/*.js"
     ],
     "sourceMap": false,
     "instrument": false
