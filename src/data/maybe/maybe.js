@@ -174,6 +174,31 @@ adtMethods(Maybe, {
 
 
   /*~
+   * category: Combining functions
+   * authors:
+   *   - "@diasbruno"
+   * type: |
+   *   forall a: (Maybe a).(Maybe a) => Maybe a
+   */
+  concat: {
+    /*~*/
+    Nothing: function concat(aMaybe) {
+      assertMaybe('Maybe.Nothing#concat', aMaybe);
+      return aMaybe;
+    },
+
+    /*~*/
+    Just: function concat(aMaybe) {
+      assertMaybe('Maybe.Just#concat', aMaybe);
+      return aMaybe.matchWith({
+        Nothing: () => Just(this.value),
+        Just: (a) => Just(this.value.concat(a.value))
+      });
+    }
+  },
+
+
+  /*~
    * deprecated:
    *   since: 2.0.0
    *   replacedBy: .matchWith(pattern)
@@ -229,6 +254,18 @@ Object.assign(Maybe, {
    */
   of(value) {
     return Just(value);
+  },
+
+
+  /*~
+   * category: Constructing funtion
+   * authors:
+   *   - "@diasbruno"
+   * type: |
+   *   forall a: () => Maybe a
+   */
+  empty() {
+    return Nothing();
   },
 
 

@@ -122,9 +122,39 @@ describe('Data.Maybe', () => {
     });
   });
 
+  describe('#empty()', () => {
+    property('empty().equals(Nothing()) = true', () => {
+      return Maybe.empty().equals(Nothing());
+    });
+
+    property('!(empty().equals(Just(a))) = false', 'nat', (a) => {
+      return !(Maybe.empty().equals(Just(a)));
+    });
+  });
+
+  describe('#concat(a)', () => {
+    property('Just(a).concat(Nothing()) = Just(a)', 'string', (a) => {
+      return Just(a).concat(Maybe.empty()).equals(Just(a));
+    });
+
+    property('Nothing().concat(Just(a)) = Nothing()', 'string', (a) => {
+      return Maybe.empty().concat(Just(a)).equals(Just(a));
+    });
+
+    property('Just(a).concat(Just(b)) = Just(c)', 'string', 'string', (a, b) => {
+      return Just(a).concat(Just(b)).equals(Just(a.concat(b)));
+    });
+  });
+
   describe('Fantasy Land', _ => {
     laws.Setoid(Maybe.Just);
     laws.Setoid(Maybe.Nothing);
+
+    laws.Semigroup(Maybe.Just);
+    laws.Semigroup(Maybe.Nothing);
+
+    laws.Monoid(Maybe.Just);
+    laws.Monoid(Maybe.Nothing);
 
     laws.Functor(Maybe.Just);
     laws.Functor(Maybe.Nothing);
