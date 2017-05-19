@@ -25,6 +25,7 @@ module.exports = {
   Nothing: Maybe.Nothing,
   hasInstance: Maybe.hasInstance,
   of: Maybe.of,
+  empty: Maybe.empty,
   fromJSON: Maybe.fromJSON,
   [typeSymbol]: Maybe[typeSymbol],
   ['fantasy-land/of']: Maybe['fantasy-land/of'],
