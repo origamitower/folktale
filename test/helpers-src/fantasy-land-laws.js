@@ -66,7 +66,7 @@ const Monoid = (type, equals = defaultEquals) => {
 
   describe('Monoid instance', _ => {
     property('right identity', 'string', (a) =>
-      equals(type(a)[concat](type[empty]()), type(a))
+      equals(type(a)[concat](type()[empty]()), type(a))
     );
 
     property('left identity', 'string', (a) =>
