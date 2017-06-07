@@ -36,10 +36,10 @@ With this Folktale should be a solid, cross-platform base library for JS/TS appl
     - `Channel`, CSP channels, based on Clojure's.
     - `Stream`, discrete asynchronous streams, based on the Observable specification.
 
-  - **Higher-order contracts** (`Core`?).
+  - **Higher-order contracts** (`Contract` or `Validation`).
     This was previously core.check, though that only had experimental support for first-order contracts.
 
-  - **Operations for using monadic structures for control-flow** (`Core`?)
+  - **Operations for using monadic structures for control-flow** (`Control`)
     Previously `control.monads`.
 
 
