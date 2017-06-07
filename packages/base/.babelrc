@@ -12,15 +12,11 @@
     }],
     "transform-assertion-comments",
     ["babel-plugin-module-alias", [
-      { "src": "./packages/base/build/annotated", "expose": "folktale" }
+      { "src": "./packages/base/source", "expose": "folktale" }
     ]]],
   "env": {
     "test": {
-      "plugins": [
-        ["babel-plugin-module-alias", [
-          { "src": "./packages/base/source", "expose": "folktale" }
-        ]]
-      ]
+      "plugins": ["istanbul"]
     }
   }
 }

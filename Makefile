@@ -9,7 +9,6 @@ uglify     := $(bin)/uglifyjs
 karma      := $(bin)/karma
 nyc        := $(bin)/nyc
 coveralls  := $(bin)/coveralls
-VERSION    := $(shell node -e 'console.log(require("./package.json").version)')
 
 
 # -- [ COMPILATION ] ---------------------------------------------------
@@ -33,37 +32,42 @@ help:
 	@echo "  test-sauce ............. Runs the tests in SauceLabs (requires sauceconnect + env vars)."
 	@echo "  lint ................... Lints all source files."
 	@echo "  documentation .......... Builds the documentation from source."
-	@echo "  publish ................ Publishes the current version."
 	@echo ""
 
 .PHONY: bundle _bundle
 bundle: compile _bundle
 _bundle:
-	mkdir -p dist
-	$(browserify) index.js --standalone folktale > dist/folktale.js
-	$(uglify) --mangle - < dist/folktale.js > dist/folktale.min.js
+	mkdir -p packages/base/dist/umd
+	$(browserify) packages/base/build/index.js --standalone folktale --outfile packages/base/dist/umd/folktale.js
+	$(uglify) --mangle - < packages/base/dist/umd/folktale.js > packages/base/dist/umd/folktale.min.js
 
 .PHONY: compile
 compile:
-	DISABLE_MM_COMMENTS=true $(babel) src --source-map inline --out-dir .
+	DISABLE_MM_COMMENTS=true $(babel) packages/base/source --source-map inline --out-dir packages/base/build
 
 .PHONY: compile-annotated
 compile-annotated:
-	$(babel) src --source-map inline --out-dir annotated
+	$(babel) packages/base/source --source-map inline --out-dir packages/base/build/annotated
 
 .PHONY: compile-test
 compile-test:
-	$(babel) test/specs-src --source-map inline --out-dir test/specs
-	$(babel) test/helpers-src --source-map inline --out-dir test/helpers
-	$(browserify) test/browser/browser-tests.js --source-map inline > test/browser/tests.js
+	$(babel) test/source --copy-files --source-map inline --out-dir test/build --ignore test/source/browser/mocha.js
+
+.PHONY: bundle-test
+bundle-test:
+	$(browserify) test/build/browser/browser-tests.js --source-map inline --outfile test/build/browser/tests.tmp.js
+	mv test/build/browser/tests.tmp.js test/build/browser/browser-tests.js
+	cp test/source/browser/mocha.js test/build/browser/mocha.js
 
 .PHONY: compile-documentation
 compile-documentation:
-	node tools/markdown-to-mm.js docs/source docs/build
+	node tools/markdown-to-mm.js annotations/source annotations/build
 
 .PHONY: clean
 clean:
-	rm -rf core helpers data test/specs test/helpers index.js docs/build docs/api annotated
+	rm -rf packages/base/build packages/base/dist
+	rm -rf test/build
+	rm -rf annotations/build docs/api
 
 .PHONY: _prepare-test
 _prepare-test: clean compile compile-annotated compile-test
@@ -71,35 +75,34 @@ _prepare-test: clean compile compile-annotated compile-test
 .PHONY: test _test
 test: _prepare-test _test
 _test:
-	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd test/specs
+	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd --recursive test/build/specs
 
 .PHONY: test-all _test-all
 test-all: _prepare-test compile-documentation _test-all
 _test-all:
-	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd test/specs
+	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd --recursive test/build/specs
 
 .PHONY: test-minimal
 test-minimal:
-	FOLKTALE_ASSERTIONS=none $(mocha) --require babel-polyfill --reporter dot --ui bdd test/specs
+	FOLKTALE_ASSERTIONS=none $(mocha) --require babel-polyfill --reporter dot --ui bdd --recursive test/build/specs
 
 .PHONY: test-documentation _test-documentation
 test-documentation: _prepare-test compile-documentation _test-documentation
 _test-documentation:
-	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd --grep "documentation examples" test/specs
+	FOLKTALE_ASSERTIONS=minimal $(mocha) --require babel-polyfill --reporter spec --ui bdd --grep "documentation examples" --recursive test/build/specs
 
 .PHONY: coverage
-coverage:
-	NODE_ENV=test $(MAKE) _prepare-test
+coverage: clean
 	NODE_ENV=test $(MAKE) compile-documentation
-	FOLKTALE_ASSERTIONS=minimal NODE_ENV=test $(nyc) $(mocha) --require babel-polyfill --uid bdd test/specs
+	FOLKTALE_ASSERTIONS=minimal NODE_ENV=test $(nyc) $(mocha) --require babel-polyfill --uid bdd --recursive test/source/specs
 
 .PHONY: test-browser _test-browser
-test-browser: _prepare-test _test-browser
+test-browser: _prepare-test bundle-test _test-browser
 _test-browser:
 	$(karma) start test/karma-local.js
 
 .PHONY: test-sauce _test-sauce
-test-sauce: _prepare-test _test-sauce
+test-sauce: _prepare-test bundle-test _test-sauce
 _test-sauce:
 	$(karma) start test/karma-sauce.js
 
@@ -107,9 +110,9 @@ _test-sauce:
 travis-tests: tools
 	$(MAKE) clean
 	$(MAKE) compile-documentation
-	$(babel) test/helpers-src --source-map inline --out-dir test/helpers
-	FOLKTALE_ASSERTIONS=none $(nyc) $(mocha) --require babel-polyfill --ui bdd test/specs-src
+	FOLKTALE_ASSERTIONS=none $(nyc) $(mocha) --require babel-polyfill --ui bdd --recursive test/source/specs
 	NODE_ENV=dev $(MAKE) _prepare-test
+	$(MAKE) bundle-test
 	NODE_ENV=dev $(karma) start test/karma-local.js
 	$(nyc) report --reporter=text-lcov | $(coveralls)
 
@@ -120,28 +123,7 @@ _documentation:
 
 .PHONY: lint
 lint:
-	$(eslint) src/
-
-.PHONY: publish
-publish: clean lint
-	rm -rf node_modules
-	npm install
-	$(MAKE) tools
-	$(MAKE) _prepare-test
-	$(MAKE) compile-documentation
-	$(MAKE) _test-all
-	$(MAKE) _test-browser
-	$(MAKE) _test-sauce
-	git checkout -b "publish/$(VERSION)"
-	$(MAKE) _documentation
-	git commit -m "(release) Publishes version $(VERSION)" --allow-empty
-	git tag "release/$(VERSION)"
-	git push --tags
-	git push origin "publish/$(VERSION)"
-	$(MAKE) _bundle
-	mkdir -p releases
-	zip -r "releases/folktale-$(VERSION).zip" package.json README.md LICENCE FAQ.md CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md CONTRIBUTORS test docs/index.html docs/prism.css docs/prism.js docs/style.css docs/api/ index.js helpers/ data/ core/ dist/
-	npm publish
+	$(eslint) packages/base/source
 
 .PHONY: tools
 tools:
