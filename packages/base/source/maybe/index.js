@@ -9,7 +9,7 @@
 
 
 const Maybe = require('./maybe');
-const { typeSymbol } = require('folktale/adt/union');
+const { typeSymbol } = require('folktale/adt/union/union');
 
 
 /*~

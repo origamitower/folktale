@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------
 
 const Result = require('./result');
-const { typeSymbol } = require('folktale/adt/union');
+const { typeSymbol } = require('folktale/adt/union/union');
 
 
 /*~

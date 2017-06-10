@@ -18,7 +18,7 @@ const makeTests = (langDir, lang) => {
   describe(`${lang} documentation examples`, () => {
     require.cache = {};
     const folktale = require('folktale');
-    glob(path.join(__dirname, '../../../annotations/build/', langDir, '**/*.js')).forEach(f => require(f)(metamagical, folktale));
+    glob(path.join(__dirname, '../../../../annotations/build/', langDir, '**/*.js')).forEach(f => require(f)(metamagical, folktale));
 
     defineTests(folktale);
   });

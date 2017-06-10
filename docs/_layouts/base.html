@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page.title }} | Folktale, a standard library for functional programming in JavaScript</title>
+    <meta name="viewport" content="width=device-width">
+     <meta name="description"
+          content="Folktale is a library for functional programming in JavaScript.">
+    <meta name="keywords"
+          content="fantasy-land, monads, open source, javascript library, functional programming">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville|Source+Code+Pro|Lora:400,400i,700,700i" rel="stylesheet">
+    <link href="{% link /css/syntax.css %}" rel="stylesheet">
+    <link href="{% link /css/screen.css %}" rel="stylesheet">
+  </head>
+  <body class="{{ page.class }}">
+    {{ content }}
+
+    <footer>
+      <div class="project-info">
+        <p>Made with <span class="heart">❤️</span> by <a href="http://robotlolita.me">Quil</a>.</p>
+        <p class="small">Copyright (c) 2013-2017.</p>
+        <p class="small">Released under the permissive MIT licence.</p>
+        <p class="small">This website and docs are under CC BY 4.0.</p>
+      </div>
+
+      <nav class="footer-navigation">
+        <div class="nav-section">
+          <h3 class="title">Folktale</h3>
+          <ul>
+            <li><a href="{% link code.html %}">Projects</a></li>
+            <li><a href="{% link _docs/v2.0.0/index.md %}">Documentation</a></li>
+            <li><a href="https://github.com/origamitower/folktale/releases">Releases</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-section">
+          <h3 class="title">Community</h3>
+          <ul>
+            <li><a href="{% link coc.html %}">Code of conduct</a></li>
+            <li><a href="https://gitter.im/folktale/discussion">Gitter chat</a></li>
+            <li><a href="https://twitter.com/OrigamiTower">Twitter</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-section">
+          <h3 class="title">Support</h3>
+          <ul>
+            <li><a href="{% link _docs/support/bugs.md %}">Report issues</a></li>
+            <li><a href="{% link _docs/support/feature-request.md %}">Suggest features</a></li>
+            <li><a href="{% link _docs/v2.0.0/contributing/index.md %}">Contribute</a></li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+  </body>
+</html>

@@ -15,6 +15,53 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 
 ---
 
+
+## [2.0.0-rc1] - 2017-06-18
+
+### New features
+
+  - `Maybe` now implements Semigroup and Monoid.
+  - `Result` now implements Semigroup.
+
+
+### BREAKING CHANGES
+
+  - `folktale/data/future` is now `folktale/concurrency/future`.
+  - `folktale/data/task` is now `folktale/concurrency/task`.
+  - `folktale/data/conversions` is now `folktale/conversions`.
+  - `folktale/core/fantasy-land` is now `folktale/fantasy-land`.
+  - `folktale/data/maybe` is now `folktale/maybe`.
+  - `folktale/data/result` is now `folktale/result`.
+  - `folktale/data/validation` is now `folktale/validation`.
+  - The `folktale/core/adt` module is now `folktale/adt/union` module, which specifies that it creates union types. The `data` function was also renamed to `union`, and the `ADT` namespace was renamed to `Union` — although this one was used mostly internally.
+    
+    **Previously:**
+    
+    ```js
+    const { data, derivations } = require('folktale/core/adt');
+    
+    const List = data('List', {
+      Empty(){ },
+      Cons(value, rest) {
+        return { value, rest };
+      }
+    }).derive(derivations.Equality);
+    ```
+    
+    **Now:**
+    
+    ```js
+    const { union, derivations } = require('folktale/adt/union');
+    
+    const List = union('List', {
+      Empty(){ },
+      Cons(value, rest) {
+        return { value, rest };
+      }
+    }).derive(derivations.Equality);
+    ```
+
+
 ## [2.0.0-beta1] - 2017-05-03
 
 ### Documentation

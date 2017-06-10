@@ -10,7 +10,7 @@
 // --[ Dependencies ]--------------------------------------------------
 const uuid   = require('node-uuid').v4;
 const marked = require('marked');
-const Maybe  = require('../../..').data.maybe;
+const Maybe  = require('../../../packages/base/build').maybe;
 
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 const prototypeOf    = Object.getPrototypeOf;

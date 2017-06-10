@@ -1,0 +1,71 @@
+---
+layout: page
+---
+
+<article class="content content-with-sidebar">
+  <div class="row-with-sidebar">
+    <aside class="sidebar navigation-toc">
+      {% for section in site.data.docs %}
+        <h4 class="toc-section-title">
+          {% if section.entry %}
+            {% assign page_url = section.entry | prepend:"/docs/" | append:"/" %}
+            {% assign p = site.docs | where:"url", page_url | first %}
+            <a class="{% if page_url == page.url %}toc-current-section{% endif %}" href="{{ page_url }}">{{ section.title }}</a>
+          {% else %}
+            {{ section.title }}
+          {% endif %}
+        </h4>
+        <ul class="toc-items">
+          {% for path in section.docs %}
+            {% assign page_url = path | prepend:"/docs/" | append:"/" %}
+            {% assign p = site.docs | where:"url", page_url | first %}
+            <li class="toc-item {% if page_url == page.url %}toc-current-item{% endif %}">
+              <a href="{{ p.url }}">{{ p.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    </aside>
+
+    <div class="content-panel">
+      <div class="meta-row">
+        <div class="edit-this-page">
+          <a href="{{ page.github_root }}/edit/master/docs/{{ page.path }}">Improve this page</a>
+        </div>
+        <div class="breadcrumbs">
+          {% unless page.breadcrumb.empty? %}
+            {% for item in page.breadcrumb %}
+              {% assign item_url = item | prepend:"/docs/" | append:"/" %}
+              {% assign p = site.docs | where:"url", item_url | first %}
+              <span class="separator"> / </span>
+              <a class="breadcrumb-item" href="{{ item_url }}">{{ p.title }}</a>
+            {% endfor %}
+          {% endunless %}
+        </div>
+      </div>
+      <h2 class="title">{{ page.title }}</h2>
+            
+      <div class="content-area">
+        {{ content | markdownify }}
+      </div>
+
+      <div class="page-navigation">
+        {% if page.prev_doc %}
+          {% assign prev_url = page.prev_doc | prepend: "/docs/" | append: "/" %}
+          {% assign prev_page = site.docs | where:"url", prev_url | first %}
+          <div class="page-navigation-prev">
+            <a href="{{ prev_url }}">{{ prev_page.title }}</a>
+          </div>
+        {% endif %}
+
+        {% if page.next_doc %}
+          {% assign next_url = page.next_doc | prepend: "/docs/" | append: "/" %}
+          {% assign next_page = site.docs | where:"url", next_url | first %}
+          <div class="page-navigation-next">
+            <a href="{{ next_url }}">{{ next_page.title }}</a>
+          </div>              
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</article>

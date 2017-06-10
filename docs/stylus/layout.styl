@@ -1,0 +1,106 @@
+header {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid clouds;
+
+  #top-navigation {
+    padding: 2em 10%;
+    flex-grow: 0;
+    display: flex;
+    align-items: flex-end;
+
+    .project-name a {
+      font-family: heading-font;
+      color: wet-asphalt;
+      font-size: 36px;
+      font-weight: 400;
+      flex-grow: 0;
+    }
+
+    .project-links {
+      flex-grow: 1;
+      text-align: right;
+
+      li {
+        display: inline-block;
+      }
+
+      a {
+        font-size: 18px;
+        font-family: heading-font;
+        text-transform: uppercase;
+        padding: 0.3em 1em;
+        border-bottom: 3px solid transparent;
+        color: concrete;
+        transition: all 0.2s ease-out;
+
+        &:hover, &.active {
+          color: wet-asphalt;
+          border-bottom: 3px solid wet-asphalt;
+        }
+      }
+    }
+  }
+}
+
+
+footer {
+  margin-top: 3em;
+  padding: 3em 10% 4em 10%;
+  background: wet-asphalt;
+  color: #fff;
+  font-family: sans-font;
+  display: flex;
+  justify-content: space-between;
+
+  a {
+    color: #fff;
+  }
+
+  .project-info {
+    flex-grow: 1;
+    width: 40%;
+    letter-spacing: 0.05em;
+    line-height: 1.6em;
+
+    a {
+      text-decoration: underline;
+    }
+
+    .small {
+      font-size: 0.8em;
+      line-height: 1.3em;
+      color: silver;
+    }
+  }
+
+  .heart {
+    color: #e74c3c;
+  }
+
+  .footer-navigation {
+    flex-grow: 1;
+    width: 60%;
+    display: flex;
+    justify-content: flex-end;
+
+    .nav-section {
+      flex-shrink: 1;
+      margin-left: 4em;
+      line-height: 1.5em;
+    }
+
+    .title {
+      font-weight: bold;
+      letter-spacing: 0.02em;
+      font-size: 1.2em;
+      margin-bottom: 1em;
+      text-transform: uppercase;
+      color: concrete;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+}

@@ -1,0 +1,59 @@
+name: Folktale
+highlighter: 'rouge'
+markdown: kramdown
+
+version:
+  package: https://github.com/origamitower/folktale/releases/download/release%2F2.0.0-beta1/folktale-2.0.0-beta1.zip
+
+collections:
+  docs:
+    permalink: /:collection/:path/
+    output: true
+
+defaults:
+  - scope:
+      path: _docs
+      type: docs
+    values:
+      layout: docs
+      group: docs
+      github_root: https://github.com/origamitower/folktale
+
+  - scope:
+      path: _docs/support
+      type: docs
+    values:
+      breadcrumb:
+        - support
+
+  - scope:
+      path: _docs/v2.0.0
+      type: docs
+    values:
+      breadcrumb:
+        - v2.0.0
+
+  - scope:
+      path: _docs/v2.0.0/contributing
+      type: docs
+    values:
+      breadcrumb:
+        - v2.0.0
+        - v2.0.0/contributing
+
+
+  - scope:
+      path: _docs/v2.0.0/migrating
+      type: docs
+    values:
+      breadcrumb:
+        - v2.0.0
+        - v2.0.0/migrating
+
+
+  - scope:
+      path: _docs/v2.0.0/misc
+      type: docs
+    values:
+      breadcrumb:
+        - v2.0.0

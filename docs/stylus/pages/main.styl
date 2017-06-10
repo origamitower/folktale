@@ -1,0 +1,133 @@
+.main-page {
+  header {
+    height: 600px;
+    background: clouds url('../images/top.png') no-repeat bottom center;
+    border-bottom: 1px solid silver;
+
+
+    .lead {
+      flex-grow: 0;
+      align-self: center;
+      margin-top: 50px;
+      font-size: 24px;
+      color: abestos;
+      text-align: center;
+      text-shadow: 1px 0px 0px rgba(255, 255, 255, 0.7);
+
+      em {
+        color: wet-asphalt;
+      }
+    }
+
+
+    .install-instructions {
+      flex-grow: 0;
+      align-self: center;
+      margin-top: 200px;
+      font-family: mono-font;
+      border: 1px dotted concrete;
+    }
+
+    .npm-install {
+      font-size: 18px;
+      color: abestos;
+      display: block;
+      padding: 20px 50px;
+      background: rgba(255, 255, 255, 0.7);
+
+      .shell {
+        color: silver;
+      }
+
+      .command, .name {
+        color: wet-asphalt;
+        font-weight: bold;
+      }
+    }
+
+    .package-install {
+      text-align: center;
+      padding: 5px 20px 7px 20px;
+      background: rgba(52, 73, 94, 0.8)
+      color: clouds;
+
+      a {
+        font-weight: bold;
+        color: #fff;
+        padding: 0 0.5em;
+        letter-spacing: -0.01em;
+      }
+    }
+  }
+
+  .main-sections {
+    max-width: 960px;
+    margin: 3em auto 0 auto;
+
+    .section-title {
+      font-family: heading-font;
+      color: wet-asphalt;
+      font-weight: 400;
+      font-size: 36px;
+      line-height: 120%;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5em;
+      text-align: center;
+    
+      &:after {
+        content: ' ';
+        width: 2em;
+        height: 1px;
+        display: block;
+        border-bottom: 2px solid greyish;
+        margin: 0.3em auto 0.5em auto;
+      }
+    }
+  }
+
+  .feature-boxes {
+    @extends .boxes-3
+
+    .feature {
+      @extend .boxes-3 .box
+    }
+
+    .feature-title {
+      @extend .boxes-3 .box-title
+    }
+  }
+
+
+  .getting-started-section {
+    border-top: 1px solid clouds;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4em;
+    padding: 2em 0;
+    font-size: 18px;
+
+    .text {
+      flex-grow: 1;
+      text-align: left;
+      font-size: 22px;
+    }
+
+    .button {
+      flex-grow: 0;
+      border: 1px solid wet-asphalt;
+      padding: 0.5em 1em;
+      font-family: sans-font;
+      color: wet-asphalt;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-left: 2em;
+      transition: all 0.2s ease-out;
+
+      &:hover {
+        background: wet-asphalt;
+        color: #fff;
+      }
+    }
+  }
+}

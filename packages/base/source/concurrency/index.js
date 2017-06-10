@@ -9,7 +9,7 @@
 
 
 /*~
- * stability: stable
+ * stability: experimental
  * name: module folktale/concurrency
  */
 module.exports = {

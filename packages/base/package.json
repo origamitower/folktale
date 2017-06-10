@@ -29,7 +29,7 @@
   "dependencies": {},
   "metamagical": {
     "modulePath": {
-      "ignorePrefix": "packages/base/source/"
+      "ignorePrefix": "source/"
     },
     "commonMetadata": {
       "copyright": "(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS",
