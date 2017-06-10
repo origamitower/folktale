@@ -8,6 +8,8 @@ npm-debug.log
 /packages/**/dist/
 /annotations/build/
 /docs/api/
+/docs/_site/
+/docs/.jekyll-metadata
 /test/build/
 /releases/
 /tools/static-docs/lib/

@@ -1,0 +1,23 @@
+---
+layout: page
+---
+
+<article class="content">
+  <div class="breadcrumbs">
+    {% unless page.breadcrumb.empty? %}
+      {% for link in page.breadcrumb %}
+        <span class="separator"> / </span>
+        {% if link.href %}
+          <a class="breadcrumb-item" href="{{ link.href }}">{{ link.text }}</a>
+        {% else %}
+          <span class="breadcrumb-item">{{ link.text }}</span>
+        {% endif %}
+      {% endfor %}
+    {% endunless %}
+  </div>
+  <h2 class="title">{{ page.title }}</h2>
+
+  <div class="content-area">
+    {{ content | markdownify }}
+  </div>
+</article>

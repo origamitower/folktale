@@ -8,10 +8,10 @@
 //---------------------------------------------------------------------
 
 const toJSON = (entities, options) => {
-  return { 
+  return [{ 
     filename: 'entities.json',
-    content: entities
-  };
+    content: JSON.stringify(entities, null, 2)
+  }];
 };
 
 module.exports = toJSON;

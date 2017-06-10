@@ -8,11 +8,11 @@
 //----------------------------------------------------------------------
 
 const Interface  = require('metamagical-interface');
-const Folktale   = require('../annotated');
+const Folktale   = require('../packages/base/build/annotated');
 const staticDocs = require('metamagical-static-docs');
 const glob       = require('glob').sync;
 
-const pkg  = require('../package.json');
+const pkg  = require('../packages/base/package.json');
 const _    = require('hyperscript');
 const path = require('path');
 
@@ -35,7 +35,7 @@ const entities = staticDocs.makeStatic(Interface, Folktale, 'Folktale', {
     Function.prototype,
     Object.prototype
   ]),
-  skipUndocumented: true
+  skipUndocumented: false
 });
 const files = staticDocs.formatters.html(entities, {
   rootPage: 'folktale.html',
@@ -62,6 +62,6 @@ const files = staticDocs.formatters.html(entities, {
   }
 });
 staticDocs.generate(files, {
-  outputDirectory: path.join(__dirname, '../docs/api', lang),
+  outputDirectory: path.join(__dirname, '../docs/api/master', lang),
   verbose: true
 });

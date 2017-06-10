@@ -1,0 +1,15 @@
+<nav id="top-navigation">
+  <h1 class="project-name">
+    <a href="/">Folktale</a>
+  </h1>
+
+  <ul class="project-links">
+    {% for link in site.data.navigation %}
+      {% assign current = nil %}
+      {% if page.url == link.url or page.group == link.group %}
+        {% assign current = 'active' %}
+      {% endif %}
+      <li><a class="{{ current }}" href="{{ link.url }}">{{ link.text }}</a></li>
+    {% endfor %}
+  </ul>
+</nav>

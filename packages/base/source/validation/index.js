@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------
 
 const Validation = require('./validation');
-const { typeSymbol } = require('folktale/adt/union');
+const { typeSymbol } = require('folktale/adt/union/union');
 
 
 /*~ 

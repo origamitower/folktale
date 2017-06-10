@@ -1,0 +1,9 @@
+{
+  "name": "folktale",
+  "version": "0.0.0",
+  "private": true,
+  "devDependencies": {
+    "nib": "^1.1.2",
+    "stylus": "^0.54.5"
+  }
+}

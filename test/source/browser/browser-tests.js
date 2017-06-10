@@ -13,12 +13,12 @@ require('es6-shim');
 
 process.env.FOLKTALE_ASSERTIONS = 'none';
 
-require('../specs/base/core.adt');
-require('../specs/base/core.fantasy-land');
-require('../specs/base/core.lambda');
-require('../specs/base/core.object');
-require('../specs/base/data.result');
-require('../specs/base/data.future');
-require('../specs/base/data.maybe');
-require('../specs/base/data.task');
-require('../specs/base/data.validation');
+require('../specs/base/adt/union');
+require('../specs/base/concurrency/future');
+require('../specs/base/concurrency/task');
+require('../specs/base/core/lambda');
+require('../specs/base/core/object');
+require('../specs/base/fantasy-land/fantasy-land');
+require('../specs/base/maybe/maybe');
+require('../specs/base/result/result');
+require('../specs/base/validation/validation');

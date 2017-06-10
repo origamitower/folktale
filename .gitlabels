@@ -11,12 +11,8 @@
 - (new)               Introduces new functionality or features.
 - (rm remove)         Removes previous functionality.
 - (fix)               Fixes the behaviour of exiting features.
-- (doc documentation) Introduces documentation.
-- (test)              Introduces new tests or improves existing ones.
 - (perf performance)  Introduces performance optimisations.
 - (re refactor)       Changes structure, but doesn't introduce new features nor fixes bugs.
-- (build)             Changes to the build scripts
-- (meta)              Changes to the package/npm/other tooling metadata.
 
 
 # --[ Qualifiers ]-----------------------------------------------------
@@ -27,21 +23,12 @@
 - (- minor)       The change is rather minor and may be ignored in most cases
 - (release)       A new public release
 
+
 # --[ Scopes ]---------------------------------------------------------
 # Because this is a multi-package repository, sometimes changes apply
 # to only a few of these scopes. These labels exist for that reason
 
-- (scoped) The scope of changes.
-  - (core)              The Core package
-    - (adt)               The ADT module
-    - (lambda)            The Lambda module
-    - (object)            The Object module
-    - (fl)                The Fantasy Land module
-  - (data)              The Data package
-    - (convert)           The Conversions module
-    - (result)            The Result module
-    - (maybe)             The Maybe module
-    - (val validation)    The Validation module
-    - (task)              The Task module
-    - (future)            The Future module
-  - (helpers)           The Helpers package
+- (doc documentation)     Changes to API or other docs
+- (test)                  Changes to test files
+- (base)                  Changes to the Base package
+- (other)                 Changes to other things (tooling, metadata)
