@@ -22,7 +22,7 @@ We've also got some pages on [how to get help]({% link _docs/support/index.md %}
   </div>
 
   <div class="box">
-    <div class="box-title"><a href="/docs/v2.0.0/api/en/folktale.html">API reference</a></div>
+    <div class="box-title"><a href="/api/v2.0.0/en/folktale.html">API reference</a></div>
     <p>Describes all functions and objects, with usage examples.</p>
   </div>
 
