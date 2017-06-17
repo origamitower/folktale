@@ -25,7 +25,6 @@ Folktale can be installed through [npm][]:
 ## Documentation
 
   - [Browse the HTML documentation for Folktale](http://origamitower.github.io/folktale)
-  - [See the documentation for Folktale objects right from your Node REPL][repl]
 
 > If you find any functionality that's not documented, or whose documentation
 > is confusing or hard to understand, please [report a bug on our issue tracker][bug]
@@ -57,12 +56,12 @@ The following table summarises tests executed on each supported Browser platform
 ## Support
 
 > Note that all interactions in this project are subject to Origami Tower's
-> [Code of Conduct](https://github.com/origamitower/folktale/blob/master/CODE_OF_CONDUCT.md).
+> [Code of Conduct](http://origamitower.github.io/folktale/coc/).
 
 ##### Having trouble using Folktale?
 
   - ["I think I found a bug in Folktale"][bug]
-  - ["There's no documentation for X" / "The docs are hard to understand"][bug]
+  - ["There's no documentation for X" / "The docs are hard to understand"][docs]
   - [See the Frequently Asked Questions for common issues][faq]
   - [Join the discussion channel][gitter]
 
@@ -86,11 +85,11 @@ Folktale is copyright (c) Quildreen Motta 2015-2017, and released under the MIT 
 See the `LICENCE` file in this repository for detailed information.
 
 [npm]: https://www.npmjs.com
-[bug]: https://github.com/origamitower/folktale/issues/new
+[bug]: http://origamitower.github.io/folktale/docs/support/bugs/
+[docs]: http://origamitower.github.io/folktale/docs/support/bugs/#reporting-problems-in-the-documentation
 [gitter]: https://gitter.im/folktale/discussion
-[install]: http://origamitower.github.io/folktale/api/en/guides.installing-folktale.html
-[faq]: http://origamitower.github.io/folktale/api/en/guides.frequently-asked-questions.html
-[feat]: http://origamitower.github.io/folktale/api/en/guides.requesting-new-features.html
-[pr]: http://origamitower.github.io/folktale/api/en/folktale.html#cat-3-contributing
-[repl]: https://github.com/origamitower/folktale/wiki/REPL-documentation
+[install]: http://origamitower.github.io/folktale/docs/v2.0.0/download/
+[faq]: http://origamitower.github.io/folktale/docs/support/faq/
+[feat]: http://origamitower.github.io/folktale/docs/support/feature-request/
+[pr]: http://origamitower.github.io/folktale/docs/v2.0.0/contributing/
 
