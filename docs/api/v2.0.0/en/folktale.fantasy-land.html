@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>module folktale/fantasy-land</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-beta2</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/fantasy-land</h1><div class="highlight-summary"><div><p>Allows invoking methods of Fantasy Land structures without worrying about the differences in multiple versions of the spec implemented by different libraries. You may want to use this instead of calling the methods directly if you&#39;re writing generic functions to work with any fantasy-land library.</p>
+</div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Allows invoking methods of Fantasy Land structures without worrying about the differences in multiple versions of the spec implemented by different libraries. You may want to use this instead of calling the methods directly if you&#39;re writing generic functions to work with any fantasy-land library.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-applicative">Applicative</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.fantasy-land.apply.apply.html">apply(applicativeFunction, applicativeValue)</a><div class="doc-summary"><div><p>Applies the function inside an applicative to the value of another applicative.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.fantasy-land.of.of.html">of(applicative, value)</a><div class="doc-summary"><div><p>Constructs an applicative containing the given value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-bifunctor">Bifunctor</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.fantasy-land.bimap.bimap.html">bimap(bifunctor, transformLeft, transformRight)</a><div class="doc-summary"><div><p>Maps one function over each side of a Bifunctor.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-convenience">Convenience</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.fantasy-land.curried.html">curried</a><div class="doc-summary"><div><p>Curried versions of the fantasy-land functions.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.fantasy-land.infix.html">infix</a><div class="doc-summary"><div><p>Method versions of the fantasy-land functions, supporting the
+<code>structure::fn(...)</code> syntax.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-functor">Functor</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.fantasy-land.map.map.html">map(functor, transformation)</a><div class="doc-summary"><div><p>Transforms the contents of a Functor.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-monad">Monad</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.fantasy-land.chain.chain.html">chain(monad, transformation)</a><div class="doc-summary"><div><p>Transforms a monad with an unary function.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-monoid">Monoid</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.fantasy-land.empty.empty.html">empty(monoid)</a><div class="doc-summary"><div><p>Returns the identity object for a monoid.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-semigroup">Semigroup</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.fantasy-land.concat.concat.html">concat(semigroupLeft, semigroupRight)</a><div class="doc-summary"><div><p>Joins two semigroups.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-setoid">Setoid</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.fantasy-land.equals.equals.html">equals(setoidLeft, setoidRight)</a><div class="doc-summary"><div><p>Compares two setoids for equality.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/fantasy-land/index.js at line 14, column 0</div><pre class="source-code"><code class="language-javascript">{
+  apply: require('./apply'),
+  concat: require('./concat'),
+  chain: require('./chain'),
+  empty: require('./empty'),
+  map: require('./map'),
+  of: require('./of'),
+  equals: require('./equals'),
+  bimap: require('./bimap'),
+  curried: require('./curried'),
+  infix: require('./infix')
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/fantasy-land</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-applicative">Applicative</a></li><li class="toc-item"><a href="#cat-bifunctor">Bifunctor</a></li><li class="toc-item"><a href="#cat-convenience">Convenience</a></li><li class="toc-item"><a href="#cat-functor">Functor</a></li><li class="toc-item"><a href="#cat-monad">Monad</a></li><li class="toc-item"><a href="#cat-monoid">Monoid</a></li><li class="toc-item"><a href="#cat-semigroup">Semigroup</a></li><li class="toc-item"><a href="#cat-setoid">Setoid</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

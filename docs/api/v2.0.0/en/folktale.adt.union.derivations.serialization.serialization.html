@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>serialization</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-beta2</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">serialization</h1><div class="highlight-summary"><div><p>Provides JSON serialisation and parsing for unions.</p>
+</div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">serialization(variant, adt)</div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="guides.type-notation-used-in-signatures.html">(what is this?)</a></div><pre class="type"><code class="language-haskell">(Variant, ADT) =&gt; Void</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Provides JSON serialisation and parsing for unions.</p>
+<p>The <code>serialization</code> derivation bestows <code>.toJSON()</code> and <code>.fromJSON(value)</code>
+upon unions constructed by <code>adt/union</code>. Both serialisation and parsing
+are recursive, and <code>.fromJSON</code> can automatically reify values of
+other types.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const { union, derivations } = require(&#39;folktale/adt/union&#39;);
+const Id = union(&#39;Id&#39;, {
+  Id(value){ return { value } }
+}).derive(
+  derivations.serialization,
+  derivations.equality
+);
+
+Id.Id(1).toJSON();
+// ==&gt; { &#39;@@type&#39;: &#39;Id&#39;, &#39;@@tag&#39;: &#39;Id&#39;, &#39;@@value&#39;: { value: 1 } }
+
+Id.fromJSON(Id.Id(1).toJSON());
+// ==&gt; Id.Id(1)
+</code></pre><h2 id="json-serialisation">JSON serialisation</h2>
+<p>This derivation provides JSON serialisation through the <code>.toJSON</code> method,
+which converts rich unions into objects that can be safely serialised as
+JSON. For example:</p>
+<pre><code>const { union, derivations } = require(&#39;folktale/adt/union&#39;);
+
+const { Id } = union(&#39;Id&#39;, {
+  Id(value){ return { value } }
+}).derive(derivations.serialization);
+
+Id(1).toJSON();
+// ==&gt; { &#39;@@type&#39;: &#39;Id&#39;, &#39;@@tag&#39;: &#39;Id&#39;, &#39;@@value&#39;: { value: 1 } }
+</code></pre><p>During the transformation, if any of the values contains a <code>.toJSON</code>
+method, that&#39;s called to serialise the structure. Otherwise the value is
+just returned as-is:</p>
+<pre><code>Id(Id(1)).toJSON();
+// ==&gt; { &#39;@@type&#39;: &#39;Id&#39;, &#39;@@tag&#39;: &#39;Id&#39;, &#39;@@value&#39;: { value: { &#39;@@type&#39;: &#39;Id&#39;, &#39;@@tag&#39;: &#39;Id&#39;, &#39;@@value&#39;: { &#39;value&#39;: 1 } } } }
+</code></pre><p>It&#39;s not necessary to call the <code>.toJSON()</code> method directly in most cases, since
+<code>JSON.stringify</code> will already invoke that for you:</p>
+<pre><code>JSON.stringify(Id(1));
+// ==&gt; &#39;{&quot;@@type&quot;:&quot;Id&quot;,&quot;@@tag&quot;:&quot;Id&quot;,&quot;@@value&quot;:{&quot;value&quot;:1}}&#39;
+
+JSON.stringify(Id([Id(1)]));
+// ==&gt; &#39;{&quot;@@type&quot;:&quot;Id&quot;,&quot;@@tag&quot;:&quot;Id&quot;,&quot;@@value&quot;:{&quot;value&quot;:[{&quot;@@type&quot;:&quot;Id&quot;,&quot;@@tag&quot;:&quot;Id&quot;,&quot;@@value&quot;:{&quot;value&quot;:1}}]}}&#39;
+</code></pre><h2 id="json-parsing">JSON parsing</h2>
+<p>The reverse process of serialisation is parsing, and the <code>.fromJSON</code> method
+provided by this derivation is able to reconstruct the proper union from
+serialised data:</p>
+<pre><code>const { union, derivations } = require(&#39;folktale/adt/union&#39;);
+
+const Id = union(&#39;Id&#39;, {
+  Id(value){ return { value } }
+}).derive(
+  derivations.serialization,
+  derivations.equality
+);
+
+const json = Id.Id(1).toJSON();
+Id.fromJSON(json);
+// ==&gt; Id.Id(1)
+</code></pre><p>In general, as long as the values in an union are either union instances or simple
+values supported by JSON, the following equivalence holds:</p>
+<pre><code>Union.fromJSON(union.toJSON()) = union
+</code></pre><p>Some unions instances may contain other union instances as values. Serialising them
+is simple because JavaScript&#39;s dispatch takes care of selecting the correct
+serialisation for us. With parsing we don&#39;t have that luck, so instead the
+union takes a list of parsers as argument:</p>
+<pre><code>const A = union(&#39;A&#39;, { 
+  A(value) { return { value } }
+}).derive(
+  derivations.serialization,
+  derivations.equality
+);
+
+const B = union(&#39;B&#39;, {
+  B(value) { return { value } }
+}).derive(
+  derivations.serialization,
+  derivations.equality
+);
+
+A.fromJSON(A.A(B.B(1)).toJSON(), [A, B]);
+// ==&gt; A.A(B.B(1))
+</code></pre><h2 id="the-serialisation-format">The serialisation format</h2>
+<p>In order to support the serialisation and parsing of unions, this module
+uses a specific format that encodes that information in the serialised
+data. This way, <code>.toJSON()</code> produces values of this interface, and
+<code>.fromJSON(value)</code> expects values of this interface:</p>
+<pre><code>type JSONSerialisation = {
+  &quot;@@type&quot;:  String,
+  &quot;@@tag&quot;:   String,
+  &quot;@@value&quot;: Object Any
+}
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/adt/union/derivations/serialization.js at line 106, column 0</div><pre class="source-code"><code class="language-javascript">(variant, adt) =&gt; {
+  const typeName = adt[typeSymbol];
+  const tagName = variant.prototype[tagSymbol];
+
+  /*~
+   * stability: experimental
+   * module: null
+   * authors:
+   *   - "@boris-marinov"
+   * 
+   * type: |
+   *   type JSONSerialisation = {
+   *     "@@type":  String,
+   *     "@@tag":   String,
+   *     "@@value": Object Any
+   *   }
+   * 
+   *   Variant . () =&gt; JSONSerialisation
+   */
+  variant.prototype.toJSON = function() {
+    return { 
+      [typeJsonKey]:  typeName, 
+      [tagJsonKey]:   tagName, 
+      [valueJsonKey]: mapValues(this, serializeValue) 
+    };
+  };
+
+  /*~
+   * stability: experimental
+   * module: null
+   * authors:
+   *   - "@boris-marinov"
+   * 
+   * type: |
+   *   type JSONSerialisation = {
+   *     "@@type":  String,
+   *     "@@tag":   String,
+   *     "@@value": Object Any
+   *   }
+   *   type JSONParser = {
+   *     fromJSON: (JSONSerialisation, Array JSONParser) =&gt; Variant
+   *   }
+   * 
+   *   (JSONSerialisation, Array JSONParser) =&gt; Variant
+   */
+  adt.fromJSON = function(value, parsers = { [typeName]: adt }, keysIndicateType = false) {
+    const valueTypeName = value[typeJsonKey];
+    const valueTagName = value[tagJsonKey];
+    const valueContents = value[valueJsonKey];
+    assertType(typeName, valueTypeName);
+    const parsersByType = keysIndicateType ? parsers
+          : /*otherwise*/                    indexByType(values(parsers));
+
+    const parsedValue = mapValues(valueContents, parseValue(parsersByType));
+    return extend(Object.create(adt[valueTagName].prototype), parsedValue);
+  };
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/adt/union/derivations/serialization</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li><li class="toc-item"><a href="#json-serialisation" title="JSON serialisation"><div><p>JSON serialisation</p>
+</div></a></li><li class="toc-item"><a href="#json-parsing" title="JSON parsing"><div><p>JSON parsing</p>
+</div></a></li><li class="toc-item"><a href="#the-serialisation-format" title="The serialisation format"><div><p>The serialisation format</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>@boris-marinov</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

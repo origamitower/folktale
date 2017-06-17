@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>module folktale</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-beta2</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale</h1><div class="highlight-summary"><div><p>Folktale is a standard library for functional programming in JavaScript.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Folktale is a standard library for functional programming in JavaScript.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-basic-functional-programming">Basic functional programming</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.core.html">core</a><div class="doc-summary"><div><p>Utilities for handling native JavaScript objects in a more functional way. <code>Lambda</code> adds functions to combine functions and simplify abstractions (such as <em>currying</em> and <em>partial application</em>). <code>Object</code> provides functions to handle JS objects as functional dictionaries.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-concurrency">Concurrency</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.html">concurrency</a><div class="doc-summary"><div><p>Provides tools for managing asynchronous concurrent operations in JavaScript. <code>Task</code> models asynchronous operations with automatic resource management, whereas <code>Future</code> is a simpler alternative to <code>Promise</code>.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-data">Converting data</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.conversions.html">conversions</a><div class="doc-summary"><div><p>Allows converting between the different data structures provided by Folktale and JavaScript.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-fantasy-land">Fantasy Land</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.fantasy-land.html">fantasyLand</a><div class="doc-summary"><div><p>Allows invoking methods of Fantasy Land structures without worrying about the differences in multiple versions of the spec implemented by different libraries. You may want to use this instead of calling the methods directly if you&#39;re writing generic functions to work with any fantasy-land library.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-handling-failures">Handling failures</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.maybe.html">maybe</a><div class="doc-summary"><div><p>A data structure that models the presence or absence of a value.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.result.html">result</a><div class="doc-summary"><div><p>A data structure that models the result of operations that may fail. A <code>Result</code>
+helps with representing errors and propagating them, giving users a more
+controllable form of sequencing operations than that offered by constructs like
+<code>try/catch</code>.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.validation.html">validation</a><div class="doc-summary"><div><p>A data structure that typically models form validations, and other scenarios where
+you want to aggregate <strong>all</strong> failures, rather than short-circuit if an error
+happens (for which <code>Result</code> is better suited).</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-modelling-data">Modelling data</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.adt.html">adt</a><div class="doc-summary"><div><p>Provides tools to model data structures in a functional way. The <code>union</code> module allows simple definitions of tagged unions to model one-of-many possibilities.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/index.js at line 14, column 0</div><pre class="source-code"><code class="language-javascript">{
+  adt: require('./adt'),
+  concurrency: require('./concurrency'),
+  conversions: require('./conversions'),
+  core: require('./core'),
+  fantasyLand: require('./fantasy-land'),
+  maybe: require('./maybe'),
+  result: require('./result'),
+  validation: require('./validation')
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">stable</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-basic-functional-programming">Basic functional programming</a></li><li class="toc-item"><a href="#cat-concurrency">Concurrency</a></li><li class="toc-item"><a href="#cat-converting-data">Converting data</a></li><li class="toc-item"><a href="#cat-fantasy-land">Fantasy Land</a></li><li class="toc-item"><a href="#cat-handling-failures">Handling failures</a></li><li class="toc-item"><a href="#cat-modelling-data">Modelling data</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
