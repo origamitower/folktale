@@ -198,6 +198,28 @@ or some other method that is not partial.
 
 
   /*~
+   * stability: stable
+   * type: |
+   *   forall a, b: (Result a b).(Result a b) => Result a b
+   *   where b is Semigroup
+   */
+  concat: {
+    /*~*/
+    Error: function concat(aResult) {
+      assertResult('Result.Error#concat', aResult);
+      return this;
+    },
+
+    /*~*/
+    Ok: function concat(aResult) {
+      assertResult('Result.Ok#concat', aResult);
+      return aResult.map(xs => this.value.concat(xs));
+    }
+  },
+
+
+
+  /*~
    * stability: experimental
    * type: |
    *   forall a, b, c:
