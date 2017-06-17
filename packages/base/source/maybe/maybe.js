@@ -174,11 +174,11 @@ adtMethods(Maybe, {
 
 
   /*~
-   * category: Combining functions
    * authors:
    *   - "@diasbruno"
    * type: |
    *   forall a: (Maybe a).(Maybe a) => Maybe a
+   *   where a is Semigroup
    */
   concat: {
     /*~*/

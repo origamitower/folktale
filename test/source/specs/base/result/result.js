@@ -24,6 +24,24 @@ describe('Result', function() {
     }); 
   });
 
+  describe('#concat(a)', () => {
+    property('Error(a).concat(Error(b)) = Error(a)', 'string', 'string', (a, b) => {
+      return _.Error(a).concat(_.Error(b)).equals(_.Error(a));
+    });
+
+    property('Error(a).concat(Ok(b)) = Error(a)', 'string', 'string', (a, b) => {
+      return _.Error(a).concat(_.Ok(b)).equals(_.Error(a));
+    });
+
+    property('Ok(a).concat(Error(a)) = Error(a)', 'string', 'string', (a, b) => {
+      return _.Ok(a).concat(_.Error(b)).equals(_.Error(b));
+    });
+
+    property('Ok(a).concat(Ok(b)) = Ok(a.concat(b))', 'string', 'string', (a, b) => {
+      return _.Ok(a).concat(_.Ok(b)).equals(_.Ok(a.concat(b)));
+    });
+  });
+
   describe('Functor', () => {
     property('map', 'json', 'json -> json', (a, f) => {
       return _.of(f(a)).equals(_.of(a).map(f))
@@ -131,6 +149,9 @@ describe('Result', function() {
   describe('Fantasy Land', () => {
     laws.Setoid(_.Error);
     laws.Setoid(_.Ok);
+
+    laws.Semigroup(_.Error);
+    laws.Semigroup(_.Ok);
 
     laws.Functor(_.Error);
     laws.Functor(_.Ok);
