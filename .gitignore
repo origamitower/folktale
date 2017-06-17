@@ -7,7 +7,7 @@ npm-debug.log
 /packages/**/build/
 /packages/**/dist/
 /annotations/build/
-/docs/api/
+/docs/api/master/
 /docs/_site/
 /docs/.jekyll-metadata
 /test/build/

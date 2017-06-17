@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>compose</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-beta2</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">compose</h1><div class="highlight-summary"><div><p>Composes two functions.</p>
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">compose(f, g)(value)</div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="guides.type-notation-used-in-signatures.html">(what is this?)</a></div><pre class="type"><code class="language-haskell">(('b) =&gt; 'c, ('a) =&gt; 'b) =&gt; (('a) =&gt; 'c)</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Composes two functions.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const compose = require(&#39;folktale/core/lambda/compose&#39;);
+
+const inc       = (x) =&gt; x + 1;
+const double    = (x) =&gt; x * 2;
+const incDouble = compose(double, inc);
+
+incDouble(3);
+// ==&gt; 8
+</code></pre><h2 id="why-composition-matters-">Why Composition Matters?</h2>
+<p>Composition is a way of creating new functionality by combining
+existing functionality. It helps managing complexity in software
+projects, since newer functionality can be defined in terms of
+existing ones, reducing both the amount of code needed to implement
+newer features, and the amount of time one needs to spend to understand
+them.</p>
+<p>This technique is used very often in regular JavaScript code, when
+we feed the results of a function into another function:</p>
+<pre><code>const names = [
+  &#39;Alissa&#39;, &#39;Max&#39;, &#39;Talib&#39;
+];
+const upcase = (name) =&gt; name.toUpperCase();
+
+names.map(upcase).join(&#39;, &#39;);
+// ==&gt; &#39;ALISSA, MAX, TALIB&#39;
+</code></pre><p>Here <code>names</code> is fed into the <code>map</code> function, which returns an array
+of the same names in capitals. This new array is then fed into the
+<code>join</code> function, which returns a String where the items are separated
+by a comma.</p>
+<p>If we need to use <code>.map(upcase).join(&#39;, &#39;)</code> in a lot of places, it
+makes sense to create a new function that captures that composition,
+so we don&#39;t have to type it everywhere:</p>
+<pre><code>const showNames = (names) =&gt;
+  names.map(upcase).join(&#39;, &#39;);
+</code></pre><p>Now we can use <code>showNames</code> instead of <code>.map(upcase).join(&#39;, &#39;)</code>, and
+we get the same functionality:</p>
+<pre><code>showNames(names);
+// ==&gt; &#39;ALISSA, MAX, TALIB&#39;
+</code></pre><h2 id="the-problem-with-methods-in-javascript">The Problem With Methods in JavaScript</h2>
+<p>JavaScript is a hybrid language, where you can express programs by
+using object oriented techniques, functional programming techniques,
+and some other paradigms. It&#39;s not uncommon to see parts of a program
+expressed in OOP, as in the examples from the previous section.</p>
+<p>However, objects in JavaScript can&#39;t be safely extended. Ideally, we&#39;d
+like to write:</p>
+<pre><code>names.show();
+</code></pre><p>Instead of:</p>
+<pre><code>showNames(names);
+</code></pre><p>Which would be more consistent with the rest of the program. Because
+this involves mutating the array, all sorts of problems could happen
+so it&#39;s better to keep the new functionality as a separate function.</p>
+<p>Expressing things in functional programming doesn&#39;t have this problem
+because functions exist on their own, rather than being part of an
+object.</p>
+<h2 id="composition-in-functional-programming">Composition in Functional Programming</h2>
+<p>In functional programming, functions are the basic building block,
+and we compose functions to create bigger things. To do this, we often
+have to rephrase the common method calls in terms of regular functions:</p>
+<pre><code>const names = [
+  &#39;Alissa&#39;, &#39;Max&#39;, &#39;Talib&#39;
+];
+
+const upcase = (name) =&gt; name.toUpperCase();
+const map    = (transform, items) =&gt; items.map(transform);
+const join   = (separator, items) =&gt; items.join(separator);
+</code></pre><p>With this we can express the composition in terms of regular function
+calls:</p>
+<pre><code>const showNames = (names) =&gt;
+  join(&#39;, &#39;, map(upcase, names));
+
+showNames(names);
+// ==&gt; &#39;ALISSA, MAX, TALIB&#39;
+</code></pre><p>Now, while the way this program expresses its functions is consistent,
+we still have to move the whole expression into the function, and
+our code is not as easy to follow as before. Rather than reading from
+left to right, we have to first read the inside of a function application
+before we read what&#39;s outside of it.</p>
+<p>These issues are not a problem with simple expressions such as these,
+and most of the expressions in functional programming tend to be very
+simple. But we can improve this by abstracting over the idea of
+composition. That is, instead of requiring syntactic composition, by
+having people write out the whole expression, we can ask the program
+to combine these functions for us. This is what the <code>compose</code> function
+does:</p>
+<pre><code>const compose = require(&#39;folktale/core/lambda/compose&#39;);
+
+const showNames2 = compose(
+  capitals =&gt; join(&#39;, &#39;, capitals),
+  names    =&gt; map(upcase, names)
+);
+</code></pre><p>Instead of reading from inside of a complex expression to the outside,
+now you can read each expression on its own, and visualise the flow of
+data linearly.</p>
+<blockquote>
+<p><strong>CONVENIENCE</strong><br><code>compose</code> does right-to-left composition, so the last function is
+applied first. You can use the <code>infix</code> version of compose to avoid
+this.</p>
+</blockquote>
+<h2 id="currying-and-composition">Currying and Composition</h2>
+<p>Composing unary functions is trivial, as seen on the first example
+of this documentation:</p>
+<pre><code>const compose = require(&#39;folktale/core/lambda/compose&#39;);
+
+const inc       = (x) =&gt; x + 1;
+const double    = (x) =&gt; x * 2;
+const incDouble = compose(double, inc);
+</code></pre><p>But composing functions that take more than one argument doesn&#39;t read
+as naturally:</p>
+<pre><code>const upcase = (name) =&gt; name.toUpperCase();
+const map    = (transform, items) =&gt; items.map(transform);
+const join   = (separator, items) =&gt; items.join(separator);
+
+const showNames = compose(
+  capitals =&gt; join(&#39;, &#39;, capitals),
+  names    =&gt; map(upcase, names)
+);
+</code></pre><p>The problem is that <code>compose</code> can only safely compose unary functions,
+so you have to do some additional work to place the values in the
+&quot;right places&quot; when your function takes more than one argument.</p>
+<p>One way to solve this problem is to curry the functions that will be
+composed. That is, turn a function of arity N, into N functions of
+arity 1:</p>
+<pre><code>const upcase2 = (name) =&gt; name.toUpperCase();
+const map2    = (transform) =&gt; (items) =&gt; items.map(transform);
+const join2   = (separator) =&gt; (items) =&gt; items.join(separator);
+
+const showNames2 = compose(join2(&#39;, &#39;), map2(upcase2));
+</code></pre><p>Note that with a small change to how <code>map</code> and <code>join</code> are defined, we
+can make a much better use of the <code>compose</code> function. This is not
+without its drawbacks, however, as now <code>join</code> has to be called as
+<code>join(&#39;,&#39;)(names)</code>.</p>
+<blockquote>
+<p><strong>CONVENIECE</strong><br>Folktale offers a <code>curry</code> function as a convenience for automatically
+creating curried versions of existing functions, which also works
+around the 1-argument limitation.</p>
+<p>See <code>folktale/core/lambda/curry</code> for details.</p>
+</blockquote>
+<p>Another way to work around this problem is by using the <code>partialize</code>
+function provided by Folktale. This function creates a new function
+that specifies only parts of the argument for the original function:</p>
+<pre><code>const partialize = require(&#39;folktale/core/lambda/partialize&#39;);
+const _          = partialize.hole;
+
+const upcase3 = (name) =&gt; name.toUpperCase();
+const map3    = partialize(2, (transform, items) =&gt; items.map(transform));
+const join3   = partialize(2, (separator, items) =&gt; items.join(separator));
+
+const showNames3 = compose(
+  join3(&#39;, &#39;, _),
+  map3(upcase, _)
+);
+</code></pre><p>See <code>folktale/core/lambda/partialize</code> for more information on how the
+<code>partialize</code> function works.</p>
+<h2 id="composing-more-than-two-functions">Composing More Than Two Functions</h2>
+<p>The <code>compose</code> operation is limited to composing only two functions.
+This might sound limiting, but it ensures that function composition
+is well-defined.</p>
+<p>Because a lot of functions in JavaScript are expected to be variadic,
+and just ignore the additional parameters, you&#39;d get some very
+surprising behaviour when trying to pass <code>compose</code> to them. For example,
+the following would throw a type error:</p>
+<pre><code>const compose = require(&#39;folktale/core/lambda/compose&#39;);
+
+const inc    = (x) =&gt; x + 1;
+const double = (x) =&gt; x * 2;
+const square = (x) =&gt; x * x;
+
+[inc, double, square].reduce(compose)(3);
+// ==&gt; throws TypeError: &#39;1 is not a function&#39;
+</code></pre><p>Because it&#39;s equivalent to:</p>
+<pre><code>const fns = [inc, double, square];
+compose(
+  compose(
+    square,
+    double,
+    1,
+    fns
+  ),
+  inc
+  0,
+  fns
+)(3);
+</code></pre><p>If you need to compose more than two functions, you can use the
+<code>infix</code> syntax, or the <code>all</code> convenience function.</p>
+<h3 id="composition-with-the-infix-syntax">Composition With The Infix Syntax</h3>
+<p>With the <a href="https://github.com/zenparsing/es-function-bind">This-Binding syntax</a> proposed for JavaScript, it&#39;s
+possible to compose multiple functions in an, arguably, more natural way:</p>
+<pre><code> const compose = require(&#39;folktale/core/lambda/compose&#39;);
+
+ const then  = compose.infix;
+ const inc   = (x) =&gt; x + 1;
+ const plus4 = inc::then(inc)::then(inc)::then(inc);
+
+ plus4(2);
+ // ==&gt; 6
+</code></pre><h3 id="composition-with-the-all-function">Composition With The <code>all</code> Function</h3>
+<p>If you need to compose more than two functions, you might consider using
+the <code>all</code> convenience function instead, which is variadic:</p>
+<pre><code>const compose = require(&#39;folktale/core/lambda/compose&#39;);
+
+const inc   = (x) =&gt; x + 1;
+const plus4 = compose.all(inc, inc, inc, inc);
+
+plus4(2);
+// ==&gt; 6
+</code></pre><p>Composition with the <code>all</code> convenience still happens from right to left.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-convenience">Convenience</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.core.lambda.compose.all.html">all(...fns)</a><div class="doc-summary"><div><p>Conveniently composes multiple functions.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.core.lambda.compose.infix.html">infix(that)</a><div class="doc-summary"><div><p>Conveniently composes function with the This-Binding syntax.</p>
+</div></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/core/lambda/compose.js at line 19, column 0</div><pre class="source-code"><code class="language-javascript">(f, g) =&gt; (value) =&gt; f(g(value))</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">stable</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/core/lambda/compose</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li><li class="toc-item"><a href="#why-composition-matters-" title="Why Composition Matters?"><div><p>Why Composition Matters?</p>
+</div></a></li><li class="toc-item"><a href="#the-problem-with-methods-in-javascript" title="The Problem With Methods in JavaScript"><div><p>The Problem With Methods in JavaScript</p>
+</div></a></li><li class="toc-item"><a href="#composition-in-functional-programming" title="Composition in Functional Programming"><div><p>Composition in Functional Programming</p>
+</div></a></li><li class="toc-item"><a href="#currying-and-composition" title="Currying and Composition"><div><p>Currying and Composition</p>
+</div></a></li><li class="toc-item"><a href="#composing-more-than-two-functions" title="Composing More Than Two Functions"><div><p>Composing More Than Two Functions</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-convenience">Convenience</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

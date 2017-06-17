@@ -1,0 +1,285 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>curry</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-beta2</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">curry</h1><div class="highlight-summary"><div><p>Transforms functions of arity N into a chain of N unary functions</p>
+</div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">curry(arity, fn)</div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="guides.type-notation-used-in-signatures.html">(what is this?)</a></div><pre class="type"><code class="language-haskell">(Number, (Any...) =&gt; 'a) =&gt; Any... =&gt; 'a or ((Any...) =&gt; 'a)</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Transforms functions of arity N into a chain of N unary functions</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const curry = require(&#39;folktale/core/lambda/curry&#39;);
+
+const property = curry(2, (key, object) =&gt; object[key]);
+const people = [
+  { name: &#39;Alissa&#39;, age: 26 },
+  { name: &#39;Max&#39;,    age: 19 },
+  { name: &#39;Talib&#39;,  age: 28 }
+];
+
+people.map(property(&#39;name&#39;));
+// ==&gt; [&#39;Alissa&#39;, &#39;Max&#39;, &#39;Talib&#39;]
+</code></pre><h2 id="what-is-currying-">What is &quot;Currying&quot;?</h2>
+<p>Currying is the process of transforming a function that takes N arguments
+all at once, into a series of functions that take one argument at a time.
+This makes it possible to construct new funcionality by specialising part
+of the arguments.</p>
+<p>For example, the <code>property</code> function takes two arguments: the object that
+contains the property, and the name of the property to retrieve:</p>
+<pre><code>const property = (object, key) =&gt; object[key];
+</code></pre><p>Because of this, every time someone call <code>property</code> they must provide both
+arguments:</p>
+<pre><code>property({ greeting: &#39;Hi&#39; }, &#39;greeting&#39;);
+// ==&gt; &#39;Hi&#39;
+</code></pre><p>Some of the time, you only have some of the arguments, however. For example,
+if you wanted to create a function that always gets the <code>greeting</code> of a
+particular object, you would have to do so manually:</p>
+<pre><code>const greeting = (object) =&gt; property(object, &#39;greeting&#39;);
+
+greeting({ greeting: &#39;Hi&#39; });
+// ==&gt; &#39;Hi&#39;
+</code></pre><p>Currying alleviates the need for constructing these functions manually. If
+<code>property</code> was curried, you&#39;d be able to create a new <code>greeting</code> function
+by just specifying some of the arguments, like you would do when invoking
+the function:</p>
+<pre><code>const property2 = (key) =&gt; (object) =&gt; object[key];
+const greeting2 = property2(&#39;greeting&#39;);
+
+greeting({ greeting: &#39;Hi&#39; });
+</code></pre><p>Note that the way we use arguments in a curried function is slightly
+different. When designing a function to be curried, you should consider
+which parameters are most likely to be fixed, and which parameters will
+be provided afterwards. In this case, it&#39;s much more likely for someone
+to have the name of a property than it is for them to have the object
+in which that property lives:</p>
+<pre><code>const score = [{ type: &#39;win&#39; }, { type: &#39;draw&#39; }];
+score.map(property2(&#39;type&#39;));
+// ==&gt; [&#39;win&#39;, &#39;draw&#39;]
+</code></pre><h2 id="why-use-currying-">Why Use Currying?</h2>
+<p>Functional programming places a heavy emphasis on function composition,
+but sometimes we have functions that don&#39;t exactly fit the places we
+want to use them. For example, <code>Array.prototype.map</code> expects a function
+that takes three arguments:</p>
+<pre><code>type Array.prototype.map =
+  Array&lt;&#39;element&gt; . (
+    (&#39;element, index is Number, Array&lt;&#39;element&gt;) =&gt; &#39;newElement
+  ) =&gt; Array&lt;&#39;newElement&gt;
+</code></pre><p>That is, given an array of of some <code>element</code> type, our callback, which
+receives not only this <code>element</code>, but also the index of that element in
+the array, and even the original array, is supposed to return a <code>newElement</code>
+to put in the old element&#39;s place.</p>
+<p>We can use <code>Array.prototype.map</code> to easily transform the data in the
+array by some function. To expand a bit on the initial example, suppose
+we have an array of people:</p>
+<pre><code>const people = [
+  { name: &#39;Alissa&#39;, age: 26, pronoun: &#39;she&#39;  },
+  { name: &#39;Max&#39;,    age: 19, pronoun: &#39;they&#39; },
+  { name: &#39;Talib&#39;,  age: 28, pronoun: &#39;he&#39;   }
+];
+</code></pre><p>And then you want to get the name of one of those people. We can use
+<code>Array.prototype.map</code> for this:</p>
+<pre><code>people.map((element, index, array) =&gt; element.name);
+// ==&gt; [&#39;Alissa&#39;, &#39;Max&#39;, &#39;Talib&#39;]
+</code></pre><blockquote>
+<p><strong>NOTE</strong><br>Because functions in JavaScript are variadic, you don&#39;t need to
+create a function with three parameters here. The following code
+is strictly equivalent:</p>
+<pre><code>people.map(person =&gt; person.name);
+// ==&gt; [&#39;Alissa&#39;, &#39;Max&#39;, &#39;Talib&#39;]
+</code></pre></blockquote>
+<p>This is all well and good, because this is the only place where we use
+this kind of functionality. But what if we have very similar functionality
+in more places. For example, just like we got the names of these people,
+we could get their ages:</p>
+<pre><code>people.map(person =&gt; person.age);
+// ==&gt; [26, 19, 28]
+</code></pre><p>Or the pronoun they use:</p>
+<pre><code>people.map(person =&gt; person.pronoun);
+// ==&gt; [&#39;she&#39;, &#39;they&#39;, &#39;he&#39;]
+</code></pre><p>At this point, we&#39;re duplicating this functionality in many places. It
+would be more productive to move it to a function we can reuse. And this
+is easy enough:</p>
+<pre><code>const property = (object, key) =&gt; object[key];
+</code></pre><p>But this attempt is not really a good one in this case. Now composing
+things is even more trouble:</p>
+<pre><code>people.map(person =&gt; property(person, &#39;name&#39;));
+</code></pre><p>Ideally, we&#39;d want:</p>
+<pre><code>people.map(property);
+</code></pre><p>But <code>property</code> takes two arguments, and <code>Array.prototype.map</code> can only
+provide one of them: the object we should retrieve the property from.
+Where do we get the other one from? Well, the name of the property is
+static. We know exactly what we need from the callsite.</p>
+<p>As said in the previous section, thinking about which arguments are likely
+to be specified, and what aren&#39;t is important when designing curried
+functions. For this case, we want to specialise the <code>key</code>, and leave
+<code>object</code> to be provided by some other piece of code:</p>
+<pre><code> const property = (key) =&gt; (object) =&gt; object[key];
+
+ people.map(property(&#39;name&#39;));
+ // ==&gt; [&#39;Alissa&#39;, &#39;Max&#39;, &#39;Talib&#39;]
+
+ people.map(property(&#39;age&#39;));
+ // ==&gt; [26, 19, 28]
+
+ people.map(property(&#39;pronoun&#39;));
+ // ==&gt; [&#39;she&#39;, &#39;they&#39;, &#39;he&#39;] 
+</code></pre><p>So, with currying, it becomes much simpler to shape a function so it
+fits the expectations of the place where you want to use it. It alleviates
+the need of making this translation manually, but it also requires some
+prior thought on how these functions are likely to be used.</p>
+<h2 id="how-folktale-s-curry-works-">How Folktale&#39;s <code>curry</code> Works?</h2>
+<p>The <code>curry</code> operation makes it simpler to construct curried functions
+that work well with JavaScript, where functions may, and often do, take
+more than one argument.</p>
+<p>Consider the following example:</p>
+<pre><code>const joinedBy = (separator) =&gt; (list) =&gt; (item) =&gt;
+  list.concat([separator, item]);
+</code></pre><p>It&#39;s a curried function that takes 3 arguments, one at a time. To invoke
+it one must do so like this:</p>
+<pre><code>joinedBy(&#39;,&#39;)([&#39;a&#39;])(&#39;b&#39;);
+// ==&gt; [&#39;a&#39;, &#39;,&#39;, &#39;b&#39;]
+</code></pre><p>This makes it harder to use it for functions that pass two arguments to
+their callbacks, like <code>Array.prototype.reduce</code>, because JavaScript passes
+them all at once:</p>
+<pre><code>[&#39;b&#39;].reduce(joinedBy(&#39;,&#39;), [&#39;a&#39;]);
+// ==&gt; [&lt;function&gt;, &lt;function&gt;]
+</code></pre><p>This is where <code>curry</code> helps. It allows you to curry functions, while
+unrolling application of more than one argument:</p>
+<pre><code>const curry = require(&#39;folktale/core/lambda/curry&#39;);
+
+const joinedBy2 = curry(3, (separator, list, item) =&gt;
+  list.concat([separator, item]) 
+);
+
+joinedBy2(&#39;,&#39;, [&#39;a&#39;], &#39;b&#39;);
+// ==&gt; [&#39;a&#39;, &#39;,&#39;, &#39;b&#39;]
+
+[&#39;b&#39;].reduce(joinedBy2(&#39;,&#39;), [&#39;a&#39;]);
+// ==&gt; [&#39;a&#39;, &#39;,&#39;, &#39;b&#39;]
+</code></pre><h2 id="-curry-under-the-hood"><code>curry</code>, Under The Hood</h2>
+<p>How can <code>curry</code> construct functions that support such different styles
+of passing arguments? The secret is in how <code>curry</code> does unrolling. A
+function constructed by <code>curry</code> takes two arguments:</p>
+<ol>
+<li>The number of arguments that are expected for that function (arity);</li>
+<li>The function that should be called when those arguments are collected.</li>
+</ol>
+<p>In return, <code>curry</code> gives you back a function that, at first, only collects
+arguments. That is, until we reach the amount of arguments expected (arity),
+applying the <code>curry</code>ed function gives you back a new function that you
+continue to apply:</p>
+<pre><code>const curry = require(&#39;folktale/core/lambda/curry&#39;);
+
+const f = curry(4, (a, b, c, d) =&gt; [a, b, c, d]);
+
+// Previous arguments: []
+const f1 = f();
+// New arguments:      []
+
+// Previous arguments: []
+const f2 = f1(1);
+// New arguments:      [1]
+
+// Previous arguments: [1]
+const f3 = f2(2, 3);
+// New arguments:      [1, 2, 3]
+
+// Previous arguments: [1, 2, 3]
+f3(4);
+// ==&gt; [1, 2, 3, 4]
+</code></pre><p>The curried function keeps track of these arguments in an internal array.
+This array is not modified when you apply a curried function. Instead, you
+get a new function with a separate &quot;internal arguments array&quot;:</p>
+<pre><code>// Previous arguments: [1]
+const f2_a = f2(4);  // =&gt; [1, 4]
+const f2_b = f2(5);  // =&gt; [1, 5]
+
+f2_a(5, 6); // ==&gt; [1, 4, 5, 6]
+f2_b(5, 6); // ==&gt; [1, 5, 5, 6]
+</code></pre><p>Once the curried function has collected all of the arguments it needs to,
+it &quot;unrolls&quot; the application. That is, it provides the arguments collected
+to the original function:</p>
+<pre><code>const plus  = (a, b, c) =&gt; a + b + c;
+const plus2 = curry(3, plus);
+
+    plus2(1)(2)(3)
+=== plus2(1, 2)(3)
+=== plus2(1, 2, 3)
+=== plus(1, 2, 3)
+=== 1 + 2 + 3;
+</code></pre><p>What happens if a curried function receives more arguments than it expects,
+though? If the wrapped function is a regular JavaScript function, it&#39;s the
+same. <code>curry</code> passes all of the arguments to it, and because JavaScript
+functions are variadic, those additional arguments get (usually) ignored:</p>
+<pre><code>    plus2(1)(2)(3, 4, 5)
+=== plus2(1, 2)(3, 4, 5)
+=== plus2(1, 2, 3, 4, 5)
+=== plus(1, 2, 3, 4, 5)
+=== 1 + 2 + 3;
+</code></pre><p>If the wrapped function is itself a curried function, things get more
+interesting though, because the curried functio will, itself, unroll
+the rest of the application!</p>
+<pre><code>const subtract = curry(2, (x, y) =&gt; x - y);
+const flip     = curry(3, (f, x, y) =&gt; f(y, x));
+
+    subtract(1)(2)
+=== subtract(1, 2)
+=== 1 - 2;
+
+    flip(subtract)(1)(2)
+=== flip(subtract, 1)(2)
+=== flip(subtract, 1, 2)
+=== subtract(2, 1)
+=== 2 - 1;
+</code></pre><p>Unrolling makes it possible to compose curried functions naturally, without
+getting in the way of regular JavaScript functions.</p>
+<blockquote>
+<p><strong>NOTE</strong><br>Using <code>curry</code> for real variadic functions is strongly discouraged, given
+that it&#39;s hard to predict which arguments will end up being provided to
+the variadic function.</p>
+</blockquote>
+<h2 id="drawbacks-of-using-curry-">Drawbacks of Using <code>curry</code></h2>
+<p>While <code>curry</code> certainly helps composing functions, it&#39;s important to note
+that, because a lot of functions in JavaScript are variadic, and because
+people take advantage of this (by relying on the number of arguments
+provided for optional parameters or overloading the signature),
+composition of such functions is not well-defined, and <code>curry</code> makes
+things even less predictable for these cases.</p>
+<p>Because of this, the use of <code>curry</code> for variadic functions is strongly
+discouraged.</p>
+<p>One also must consider the overhead of introducing <code>curry</code> in a codebase.
+For most code, this overhead is negligible, but <code>curry</code> should be avoided
+in code paths that require more performance.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/core/lambda/curry.js at line 18, column 0</div><pre class="source-code"><code class="language-javascript">(arity, fn) =&gt; {
+  const curried = (oldArgs) =&gt; (...newArgs) =&gt; {
+    const allArgs  = oldArgs.concat(newArgs);
+    const argCount = allArgs.length;
+
+    return argCount &lt; arity   ?  curried(allArgs)
+    :      /* otherwise */       fn(...allArgs);
+  };
+
+  return curried([]);
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/core/lambda/curry</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li><li class="toc-item"><a href="#what-is-currying-" title="What is &quot;Currying&quot;?"><div><p>What is &quot;Currying&quot;?</p>
+</div></a></li><li class="toc-item"><a href="#why-use-currying-" title="Why Use Currying?"><div><p>Why Use Currying?</p>
+</div></a></li><li class="toc-item"><a href="#how-folktale-s-curry-works-" title="How Folktale's `curry` Works?"><div><p>How Folktale&#39;s <code>curry</code> Works?</p>
+</div></a></li><li class="toc-item"><a href="#-curry-under-the-hood" title="`curry`, Under The Hood"><div><p><code>curry</code>, Under The Hood</p>
+</div></a></li><li class="toc-item"><a href="#drawbacks-of-using-curry-" title="Drawbacks of Using `curry`"><div><p>Drawbacks of Using <code>curry</code></p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
