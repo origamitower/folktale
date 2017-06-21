@@ -30,6 +30,8 @@ const runGenerator = (generator, value) => (resolver) => {
  * type: |
  *   forall v, e: (Generator [Task e v Any]) => Task e [v] Any
  */
-const taskDo = generator => new Task(runGenerator(generator()));
+const taskDo = generator => 
+  new Task((resolver) => 
+    runGenerator(generator())(resolver));
 
 module.exports = taskDo;
