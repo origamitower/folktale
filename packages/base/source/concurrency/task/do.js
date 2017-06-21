@@ -14,24 +14,19 @@ const Task = require('./_task');
  * type: |
  *   forall v, e: (GeneratorInstance [Task e v Any]) => Any => Task e [v] Any
  */
-const runGenerator = (generator, value) => (resolver) => {
+const nextGeneratorValue = (generator) => (value) => {
   const { value: task, done } = generator.next(value);
-  task.run().listen({
-    onCancelled: resolver.cancel,
-    onResolved: (result) => 
-      !done ? runGenerator(generator, result)(resolver)
-      :       resolver.resolve(result),
-    onRejected: resolver.reject
-  });
-};
+  return !done ? task.chain(nextGeneratorValue(generator))
+    /* else */ : task;
+}
 
 /*~
  * stability: experimental
  * type: |
  *   forall v, e: (Generator [Task e v Any]) => Task e [v] Any
  */
-const taskDo = generator => 
-  new Task((resolver) => 
-    runGenerator(generator())(resolver));
+const taskDo = (generator) => 
+  new Task((resolver) => resolver.resolve(generator()))
+    .chain((generator) => nextGeneratorValue(generator)());
 
 module.exports = taskDo;
