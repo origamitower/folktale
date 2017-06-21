@@ -326,6 +326,40 @@ describe('Data.Task', () => {
     $ASSERT(result2 == true);
   });
 
+  it('do()', async () => {
+    const delay = (ms) => Task.task((r) => {
+      const timer = setTimeout(() => r.resolve(ms), ms);
+      r.cleanup(() => clearTimeout(timer));
+    });
+    const result = await Task.do(function *() {
+      const a = yield delay(10); 
+      const b = yield delay(11); 
+      const c = yield Task.of(5);
+      return Task.of(a + b + c + 4);
+    }).run().promise();
+
+    $ASSERT(result == 30)
+
+    const exceptionThrown = [false, false];
+    await Task.do(function *() {
+      const a = yield Task.rejected(5);
+      return Task.of(a);
+    }).run().promise().catch((exception) => {
+      exceptionThrown[0] = true;
+      $ASSERT(exception == 5);
+    })
+    $ASSERT(exceptionThrown[0] == true);
+    
+    const resultCancel = await Task.do(function *() {
+      const a = yield Task.task(r => r.cancel());
+      return Task.of(a);
+    }).run().promise().catch(() => {
+      exceptionThrown[1] = true;
+    });
+    $ASSERT(exceptionThrown[1] == true);
+  });
+
+
   describe('#run()', () => {
     it('Executes the computation for the task', () => {
       let ran = false;
