@@ -357,6 +357,17 @@ describe('Data.Task', () => {
       exceptionThrown[1] = true;
     });
     $ASSERT(exceptionThrown[1] == true);
+
+    const multipleCallsResults = [];
+    const multipleCallsTask = await Task.do(function *() {
+      const a = yield delay(10); 
+      return Task.of(a);
+    });
+    multipleCallsResults[0] = await multipleCallsTask.run().promise();
+    multipleCallsResults[1] = await multipleCallsTask.run().promise();
+
+    $ASSERT(multipleCallsResults[0] == 10);
+    $ASSERT(multipleCallsResults[1] == 10);
   });
 
 
