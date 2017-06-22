@@ -16,11 +16,11 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 ---
 
 
-## [2.0.0-rc1] - 2017-06-18
+## [2.0.0-rc1] - 2017-06-22
 
 ### New features
 
-  - `Maybe` now implements Semigroup and Monoid.
+  - `Maybe` now implements Semigroup and Monoid ([PR #125](https://github.com/origamitower/folktale/pull/125) by @diasbruno).
   - `Result` now implements Semigroup.
 
 

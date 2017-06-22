@@ -2,7 +2,7 @@
 // Generated on Thu Sep 08 2016 15:00:17 GMT-0300 (BRT)
 
 module.exports = function(config) {
-  const pkg = require('../package.json');
+  const pkg = require('../packages/base/package.json');
 
   const merge = (...sources) => sources.reduce((r, x) => {
     Object.keys(x).forEach(k => {

@@ -351,6 +351,38 @@ body {
   color: #3498db;
   text-decoration: underline;
 }
+.page-navigation {
+  margin-top: 2em;
+  display: flex;
+  border-top: 1px dotted #ecf0f1;
+  padding-top: 1em;
+}
+.page-navigation .page-navigation-prev,
+.page-navigation .page-navigation-next {
+  width: 50%;
+  flex-grow: 1;
+}
+.page-navigation .page-navigation-prev {
+  text-align: left;
+}
+.page-navigation .page-navigation-next {
+  text-align: right;
+}
+.page-navigation .page-navigation-prev a::before,
+.page-navigation .page-navigation-next a::before {
+  text-transform: uppercase;
+  font-family: "Helvetica", "Verdana", sans-serif;
+  color: #bdc3c7;
+  font-size: 10px;
+  margin-bottom: 5px;
+  display: block;
+}
+.page-navigation .page-navigation-prev a::before {
+  content: "Previous";
+}
+.page-navigation .page-navigation-next a::before {
+  content: "Next";
+}
 header {
   display: flex;
   flex-direction: column;
