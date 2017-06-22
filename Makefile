@@ -67,7 +67,7 @@ compile-documentation:
 clean:
 	rm -rf packages/base/build packages/base/dist
 	rm -rf test/build
-	rm -rf annotations/build docs/api
+	rm -rf annotations/build
 
 .PHONY: _prepare-test
 _prepare-test: clean compile compile-annotated compile-test
@@ -141,3 +141,22 @@ tools:
 	cd tools/static-docs && npm install && make build && npm link
 	npm link metamagical-static-docs
 
+.PHONY: release-base
+release-base: lint test-all test-browser # test-sauce
+	$(eval VERSION := $(shell node -pe "require('./packages/base/package.json').version"))
+	$(MAKE) clean
+	$(MAKE) compile
+	$(MAKE) compile-annotated
+	$(MAKE) bundle
+	$(MAKE) compile-documentation
+	$(MAKE) _documentation
+	cd docs && bundle exec jekyll build
+	mkdir -p packages/base/releases/
+	rm -rf packages/base/releases/$(VERSION)
+	cp -R packages/base/build packages/base/releases/$(VERSION)
+	cp -R docs/_site packages/base/releases/$(VERSION)/docs
+	cp -R packages/base/dist packages/base/releases/$(VERSION)/dist
+	cp packages/base/package.json packages/base/releases/$(VERSION)/package.json
+	cp packages/base/CHANGELOG.md packages/base/releases/$(VERSION)/CHANGELOG.md
+	cd packages/base/releases/$(VERSION) && zip -r ../folktale-base-$(VERSION).zip * 
+	# cd packages/base/releases/$(VERSION) && npm publish

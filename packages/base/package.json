@@ -1,6 +1,6 @@
 {
   "name": "folktale",
-  "version": "2.0.0-beta2",
+  "version": "2.0.0-rc1",
   "description": "A suite of libraries for generic functional programming in JavaScript that allows you to write elegant modular applications with fewer bugs and more reuse.",
   "main": "./index.js",
   "repository": {
@@ -13,13 +13,6 @@
     "fantasy-land",
     "folktale",
     "monads"
-  ],
-  "files": [
-    "core/",
-    "data/",
-    "helpers/",
-    "documentation.js",
-    "index.js"
   ],
   "author": "Quildreen Motta",
   "license": "MIT",

@@ -168,3 +168,41 @@ body {
     }
   }
 }
+
+.page-navigation {
+  margin-top: 2em;
+  display: flex;
+  border-top: 1px dotted clouds;
+  padding-top: 1em;
+
+  .page-navigation-prev, .page-navigation-next {
+    width: 50%;
+    flex-grow: 1;
+  }
+
+  .page-navigation-prev {
+    text-align: left;
+  }
+
+  .page-navigation-next {
+    text-align: right;
+  }
+
+  .page-navigation-prev a::before,
+  .page-navigation-next a::before {
+    text-transform: uppercase;
+    font-family: sans-font;
+    color: silver;
+    font-size: 10px;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .page-navigation-prev a::before {
+    content: "Previous";
+  }
+
+  .page-navigation-next a::before {
+    content: "Next";
+  }
+}

@@ -4,7 +4,8 @@
     - v2.0.0/release-notes
     - v2.0.0/download
     - v2.0.0/getting-started
-    - v2.0.0/api
+    - url: /api/v2.0.0/en/folktale.html
+      title: API reference
     - v2.0.0/changelog
     - v2.0.0/known-issues
 
@@ -46,4 +47,5 @@
 
 - title: Legacy
   docs:
-    - legacy/1.x
+    - url: http://folktalegithubio.readthedocs.io/en/latest/
+      title: Folktale 1.x
