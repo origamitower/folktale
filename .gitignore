@@ -6,12 +6,12 @@ node_modules/
 npm-debug.log
 /packages/**/build/
 /packages/**/dist/
+/packages/**/releases/
 /annotations/build/
 /docs/api/master/
 /docs/_site/
 /docs/.jekyll-metadata
 /test/build/
-/releases/
 /tools/static-docs/lib/
 /tools/static-docs/resources/html/*.css
 .nyc_output/
