@@ -3,7 +3,6 @@
   docs:
     - v2.0.0/release-notes
     - v2.0.0/download
-    - v2.0.0/getting-started
     - url: /api/v2.0.0/en/folktale.html
       title: API reference
     - v2.0.0/changelog

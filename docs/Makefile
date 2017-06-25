@@ -4,7 +4,7 @@ _css:
 
 .PHONY: _jekyll
 _jekyll:
-	jekyll serve --incremental
+	bundle exec jekyll serve --incremental
 
 .PHONY: run
 run:

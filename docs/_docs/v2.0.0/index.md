@@ -17,7 +17,7 @@ We've also got some pages on [how to get help]({% link _docs/support/index.md %}
   </div>
 
   <div class="box">
-    <div class="box-title"><a href="{% link _docs/v2.0.0/getting-started.md %}">Getting started</a></div>
+    <div class="box-title"><a href="{% link _docs/v2.0.0/download.md %}">Installing</a></div>
     <p>Getting Folktale up and running in different JS platforms.</p>
   </div>
 
