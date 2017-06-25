@@ -158,5 +158,4 @@ release-base: lint test-all test-browser # test-sauce
 	cp -R packages/base/dist packages/base/releases/$(VERSION)/dist
 	cp packages/base/package.json packages/base/releases/$(VERSION)/package.json
 	cp packages/base/CHANGELOG.md packages/base/releases/$(VERSION)/CHANGELOG.md
-	cd packages/base/releases/$(VERSION) && zip -r ../folktale-base-$(VERSION).zip * 
-	# cd packages/base/releases/$(VERSION) && npm publish
+	cd packages/base/releases/$(VERSION) && zip -r ../folktale-base-$(VERSION).zip *
