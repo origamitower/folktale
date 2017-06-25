@@ -124,10 +124,12 @@ const findDefinition = (object, property) =>
 
 // --[ Implementation ]------------------------------------------------
 const makeStatic = (meta, root, name, options = {}) => {
-  let references = new Map(options.references ? options.references.entries() : []);
-  let skip       = options.skip || new Set();
-  let skipProps  = options.skipProperties || new Set();
-  let result     = new Map();
+  let references     = new Map(options.references ? options.references.entries() : []);
+  let skip           = options.skip || new Set();
+  let skipProps      = options.skipProperties || new Set();
+  let result         = new Map();
+  let pathsToObject  = new Map();
+  let objectsToPaths = new Map();
 
 
   const shouldSkip = (object) => !isObject(object)
@@ -157,12 +159,26 @@ const makeStatic = (meta, root, name, options = {}) => {
 
 
   const truePath = (object, name, path) => {
+    if (objectsToPaths.has(object)) {
+      return objectsToPaths.get(object);
+    }
+
     let parentPath = computeIndexPath(object, path);
     if (isModule(object) && allowsPopping(parentPath)) {
       name = parentPath.pop();
     }
 
-    return [...parentPath, name].map(dasherise);
+    let fullPath;
+    let suffix = 0;
+    do {
+      fullPath = [...parentPath, name + String(suffix ? `-${suffix}` : '')].map(dasherise);
+      suffix += 1;
+    } while (pathsToObject.has(fullPath.join('.')));
+
+    pathsToObject.set(fullPath.join('.'), object);
+    objectsToPaths.set(object, fullPath);
+
+    return fullPath;
   };
 
 
