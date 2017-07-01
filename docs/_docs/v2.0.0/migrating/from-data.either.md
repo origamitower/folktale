@@ -139,7 +139,7 @@ Result.try(_ => divide(4, 0)); // ==> Result.Error([Error: division by zero])
 You'd have to construct a safe version of a function explicitly:
 
 {% highlight js %}
-const safeDivide = (x, y) => Either.try(divide(x, y));
+const safeDivide = (x, y) => Result.try(divide(x, y));
 
 safeDivide(4, 2); // ==> Result.Ok(2)
 safeDivide(4, 0); // ==> Result.Error([Error: division by zero])
