@@ -311,6 +311,9 @@ describe('Data.Task', () => {
 
     const result2 = await Task.waitAll([Task.of(1), Task.rejected(2), Task.of(3)]).run().promise().catch(e => e);
     $ASSERT(result2 == 2);
+
+    const result3 = await Task.waitAll([]).run().promise();
+    $ASSERT(result3 == []);
   });
 
   it('waitAny()', async () => {
