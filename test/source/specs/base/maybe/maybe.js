@@ -68,6 +68,24 @@ describe('Maybe', () => {
     });
   });
 
+  describe('#filter(f)', () => {
+    property('Just(a).filter(() => true) = Just(a)', 'json', 'json -> json', (a, f) => {
+      return Just(a).filter(() => true).equals(Just(a));
+    });
+
+    property('Just(a).filter(() => false) = Nothing()', 'json', 'json -> json', (a, f) => {
+      return Just(a).filter(() => false).equals(Nothing());
+    });
+
+    property('Nothing().filter(() => true) = Nothing()', 'json', 'json -> json', (a, f) => {
+      return Nothing().filter(() => true).equals(Nothing());
+    });
+
+    property('Nothing().filter(() => false) = Nothing()', 'json', 'json -> json', (a, f) => {
+      return Nothing().filter(() => false).equals(Nothing());
+    });
+  });
+
   describe('#unsafeGet()', () => {
     property('Just(a).unsafeGet() = a', 'json', (a) => {
       return Just(a).unsafeGet() === a;
