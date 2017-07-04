@@ -9,11 +9,12 @@ an Error gets returned.
 
 ## Example::
 
-    const User  = require('user');
+    const Result = require('folktale/result');
 
-    let user = new User(1);
+    // This line evaluates to true.
+    Result.Ok.hasInstance(Result.Ok(3).filter(n => n === 3));
 
-    user
-    .getPasswordResetHash();         // Assuming this returns a Result…
-    .filter(User.hashStillActive)
-    .map(console.log.bind(console)); // Will print the hash only if it's still active.
+    // These lines evaluates to false.
+    Result.Ok.hasInstance(Result.Ok(2).filter(n => n === 3));
+    Result.Ok.hasInstance(Result.Error(3).filter(n => n !== 3));
+    Result.Ok.hasInstance(Result.Error(3).filter(n => n === 3));

@@ -9,11 +9,13 @@ a Nothing gets returned.
 
 ## Example::
 
-    const User  = require('user');
+    const Maybe = require('folktale/maybe');
 
-    let user = new User(1);
+    // This line evaluates to true.
+    Maybe.Just.hasInstance(Maybe.Just(3).filter(n => n === 3));
 
-    user
-    .getPasswordResetHash();          // Assuming this returns a Result…
-    .filter(User.hashStillActive)
-    .map(console.log.bind(console));  // Will print the hash only if it's still active.
+    // These lines evaluates to false.
+    Maybe.Just.hasInstance(Maybe.Just(2).filter(n => n === 3));
+    Maybe.Just.hasInstance(Maybe.Nothing().filter(n => n !== 3));
+    Maybe.Just.hasInstance(Maybe.Nothing().filter(n => n === 3));
+
