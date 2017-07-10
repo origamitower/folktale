@@ -5,8 +5,12 @@ next_doc: v2.0.0/changelog
 ---
 
 Folktale is a library to support a functional style of programming in JavaScript.
-In its current version Folktale provides utilities for [combining functions](#combining-functions),
-[transforming objects](#transforming-objects), [modelling data](#modelling-data), [handling errors](#handling-errors), and [concurrency](#concurrency).
+In its current version Folktale provides utilities for [combining functions](/api/v2.0.0/en/folktale.core.lambda.html),
+[transforming objects](/api/v2.0.0/en/folktale.core.object.html), [modelling data](/api/v2.0.0/en/folktale.adt.html), [handling errors](/api/v2.0.0/en/folktale.html#cat-handling-failures), and [concurrency](/api/v2.0.0/en/folktale.concurrency.task.html).
+
+The [API reference](/api/v2.0.0/en/folktale.html) provides detailed documentation
+on these, but may be difficult to navigate. This page serves as an introduction to
+the most important concepts.
 
 
 ## Contents
