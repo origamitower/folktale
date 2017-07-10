@@ -22,8 +22,13 @@ We've also got some pages on [how to get help]({% link _docs/support/index.md %}
   </div>
 
   <div class="box">
+    <div class="box-title"><a href="{% link _docs/v2.0.0/overview.md %}">Overview</a></div>
+    <p>An introduction to the most important concepts in Folktale.</p>
+  </div>
+
+  <div class="box">
     <div class="box-title"><a href="/api/v2.0.0/en/folktale.html">API reference</a></div>
-    <p>Describes all functions and objects, with usage examples.</p>
+    <p>Describes all functions and objects, with motivating use cases and usage examples.</p>
   </div>
 
   <div class="box">
