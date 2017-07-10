@@ -1,6 +1,6 @@
 ---
 title: Changelog
-prev_doc: v2.0.0/download
+prev_doc: v2.0.0/overview
 next_doc: v2.0.0/known-issues
 ---
 
