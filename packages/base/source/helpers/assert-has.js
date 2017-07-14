@@ -12,25 +12,13 @@
 // Sooo... this assumes:
 // 1. it's an Object, not a class, nor Array
 // 2. a basic hasOwnProperty check 
-module.exports = (method, object, property) => {
-  if (!object || typeof property !== 'string' || object.hasOwnProperty(property) === false) {
-    throw new Error(`Variant "${property}" not covered in pattern.
-        This could mean you did not include all variants in your Union's matchWith function.
-
-        For example, if you had this Union:
-
-        const Operation = union({
-            Add: (a, b) => ({ a, b }),
-            Subtract: (a, b) => ({ a, b }),
-        })
-
-        But wrote this matchWith:
-
-        op.matchWith({
-            Add: ({ a, b }) => a + b
-            // Subtract not implemented!
-        })
-
-        It would throw this error because we need to check against 'Subtract'. Check your matchWith function inside of the ${method} method, it's possibly missing the '${property}' in the Object you pass to 'matchWith'.`);
-  }
+module.exports = (method, object, property, customErrorMessage = '') => {
+    if (!object || typeof property !== 'string' || object.hasOwnProperty(property) === false) {
+        if (customErrorMessage === '') {
+            throw new Error(`${object} does not have a property ${property}.`);
+        }
+        else {
+            throw new Error(customErrorMessage);
+        }
+    }
 };
