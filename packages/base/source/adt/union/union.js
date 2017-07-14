@@ -10,6 +10,8 @@
 // --[ Dependencies ]---------------------------------------------------
 const warnDeprecation = require('folktale/helpers/warn-deprecation');
 const extend = require('folktale/helpers/extend');
+const assertObject = require('folktale/helpers/assert-object');
+const assertHas = require('folktale/helpers/assert-has');
 
 
 // --[ Constants and Aliases ]------------------------------------------
@@ -82,6 +84,8 @@ instead to check if a value belongs to the ADT variant.`);
        *   where 'b = 'a[`@@folktale:adt:tag]
        */
       matchWith(pattern) {
+        assertObject('Union.mapObject#matchWith', pattern);
+        assertHas('Union.mapObject#matchWith', pattern, name);
         return pattern[name](this);
       } 
     });
