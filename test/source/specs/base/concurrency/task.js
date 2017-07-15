@@ -311,6 +311,9 @@ describe('Data.Task', () => {
 
     const result2 = await Task.waitAll([Task.of(1), Task.rejected(2), Task.of(3)]).run().promise().catch(e => e);
     $ASSERT(result2 == 2);
+
+    const result3 = await Task.waitAll([]).run().promise();
+    $ASSERT(result3 == []);
   });
 
   it('waitAny()', async () => {
@@ -325,6 +328,51 @@ describe('Data.Task', () => {
     const result2 = await Task.waitAny([delay(100), delay(200), delay(30).swap()]).run().promise().catch(e => e == 30);
     $ASSERT(result2 == true);
   });
+
+  it('do()', async () => {
+    const delay = (ms) => Task.task((r) => {
+      const timer = setTimeout(() => r.resolve(ms), ms);
+      r.cleanup(() => clearTimeout(timer));
+    });
+    const result = await Task.do(function *() {
+      const a = yield delay(10); 
+      const b = yield delay(11); 
+      const c = yield Task.of(5);
+      return Task.of(a + b + c + 4);
+    }).run().promise();
+
+    $ASSERT(result == 30)
+
+    const exceptionThrown = [false, false];
+    await Task.do(function *() {
+      const a = yield Task.rejected(5);
+      return Task.of(a);
+    }).run().promise().catch((exception) => {
+      exceptionThrown[0] = true;
+      $ASSERT(exception == 5);
+    })
+    $ASSERT(exceptionThrown[0] == true);
+    
+    const resultCancel = await Task.do(function *() {
+      const a = yield Task.task(r => r.cancel());
+      return Task.of(a);
+    }).run().promise().catch(() => {
+      exceptionThrown[1] = true;
+    });
+    $ASSERT(exceptionThrown[1] == true);
+
+    const multipleCallsResults = [];
+    const multipleCallsTask = await Task.do(function *() {
+      const a = yield delay(10); 
+      return Task.of(a);
+    });
+    multipleCallsResults[0] = await multipleCallsTask.run().promise();
+    multipleCallsResults[1] = await multipleCallsTask.run().promise();
+
+    $ASSERT(multipleCallsResults[0] == 10);
+    $ASSERT(multipleCallsResults[1] == 10);
+  });
+
 
   describe('#run()', () => {
     it('Executes the computation for the task', () => {

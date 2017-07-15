@@ -20,6 +20,7 @@ module.exports = {
   task: require('./task'),
   waitAny: require('./wait-any'),
   waitAll: require('./wait-all'),
+  do: require('./do'),
   _Task: Task,
   _TaskExecution: require('./_task-execution'),
 
