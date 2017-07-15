@@ -21,7 +21,7 @@ Note that values are expected to be Fantasy Land 1.x semigroups and implement a
     // ==> Result.Error([2])
 
     Result.Error([1]).concat(Result.Error([2]));
-    // ==> Result.Error([2])
+    // ==> Result.Error([1])
 
     Result.Error([1]).concat(Result.Ok([2]));
     // ==> Result.Error([1])
