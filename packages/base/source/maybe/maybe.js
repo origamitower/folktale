@@ -277,7 +277,6 @@ Object.assign(Maybe, {
 
 
   /*~
-   * category: Constructing funtion
    * authors:
    *   - "@diasbruno"
    * type: |
