@@ -26,6 +26,15 @@ Each version entry is written as a heading in the format `[<version number>] - Y
   - **BREAKING CHANGES** — Backwards-incompatible changes that have been introduced by the version, along with the changes necessary to existing codebases. Upgrading from previous versions is not safe;
 
 
+## [2.0.0] - 2017-07-15
+
+### New features
+
+  - `filter` for both `Maybe` and `Result` ([PR #135](https://github.com/origamitower/folktale/pull/135) by @floriansimon1).
+  - `waitAll` now supports empty arrays ([PR #134](https://github.com/origamitower/folktale/pull/134) by @jreut)
+  - `Task.do` allows using direct style with Tasks, like in `async/await` for Promises ([PR #128](https://github.com/origamitower/folktale/pull/128) by @framp)
+
+
 
 ## [2.0.0-rc1] - 2017-06-22
 
