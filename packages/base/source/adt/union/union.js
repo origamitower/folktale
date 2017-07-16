@@ -11,12 +11,12 @@
 const warnDeprecation = require('folktale/helpers/warn-deprecation');
 const extend = require('folktale/helpers/extend');
 const assertObject = require('folktale/helpers/assert-object');
-const assertHas = require('folktale/helpers/assert-has');
 
 
 // --[ Constants and Aliases ]------------------------------------------
 const TYPE = Symbol.for('@@folktale:adt:type');
 const TAG  = Symbol.for('@@folktale:adt:tag');
+const ANY  = Symbol.for('@@folktale:adt:default');
 const META = Symbol.for('@@meta:magical');
 
 const keys = Object.keys;
@@ -109,9 +109,10 @@ instead to check if a value belongs to the ADT variant.`);
        */
       matchWith(pattern) {
         assertObject('Union.mapObject#matchWith', pattern);
-        assertHas('Union.mapObject#matchWith', pattern, name, getMatchWithErrorMessage(pattern, name));
-        return pattern[name](this);
-      } 
+        if (name in pattern) { return pattern[name](this); }
+        else if (ANY in pattern) { return pattern[ANY](this) }
+        else { throw new Error(getMatchWithErrorMessage(pattern, name)) }
+      }
     });
 
     function makeInstance(...args) {
@@ -232,5 +233,6 @@ const Union = {
 union.Union      = Union;
 union.typeSymbol = TYPE;
 union.tagSymbol  = TAG;
+union.any        = ANY;
 
 module.exports = union;
