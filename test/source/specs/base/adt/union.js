@@ -9,6 +9,7 @@
 
 const { property } = require('jsverify');
 const { union, derivations } = require('folktale/adt/union');
+const { any } = union;
 
 const { serialization, equality, debugRepresentation } = derivations;
 
@@ -149,6 +150,32 @@ describe('ADT: union', () => {
             }) == 'cow';
 
         $ASSERT(methodThrowsError(matchWrapper)() === true);
+      });
+
+      it('works with any if you do not care and just want a default match', ()=> {
+        const { Red, Green, Blue } = union('', { 
+          Red() { return { } },
+          Green() { return { } },
+          Blue() { return { } }
+        });
+
+        $ASSERT(
+          Red().matchWith({
+            Red: () => 'red',
+            Green: () => 'green',
+            Blue: () => 'blue'
+          })
+          == 'red'
+        );
+
+         $ASSERT(
+          Red().matchWith({
+            Green: () => 'green',
+            Blue: () => 'blue',
+            [any]: ()=> 'black'
+          })
+          == 'black'
+        );
       });
 
       // NOTE: this fails randomly in Node 5's v8. Seems to be a v8
