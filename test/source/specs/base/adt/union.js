@@ -178,6 +178,23 @@ describe('ADT: union', () => {
         );
       });
 
+      it('any works with all nested variants', ()=> {
+        const { Miss, Hit, Attack } = union('', { 
+          Miss() { return { } },
+          Hit(damage, critical) { return { damage, critical } },
+          Attack(attackResult) { return { attackResult } }
+        });
+
+         $ASSERT(
+           Attack(Hit(1, false)).matchWith({
+            Miss: ()=> 'miss',
+            Hit: ({damage, critical}) => 'damage',
+            [any]: ({ attackResult }) => attackResult.damage
+          })
+          == 1
+        );
+      });
+
       // NOTE: this fails randomly in Node 5's v8. Seems to be a v8
       // optimisation bug, although I haven't had the time to analyse
       // it yet.
