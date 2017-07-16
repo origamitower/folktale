@@ -242,6 +242,25 @@ adtMethods(Maybe, {
       assertFunction('Maybe.Just#fold', transformJust);
       return transformJust(this.value);
     }
+  },
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a: (Maybe a).((a) => Boolean) => Maybe a
+   */
+  filter: {
+    /*~*/
+    Nothing: function filter(predicate) {
+      assertFunction('Maybe.Nothing#filter', predicate);
+      return this;
+    },
+
+    /*~*/
+    Just: function filter(predicate) {
+      assertFunction('Maybe.Just#filter', predicate);
+      return predicate(this.value) ? this : Nothing();
+    }
   }
 });
 
@@ -258,7 +277,6 @@ Object.assign(Maybe, {
 
 
   /*~
-   * category: Constructing funtion
    * authors:
    *   - "@diasbruno"
    * type: |

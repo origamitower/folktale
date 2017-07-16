@@ -42,6 +42,24 @@ describe('Result', function() {
     });
   });
 
+  describe('#filter(f)', () => {
+    property('Ok(a).filter(() => true) = Ok(a)', 'json', 'json -> json', (a, f) => {
+      return _.Ok(a).filter(() => true).equals(_.Ok(a));
+    });
+
+    property('Ok(a).filter(() => false) = Error()', 'json', 'json -> json', (a, f) => {
+      return _.Ok(a).filter(() => false).equals(_.Error());
+    });
+
+    property('Error().filter(() => true) = Error()', 'json', 'json -> json', (a, f) => {
+      return _.Error().filter(() => true).equals(_.Error());
+    });
+
+    property('Error().filter(() => false) = Error()', 'json', 'json -> json', (a, f) => {
+      return _.Error().filter(() => false).equals(_.Error());
+    });
+  });
+
   describe('Functor', () => {
     property('map', 'json', 'json -> json', (a, f) => {
       return _.of(f(a)).equals(_.of(a).map(f))

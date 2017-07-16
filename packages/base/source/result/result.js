@@ -300,6 +300,26 @@ or some other method that is not partial.
       assertFunction('Result.Ok#mapError', f);
       return this;
     }
+  },
+
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a: (Maybe a).((a) => Boolean) => Maybe a
+   */
+  filter: {
+    /*~*/
+    Error: function filter(predicate) {
+      assertFunction('Result.Error#filter', predicate);
+      return this;
+    },
+
+    /*~*/
+    Ok: function filter(predicate) {
+      assertFunction('Result.Ok#filter', predicate);
+      return predicate(this.value) ? this : Error();
+    }
   }
 });
 

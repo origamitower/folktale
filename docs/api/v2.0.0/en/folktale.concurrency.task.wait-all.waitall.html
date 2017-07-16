@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0-rc1</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">waitAll</h1><div class="highlight-summary"><div><p>Constructs a new task that waits all given tasks resolve. The result of the new
 task is an array with the results of the input tasks, if they all succeed, or
@@ -33,10 +33,6 @@ const result = await waitAll([
 
 $ASSERT(result == [1, 2, 3]);
 </code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/concurrency/task/wait-all.js at line 17, column 0</div><pre class="source-code"><code class="language-javascript">(tasks) =&gt; {
-  if (tasks.length === 0) {
-    throw new Error('Task.waitAll() requires a non-empty array of tasks.');
-  }
-
   return tasks.reduce(
     (a, b) =&gt; a.and(b).map(([xs, x]) =&gt; [...xs, x]),
     of([])
