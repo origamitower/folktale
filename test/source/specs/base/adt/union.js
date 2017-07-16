@@ -15,13 +15,10 @@ const { serialization, equality, debugRepresentation } = derivations;
 // --[ Helpers ]--------------------------------------------------------
 const methodThrowsError = method => () => {
     try {
-      console.log("yo, method:", method);
         method();
-        console.log("whoa... no boom");
         return false;
     }
     catch(err) {
-      console.log("yep, boom:", err);
         return true;
     }
 };
