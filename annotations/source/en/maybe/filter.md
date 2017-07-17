@@ -14,7 +14,7 @@ a Nothing gets returned.
     // This line evaluates to true.
     Maybe.Just.hasInstance(Maybe.Just(3).filter(n => n === 3));
 
-    // These lines evaluates to false.
+    // These lines evaluate to false.
     Maybe.Just.hasInstance(Maybe.Just(2).filter(n => n === 3));
     Maybe.Just.hasInstance(Maybe.Nothing().filter(n => n !== 3));
     Maybe.Just.hasInstance(Maybe.Nothing().filter(n => n === 3));
