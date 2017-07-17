@@ -1,7 +1,4 @@
-
-const { property, forall} = require('jsverify');
 const _ = require('folktale/helpers/defer');
-const laws = require('../../../helpers/fantasy-land-laws');
 
 // --[ Helpers ]-------------------------------------------------------
 function aNumberImmediateOrUndefined(o) {
