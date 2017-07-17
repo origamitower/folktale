@@ -14,7 +14,7 @@ an Error gets returned.
     // This line evaluates to true.
     Result.Ok.hasInstance(Result.Ok(3).filter(n => n === 3));
 
-    // These lines evaluates to false.
+    // These lines evaluate to false.
     Result.Ok.hasInstance(Result.Ok(2).filter(n => n === 3));
     Result.Ok.hasInstance(Result.Error(3).filter(n => n !== 3));
     Result.Ok.hasInstance(Result.Error(3).filter(n => n === 3));
