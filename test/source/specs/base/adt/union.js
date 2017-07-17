@@ -189,9 +189,9 @@ describe('ADT: union', () => {
            Attack(Hit(1, false)).matchWith({
             Miss: ()=> 'miss',
             Hit: ({damage, critical}) => 'damage',
-            [any]: ({ attackResult }) => attackResult.damage
+            [any]: () => 'nothing'
           })
-          == 1
+          == 'nothing'
         );
       });
 

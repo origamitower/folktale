@@ -15,7 +15,7 @@ describe('unsupported-method', function() {
 
     it('throws intentionally with your method and object injected into the error', () => {
         const wrapper = () => _('method')('my object');
-        $ASSERT(methodThrowsError(wrapper) == true);
+        $ASSERT(methodThrowsError(wrapper)() === true);
     });
 
 });
