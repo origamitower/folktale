@@ -10,6 +10,8 @@
 // --[ Dependencies ]---------------------------------------------------
 const warnDeprecation = require('folktale/helpers/warn-deprecation');
 const extend = require('folktale/helpers/extend');
+const assertObject = require('folktale/helpers/assert-object');
+const assertHas = require('folktale/helpers/assert-has');
 
 
 // --[ Constants and Aliases ]------------------------------------------
@@ -40,6 +42,30 @@ function mapObject(object, transform) {
   }, {});
 }
 
+//
+// Gets a custom error message for the matchWith function.
+// 
+function getMatchWithErrorMessage(method, property) {
+  return `Variant "${property}" not covered in pattern.
+This could mean you did not include all variants in your Union's matchWith function.
+
+For example, if you had this Union:
+
+const Operation = union({
+    Add: (a, b) => ({ a, b }),
+    Subtract: (a, b) => ({ a, b }),
+})
+
+But wrote this matchWith:
+
+op.matchWith({
+    Add: ({ a, b }) => a + b
+    // Subtract not implemented!
+})
+
+It would throw this error because we need to check against 'Subtract'. Check your matchWith function's argument, 
+it's possibly missing the '${property}' method in the object you've passed.`
+}
 
 // --[ Variant implementation ]-----------------------------------------
 
@@ -82,6 +108,8 @@ instead to check if a value belongs to the ADT variant.`);
        *   where 'b = 'a[`@@folktale:adt:tag]
        */
       matchWith(pattern) {
+        assertObject('Union.mapObject#matchWith', pattern);
+        assertHas('Union.mapObject#matchWith', pattern, name, getMatchWithErrorMessage(pattern, name));
         return pattern[name](this);
       } 
     });

@@ -12,6 +12,17 @@ const { union, derivations } = require('folktale/adt/union');
 
 const { serialization, equality, debugRepresentation } = derivations;
 
+// --[ Helpers ]--------------------------------------------------------
+const methodThrowsError = method => () => {
+    try {
+        method();
+        return false;
+    }
+    catch(err) {
+        return true;
+    }
+};
+
 describe('ADT: union', () => {
   describe('union(typeId, patterns)', () => {
     property('Constructs an union with the given type', 'json', (a) =>
@@ -124,6 +135,20 @@ describe('ADT: union', () => {
           })
           == 3
         );
+      });
+
+      it('Blows up with a customer error message if you are missing a variant', () => {
+        const { A, B } = union('', { 
+          A(a) { return { a } },
+          B() { return {} }
+        });
+        
+        const matchWrapper = ()=>
+            A(1).matchWith({
+              B: ({ a }) => a
+            }) == 'cow';
+
+        $ASSERT(methodThrowsError(matchWrapper)() === true);
       });
 
       // NOTE: this fails randomly in Node 5's v8. Seems to be a v8
