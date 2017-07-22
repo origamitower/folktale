@@ -45,15 +45,13 @@ define show-shell-output stream =
   Terminal.show-stream (Stream.map-errors show-shell-error stream)
 
 define summarise-shell-output summary stream =
-  do action Terminal.display-line summary
-     action show-shell-output stream
-  # let show-error e = do
-  #   action Terminal.display-line "[ERR] {summary}"
-  #   action Terminal.display-line (show-shell-error e)
-  # in do
-  #   action Terminal.display "[...] {summary}...\r"
-  #   action Stream.recover show-error stream
-  #   action Terminal.display-line "[OK]  {summary}"
+  let show-error e = do
+    action Terminal.display-line "[ERR] {summary}"
+    action Terminal.display-line (show-shell-error e)
+  in do
+    action Terminal.display "[...] {summary}...\r"
+    action Stream.recover show-error stream
+    action Terminal.display-line "[OK]  {summary}"
 
 
 define compile-source = do
@@ -87,7 +85,7 @@ define compile-test = do
   let target = root / "test" / "build"
   let mocha  = source / "browser" / "mocha.js"
 
-  action (babel source target ["--ignore", mocha])
+  action (babel source target ["--ignore", mocha] @ -environment: (-NODE_ENV: ""))
     | (summarise-shell-output "Compiling test files")
 
 
