@@ -44,9 +44,11 @@
     "marked": "^0.3.6",
     "metamagical-interface": "^3.5.0",
     "metamagical-mocha-bridge": "^0.4.0",
+    "metamagical-static-docs": "^0.3.0",
     "mkdirp": "^0.5.1",
     "mocha": "^2.4.5",
     "nyc": "^11.0.2",
+    "stylus": "^0.54.5",
     "uglify-js": "^2.7.3"
   },
   "nyc": {

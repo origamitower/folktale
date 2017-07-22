@@ -48,6 +48,7 @@ define summarise-shell-output summary stream =
   let show-error e = do
     action Terminal.display-line "[ERR] {summary}"
     action Terminal.display-line (show-shell-error e)
+    action Stream.error e
   in do
     action Terminal.display "[...] {summary}...\r"
     action Stream.recover show-error stream
@@ -187,10 +188,18 @@ export define test-on-travis =
 
 export define documentation =
   # Compiles and generates the documentation, starts a Jekyll server as well.
+  let docs = root / "docs" in
+  let stylus = npm-bin "stylus" in
   do action compile-source
      action compile-annotations
      action (generate-docs "en") | (summarise-shell-output "Generating English documentation")
-     action show-shell-output $('bundle 'exec 'jekyll 'serve @ -current-directory: (root / "docs"))
+     action $('bundle 'install @ -working-directory: docs)
+       | (summarise-shell-output "Installing Ruby dependencies with Bundler")
+     action $(
+       stylus (docs / "stylus" / "screen.styl")
+       '--out (docs / "css" / "screen.css")
+       ) | (summarise-shell-output "Compiling Stylus files into CSS")
+     action show-shell-output $('bundle 'exec 'jekyll 'serve @ -working-directory: docs)
 
 
 export define lint =
