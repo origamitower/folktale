@@ -129,8 +129,7 @@ define run-tests reporter @ options =
 
 
 define run-lint configuration =
-  do let packages = Stream.map (x -> packages / x) (Stream.from-vector ["base"])
-     bind package <- packages
+  do bind package <- Stream.from-vector [packages / "base"]
      action Terminal.display-line "Linting {package}"
      action show-shell-output $((npm-bin "eslint") (package / "source") '--config configuration)
 
@@ -197,5 +196,3 @@ export define documentation =
 export define lint =
   # Notifies about formatting problems and potential bugs in the source code.
   run-lint (root / ".eslintrc.json")
-
-
