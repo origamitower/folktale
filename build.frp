@@ -1,0 +1,197 @@
+%furipota/1
+import core "prelude"
+
+define root     = Path.directory self.path
+define packages = root / "packages"
+
+define npm-bin name = root / "node_modules" / ".bin" / name
+
+define uglify = npm-bin "uglifyjs"
+define browserify = npm-bin "browserify"
+
+define show-file-operation prefix x = 
+  Debug.log "{Path.to-text x.from} -> {Path.to-text x.to}" @ -prefix: prefix
+
+define get-or-else value default-value =
+  match value with
+    case ^Ok let x then x
+    case ^Error any then default-value
+
+define babel from to flags @ options =
+  $((npm-bin "babel") from '--copy-files '--source-map 'inline '--out-dir to ...flags @ 
+    -environment: (get-or-else (Record.get options "environment") Record.empty)
+  )
+
+define mocha reporter flags @ options =
+  $((npm-bin "mocha")
+    '--require 'babel-polyfill
+    '--reporter reporter
+    '--ui 'bdd
+    '--recursive
+    (root / "test" / "build" / "specs")
+    ...flags
+    @ -environment: (get-or-else (Record.get options "environment") Record.empty)
+  )
+
+define karma configuration =
+  $((npm-bin "karma") 'start configuration)
+
+
+define show-shell-error e = match e with
+  case ^Shell.Error     let x  then x.stack
+  case ^Shell.Exit-Code let x  then "The program exited with code {x}"
+
+define show-shell-output stream =
+  Terminal.show-stream (Stream.map-errors show-shell-error stream)
+
+define summarise-shell-output summary stream =
+  let show-error e = do
+    action Terminal.display-line "[ERR] {summary}"
+    action Terminal.display-line (show-shell-error e)
+  in do
+    action Terminal.display "[...] {summary}...\r"
+    action Stream.recover show-error stream
+    action Terminal.display-line "[OK]  {summary}"
+
+
+define compile-source = do
+  let source = packages / "base" / "source"
+  let target = packages / "base" / "build"
+
+  action (babel source target [] @ -environment: (-DISABLE_MM_COMMENTS: "true"))
+    | (summarise-shell-output "Compiling source code for Base")
+
+  action (babel source (target / "annotated") []) 
+    | (summarise-shell-output "Compiling annotated source code for Base")
+
+
+define bundle-source = do
+  let umd-dist = packages / "base" / "dist" / "umd"
+  let build = packages / "base" / "build"
+
+  action make-directory umd-dist | Debug.trace @ -prefix: "MKDIR"
+
+  action $(browserify (build / "index.js") 
+    '--standalone 'folktale
+    '--outfile (umd-dist / "folktale.js")
+    ) | (summarise-shell-output "Bundling Base package with Browserify")
+
+  action $(uglify (umd-dist / "folktale.js") '--mangle '--output (umd-dist / "folktale.min.js"))
+    | (summarise-shell-output "Minifying the Base bundle")
+
+
+define compile-test = do
+  let source = root / "test" / "source"
+  let target = root / "test" / "build"
+  let mocha  = source / "browser" / "mocha.js"
+
+  action (babel source target ["--ignore", mocha])
+    | (summarise-shell-output "Compiling test files")
+
+
+define bundle-test = do
+  let build = root / "test" / "build" / "browser"
+  let source = root / "test" / "source" / "browser"
+  let show-move = show-file-operation "MOVE"
+  let show-copy = show-file-operation "COPY"
+
+  action $(browserify (build / "browser-tests.js")
+    '--source-map 'inline
+    '--outfile (build / "tests.tmp.js")
+    ) | (summarise-shell-output "Bundling tests with Browserify")
+
+  action move (build / "tests.tmp.js") @ -to: (build / "browser-tests.js") -overwrite: true |> show-move
+  action copy (source / "mocha.js") @ -to: (build / "mocha.js") -overwrite: true            |> show-copy
+
+
+define compile-annotations = do
+  let markdown-to-mm = root / "tools" / "markdown-to-mm.js"
+  let annotations = root / "annotations"
+  action $('node markdown-to-mm (annotations / "source") (annotations / "build"))
+    | (summarise-shell-output "Compiling documentation annotations into MetaMagical modules")
+
+
+define generate-docs language = do 
+  let tool = root / "tools" / "generate-docs.js"
+  action $('node tool language)
+
+
+define run-tests reporter @ options =
+  do action clean
+     action compile-source
+     action compile-test
+     action compile-annotations
+     action bundle-test
+     action show-shell-output (mocha reporter [] @ -environment: (-FOLKTALE_ASSERTIONS: options.assertions))
+     action show-shell-output (karma (root / "test" / "karma-local.js"))
+     action Terminal.display-line "---"
+     action Terminal.display-line "All good!"
+
+
+
+# --[ Tasks ]----------------------------------------------------------
+export define clean =
+  # Removes generated artifacts in the repository, giving you a clean project state
+  do bind artifact <- Stream.from-vector [
+    root / "packages" / "base" / "build",
+    root / "packages" / "base" / "dist",
+    root / "test" / "build",
+    root / "annotations" / "build"
+  ]
+  action Terminal.display      "[...] Removing {Path.to-text artifact}...\r"
+  action remove artifact
+  action Terminal.display-line "[OK]  Removed {Path.to-text artifact}    "
+
+
+export define compile =
+  # Compiles the source code for the project, in all sub-packages.
+  do action compile-source
+
+
+export define test =
+  # Runs all tests for Folktale with a minimal output
+  run-tests "nyan" @ -assertions: "none"
+
+
+export define test-spec =
+  # Like `test`, but uses the detailed spec reporter and outputs warnings
+  run-tests "spec" @ -assertions: "minimal"
+
+
+export define test-on-travis =
+  # Runs all tests and coverage reports we need for Travis CI integration
+  let nyc = npm-bin "nyc" in
+  let mocha = npm-bin "mocha" in
+  let tests = root / "test" / "source" / "specs" in
+  do action clean
+     action compile-source
+     action compile-test
+     action compile-annotations
+     action bundle-test
+     action show-shell-output $(
+       nyc mocha '--require 'babel-polyfill '--ui 'bdd '--recursive tests
+       @ -environment: (-FOLKTALE_ASSERTIONS: "none")
+     )
+     action show-shell-output (karma (root / "test" / "karma-local.js"))
+     action show-shell-output $('npm 'run 'coverage)
+     action Terminal.display-line "---"
+     action Terminal.display-line "All good!"
+
+
+
+export define documentation =
+  # Compiles and generates the documentation, starts a Jekyll server as well.
+  do action compile-source
+     action compile-annotations
+     action (generate-docs "en") | (summarise-shell-output "Generating English documentation")
+     action show-shell-output $('bundle 'exec 'jekyll 'serve @ -current-directory: (root / "docs"))
+
+
+export define lint =
+  # Notifies about formatting problems and potential bugs in the source code.
+  do let packages = Stream.map (x -> packages / x) (Stream.from-vector ["base"])
+     bind package <- packages
+     action Terminal.display-line "Linting {package}"
+     action show-shell-output $((npm-bin "eslint") (package / "source"))
+
+

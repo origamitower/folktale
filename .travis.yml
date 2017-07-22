@@ -6,4 +6,4 @@ env:
   global:
     - NODE_ENV=test
 script:
-  - make travis-tests
+  - npm run travis
