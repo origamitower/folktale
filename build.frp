@@ -14,7 +14,7 @@ define show-file-operation prefix x =
 
 define get-or-else value default-value =
   match value with
-    case ^Ok let x then x
+    case ^Ok x      then x
     case ^Error any then default-value
 
 define babel from to flags @ options =
@@ -38,8 +38,8 @@ define karma configuration =
 
 
 define show-shell-error e = match e with
-  case ^Shell.Error     let x  then x.stack
-  case ^Shell.Exit-Code let x  then "The program exited with code {x}"
+  case ^Shell.Error x     then x.stack
+  case ^Shell.Exit-Code x then "The program exited with code {x}"
 
 define show-shell-output stream =
   Terminal.show-stream (Stream.map-errors show-shell-error stream)
