@@ -128,6 +128,12 @@ define run-tests reporter @ options =
      action Terminal.display-line "All good!"
 
 
+define run-lint configuration =
+  do let packages = Stream.map (x -> packages / x) (Stream.from-vector ["base"])
+     bind package <- packages
+     action Terminal.display-line "Linting {package}"
+     action show-shell-output $((npm-bin "eslint") (package / "source") '--config configuration)
+
 
 # --[ Tasks ]----------------------------------------------------------
 export define clean =
@@ -164,6 +170,7 @@ export define test-on-travis =
   let mocha = npm-bin "mocha" in
   let tests = root / "test" / "source" / "specs" in
   do action clean
+     action run-lint (root / ".eslintrc.travis.json")
      action compile-source
      action compile-test
      action compile-annotations
@@ -189,9 +196,6 @@ export define documentation =
 
 export define lint =
   # Notifies about formatting problems and potential bugs in the source code.
-  do let packages = Stream.map (x -> packages / x) (Stream.from-vector ["base"])
-     bind package <- packages
-     action Terminal.display-line "Linting {package}"
-     action show-shell-output $((npm-bin "eslint") (package / "source"))
+  run-lint (root / ".eslintrc.json")
 
 
