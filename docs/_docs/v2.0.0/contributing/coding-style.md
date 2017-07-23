@@ -9,7 +9,7 @@ next_doc: v2.0.0/contributing/organisation
 {:.warning}
 
 The ESLint rules will catch most of the style issues, so you might just want to
-run `make lint` on your code. That said, there are a few idioms that aren't
+run `furipota run lint` on your code. That said, there are a few idioms that aren't
 captured by ESLint rules:
 
   - Prefer `const` for declaring names wherever possible. When a name or the

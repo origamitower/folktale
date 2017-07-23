@@ -106,8 +106,8 @@ The Folktale repository is organised as follows:
 
     Developer tooling:
 
-      - `Makefile`
-        — Common development tasks.
+      - `build.frp`
+        — Furipota definitions for automating things.
       - `tools`
         — Custom tooling written for Folktale.
       - `metamagical/`
