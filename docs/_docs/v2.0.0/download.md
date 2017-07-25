@@ -60,7 +60,7 @@ Then install Folktale through npm as well:
 Ideally, require only the Folktale modules you'll be using. This helps keeping the overall size smaller. For example, if you're using only the `Maybe` and `compose` functions, don't load the library's entry-point, just those modules:
 
 ```js
-const Maybe = require('folktale/data/maybe');
+const Maybe = require('folktale/maybe');
 const compose = require('folktale/core/lambda/compose');
 
 const inc = (x) => x + 1;
@@ -103,7 +103,7 @@ Then install Folktale through npm as well:
 Ideally, require only the Folktale modules you'll be using. This helps keeping the overall size smaller. For example, if you're using only the `Maybe` and `compose` functions, don't load the library's entry-point, just those modules:
 
 ```js
-const Maybe = require('folktale/data/maybe');
+const Maybe = require('folktale/maybe');
 const compose = require('folktale/core/lambda/compose');
 
 const inc = (x) => x + 1;
