@@ -16,4 +16,9 @@ import constant from './constant'
 import identity from './identity'
 import partialize, { hole } from './partialize'
 
-export { compose, composeAll, composeInfix, constant, identity, partialize, hole }
+export { 
+  compose, composeAll, composeInfix, 
+  constant, 
+  identity, 
+  partialize, hole 
+}
