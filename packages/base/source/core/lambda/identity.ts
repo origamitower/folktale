@@ -15,7 +15,7 @@
  *     [1, 2, 3].map(identity);
  *     //: ==> [1, 2, 3]
  * 
- * @param value The value that will be returned
+ * @param value -- The value that will be returned
  * @stability stable
  */
 export default

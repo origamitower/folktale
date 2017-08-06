@@ -20,7 +20,7 @@
  *     [0, 0, 0].map(constant(counter.next()));
  *     //: ==> [1, 1, 1]
  * 
- * @param value The value that will be returned
+ * @param value -- The value that will be returned
  * @stability: stable
  */
 export default

@@ -22,8 +22,8 @@
  *     //: ==> ['ALICE', 'MAX', 'TALIB']
  * 
  * 
- * @param f The second function to be applied
- * @param g The first function to be applied
+ * @param f -- The second function to be applied
+ * @param g -- The first function to be applied
  * @stability stable
  */
 export default
@@ -35,8 +35,8 @@ function compose<A, B, C>(f: (_: B) => C, g: (_: A) => B): (_: A) => C {
 /**
  * A convenience function for using [[compose]] as a method.
  * 
- * @param that The second function to be applied
- * @param this The first function to be applied
+ * @param that -- The second function to be applied
+ * @param this -- The first function to be applied
  * @stability stable
  */
 export
@@ -52,7 +52,7 @@ function infix<A, B, C>(this: (_: A) => B, that: (_: B) => C): (_: A) => C {
  * > it's not possible to provide a useful generic type for this function,
  * > types are provided for common arities.
  * 
- * @param fns... The functions to be applied, right-to-left
+ * @param fns... -- The functions to be applied, right-to-left
  * @stability stable
  */
 export

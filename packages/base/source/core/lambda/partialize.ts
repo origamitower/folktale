@@ -22,8 +22,8 @@
  *     [1, 2, 3].map(psub(1, _));
  *     //: ==> [0, -1, -2]
  * 
- * @param arity The number of arguments the original function takes
- * @param fn    The function to wrap for partial application
+ * @param arity -- The number of arguments the original function takes
+ * @param fn    -- The function to wrap for partial application
  * @stability experimental
  */
 const partialize: Partialize = (arity: number, fn: any) => (...args: any[]) => {
