@@ -7,17 +7,18 @@
 //
 //----------------------------------------------------------------------
 
-const Future = require('./_future');
-
-/*~
- * stability: experimental
- * name: module folktale/concurrency/future
+/**
+ * The identity combinator. Always returns the argument it's given.
+ * 
+ *     import identity from 'folktale/core/lambda/identity'
+ * 
+ *     [1, 2, 3].map(identity);
+ *     //: ==> [1, 2, 3]
+ * 
+ * @param value The value that will be returned
+ * @stability stable
  */
-module.exports = {
-  of: Future.of,
-  rejected: Future.rejected,
-  fromPromise: Future.fromPromise,
-  _Deferred: require('./_deferred'),
-  _ExecutionState: require('./_execution-state'),
-  _Future: Future
-};
+export default
+function identity<A>(value: A): A {
+  return value;
+}
