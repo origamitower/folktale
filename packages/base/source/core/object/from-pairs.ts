@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------
 
-const define = Object.defineProperty;
+import { define } from '../../helpers/builtin-abstractions';
 
 
 /**
@@ -28,7 +28,7 @@ const define = Object.defineProperty;
 export default
 function fromPairs(pairs: Array<[string, any]>): { [key: string]: any } {
   return pairs.reduce(
-    (result, [key, value]) => define(result, key, { value, writable: true, enumerable: true, configurable: true }),
+    (result, [key, value]) => define(result, key, value),
     {}
   );
 }

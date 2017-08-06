@@ -12,7 +12,7 @@
 
 // Any special folktale object has this
 type Folktale<A extends string> = {
-  '@@folktale/uri': A
+  '@@folktale/type': A
 };
 
 

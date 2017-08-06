@@ -138,8 +138,8 @@ interface Partial4<A, B, C, D, E> {
  * 
  * @stability experimental
  */
-export const hole: Folktale<'lambda/partialize/hole'> = { 
-  '@@folktale/uri': 'lambda/partialize/hole' 
+export const hole: Folktale<'folktale:hole'> = { 
+  '@@folktale/type': 'folktale:hole' 
 };
 
 type Hole = typeof hole;
