@@ -19,16 +19,5 @@
   "bugs": {
     "url": "https://github.com/origamitower/folktale/issues"
   },
-  "dependencies": {},
-  "metamagical": {
-    "modulePath": {
-      "ignorePrefix": "source/"
-    },
-    "commonMetadata": {
-      "copyright": "(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS",
-      "maintainers": [
-        "Quildreen Motta <queen@robotlolita.me> (http://robotlolita.me/)"
-      ]
-    }
-  }
+  "dependencies": {}
 }

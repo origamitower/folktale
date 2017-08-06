@@ -22,6 +22,9 @@ define babel from to flags @ options =
     -environment: (get-or-else (Record.get options "environment") Record.empty)
   )
 
+define typescript project =
+  $((npm-bin "tsc") @ -working-directory: project)
+
 define mocha reporter flags @ options =
   $((npm-bin "mocha")
     '--require 'babel-polyfill
@@ -151,7 +154,8 @@ export define clean =
 
 export define compile =
   # Compiles the source code for the project, in all sub-packages.
-  do action compile-source
+  do # action compile-source
+     action typescript (root / "packages" / "base") | show-shell-output
 
 
 export define test =
