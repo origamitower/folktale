@@ -15,3 +15,4 @@ npm-debug.log
 /tools/static-docs/lib/
 /tools/static-docs/resources/html/*.css
 .nyc_output/
+.ignore

@@ -64,7 +64,10 @@ const partialize: Partialize = (arity: number, fn: any) => (...args: any[]) => {
   }
 };
 
+export default partialize;
 
+
+// TODO: Include partial interfaces up to arity 9
 interface Partialize {
   <A, B>
   (arity: 1, fn: F1<A, B>): Partial1<A, B>
@@ -77,6 +80,8 @@ interface Partialize {
 
   <A, B, C, D, E>
   (arity: 4, fn: F4<A, B, C, D, E>): Partial4<A, B, C, D, E>
+
+  (arity: number, fn: Function): any
 }
 
 interface Partial1<A, B> {
@@ -112,10 +117,20 @@ interface Partial4<A, B, C, D, E> {
   (a: Hole, b: Hole, c: C, d: Hole): Partial3<A, B, D, E>
   (a: Hole, b: B, c: Hole, d: Hole): Partial3<A, C, D, E>
   (a: A, b: Hole, c: Hole, d: Hole): Partial3<B, C, D, E>
+
+  (a: Hole, b: Hole, c: C, d: D): Partial2<A, B, E>
+  (a: Hole, b: B, c: Hole, d: D): Partial2<A, C, E>
+  (a: Hole, b: B, c: C, d: Hole): Partial2<A, D, E>
+  (a: A, b: Hole, c: Hole, d: D): Partial2<B, C, E>
+  (a: A, b: Hole, c: C, d: Hole): Partial2<B, D, E>
+  (a: A, b: B, c: Hole, d: Hole): Partial2<C, D, E>
   
+  (a: Hole, b: B, c: C, d: D): Partial1<A, E>
+  (a: A, b: Hole, c: C, d: D): Partial1<B, E>
+  (a: A, b: B, c: Hole, d: D): Partial1<C, E>
+  (a: A, b: B, c: C, d: Hole): Partial1<D, E>
 }
 
-export default partialize;
 
 /**
  * The Hole is a special value used to indicate you don't want to fill
@@ -123,7 +138,7 @@ export default partialize;
  * 
  * @stability experimental
  */
-export const hole: { 
+export const hole: Folktale<'lambda/partialize/hole'> = { 
   '@@folktale/uri': 'lambda/partialize/hole' 
 };
 

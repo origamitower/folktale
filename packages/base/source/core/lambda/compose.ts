@@ -64,44 +64,42 @@ const all: All = function all(...fns: any[]): any {
   }
 }
 
-type F<A, B> = (_: A) => B
-
 interface All {
   // arity 1
   <A, B>
-  (a: F<A, B>): F<A, B>
+  (a: F1<A, B>): F1<A, B>
   
   // arity 2
   <A, B, C>
-  (a: F<B, C>, b: F<A, B>): F<A, C>
+  (a: F1<B, C>, b: F1<A, B>): F1<A, C>
   
   // arity 3
   <A, B, C, D>
-  (a: F<C, D>, b: F<B, C>, c: F<A, B>): F<A, D>
+  (a: F1<C, D>, b: F1<B, C>, c: F1<A, B>): F1<A, D>
   
   // arity 4
   <A, B, C, D, E>
-  (a: F<D, E>, b: F<C, D>, c: F<B, C>, d: F<A, B>): F<A, E>
+  (a: F1<D, E>, b: F1<C, D>, c: F1<B, C>, d: F1<A, B>): F1<A, E>
   
   // arity 5
   <A, B, C, D, E, G>
-  (a: F<E, G>, b: F<D, E>, c: F<C, D>, d: F<B, C>, e: F<A, B>): F<A, G>
+  (a: F1<E, G>, b: F1<D, E>, c: F1<C, D>, d: F1<B, C>, e: F1<A, B>): F1<A, G>
 
   // arity 6
   <A, B, C, D, E, G, H>
-  (a: F<G, H>, b: F<E, G>, c: F<D, E>, d: F<C, D>, e: F<B, C>, f: F<A, B>): F<A, H>
+  (a: F1<G, H>, b: F1<E, G>, c: F1<D, E>, d: F1<C, D>, e: F1<B, C>, f: F1<A, B>): F1<A, H>
 
   // arity 7
   <A, B, C, D, E, G, H, I>
-  (a: F<H, I>, b: F<G, H>, c: F<E, G>, d: F<D, E>, e: F<C, D>, f: F<B, C>, g: F<A, B>): F<A, I>
+  (a: F1<H, I>, b: F1<G, H>, c: F1<E, G>, d: F1<D, E>, e: F1<C, D>, f: F1<B, C>, g: F1<A, B>): F1<A, I>
 
   // arity 8
   <A, B, C, D, E, G, H, I, J>
-  (a: F<I, J>, b: F<H, I>, c: F<G, H>, d: F<E, G>, e: F<D, E>, f: F<C, D>, g: F<B, C>, h: F<A, B>): F<A, J>
+  (a: F1<I, J>, b: F1<H, I>, c: F1<G, H>, d: F1<E, G>, e: F1<D, E>, f: F1<C, D>, g: F1<B, C>, h: F1<A, B>): F1<A, J>
 
   // arity 9
   <A, B, C, D, E, G, H, I, J, K>
-  (a: F<J, K>, b: F<I, J>, c: F<H, I>, d: F<G, H>, e: F<E, G>, f: F<D, E>, g: F<C, D>, h: F<B, C>, i: F<A, B>): F<A, K>
+  (a: F1<J, K>, b: F1<I, J>, c: F1<H, I>, d: F1<G, H>, e: F1<E, G>, f: F1<D, E>, g: F1<C, D>, h: F1<B, C>, i: F1<A, B>): F1<A, K>
 
   // any other arity
   (...fns: Function[]): Function
