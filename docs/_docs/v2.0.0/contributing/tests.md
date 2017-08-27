@@ -23,14 +23,9 @@ which you can use as a basis to make this decision.
 
 You'll want to [get your own copy of Folktale](https://guides.github.com/activities/forking/). After forking, you can clone your repository to start working on it. GitHub has [a visual guide for this workflow](https://guides.github.com/introduction/flow/), which you may want to read if you're not familiar with it.
 
-Make sure you've got [the development tools Folktale uses]({% link _docs/v2.0.0/contributing/setup.md %}) installed. It can take some work setting it up on Windows, unfortunately. We'll be improving this soon!
-
-Once you've got everything installed, and after you've cloned the repository, you'll need to initialise the tools. This can be done by issuing the following commands in the command line, inside the root of the project:
+Make sure you've got [the development tools Folktale uses]({% link _docs/v2.0.0/contributing/setup.md %}) installed by running `npm install` at the Folktale directory:
 
     $ npm install
-    $ git submodule init
-    $ git submodule update
-    $ make tools
 
 > **NOTE**
 > The `$` is not part of the command, but rather indicates that you should run the command with your regular user account, instead of an administrator account.
@@ -106,9 +101,11 @@ describe('Core.Lambda', _ => {
 
 ## Running tests
 
-To run tests in Node, use the `make test` command. This will compile all of the source and all of the tests, then run the tests with Mocha. `make test-all` will also run the tests defined as examples through the documentation.
+To run tests in Node, use the `furipota run test` command. This will compile all of the source and all of the tests, then run the tests with Mocha in Node and in the browser (using PhantomJS).
 
-You can run tests in a Browser by using `make test-browser`. By default tests are ran only in PhantomJS, but this is configurable through the `test/karma-local.js` file.
+    $ ./node_modules/.bin/furipota run test
+
+By default browser tests are ran only in PhantomJS, but this is configurable through the `test/karma-local.js` file.
 
 
 ## Crediting yourself

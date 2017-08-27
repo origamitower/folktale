@@ -12,6 +12,7 @@ const define = require('folktale/helpers/define');
 const provideAliases = require('folktale/helpers/provide-fantasy-land-aliases');
 const Deferred = require('./_deferred');
 const { Pending, Resolved, Rejected } = require('./_execution-state');
+const warnDeprecation = require('folktale/helpers/warn-deprecation');
 
 
 
@@ -133,11 +134,24 @@ class Future {
 
   // ---[ Recovering from errors ]-------------------------------------
   /*~
-   * stability: experimental
+   * deprecated:
+   *   since: 2.1.0
+   *   replacedBy: .orElse(handler)
+   * 
    * type: |
    *   (Future 'f 's).(('f) => Future 'f2 's2) => Future 'f2 's
    */
   recover(handler) {
+    warnDeprecation('`.recover` was renamed to `.orElse` for consistency, and thus `.recover(handler)` is deprecated. Use `.orElse(handler)` instead.');
+    return this.orElse(handler);
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   (Future 'f 's).(('f) => Future 'f2 's2) => Future 'f2 's
+   */
+  orElse(handler) {
     let deferred = new Deferred();      // eslint-disable-line prefer-const
     this.listen({
       onCancelled: ()     => deferred.cancel(),

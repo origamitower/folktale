@@ -23,14 +23,9 @@ Bugs are controlled in the [GitHub issue tracker](https://github.com/origamitowe
 
 Once you're ready to work on fixing the bug, you'll want to [get your own copy of Folktale](https://guides.github.com/activities/forking/). After forking, you can clone your repository to start working on it. GitHub has [a visual guide for this workflow](https://guides.github.com/introduction/flow/), which you may want to read if you're not familiar with it.
 
-Make sure you've got [the development tools Folktale uses]({% link _docs/v2.0.0/contributing/setup.md %}) installed. It can take some work setting it up on Windows, unfortunately. We'll be improving this soon!
-
-Once you've got everything installed, and after you've cloned the repository, you'll need to initialise the tools. This can be done by issuing the following commands in the command line, inside the root of the project:
+Make sure you've got [the development tools Folktale uses]({% link _docs/v2.0.0/contributing/setup.md %}) installed by running `npm install` in the Folktale directory:
 
     $ npm install
-    $ git submodule init
-    $ git submodule update
-    $ make tools
 
 > **NOTE**
 > The `$` is not part of the command, but rather indicates that you should run the command with your regular user account, instead of an administrator account.
@@ -43,7 +38,7 @@ Once you've got everything set up you're ready to make your changes. Fire up you
 
 To compile the files, run:
 
-    $ make compile
+    $ ./node_modules/.bin/furipota run compile
 
 At the root of the project. This will generate the compiled files at the root as well, and you can require them right from the Node.js REPL, like so:
 
@@ -76,11 +71,11 @@ All fields besides the name are optional. As for the name, just pick any that yo
 
 Make sure all existing tests pass by running:
 
-    $ make test-all
+    $ ./node_modules/.bin/furipota run test
 
 Make sure your code conforms to the coding style used by the project by running:
 
-    $ make lint
+    $ ./node_modules/.bin/furipota run lint
 
 
 ## Proposing your changes

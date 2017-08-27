@@ -18,15 +18,15 @@ const nextGeneratorValue = (generator) => (value) => {
   const { value: task, done } = generator.next(value);
   return !done ? task.chain(nextGeneratorValue(generator))
     /* else */ : task;
-}
+};
 
 /*~
  * stability: experimental
  * type: |
  *   forall v, e: (Generator [Task e v Any]) => Task e [v] Any
  */
-const taskDo = (generator) => 
-  new Task((resolver) => resolver.resolve(generator()))
+const taskDo = (generatorFn) => 
+  new Task((resolver) => resolver.resolve(generatorFn()))
     .chain((generator) => nextGeneratorValue(generator)());
 
 module.exports = taskDo;

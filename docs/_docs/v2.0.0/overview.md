@@ -135,7 +135,7 @@ structures to help with error handling:
     }
 
     function divide(x, y) {
-      if (typeox x !== "number" || typeof y !== "number") {
+      if (typeof x !== "number" || typeof y !== "number") {
         return Result.Error(new IllegalArgument(`arguments to divide must be numbers`));
       } else if (y === 0) {
         return Result.Error(new DivisionByZero(`${x} / ${y} is not computable.`));

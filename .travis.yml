@@ -1,9 +1,9 @@
 language: node_js
 node_js:
-  - "6"
+  - "8"
   - "7"
 env:
   global:
     - NODE_ENV=test
 script:
-  - make travis-tests
+  - npm run travis

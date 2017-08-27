@@ -1,6 +1,6 @@
 {
   "name": "folktale",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A suite of libraries for generic functional programming in JavaScript that allows you to write elegant modular applications with fewer bugs and more reuse.",
   "main": "./index.js",
   "repository": {

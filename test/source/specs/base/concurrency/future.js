@@ -361,16 +361,16 @@ describe('Concurrency: Future', function() {
       return cancelled().mapRejected(f) ::eq(cancelled());
     });
 
-    property('#recover(f) ignores successes', 'nat', 'nat -> future nat', env, (a, f) => {
-      return Future.of(a).recover(f) ::eq(Future.of(a));
+    property('#orElse(f) ignores successes', 'nat', 'nat -> future nat', env, (a, f) => {
+      return Future.of(a).orElse(f) ::eq(Future.of(a));
     });
 
-    property('#recover(f) applies f to rejections', 'nat', 'nat -> future nat', env, (a, f) => {
-      return Future.rejected(a).recover(f) ::eq(f(a));
+    property('#orElse(f) applies f to rejections', 'nat', 'nat -> future nat', env, (a, f) => {
+      return Future.rejected(a).orElse(f) ::eq(f(a));
     });
 
-    property('#recover(f) ignores cancellations', 'nat', 'nat -> future nat', env, (a, f) => {
-      return cancelled().recover(f) ::eq(cancelled());
+    property('#orElse(f) ignores cancellations', 'nat', 'nat -> future nat', env, (a, f) => {
+      return cancelled().orElse(f) ::eq(cancelled());
     });
 
     property('#willMatchWith(pattern) invokes the proper pattern', 'nat', 'nat -> future nat', 'nat -> future nat', 'nat -> future nat', env, (a, f, g, h) => {

@@ -34,37 +34,6 @@ with npm as well, which you'll use to pull the dependencies of the project.
 Note that Folktale requires at least Node 4.x, so if you have an older version
 you'll need to upgrade.
 
-## Make
-
-Folktale uses Make as its build system, and also relies on some common *NIX
-tools, like `find`. Because of this, it might be harder to configure a
-development environment for Windows.
-
-Below are instructions to install Make on common systems:
-
-> **TODO**
-> Provide instructions for OS/X and *BSD systems.
-
-### Debian/Ubuntu (Linux):
-
-    $ apt-get install build-essential
-
-### Arch (Linux):
-
-    $ pacman -S base-devel
-
-### Fedora / Enterprise Linux:
-
-    $ yum install "Development Tools"
-
-### Windows:
-
- 1. Download the latest version of [GnuWin32](https://sourceforge.net/projects/getgnuwin32/files/). This should be something like `GetGnuWin32-*.exe`;
- 2. Execute the application you just downloaded. You have to accept the licence to proceed;
- 3. Select a folder to extract the components to;
- 4. Run `download.bat` from the folder you extracted the components to;
- 5. Finally, run `install.bat` from that folder.
-
 
 ## Cloning and initialising the repository
 
@@ -81,38 +50,34 @@ of the dependencies and development tools that Folktale uses:
 
     $ cd folktale
     $ npm install
-    # Some of the tools are in a git subrepo
-    $ git submodule init
-    $ git submodule update
-    $ make tools
 
 
 ## Development tools
 
-[Folktale uses GNU Make for development tooling](#make). From
+[Folktale uses Furipota for development tooling](https://github.com/origamitower/furipota). From
 there you can compile the source code, run tests, perform cleanup routines, or
-check your source code for style errors.
+check your source code for style errors. Furipota is installed as a dev-dependency
+when you run `npm install` in the Folktale directory.
 
-Note: [**before you can do anything in Folktale you must initialise the documentation tools**](#cloning-and-initialising-the-repository):
+To list the available tasks, use `furipota list` at the root directory:
 
+    $ ./node_modules/.bin/furipota list
 
-Running `make` or `make help` will show you all of the available development
-tasks.
+**To compile** the source code, use `furipota run compile`:
 
-Running `make compile` will compile the source code using Babel. 
-After this you can import the objects in the REPL and interact with them.
+    $ ./node_modules/.bin/furipota run compile
 
-Running `make compile-annotated` will compile the source code with the special documentation
-marks. You can use `make documentation` to generate HTML docs from that.
+**To run the tests**, use `furipota run test`:
 
-Running `make test` will compile the project and run all of the tests. Running
-`make test-all` will also test the examples in the documentation. You can run
-tests in a PhantomJS (a headless WebKit browser) using `make test-browser`.
+    $ ./node_modules/.bin/furipota run test
 
-Running `make lint` will check all of the source code for style
-inconsistencies. The coding style used by Folktale is described later in this
-document.
+**To build the documentation**, use `furipota run documentation`:
 
-Finally, running `make clean` will remove any compiled files from your working
-directory, but will keep all other files intact. You can always run `make
-compile` again to re-build the project.
+    $ ./node_modules/.bin/furipota run documentation
+
+> **NOTE**  
+> that you'll need to have [Ruby](https://www.ruby-lang.org/), [RubyGems](https://rubygems.org/), and [Bundler](http://bundler.io/) installed.
+
+**To check the code style and potential bugs**, use `furipota run lint`:
+
+    $ ./node_modules/.bin/furipota run lint
