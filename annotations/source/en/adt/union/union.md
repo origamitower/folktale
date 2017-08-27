@@ -275,6 +275,70 @@ all cases when using it:
       })
     });
 
+### Reacting to Many Errors with One Result
+### Reacting To Anything
+### Dealing All Error Scenarios
+### Dealing All Error Scenarios in One Fell Swoop
+### Logging Any Errors
+
+Handling tagged unions like the above example shows we can now handle errors
+in general, yet still retain the ability to react to each individual
+type of error.
+
+In some scenarios, we wish to react to any response, not caring which
+one it is. Examples include finding required HTTP headers for a request.
+Another is when calling noops for log and resource deallocation. For
+those situations, we can use the `any` type.
+
+Let's say we want to verify an _Authorization_ header is present and
+has an acceptable value. There are 3 acceptable values. Anything else
+is considered an error. The below is a Node Restify request example
+that defines the 3 acceptable header values, 
+
+    const AuthHeader = union('AuthHeader', {
+      None() { return { 'None' }; },
+      JWT() { return { 'JWT' }; },
+      Session() { return { 'Session' }; },
+      Unknown() { return { 'Unknown' }; }
+    });
+
+    function hasAcceptableAuthHeader(authHeader) {
+      return authHeader.matchWith({
+        Unknown: () => false,
+        None: ()  => true,
+        JWT: ()  => true,
+        Session: ()  => true
+      })
+    }
+
+    api.method(response => {
+      // ... parse AuthHeader from response
+      if(hasAcceptableAuthHeader(authHeader)) {
+        // ... proceed
+      } else {
+        // ... failure
+      }
+    });
+
+We need the `AuthHeader` union throughtout our code to model our data,
+but in this particular case, any positive match of an acceptable data
+type is ok. Instead of having to write 3 all matches that result in 
+the same outcome, we can use the `any` symbol:
+
+    const { any } = union;
+
+    function hasAcceptableAuthHeader(authHeader) {
+      return authHeader.matchWith({
+        Unknown: () => false,
+        [any]: () => true
+      })
+    }
+
+While useful, be aware that union types cannot guarentee the type your variant
+will receive. Sometimes your destructuring would work, other times it would
+attempt to destructure on `undefined` which would throw an exception.
+Therefore, `any` matches will never receive parameters. If you need
+to retain state, ensure you wrap in a closure or predicate like we have above.
 
 ## Providing common functionality
 
