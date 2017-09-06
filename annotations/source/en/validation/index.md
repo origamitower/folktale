@@ -153,7 +153,7 @@ Neither of those are very compelling. The Validation structure gives you a tool 
     const { Success, Failure } = Validation;
 
     const notEmpty = (field, value) =>
-      value.trim() ?   Success(field)
+      value.trim() ?   Success(value)
     : /* else */       Failure([`${field} can't be empty`]);
 
     const minLength = (field, min, value) =>
