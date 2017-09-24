@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.1</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">filter</h1><div class="highlight-summary"><div><p>If the Maybe is a Just, passes its value to the predicate. If the predicate
 returns true, then the Maybe is returned unchanged. In every other case,
@@ -22,7 +22,7 @@ a Nothing gets returned.</p>
 // This line evaluates to true.
 Maybe.Just.hasInstance(Maybe.Just(3).filter(n =&gt; n === 3));
 
-// These lines evaluates to false.
+// These lines evaluate to false.
 Maybe.Just.hasInstance(Maybe.Just(2).filter(n =&gt; n === 3));
 Maybe.Just.hasInstance(Maybe.Nothing().filter(n =&gt; n !== 3));
 Maybe.Just.hasInstance(Maybe.Nothing().filter(n =&gt; n === 3));

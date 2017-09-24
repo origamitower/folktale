@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.0</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.0.1</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/validation</h1><div class="highlight-summary"><div><p>A data structure that typically models form validations, and other scenarios where
 you want to aggregate <strong>all</strong> failures, rather than short-circuit if an error
@@ -149,7 +149,7 @@ validateForm2({
 const { Success, Failure } = Validation;
 
 const notEmpty = (field, value) =&gt;
-  value.trim() ?   Success(field)
+  value.trim() ?   Success(value)
 : /* else */       Failure([`${field} can&#39;t be empty`]);
 
 const minLength = (field, min, value) =&gt;
