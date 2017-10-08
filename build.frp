@@ -209,8 +209,8 @@ export define lint =
 
 export define release =
   # Releases `base`
-  let release = root / "base" / "releases" / "new" in
-  let pkg = root / "base" in
+  let release = root / "packages" / "base" / "releases" / "new" in
+  let pkg = root / "packages" / "base" in
   let show-copy = show-file-operation "COPY" in
   do action test
      action lint
