@@ -47,6 +47,16 @@ folktale.core.lambda.identity(1); // ==> 1
 Browsers don't have native support for CommonJS modules. We still recommend using a module system (like [Browserify][] or [WebPack][]) and bundling your modules to distribute your application. This allows you to only load the parts of Folktale that you use, reducing the amount of data you have to send to your users.
 
 
+### Pre-requisites for ES3 and ES5 browsers
+
+Folktale is written for ECMAScript 2015 platforms, but it uses a subset of features that can
+be safely backported to platforms as old as ECMAScript 3. If you're running your program in
+an older platform, you'll need [es6-shim][], and you might need [es5-shim][].
+
+[es5-shim]: https://github.com/es-shims/es5-shim
+[es6-shim]: https://github.com/es-shims/es6-shim
+
+
 ### Using Browserify
 
 First install Browserify from npm (you should have a package.json describing your application's dependencies):
