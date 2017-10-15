@@ -70,12 +70,13 @@ function delay(ms) {
   });
 }
 
-const resources = delay(1000).fork(
+const delayTask = delay(1000);
+const resources = delayTask.fork(
   (error) => {
-    delay.cleanup(resources);
+    delayTask.cleanup(resources);
   },
   (value) => {
-    delay.cleanup(resources);
+    delayTask.cleanup(resources);
   }
 );
 {% endhighlight %}
@@ -98,6 +99,37 @@ function delay(ms) {
 }
 
 delay(100).run();
+{% endhighlight %}
+
+To run arbitrary code in response to the result of executing the task, the `listen` method of `TaskExecution` is used in place of the functions one would pass to `Task.fork` before.
+
+Where one used to write:
+
+{% highlight js %}
+const Task = require('data.task');
+
+const one = new Task((reject, resolve) => resolve(1));
+
+one.fork(
+  (error) => { console.log('something went wrong') },
+  (value) => { console.log(`The value is ${value}`) }
+);
+// logs "The value is 1"
+{% endhighlight }
+
+In Folktale 2 would be:
+
+{% highlight js %}
+const { task } = require('folktale/concurrency/task');
+
+const one = task(resolver => resolver.resolve(1));
+
+one.run().listen({
+  onCancelled: () => { console.log('the task was cancelled') },
+  onRejected: (error) => { console.log('something went wrong') },
+  onResolved: (value) => { console.log(`The value is ${value}`) }
+});
+// logs "The value is 1"
 {% endhighlight %}
 
 
