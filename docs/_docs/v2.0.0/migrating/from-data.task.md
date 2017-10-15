@@ -197,9 +197,9 @@ Folktale 2 removes both `fold` and `cata`, and provides a new method that signal
 const { of } = require('folktale/data/task');
 
 of(1).willMatchWith({
-  Cancelled: () => 'cancelled',
-  Resolved:  (value) => value + 1,
-  Rejected:  (error) => error - 1
+  Cancelled: () => of('cancelled'),
+  Resolved:  (value) => of(value + 1),
+  Rejected:  (error) => of(error - 1)
 });
 // Task.of(2)
 {% endhighlight %}
