@@ -32,6 +32,13 @@ Folktale can be installed through [npm][]:
 
 ## Supported platforms
 
+Folktale is written for ECMAScript 2015 platforms, but it uses a subset of features that can
+be safely backported to platforms as old as ECMAScript 3. If you're running your program in
+an older platform, you'll need [es5-shim][] and [es6-shim][].
+
+[es5-shim]: https://github.com/es-shims/es5-shim
+[es6-shim]: https://github.com/es-shims/es6-shim
+
   - Node 4.x, Node 6+ ([**Node 5.x is not supported**](https://github.com/origamitower/folktale/issues/47))
 
 
