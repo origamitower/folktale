@@ -115,7 +115,7 @@ one.fork(
   (value) => { console.log(`The value is ${value}`) }
 );
 // logs "The value is 1"
-{% endhighlight }
+{% endhighlight %}
 
 In Folktale 2 would be:
 
