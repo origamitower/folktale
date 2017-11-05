@@ -50,4 +50,4 @@ We've also got some pages on [how to get help]({% link _docs/support/index.md %}
 
 ## Documentation for older releases
 
-  - [Folktale 1.x (`core.*`, `data.*`, `control.*`)](http://docs.folktalejs.org/en/latest/)
+  - [Folktale 1.x (`core.*`, `data.*`, `control.*`)](http://folktalegithubio.readthedocs.io/en/latest/)
