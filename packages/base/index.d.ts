@@ -233,7 +233,7 @@ declare namespace folktale {
   }
 
   interface TaskExecution<A, B> {
-    cacel(): TaskExecution<A, B>
+    cancel(): TaskExecution<A, B>
 
     listen(pattern: {
       onCancelled(): void,
