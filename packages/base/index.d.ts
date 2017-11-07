@@ -256,11 +256,20 @@ declare namespace folktale {
   }
 
   interface StaticTask {
+    waitAll<E, V1, V2>(tasks: [Task<E, V1>, Task<E, V2>]): Task<E, [V1, V2]>
+    waitAll<E, V1, V2, V3>(tasks: [Task<E, V1>, Task<E, V2>, Task<E, V3>]): Task<E, [V1, V2, V3]>
+    waitAll<E, V1, V2, V3, V4>(tasks: [Task<E, V1>, Task<E, V2>, Task<E, V3>, Task<E, V4>]): Task<E, [V1, V2, V3, V4]>
+    waitAll<E, V1, V2, V3, V4, V5>(tasks: [Task<E, V1>, Task<E, V2>, Task<E, V3>, Task<E, V4>, Task<E, V5>]): Task<E, [V1, V2, V3, V4, V5]>
+    waitAll<E, V1, V2, V3, V4, V5, V6>(tasks: [Task<E, V1>, Task<E, V2>, Task<E, V3>, Task<E, V4>, Task<E, V5>, Task<E, V6>]): Task<E, [V1, V2, V3, V4, V5, V6]>
     waitAll<E, V>(tasks: Task<E, V>[]): Task<E, V[]>
+
     waitAny<E, V>(tasks: Task<E, V>[]): Task<E, V>
+    
+    
     of<E, V>(value: V): Task<E, V>
     rejected<E, V>(reason: E): Task<E, V>
     task<E, V>(resolver: TaskResolver<E, V>): Task<E, V>
+    
     fromNodeback<E, V>(fn: (cb: (e: E, v: V) => void) => void): () =>  Task<E, V>
     fromNodeback<A, E, V>(fn: (a1: A, cb: (e: E, v: V) => void) => void): (a1: A) =>  Task<E, V>
     fromNodeback<A, A2, E, V>(fn: (a1: A, a2: A2, cb: (e: E, v: V) => void) => void): (a1: A, a2: A2) =>  Task<E, V>
