@@ -11,6 +11,16 @@ declare namespace folktale {
     toPairs<A>(object: {[key: string]: A}): [string, A][];
     values<A>(object: {[key: string]: A}): A[];
     mapValues<A, B>(object: {[key: string]: A}, fn: (_: A) => B): {[key: string]: B};
+    mapEntries: MapEntries
+  }
+
+  type Dict<A> = { [key: string]: A };
+
+  interface MapEntries {
+    <A, B>(object: Dict<A>, transform: (pair: [string, A]) => [string, B], define: (object: Dict<B>, key: string, value: B) => Dict<B>): Dict<B>
+
+    overwrite<A, B>(object: Dict<A>, transform: (pair: [string, A]) => [string, B]): Dict<B>
+    unique<A, B>(object: Dict<A>, transform: (pair: [string, A]) => [string, B]): Dict<B>
   }
 
   interface Core {
