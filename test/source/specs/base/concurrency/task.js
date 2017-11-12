@@ -168,7 +168,7 @@ describe('Data.Task', () => {
       $ASSERT(v1 == 1);
 
       await b.or(a).run().promise().catch(v => $ASSERT(v == 2));
-      
+
 
       const v2 = await a.or(c).run().promise();
       $ASSERT(v2 == 1);
@@ -335,8 +335,8 @@ describe('Data.Task', () => {
       r.cleanup(() => clearTimeout(timer));
     });
     const result = await Task.do(function *() {
-      const a = yield delay(10); 
-      const b = yield delay(11); 
+      const a = yield delay(10);
+      const b = yield delay(11);
       const c = yield Task.of(5);
       return Task.of(a + b + c + 4);
     }).run().promise();
@@ -352,7 +352,7 @@ describe('Data.Task', () => {
       $ASSERT(exception == 5);
     })
     $ASSERT(exceptionThrown[0] == true);
-    
+
     const resultCancel = await Task.do(function *() {
       const a = yield Task.task(r => r.cancel());
       return Task.of(a);
@@ -363,7 +363,7 @@ describe('Data.Task', () => {
 
     const multipleCallsResults = [];
     const multipleCallsTask = await Task.do(function *() {
-      const a = yield delay(10); 
+      const a = yield delay(10);
       return Task.of(a);
     });
     multipleCallsResults[0] = await multipleCallsTask.run().promise();
@@ -386,14 +386,14 @@ describe('Data.Task', () => {
     });
 
     it('Always invokes cleanup after the task resolves', async () => {
-      let stack = []; 
+      let stack = [];
 
       let d = new Deferred();
-      Task.task(r => { 
+      Task.task(r => {
         stack.push(1);
         r.cleanup(() => {
           stack.push(2);
-          d.resolve(2) 
+          d.resolve(2)
         });
         r.resolve(1)
       }).run();
@@ -402,7 +402,7 @@ describe('Data.Task', () => {
 
       stack = [];
       d = new Deferred();
-      Task.task(r => { 
+      Task.task(r => {
         stack.push(3);
         r.cleanup(() => {
           stack.push(4);
@@ -415,7 +415,7 @@ describe('Data.Task', () => {
 
       stack = [];
       d = new Deferred();
-      Task.task(r => { 
+      Task.task(r => {
         stack.push(5);
         r.cleanup(() => {
           stack.push(6);
@@ -427,10 +427,10 @@ describe('Data.Task', () => {
     });
 
     it('Invokes onCancelled callbacks if the task is cancelled', async () => {
-      let stack = []; 
+      let stack = [];
 
       let d = new Deferred();
-      Task.task(r => { 
+      Task.task(r => {
         stack.push(1);
         r.cleanup(() => {
           stack.push(2);
@@ -447,7 +447,7 @@ describe('Data.Task', () => {
 
       stack = [];
       d = new Deferred();
-      Task.task(r => { 
+      Task.task(r => {
         stack.push(3);
         r.cleanup(() => {
           stack.push(4);
@@ -464,7 +464,7 @@ describe('Data.Task', () => {
 
       stack = [];
       d = new Deferred();
-      Task.task(r => { 
+      Task.task(r => {
         stack.push(5);
         stack.push(r.isCancelled);
         r.cleanup(() => {
@@ -539,6 +539,36 @@ describe('Data.Task', () => {
         ex.cancel();
         return ex.promise().catch(v => $ASSERT(Cancelled.hasInstance(v)));
       });
+
+      it('Deals with exception', async () => {
+        let Result = undefined;
+        try {
+          let ex = await Task.of('a')
+            .map((() => false ? Result.a : Result.b))
+            .run()
+            .promise();
+          // Should have thrown by then
+          $ASSERT(false)
+        } catch (e) {
+          if (e.message != 'false') $ASSERT(e instanceof TypeError)
+        }
+      });
+
+      it('Deals with exception corner cases', async () => {
+        let Result = require('folktale').validation;
+        try {
+          let ex = await Task.of('a')
+            .map((() => false ? Result.a : Result.b))
+            .run()
+            .promise();
+          // Should have thrown by then
+          $ASSERT(false)
+        } catch (e) {
+          if (e.message != 'false') $ASSERT(e instanceof TypeError)
+        }
+      });
+
+
     });
 
     describe('#future()', () => {
