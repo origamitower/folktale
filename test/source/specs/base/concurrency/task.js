@@ -25,7 +25,6 @@ const eq = function(that) {
   return this._state.equals(that._state);
 }
 
-
 describe('Data.Task', () => {
 
   describe('Conversions', () => {
@@ -541,16 +540,18 @@ describe('Data.Task', () => {
       });
 
       it('Deals with exception', async () => {
+        const AssertionError = require('assert').AssertionError;
         let Result = undefined;
+
         try {
           let ex = await Task.of('a')
             .map((() => false ? Result.a : Result.b))
             .run()
             .promise();
-          // Should have thrown by then
+          // Should have thrown a TypeError by then
           $ASSERT(false)
         } catch (e) {
-          if (e.message != 'false') $ASSERT(e instanceof TypeError)
+          $ASSERT(e instanceof TypeError);
         }
       });
 
@@ -561,13 +562,13 @@ describe('Data.Task', () => {
             .map((() => false ? Result.a : Result.b))
             .run()
             .promise();
-          // Should have thrown by then
+          // Should have thrown a TypeError by then
           $ASSERT(false)
+          // But throws an AssertionError instead
         } catch (e) {
-          if (e.message != 'false') $ASSERT(e instanceof TypeError)
+          $ASSERT(e instanceof TypeError);
         }
       });
-
 
     });
 
