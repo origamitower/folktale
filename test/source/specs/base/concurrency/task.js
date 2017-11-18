@@ -540,7 +540,6 @@ describe('Data.Task', () => {
       });
 
       it('Deals with exception', async () => {
-        const AssertionError = require('assert').AssertionError;
         let Result = undefined;
 
         try {
