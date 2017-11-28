@@ -91,7 +91,7 @@ module's documentation for more details.
 
 There are a few ways in which errors are generally handled in JavaScript, but they tend to
 boil down mostly to control-flow structures (`if/else`) or exceptions (`try/catch`). These
-tend to either be hard to predict or hard to maintain. Foltkale provides three data
+tend to either be hard to predict or hard to maintain. Folktale provides three data
 structures to help with error handling:
 
   - [Maybe](/api/v2.0.0/en/folktale.maybe.html) - A structure that helps handling values
