@@ -16,12 +16,12 @@ const { Error, Ok } = require('folktale/result/result');
  *   - "@boris-marinov"
  * 
  * type: |
- *   forall a:
- *     (a or None) => Result None a
+ *   forall a, b:
+ *     (a or None, b) => Result b a
  */
-const nullableToResult = (a) =>
+const nullableToResult = (a, fallbackValue) =>
   a != null ? Ok(a)
-  :/*else*/   Error(a);
+  :/*else*/   Error(fallbackValue);
 
 
 module.exports = nullableToResult;

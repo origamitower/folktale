@@ -8,12 +8,12 @@ module.
 ## Example::
 
     const Result = require('folktale/result');
-    
+
     Result.fromNullable(1);
     // ==> Result.Ok(1)
-    
-    Result.fromNullable(null);
-    // ==> Result.Error(null)
-    
-    Result.fromNullable(undefined);
-    // ==> Result.Error(undefined)
+
+    Result.fromNullable(null, 'error');
+    // ==> Result.Error('error')
+
+    Result.fromNullable(undefined, 'error');
+    // ==> Result.Error('error')

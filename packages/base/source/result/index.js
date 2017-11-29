@@ -26,10 +26,10 @@ module.exports = {
 
   /*~
    * type: |
-   *   forall a: (a or None) => Result None a
+   *   forall a, b: (a or None, b) => Result b a
    */
-  fromNullable(aNullable) {
-    return require('folktale/conversions/nullable-to-result')(aNullable);
+  fromNullable(aNullable, fallbackValue) {
+    return require('folktale/conversions/nullable-to-result')(aNullable, fallbackValue);
   },
 
   /*~
