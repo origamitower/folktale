@@ -40,25 +40,7 @@ declare namespace folktale {
     __tag: 'Just';
     value: A;
     map<B>(f: (_: A) => B): Maybe<B>;
-    apply<B>(this: Maybe<(_: A) => B>, f: Maybe<A>): Maybe<B>;
-    chain<B>(f: (_: A) => Maybe<B>): Maybe<B>;
-    getOrElse(_default: A): A;
-    orElse(f: (_: A) => Maybe<A>): Maybe<A>;
-    concat<S extends Semigroup<A>>(this: Maybe<S>, x: Maybe<S>): Maybe<S>;
-    filter(f: (_: A) => boolean): Maybe<A>;
-    matchWith<R>(patterns: {
-      Just(_: { value: A }): R
-      Nothing(_: {}): R
-    }): R;
-    toResult<B>(fallback: B): Result<B, A>;
-    toValidation<B>(fallback: B): Validation<B, A>;
-  }
-
-  interface Nothing<A> {
-    __type: A;
-    __tag: 'Nothing';
-    map<B>(f: (_: A) => B): Maybe<B>;
-    apply<B>(this: Maybe<(_: A) => B>, f: Maybe<A>): Maybe<B>;
+    apply<A, B>(this: Maybe<(_: A) => B>, f: Maybe<A>): Maybe<B>;
     chain<B>(f: (_: A) => Maybe<B>): Maybe<B>;
     getOrElse(_default: A): A;
     orElse(f: () => Maybe<A>): Maybe<A>;
@@ -70,6 +52,34 @@ declare namespace folktale {
     }): R;
     toResult<B>(fallback: B): Result<B, A>;
     toValidation<B>(fallback: B): Validation<B, A>;
+    inspect(): string;
+    toString(): string;
+    equals(that: Maybe<A>): boolean;
+    unsafeGet(): A;
+    fold<B>(onJust: (_: A) => B, onNothing: () => B): B;
+  }
+
+  interface Nothing<A> {
+    __type: A;
+    __tag: 'Nothing';
+    map<B>(f: (_: A) => B): Maybe<B>;
+    apply<A, B>(this: Maybe<(_: A) => B>, f: Maybe<A>): Maybe<B>;
+    chain<B>(f: (_: A) => Maybe<B>): Maybe<B>;
+    getOrElse(_default: A): A;
+    orElse(f: () => Maybe<A>): Maybe<A>;
+    concat<S extends Semigroup<A>>(this: Maybe<S>, x: Maybe<S>): Maybe<S>;
+    filter(f: (_: A) => boolean): Maybe<A>;
+    matchWith<R>(patterns: {
+      Just(_: { value: A }): R
+      Nothing(_: {}): R
+    }): R;
+    toResult<B>(fallback: B): Result<B, A>;
+    toValidation<B>(fallback: B): Validation<B, A>;
+    inspect(): string;
+    toString(): string;
+    equals(that: Maybe<A>): boolean;
+    unsafeGet(): A;
+    fold<B>(onJust: (_: A) => B, onNothing: () => B): B;
   }
 
   interface StaticMaybe {
@@ -94,10 +104,10 @@ declare namespace folktale {
     value: A;
 
     map<C>(f: (_: B) => C): Result<A, C>;
-    apply<C>(this: Result<A, (_: B) => C>, that: Result<A, B>): Result<A, C>;
+    apply<A, B, C>(this: Result<A, (_: B) => C>, that: Result<A, B>): Result<A, C>;
     chain<C>(f: (_: B) => Result<A, C>): Result<A, C>;
     getOrElse(_default: B): B;
-    orElse(f: (_: A) => A): Result<A, B>;
+    orElse(f: (_: A) => Result<A, B>): Result<A, B>;
     concat<S extends Semigroup<B>>(this: Result<A, S>, that: Result<A, S>): Result<A, S>;
     swap(): Result<B, A>;
     bimap<C, D>(error: (_: A) => C, ok: (_: B) => D): Result<C, D>;
@@ -106,6 +116,15 @@ declare namespace folktale {
     merge(): A | B;
     toValidation(): Validation<A, B>;
     toMaybe(): Maybe<B>;
+    equals(that: Result<A, B>): boolean;
+    inspect(): string;
+    toString(): string;
+    unsafeGet(): B;
+    fold<C>(onError: (_: A) => C, onOk: (_: B) => C): C;
+    matchWith<R>(pattern: {
+      Error: (_: { value: A }) => R
+      Ok: (_: { value: B }) => R
+    }): R;
   }
 
   interface Ok<A, B> {
@@ -115,10 +134,10 @@ declare namespace folktale {
     value: B;
 
     map<C>(f: (_: B) => C): Result<A, C>;
-    apply<C>(this: Result<A, (_: B) => C>, that: Result<A, B>): Result<A, C>;
+    apply<A, B, C>(this: Result<A, (_: B) => C>, that: Result<A, B>): Result<A, C>;
     chain<C>(f: (_: B) => Result<A, C>): Result<A, C>;
     getOrElse(_default: B): B;
-    orElse(f: (_: A) => A): Result<A, B>;
+    orElse(f: (_: A) => Result<A, B>): Result<A, B>;
     concat<S extends Semigroup<B>>(this: Result<A, S>, that: Result<A, S>): Result<A, S>;
     swap(): Result<B, A>;
     bimap<C, D>(error: (_: A) => C, ok: (_: B) => D): Result<C, D>;
@@ -127,6 +146,15 @@ declare namespace folktale {
     merge(): A | B;
     toValidation(): Validation<A, B>;
     toMaybe(): Maybe<B>;
+    equals(that: Result<A, B>): boolean;
+    inspect(): string;
+    toString(): string;
+    unsafeGet(): B;
+    fold<C>(onError: (_: A) => C, onOk: (_: B) => C): C;
+    matchWith<R>(pattern: {
+      Error: (_: { value: A }) => R
+      Ok: (_: { value: B }) => R
+    }): R;
   }
 
   interface StaticResult {
@@ -135,7 +163,7 @@ declare namespace folktale {
     hasInstance(value: any): boolean;
     of<A, B>(value: B): Result<A, B>;
     try<A, B>(f: (() => B)): Result<A, B>;
-    fromNullable<A, B>(value: B | null): Result<A, B>;
+    fromNullable<B>(value: B | null | undefined): Result<null | undefined, B>;
     fromValidation<A, B>(value: Validation<A, B>): Result<A, B>;
     fromMaybe<A, B>(value: Maybe<B>, failure: A): Result<A, B>;
   }
@@ -151,9 +179,9 @@ declare namespace folktale {
     value: A;
 
     map<C>(f: (_: B) => C): Validation<A, C>;
-    apply<C>(this: Validation<A, (_: B) => C>, that: Validation<A, B>): Validation<A, C>;
+    apply<A, B, C, S extends Semigroup<A>>(this: Validation<S, (_: B) => C>, that: Validation<S, B>): Validation<S, C>;
     getOrElse(_default: B): B;
-    orElse(f: (_: A) => A): Validation<A, B>;
+    orElse(f: (_: A) => Validation<A, B>): Validation<A, B>;
     concat<S extends Semigroup<A>>(this: Validation<S, B>, that: Validation<S, B>): Validation<S, B>;
     swap(): Validation<B, A>;
     bimap<C, D>(error: (_: A) => C, ok: (_: B) => D): Validation<C, D>;
@@ -162,6 +190,15 @@ declare namespace folktale {
     merge(): A | B;
     toResult(): Result<A, B>;
     toMaybe(): Maybe<B>;
+    equals(that: Validation<A, B>): boolean;
+    inspect(): string;
+    toString(): string;
+    unsafeGet(): B;
+    fold<C>(onFailure: (_: A) => C, onSuccess: (_: B) => C): C;
+    matchWith<R>(pattern: {
+      Failure: (_: { value: A }) => R
+      Success: (_: { value: B }) => R
+    }): R;
   }
 
   interface Success<A, B> {
@@ -171,9 +208,9 @@ declare namespace folktale {
     value: B;
 
     map<C>(f: (_: B) => C): Validation<A, C>;
-    apply<C>(this: Validation<A, (_: B) => C>, that: Validation<A, B>): Validation<A, C>;
+    apply<A, B, C, S extends Semigroup<A>>(this: Validation<S, (_: B) => C>, that: Validation<S, B>): Validation<S, C>;
     getOrElse(_default: B): B;
-    orElse(f: (_: A) => A): Validation<A, B>;
+    orElse(f: (_: A) => Validation<A, B>): Validation<A, B>;
     concat<S extends Semigroup<A>>(this: Validation<S, B>, that: Validation<S, B>): Validation<S, B>;
     swap(): Validation<B, A>;
     bimap<C, D>(error: (_: A) => C, ok: (_: B) => D): Validation<C, D>;
@@ -182,6 +219,15 @@ declare namespace folktale {
     merge(): A | B;
     toResult(): Result<A, B>;
     toMaybe(): Maybe<B>;
+    equals(that: Validation<A, B>): boolean;
+    inspect(): string;
+    toString(): string;
+    unsafeGet(): B;
+    fold<C>(onFailure: (_: A) => C, onSuccess: (_: B) => C): C;
+    matchWith<R>(pattern: {
+      Failure: (_: { value: A }) => R
+      Success: (_: { value: B }) => R
+    }): R;
   }
 
   interface StaticValidation {
