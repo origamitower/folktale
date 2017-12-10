@@ -1,5 +1,5 @@
 import * as _ from './index';
-import { Maybe, Validation, Result } from './index';
+import { Maybe, Validation, Result, Future, Task } from './index';
 
 //#region Core.Lambda
 {
@@ -187,3 +187,41 @@ import { Maybe, Validation, Result } from './index';
   });
 }
 //#endregion
+
+//#region Futures
+{
+  const future = _.concurrency.future;
+
+  const ex1: Future<never, string> = future.of('a');
+  const ex2: Future<string, never> = future.rejected('a');
+  const ex3: Future<{}, string> = future.fromPromise(Promise.resolve('a'));
+  
+  const ex4: Promise<string> = future.of('a').toPromise();
+  const ex5: string = future.of('a').inspect();
+  const ex6: string = future.of(1).toString();
+
+  const ex7: Future<{}, string> = future.of(1).willMatchWith({
+    Cancelled: () => future.of('nope'),
+    Resolved: (v) => future.of(v.toString()),
+    Rejected: (_) => future.of('nah')
+  });
+
+  const ex8: Future<{}, number> = future.of(1).listen({
+    onCancelled: () => null,
+    onResolved: (v) => { v.toExponential() },
+    onRejected: (_) => null
+  });
+
+  const ex9: Future<number, {}> = future.rejected(2).orElse(x => future.rejected(3));
+  const ex10: Future<number, {}> = future.of(1).swap();
+  const ex11: Future<{}, number> = future.rejected(1).swap();
+  const ex12: Future<{}, string> = future.of((x: number) => x.toFixed()).apply(future.of(2));
+  const ex13: Future<{}, string> = future.of(2).bimap(x => x, x => x.toFixed());
+  const ex14: Future<string, {}> = future.rejected(2).bimap(x => x.toFixed(), x => x);
+  const ex15: Future<{}, string> = future.of(2).chain(x => future.of(x.toFixed()));
+  const ex16: Future<{}, string> = future.of(2).map(x => x.toFixed());
+  const ex17: Future<string, {}> = future.rejected(2).mapRejected(x => x.toFixed());
+  const ex18: Future<number, {}> = future.rejected(2).recover(x => future.rejected(x + 1));
+}
+//#endregion
+

@@ -261,7 +261,7 @@ declare namespace folktale {
 
     orElse(handler: (_: A) => Future<A, B>): Future<A, B>
     swap(): Future<B, A>
-    apply<C>(this: Future<A, (_: B) => C>, that: Future<A, B>): Future<A, C>
+    apply<A, B, C>(this: Future<A, (_: B) => C>, that: Future<A, B>): Future<A, C>
     bimap<C, D>(onRejected: (_: A) => C, onResolved: (_: B) => D): Future<C, D>
     chain<C>(f: (_: B) => Future<A, C>): Future<A, C>
     map<C>(f: (_: B) => C): Future<A, C>
