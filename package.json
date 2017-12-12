@@ -1,4 +1,24 @@
 {
+  "name": "folktale",
+  "version": "2.0.1",
+  "description": "A suite of libraries for generic functional programming in JavaScript that allows you to write elegant modular applications with fewer bugs and more reuse.",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/origamitower/folktale"
+  },
+  "keywords": [
+    "functional",
+    "generic",
+    "fantasy-land",
+    "folktale",
+    "monads"
+  ],
+  "author": "Quildreen Motta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/origamitower/folktale/issues"
+  },
   "scripts": {
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "travis": "furipota run test-on-travis"
