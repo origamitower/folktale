@@ -275,3 +275,25 @@ import { Maybe, Validation, Result, Future, Task } from './index';
   const ex22: Task<string, {}> = task.rejected(1).mapRejected(x => x.toFixed());
 }
 //#endregion
+
+//#region Conversions
+{
+  const c = _.conversions;
+
+  const ex1: Promise<number> = c.futureToPromise(_.concurrency.future.of(1));
+  const ex2: Result<string, number> = c.maybeToResult(_.maybe.of(1), 'bar');
+  const ex3: Validation<string, number> = c.maybeToValidation(_.maybe.of(1), 'bar');
+  const ex4: Future<any, string> = c.promiseToFuture(Promise.resolve('f'));
+  const ex5: Maybe<string> = c.resultToMaybe(_.result.of('f'));
+  const ex6: Validation<{}, string> = c.resultToValidation(_.result.Ok('f'));
+  const ex7: Validation<number, {}> = c.resultToValidation(_.result.Error(1));
+  const ex8: Maybe<string> = c.validationToMaybe(_.validation.Success('f'));
+  const ex9: Result<{}, number> = c.validationToResult(_.validation.Success(1));
+  const ex10: Result<number, {}> = c.validationToResult(_.validation.Failure(1));
+  const ex11: () => Task<any, number> = c.promisedToTask(() => Promise.resolve(1));
+  const ex12: () => Task<number, string> = c.nodebackToTask((cb: (e: number, v: string) => void) => {});
+  const ex13: Maybe<string> = c.nullableToMaybe('2');
+  const ex14: Result<null | undefined, number> = c.nullableToResult(21);
+  const ex15: Validation<number, string> = c.nullableToValidation('f', 34);
+}
+//#endregion

@@ -344,24 +344,8 @@ declare namespace folktale {
     resultToValidation<A, B>(result: Result<A, B>): Validation<A, B>
     validationToMaybe<A, B>(validation: Validation<A, B>): Maybe<B>
     validationToResult<A, B>(validation: Validation<A, B>): Result<A, B>
-
-
     promisedToTask<V>(fn: () => Promise<V>): () => Task<any, V>
-    promisedToTask<V, A1>(fn: (a: A1) => Promise<V>): (a: A1) => Task<any, V>
-    promisedToTask<V, A1, A2>(fn: (a: A1, b: A2) => Promise<V>): (a: A1, b: A2) => Task<any, V>
-    promisedToTask<V, A1, A2, A3>(fn: (a: A1, b: A2, c: A3) => Promise<V>): (a: A1, b: A2, c: A3) => Task<any, V>
-    promisedToTask<V, A1, A2, A3, A4>(fn: (a: A1, b: A2, c: A3, d: A4) => Promise<V>): (a: A1, b: A2, c: A3, d: A4) => Task<any, V>
-    promisedToTask<V, A1, A2, A3, A4, A5>(fn: (a: A1, b: A2, c: A3, d: A4, e: A5) => Promise<V>): (a: A1, b: A2, c: A3, d: A4, e: A5) => Task<any, V>
-    promisedToTask<V, A1, A2, A3, A4, A5, A6>(fn: (a: A1, b: A2, c: A3, d: A4, e: A5, f: A6) => Promise<V>): (a: A1, b: A2, c: A3, d: A4, e: A5, f: A6) => Task<any, V>
-
     nodebackToTask<E, V>(fn: (cb: (error: E, value: V) => void) => void): () => Task<E, V>
-    nodebackToTask<E, V, A1>(fn: (a: A1, cb: (error: E, value: V) => void) => void): (a: A1) => Task<E, V>
-    nodebackToTask<E, V, A1, A2>(fn: (a: A1, b: A2, cb: (error: E, value: V) => void) => void): (a: A1, b: A2) => Task<E, V>
-    nodebackToTask<E, V, A1, A2, A3>(fn: (a: A1, b: A2, c: A3, cb: (error: E, value: V) => void) => void): (a: A1, b: A2, c: A3) => Task<E, V>
-    nodebackToTask<E, V, A1, A2, A3, A4>(fn: (a: A1, b: A2, c: A3, d: A4, cb: (error: E, value: V) => void) => void): (a: A1, b: A2, c: A3, d: A4) => Task<E, V>
-    nodebackToTask<E, V, A1, A2, A3, A4, A5>(fn: (a: A1, b: A2, c: A3, d: A4, e: A5, cb: (error: E, value: V) => void) => void): (a: A1, b: A2, c: A3, d: A4, e: A5) => Task<E, V>
-    nodebackToTask<E, V, A1, A2, A3, A4, A5, A6>(fn: (a: A1, b: A2, c: A3, d: A4, e: A5, f: A6, cb: (error: E, value: V) => void) => void): (a: A1, b: A2, c: A3, d: A4, e: A5, f: A6) => Task<E, V>
-    
     nullableToMaybe<A>(value: A | null | undefined): Maybe<A>
     nullableToResult<A>(value: A | null | undefined): Result<null | undefined, A>
     nullableToValidation<A, B>(value: A | null | undefined, fallback: B): Validation<B, A>
