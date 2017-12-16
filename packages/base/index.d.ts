@@ -312,37 +312,17 @@ declare namespace folktale {
   }
 
   interface StaticTask {
-    waitAll<E, V1, V2>(tasks: [Task<E, V1>, Task<E, V2>]): Task<E, [V1, V2]>
-    waitAll<E, V1, V2, V3>(tasks: [Task<E, V1>, Task<E, V2>, Task<E, V3>]): Task<E, [V1, V2, V3]>
-    waitAll<E, V1, V2, V3, V4>(tasks: [Task<E, V1>, Task<E, V2>, Task<E, V3>, Task<E, V4>]): Task<E, [V1, V2, V3, V4]>
-    waitAll<E, V1, V2, V3, V4, V5>(tasks: [Task<E, V1>, Task<E, V2>, Task<E, V3>, Task<E, V4>, Task<E, V5>]): Task<E, [V1, V2, V3, V4, V5]>
-    waitAll<E, V1, V2, V3, V4, V5, V6>(tasks: [Task<E, V1>, Task<E, V2>, Task<E, V3>, Task<E, V4>, Task<E, V5>, Task<E, V6>]): Task<E, [V1, V2, V3, V4, V5, V6]>
     waitAll<E, V>(tasks: Task<E, V>[]): Task<E, V[]>
-
     waitAny<E, V>(tasks: Task<E, V>[]): Task<E, V>
-    
-    
+
     of<E, V>(value: V): Task<E, V>
     rejected<E, V>(reason: E): Task<E, V>
-    task<E, V>(resolver: TaskResolver<E, V>): Task<E, V>
+    task<E, V>(resolver: (_: TaskResolver<E, V>) => void): Task<E, V>
     
-    fromNodeback<E, V>(fn: (cb: (e: E, v: V) => void) => void): () =>  Task<E, V>
-    fromNodeback<A, E, V>(fn: (a1: A, cb: (e: E, v: V) => void) => void): (a1: A) =>  Task<E, V>
-    fromNodeback<A, A2, E, V>(fn: (a1: A, a2: A2, cb: (e: E, v: V) => void) => void): (a1: A, a2: A2) =>  Task<E, V>
-    fromNodeback<A, A2, A3, E, V>(fn: (a1: A, a2: A2, a3: A3, cb: (e: E, v: V) => void) => void): (a1: A, a2: A2, a3: A3) =>  Task<E, V>
-    fromNodeback<A, A2, A3, A4, E, V>(fn: (cb: (a1: A, a2: A2, a3: A3, a4: A4, e: E, v: V) => void) => void): (a1: A, a2: A2, a3: A3, a4: A4) =>  Task<E, V>
-    fromNodeback<A, A2, A3, A4, A5, E, V>(fn: (a1: A, a2: A2, a3: A3, a4: A4, a5: A5, cb: (e: E, v: V) => void) => void): (a1: A, a2: A2, a3: A3, a4: A4, a5: A5) =>  Task<E, V>
-    fromNodeback<A, A2, A3, A4, A5, A6, E, V>(fn: (a1: A, a2: A2, a3: A3, a4: A4, a5: A5, a6: A6, cb: (e: E, v: V) => void) => void): (a1: A, a2: A2, a3: A3, a4: A4, a5: A5, a6: A6) =>  Task<E, V>
-    
+    fromNodeback<E, V>(fn: (cb: (e: E, v: V) => void) => void): () => Task<E, V>    
     fromPromised<E, V>(fn: () => Promise<V>): () =>  Task<E, V>
-    fromPromised<A, E, V>(fn: (a1: A) => Promise<V>): (a1: A) =>  Task<E, V>
-    fromPromised<A, A2, E, V>(fn: (a1: A, a2: A2) => Promise<V>): (a1: A, a2: A2) =>  Task<E, V>
-    fromPromised<A, A2, A3, E, V>(fn: (a1: A, a2: A2, a3: A3) => Promise<V>): (a1: A, a2: A2, a3: A3) =>  Task<E, V>
-    fromPromised<A, A2, A3, A4, E, V>(fn: (a1: A, a2: A2, a3: A3, a4: A4) => Promise<V>): (a1: A, a2: A2, a3: A3, a4: A4) =>  Task<E, V>
-    fromPromised<A, A2, A3, A4, A5, E, V>(fn: (a1: A, a2: A2, a3: A3, a4: A4, a5: A5) => Promise<V>): (a1: A, a2: A2, a3: A3, a4: A4, a5: A5) =>  Task<E, V>
-    fromPromised<A, A2, A3, A4, A5, A6, E, V>(fn: (a1: A, a2: A2, a3: A3, a4: A4, a5: A5, a6: A6) => Promise<V>): (a1: A, a2: A2, a3: A3, a4: A4, a5: A5, a6: A6) =>  Task<E, V>
     
-    do<E, V>(generator: GeneratorFunction): Task<E, V>
+    do<E, V>(generator: () => IterableIterator<Task<E, V>>): Task<E, V>
   }
 
   interface TaskResolver<E, V> {

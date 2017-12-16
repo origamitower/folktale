@@ -225,3 +225,34 @@ import { Maybe, Validation, Result, Future, Task } from './index';
 }
 //#endregion
 
+//#region Task
+{
+  const task = _.concurrency.task;
+
+  const ex1: Task<never, string> = task.of('a');
+  const ex2: Task<string, never> = task.rejected('a');
+  const ex3: Task<{}, number[]> = task.waitAll([task.of(1), task.of(2)]);
+  const ex4: Task<{}, number> = task.waitAny([task.of(1), task.of(2)]);
+  const ex5: Task<{}, number> =  task.of(1);
+  const ex6: Task<number, {}> = task.rejected(1);
+  const ex7: Task<number, string> = task.task(r => {
+    r.resolve('a');
+    r.reject(2);
+    r.cancel();
+    const a: boolean = r.isCancelled;
+    r.cleanup(() => {});
+    r.onCancelled(() => {});
+  });
+
+  const ex8: () => Task<never, number> = task.fromNodeback((cb: (e: never, v: number) => void) => {});
+  const ex9: () => Task<{}, number> = task.fromPromised(() => Promise.resolve(1));
+
+  const ex10 = task.do(function* () {
+    const x: number = yield task.of(1);
+    return task.of(x);
+  });
+
+  
+
+}
+//#endregion
