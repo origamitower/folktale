@@ -304,7 +304,7 @@ declare namespace folktale {
 
     orElse(handler: (_: A) => Task<A, B>): Task<A, B>
     swap(): Task<B, A>
-    apply<B2>(this: Task<A, (_: B) => B2>, that: Task<A, B>): Task<A, B2>
+    apply<A, B, B2>(this: Task<A, (_: B) => B2>, that: Task<A, B>): Task<A, B2>
     bimap<A2, B2>(onRejected: (_: A) => A2, onResolved: (_: B) => B2): Task<A2, B2>
     chain<B2>(f: (_: B) => Task<A, B2>): Task<A, B2>
     map<B2>(f: (_: B) => B2): Task<A, B2>

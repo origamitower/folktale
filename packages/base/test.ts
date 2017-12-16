@@ -247,12 +247,31 @@ import { Maybe, Validation, Result, Future, Task } from './index';
   const ex8: () => Task<never, number> = task.fromNodeback((cb: (e: never, v: number) => void) => {});
   const ex9: () => Task<{}, number> = task.fromPromised(() => Promise.resolve(1));
 
-  const ex10 = task.do(function* () {
+  const ex10: Task<{}, number> = task.do(function* () {
     const x: number = yield task.of(1);
     return task.of(x);
   });
 
-  
+  const ex11: Task<{}, [number, string]> = task.of(1).and(task.of('foo'));
+  const ex12: Task<{}, number> = task.of(1).or(task.of(2));
+  const ex13: Task<{}, string> = task.of(1).willMatchWith({
+    Cancelled: () => task.of('no'),
+    Resolved: (value) => task.of(value.toFixed()),
+    Rejected: (value) => task.rejected(value)
+  });
+  const ex14: Task<string, {}> = task.rejected(1).willMatchWith({
+    Cancelled: () => task.rejected(''),
+    Resolved: (value) => task.of(value),
+    Rejected: (value) => task.rejected(value.toFixed())
+  });
 
+  const ex15: Task<string, number> = task.of<string, number>(1).orElse(x => task.rejected(x.concat(x)));
+  const ex16: Task<string, number> = task.of<number, string>('foo').swap();
+  const ex17: Task<{}, string> = task.of((x: number) => x.toFixed()).apply(task.of(1));
+  const ex18: Task<{}, string> = task.of(1).bimap(x => x, x => x.toFixed());
+  const ex19: Task<string, {}> = task.rejected(1).bimap(x => x.toFixed(), x => x);
+  const ex20: Task<{}, string> = task.of(1).chain(x => task.of(x.toFixed()));
+  const ex21: Task<{}, string> = task.of(1).map(x => x.toFixed());
+  const ex22: Task<string, {}> = task.rejected(1).mapRejected(x => x.toFixed());
 }
 //#endregion
