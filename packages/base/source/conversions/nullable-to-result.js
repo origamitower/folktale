@@ -18,10 +18,13 @@ const { Error, Ok } = require('folktale/result/result');
  * type: |
  *   forall a, b:
  *     (a or None, b) => Result b a
+ *   & (a or None) => Result None a
  */
-const nullableToResult = (a, fallbackValue) =>
-  a != null ? Ok(a)
-  :/*else*/   Error(fallbackValue);
+const nullableToResult = function(a, givenFallback) {
+  const fallback = arguments.length > 1 ? givenFallback : a;
+  return a != null ?  Ok(a)
+  :      /* else */   Error(fallback);
+};
 
 
 module.exports = nullableToResult;

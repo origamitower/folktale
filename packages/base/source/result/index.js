@@ -27,9 +27,16 @@ module.exports = {
   /*~
    * type: |
    *   forall a, b: (a or None, b) => Result b a
+   *   | (a or None) => Result None a
    */
   fromNullable(aNullable, fallbackValue) {
-    return require('folktale/conversions/nullable-to-result')(aNullable, fallbackValue);
+    const nullableToResult = require('folktale/conversions/nullable-to-result');
+
+    if (arguments.length > 1) {
+      return nullableToResult(aNullable, fallbackValue);
+    } else {
+      return nullableToResult(aNullable);
+    }
   },
 
   /*~

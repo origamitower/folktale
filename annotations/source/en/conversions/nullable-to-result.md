@@ -7,6 +7,12 @@ Converts a nullable value to a `Result`. `null` and `undefined` map to
 A nullable is a value that may be any type, or `null`/`undefined`.
 
 
+> **DEPRECATION WARNING**:  
+> In 2.0.x, `nullableToResult` took only one parameter. This form of the
+> function is now deprecated in favour of passing an explicit fallback
+> value.
+
+
 ## Example::
 
     const nullableToResult = require('folktale/conversions/nullable-to-result');
@@ -18,5 +24,6 @@ A nullable is a value that may be any type, or `null`/`undefined`.
     nullableToResult(null, 'error');
     // ==> Error('error')
 
-    nullableToResult(1);
+    nullableToResult(1, 'error');
     // ==> Ok(1)
+

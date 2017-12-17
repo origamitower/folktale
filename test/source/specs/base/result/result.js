@@ -145,7 +145,13 @@ describe('Result', function() {
     });
   });
   describe('Conversions', () => {
-    property('Error#fromNullable', 'number | string | bool | dict nat | array nat', (a) => {
+    // Deprecated, maintained for backwards compatibility
+    property('Error#fromNullable (without fallback)', () => { 
+      return _.fromNullable(null).equals(_.Error(null)) 
+      &&     _.fromNullable(undefined).equals(_.Error(undefined)); 
+    });
+
+    property('Error#fromNullable (with fallback)', 'number | string | bool | dict nat | array nat', (a) => {
       return _.fromNullable(null, a).equals(_.Error(a))
       &&     _.fromNullable(undefined, a).equals(_.Error(a));
     });
