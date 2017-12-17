@@ -53,7 +53,7 @@ const nullToString = () => 'null';
  * type: (Any) => Bool
  */
 const isPlainObject = (object) =>
-  !object.toString || (object.toString === Object.prototype.toString)
+  !object.toString || (object.toString === Object.prototype.toString);
 
 /*~
  * type: (Null | Object Any) => String
