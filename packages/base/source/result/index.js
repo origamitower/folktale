@@ -32,7 +32,7 @@ module.exports = {
   fromNullable(aNullable, fallbackValue) {
     const nullableToResult = require('folktale/conversions/nullable-to-result');
 
-    if (arguments.length > 1) {
+    if (arguments.length > 1) {  // eslint-disable-line prefer-rest-params 
       return nullableToResult(aNullable, fallbackValue);
     } else {
       return nullableToResult(aNullable);

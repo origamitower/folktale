@@ -22,7 +22,7 @@ const deprecated = require('folktale/helpers/warn-deprecation');
  *   & (a or None) => Result None a
  */
 const nullableToResult = function(a, givenFallback) {
-  const oldBehaviour = arguments.length < 2;
+  const oldBehaviour = arguments.length < 2;  // eslint-disable-line prefer-rest-params
   if (oldBehaviour) {
     deprecated(`nullableToResult(value) is being deprecated in favour of providing an explicit fallback value.
 nullableToResult(value, fallback) is the new preferred form of this function.
