@@ -8,6 +8,7 @@
 //----------------------------------------------------------------------
 
 const { Error, Ok } = require('folktale/result/result');
+const deprecated = require('folktale/helpers/warn-deprecation');
 
 
 /*~
@@ -21,7 +22,14 @@ const { Error, Ok } = require('folktale/result/result');
  *   & (a or None) => Result None a
  */
 const nullableToResult = function(a, givenFallback) {
-  const fallback = arguments.length > 1 ? givenFallback : a;
+  const oldBehaviour = arguments.length < 2;
+  if (oldBehaviour) {
+    deprecated(`nullableToResult(value) is being deprecated in favour of providing an explicit fallback value.
+nullableToResult(value, fallback) is the new preferred form of this function.
+`);
+  }
+
+  const fallback = oldBehaviour ? a : givenFallback;
   return a != null ?  Ok(a)
   :      /* else */   Error(fallback);
 };
