@@ -15,6 +15,27 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 
 ---
 
+
+## [2.0.1] - 2017-07-22
+
+### Documentation
+
+  - Many typos were fixed ([PR #151](https://github.com/origamitower/folktale/pull/151) by @gvillalta99; [PR #165](https://github.com/origamitower/folktale/pull/165) by @MichaelQQ, [PR #145](https://github.com/origamitower/folktale/pull/145) by @stabbylambda, [PR #143](https://github.com/origamitower/folktale/pull/143) and [PR #144](https://github.com/origamitower/folktale/pull/144) by @floriansimon1)
+  - Migration documentation on Task has been improved, and examples fixed ([PR #160](https://github.com/origamitower/folktale/pull/160))
+  - Added notes on shims for older platforms ([PR #161](https://github.com/origamitower/folktale/pull/161))
+  - Fixed some Validation examples ([PR #154](https://github.com/origamitower/folktale/pull/154) by @scotttrinh)
+
+
+### DEPRECATED FEATURES
+
+  - Renamed `Future.recover` to `Future.orElse`. `Future.recover` was deprecated. ([PR #146](https://github.com/origamitower/folktale/pull/146))
+
+
+### Miscellaneous
+
+  - We've moved from Make to Furipota, so the build system is cross-platform now ([PR #148](https://github.com/origamitower/folktale/pull/148))
+
+
 ## [2.0.0] - 2017-07-15
 
 ### New features
