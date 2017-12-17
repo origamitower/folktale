@@ -50,13 +50,19 @@ const functionToString = (fn) => `[Function${functionNameToString(fn)}]`;
 const nullToString = () => 'null';
 
 /*~
+ * type: (Any) => Bool
+ */
+const isPlainObject = (object) =>
+  !object.toString || (object.toString === Object.prototype.toString)
+
+/*~
  * type: (Null | Object Any) => String
  */
 const objectToString = (object) =>
-    object === null                       ?  nullToString
-  : Array.isArray(object)                 ?  arrayToString
-  : object.toString() === ({}).toString() ?  plainObjectToString
-  : /* otherwise */                          object.toString;
+    object === null          ?  nullToString
+  : Array.isArray(object)    ?  arrayToString
+  : isPlainObject(object)    ?  plainObjectToString
+  : /* otherwise */             object.toString;
 
 
 /*~
