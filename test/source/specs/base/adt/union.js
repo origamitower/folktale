@@ -214,6 +214,28 @@ describe('ADT: union', () => {
     property('Recursive Values have a string representation', () => {
       return AB.A({rec:AB.A(1)}).toString()  ===  'AB.A({ value: { rec: AB.A({ value: 1 }) } })'
     })
+
+    property('ADTs containing objects with custom .toString get serialised properly', () => {
+      const a = { toString(){ return 'hello' }};
+
+      return AB.A(a).toString() === 'AB.A({ value: hello })'
+    });
+
+    // Issue https://github.com/origamitower/folktale/issues/168
+    property('ADTs containing objects without a .toString get serialised properly', () => {
+      const a = Object.create(null);
+      a.foo = 1;
+
+      return AB.A(a).toString() === 'AB.A({ value: { foo: 1 } })'
+    });
+
+    // Issue https://github.com/origamitower/folktale/issues/167
+    xit('Circular objects get serialised properly', () => {
+      const a = Object.create(null);
+      a.a = a;
+
+      return AB.A(a).toString() === 'AB.A({ value: { a: [Circular] } })'
+    });
   });
   describe('Serialization', () => {
     const AB = union('folktale:AB', {
