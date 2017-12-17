@@ -86,8 +86,8 @@ import { Maybe, Validation, Result, Future, Task } from './index';
   const ex5: Result<number, never> = _.result.try(() => { throw 1 }); // not actually checked since TS doesn't have effects
   const ex6: Result<never, number> = _.result.try(() => 1);
 
-  const ex7: Result<null | undefined, string> = _.result.fromNullable('foo');
-  const ex8: Result<null | undefined, {}> = _.result.fromNullable(null);
+  const ex7: Result<number, string> = _.result.fromNullable('foo', 1);
+  const ex8: Result<number, {}> = _.result.fromNullable(null, 1);
   const ex9: Result<string, never> = _.result.fromValidation(_.validation.Failure('foo'));
   const ex10: Result<never, string> = _.result.fromValidation(_.validation.Success('foo'));
   const ex11: Result<string, never> = _.result.fromMaybe(_.maybe.Nothing(), 'foo');
@@ -144,8 +144,8 @@ import { Maybe, Validation, Result, Future, Task } from './index';
   ]);
 
 
-  const ex7: Validation<null | undefined, string> = _.validation.fromNullable('foo');
-  const ex8: Validation<null | undefined, {}> = _.validation.fromNullable(null);
+  const ex7: Validation<number, string> = _.validation.fromNullable('foo', 1);
+  const ex8: Validation<number, {}> = _.validation.fromNullable(null, 1);
   const ex9: Validation<string, never> = _.validation.fromResult(_.result.Error('foo'));
   const ex10: Validation<never, string> = _.validation.fromResult(_.result.Ok('foo'));
   const ex11: Validation<string, never> = _.validation.fromMaybe(_.maybe.Nothing(), 'foo');
@@ -293,7 +293,7 @@ import { Maybe, Validation, Result, Future, Task } from './index';
   const ex11: () => Task<any, number> = c.promisedToTask(() => Promise.resolve(1));
   const ex12: () => Task<number, string> = c.nodebackToTask((cb: (e: number, v: string) => void) => {});
   const ex13: Maybe<string> = c.nullableToMaybe('2');
-  const ex14: Result<null | undefined, number> = c.nullableToResult(21);
+  const ex14: Result<string, number> = c.nullableToResult(21, 'error');
   const ex15: Validation<number, string> = c.nullableToValidation('f', 34);
 }
 //#endregion

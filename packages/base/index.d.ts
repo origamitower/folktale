@@ -163,7 +163,7 @@ declare namespace folktale {
     hasInstance(value: any): boolean;
     of<A, B>(value: B): Result<A, B>;
     try<A, B>(f: (() => B)): Result<A, B>;
-    fromNullable<B>(value: B | null | undefined): Result<null | undefined, B>;
+    fromNullable<A, B>(value: B | null | undefined, fallback: A): Result<A, B>;
     fromValidation<A, B>(value: Validation<A, B>): Result<A, B>;
     fromMaybe<A, B>(value: Maybe<B>, failure: A): Result<A, B>;
   }
@@ -236,7 +236,7 @@ declare namespace folktale {
     hasInstance(value: any): boolean;
     of<A, B>(value: B): Validation<A, B>;
     collect<A, B, S extends Semigroup<A>>(validations: Validation<S, B>[]): Validation<S, B>;
-    fromNullable<A, B>(value: B | null): Validation<A, B>;
+    fromNullable<A, B>(value: B | null | undefined, fallback: A): Validation<A, B>;
     fromResult<A, B>(value: Result<A, B>): Validation<A, B>;
     fromMaybe<A, B>(value: Maybe<B>, failure: A): Validation<A, B>;
   }
@@ -347,7 +347,7 @@ declare namespace folktale {
     promisedToTask<V>(fn: () => Promise<V>): () => Task<any, V>
     nodebackToTask<E, V>(fn: (cb: (error: E, value: V) => void) => void): () => Task<E, V>
     nullableToMaybe<A>(value: A | null | undefined): Maybe<A>
-    nullableToResult<A>(value: A | null | undefined): Result<null | undefined, A>
+    nullableToResult<A, B>(value: A | null | undefined, fallback: B): Result<B, A>
     nullableToValidation<A, B>(value: A | null | undefined, fallback: B): Validation<B, A>
   }
 
