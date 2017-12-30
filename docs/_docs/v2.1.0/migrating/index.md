@@ -1,9 +1,9 @@
 ---
 title: Migrating to v2
-permalink: /docs/v2.0.0/migrating/
-breadcrumb: [v2.0.0]
-prev_doc: v2.0.0/known-issues
-next_doc: v2.0.0/migrating/from-core.arity
+permalink: /docs/v2.1.0/migrating/
+breadcrumb: [v2.1.0]
+prev_doc: v2.1.0/known-issues
+next_doc: v2.1.0/migrating/from-core.arity
 ---
 
 Here you'll find detailed instructions of how to migrate your code from older Folktale versions to v2.

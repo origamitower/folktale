@@ -1,6 +1,6 @@
 ---
 title: "How is Folktale organised?"
-prev_doc: v2.0.0/contributing/coding-style
+prev_doc: v2.1.0/contributing/coding-style
 ---
 
 This page describes how several parts of the Folktale project are organised.

@@ -1,7 +1,7 @@
 ---
 title: Release notes
-prev_doc: v2.0.0
-next_doc: v2.0.0/download
+prev_doc: v2.1.0
+next_doc: v2.1.0/download
 ---
 
 Folktale v2.1.0 is a very modest release, mostly with documentation fixes.
