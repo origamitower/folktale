@@ -1,24 +1,24 @@
-- title: Folktale 2.0.0
-  entry: v2.0.0
+- title: Folktale 2.1.0
+  entry: v2.1.0
   docs:
-    - v2.0.0/release-notes
-    - v2.0.0/download
-    - v2.0.0/overview
-    - url: /api/v2.0.0/en/folktale.html
+    - v2.1.0/release-notes
+    - v2.1.0/download
+    - v2.1.0/overview
+    - url: /api/v2.1.0/en/folktale.html
       title: API reference
-    - v2.0.0/changelog
-    - v2.0.0/known-issues
+    - v2.1.0/changelog
+    - v2.1.0/known-issues
 
 - title: Migrating
-  entry: v2.0.0/migrating
+  entry: v2.1.0/migrating
   docs:
-    - v2.0.0/migrating/from-core.arity
-    - v2.0.0/migrating/from-core.lambda
-    - v2.0.0/migrating/from-data.either
-    - v2.0.0/migrating/from-data.maybe
-    - v2.0.0/migrating/from-data.task
-    - v2.0.0/migrating/from-data.validation
-    - v2.0.0/migrating/from-early-v2.0.0
+    - v2.1.0/migrating/from-core.arity
+    - v2.1.0/migrating/from-core.lambda
+    - v2.1.0/migrating/from-data.either
+    - v2.1.0/migrating/from-data.maybe
+    - v2.1.0/migrating/from-data.task
+    - v2.1.0/migrating/from-data.validation
+    - v2.1.0/migrating/from-early-v2.0.0
 
 - title: Support
   entry: support
@@ -28,22 +28,22 @@
     - support/feature-request
 
 - title: Contributing
-  entry: v2.0.0/contributing
+  entry: v2.1.0/contributing
   docs:
-    - v2.0.0/contributing/setup
-    - v2.0.0/contributing/bugfixes
-    - v2.0.0/contributing/new-features
-    - v2.0.0/contributing/documentation
-    - v2.0.0/contributing/tests
-    - v2.0.0/contributing/git-guidelines
-    - v2.0.0/contributing/coding-style
-    - v2.0.0/contributing/organisation
+    - v2.1.0/contributing/setup
+    - v2.1.0/contributing/bugfixes
+    - v2.1.0/contributing/new-features
+    - v2.1.0/contributing/documentation
+    - v2.1.0/contributing/tests
+    - v2.1.0/contributing/git-guidelines
+    - v2.1.0/contributing/coding-style
+    - v2.1.0/contributing/organisation
 
 - title: Misc.
   docs:
-    - v2.0.0/misc/stability-index
-    - v2.0.0/misc/design-principles
-    - v2.0.0/misc/type-notation
+    - v2.1.0/misc/stability-index
+    - v2.1.0/misc/design-principles
+    - v2.1.0/misc/type-notation
 
 - title: Legacy
   docs:
