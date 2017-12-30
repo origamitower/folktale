@@ -14,7 +14,17 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 
 ---
 
-## [2.1.0] - WIP
+## [2.1.0-rc1] - 2017-12-31
+
+### New features
+
+* `nullableToResult` can now take a fallback value ([PR #166](https://github.com/origamitower/folktale/pull/166) by @diasbruno)
+
+
+### Bug fixes
+
+* Derived `.toString` methods can now handle objects without a `.toString` method (though not yet [circular objects](https://github.com/origamitower/folktale/issues/167)). ([PR #169](https://github.com/origamitower/folktale/pull/169))
+
 
 ### Documentation
 
