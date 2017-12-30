@@ -4,7 +4,7 @@ prev_doc: v2.0.0/migrating/from-core.arity
 next_doc: v2.0.0/migrating/from-data.either
 ---
 
-`Core.Lambda` provided basic operations to combine and transform functions. Most of the important ones are still available in Folktale 2, but under a different module. This page provides migration instructions for each function in `Core.Lambda`. You can look at the [full documentation for `core/lambda`](/api/v2.0.0/en/folktale.core.lambda.html) for more detailed information.
+`Core.Lambda` provided basic operations to combine and transform functions. Most of the important ones are still available in Folktale 2, but under a different module. This page provides migration instructions for each function in `Core.Lambda`. You can look at the [full documentation for `core/lambda`](/api/v2.1.0/en/folktale.core.lambda.html) for more detailed information.
 
 
 ## Contents
@@ -108,7 +108,7 @@ const { unary } = require('core.arity');
 
 ## compose(f, g)(x)
 
-Folktale 2 provides a `compose` function without the unrolling semantics. See [the `compose` documentation](/api/v2.0.0/en/folktale.core.lambda.compose.compose.html) for details.
+Folktale 2 provides a `compose` function without the unrolling semantics. See [the `compose` documentation](/api/v2.1.0/en/folktale.core.lambda.compose.compose.html) for details.
 
 If you're using `compose` in the form `compose(f, g)(x)`, then you only need to change your imports:
 
@@ -181,7 +181,7 @@ thenDouble(inc)(3);
 
 ## curry(arity, f)  {#curry}
 
-Folktale 2 provides a `curry` function that's very similar to the old one, with the difference that it'll only unroll up to the provided arity. This avoids problems with Folktale trying to unroll application of non-curried function when interacting with variadic functions in JavaScript (for example, with `Array#map`). See [the `curry` documentation](/api/v2.0.0/en/folktale.core.lambda.curry.curry.html) for details.
+Folktale 2 provides a `curry` function that's very similar to the old one, with the difference that it'll only unroll up to the provided arity. This avoids problems with Folktale trying to unroll application of non-curried function when interacting with variadic functions in JavaScript (for example, with `Array#map`). See [the `curry` documentation](/api/v2.1.0/en/folktale.core.lambda.curry.curry.html) for details.
 
 The only thing you need to do is changing your imports.
 

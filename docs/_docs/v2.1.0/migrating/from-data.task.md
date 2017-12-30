@@ -4,7 +4,7 @@ prev_doc: v2.0.0/migrating/from-data.maybe
 next_doc: v2.0.0/migrating/from-data.validation
 ---
 
-The `Task` structure went through many changes in Folktale 2 to make automatic resource management of asynchronous computations safer and more robust. It also removes the need for the external `control.async` module, by natively supporting combining tasks in the object itself. This page explains how to migrate from the old `Data.Task` to the new `Task` module. You can look at the [full documentation for the concurrency module](/api/v2.0.0/en/folktale.concurrency.html) for more detailed information.
+The `Task` structure went through many changes in Folktale 2 to make automatic resource management of asynchronous computations safer and more robust. It also removes the need for the external `control.async` module, by natively supporting combining tasks in the object itself. This page explains how to migrate from the old `Data.Task` to the new `Task` module. You can look at the [full documentation for the concurrency module](/api/v2.1.0/en/folktale.concurrency.html) for more detailed information.
 
 
 ## Contents
@@ -170,7 +170,7 @@ While the previous Task had an applicative functor that ran tasks in parallel, t
 
 The new `applicativeFn.apply(applicativeValue)` method is the recommended way of using applicative functors now, which is standardised across Folktale and independent of Fantasy-Land changes.
 
-`.apply` and `.ap` have the same semantics, but those semantics are different from the new `fantasy-land/ap` function! In order to write functions that are generic over different Fantasy-Land implementations and versions, the new [fantasy-land](/api/v2.0.0/en/folktale.fantasy-land.html) module should be used instead.
+`.apply` and `.ap` have the same semantics, but those semantics are different from the new `fantasy-land/ap` function! In order to write functions that are generic over different Fantasy-Land implementations and versions, the new [fantasy-land](/api/v2.1.0/en/folktale.fantasy-land.html) module should be used instead.
 
 
 ## Task.concat

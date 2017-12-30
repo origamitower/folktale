@@ -5,10 +5,10 @@ next_doc: v2.0.0/changelog
 ---
 
 Folktale is a library to support a functional style of programming in JavaScript.
-In its current version Folktale provides utilities for [combining functions](/api/v2.0.0/en/folktale.core.lambda.html),
-[transforming objects](/api/v2.0.0/en/folktale.core.object.html), [modelling data](/api/v2.0.0/en/folktale.adt.html), [handling errors](/api/v2.0.0/en/folktale.html#cat-handling-failures), and [concurrency](/api/v2.0.0/en/folktale.concurrency.task.html).
+In its current version Folktale provides utilities for [combining functions](/api/v2.1.0/en/folktale.core.lambda.html),
+[transforming objects](/api/v2.1.0/en/folktale.core.object.html), [modelling data](/api/v2.1.0/en/folktale.adt.html), [handling errors](/api/v2.1.0/en/folktale.html#cat-handling-failures), and [concurrency](/api/v2.1.0/en/folktale.concurrency.task.html).
 
-The [API reference](/api/v2.0.0/en/folktale.html) provides detailed documentation
+The [API reference](/api/v2.1.0/en/folktale.html) provides detailed documentation
 on these, but may be difficult to navigate. This page serves as an introduction to
 the most important concepts.
 
@@ -73,7 +73,7 @@ const value = counter.next();
 // ==> [4, 4, 4]
 {% endhighlight %}
 
-Another option is using a functional combinator like [constant](/api/v2.0.0/en/folktale.core.lambda.constant.constant.html):
+Another option is using a functional combinator like [constant](/api/v2.1.0/en/folktale.core.lambda.constant.constant.html):
 
 {% highlight js %}
 const constant = require('folktale/core/lambda/constant');
@@ -82,7 +82,7 @@ const constant = require('folktale/core/lambda/constant');
 // ==> [5, 5, 5]
 {% endhighlight %}
 
-Folktale's [`core/lambda`](/api/v2.0.0/en/folktale.core.lambda.html) module tries to provide
+Folktale's [`core/lambda`](/api/v2.1.0/en/folktale.core.lambda.html) module tries to provide
 these small utilities that help combining and transforming functions in a program. See the
 module's documentation for more details.
 
@@ -94,7 +94,7 @@ boil down mostly to control-flow structures (`if/else`) or exceptions (`try/catc
 tend to either be hard to predict or hard to maintain. Folktale provides three data
 structures to help with error handling:
 
-  - [Maybe](/api/v2.0.0/en/folktale.maybe.html) - A structure that helps handling values
+  - [Maybe](/api/v2.1.0/en/folktale.maybe.html) - A structure that helps handling values
     that may or may not be present. For example, a function like `Array.find` may or may
     not be able to return a value. People tend to use `null` as a return value when the
     function fails to return one, but that's ambiguous if the original array had a `null`
@@ -116,7 +116,7 @@ structures to help with error handling:
     find([null, 1], x => false); // ==> Maybe.Nothing()
     {% endhighlight %}
 
-  - [Result](/api/v2.0.0/en/folktale.result.html) - A structure that models the result
+  - [Result](/api/v2.1.0/en/folktale.result.html) - A structure that models the result
     of functions that may fail. For example, parsing a JSON string into native objects
     doesn't always succeed, but it may fail for different reasons: the JSON string could
     be malformed, the reifying function could throw an error, etc. Ideally we'd capture
@@ -148,7 +148,7 @@ structures to help with error handling:
     divide(2, 0); // ==> Result.Error([DivisionByZero: 2 / 0 is not computable])
     {% endhighlight %}
 
-  - [Validation](/api/v2.0.0/en/folktale.validation.html) - A structure that helps with
+  - [Validation](/api/v2.1.0/en/folktale.validation.html) - A structure that helps with
     validations (such as form validations). A validation function may succeed or fail,
     like the functions mentioned above, but unlike the cases where Result is indicated,
     when doing validations one generally wants to capture *all* of the failures and
@@ -213,7 +213,7 @@ Branch(
 {% endhighlight %}
 
 
-More documentation can be found in the [`adt/union`](/api/v2.0.0/en/folktale.adt.union.html)
+More documentation can be found in the [`adt/union`](/api/v2.1.0/en/folktale.adt.union.html)
 module reference.
 
 
@@ -230,5 +230,5 @@ and cancellation. This means that, if a Task is cancelled before it finishes exe
 resources it allocated will be properly disposed of. Even when combined with other tasks,
 or transformed by other functions.
 
-The documentation for the [`concurrency/task`](/api/v2.0.0/en/folktale.concurrency.task.html)
+The documentation for the [`concurrency/task`](/api/v2.1.0/en/folktale.concurrency.task.html)
 module describes this in details.

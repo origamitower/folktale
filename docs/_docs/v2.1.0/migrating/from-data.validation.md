@@ -4,7 +4,7 @@ prev_doc: v2.0.0/migrating/from-data.task
 next_doc: v2.0.0/migrating/from-early-v2.0.0
 ---
 
-`Data.Validation` provided a way of modelling composable validations. Folktale 2 keeps the same structure and semantics, but there's some changes in how you extract values out of Validations and test them. You can look at the [full documentation for Validation](/api/v2.0.0/en/folktale.validation.html) for more detailed information.
+`Data.Validation` provided a way of modelling composable validations. Folktale 2 keeps the same structure and semantics, but there's some changes in how you extract values out of Validations and test them. You can look at the [full documentation for Validation](/api/v2.1.0/en/folktale.validation.html) for more detailed information.
 
 
 ## Contents
@@ -89,7 +89,7 @@ Folktale 2 replaces these with a `.hasInstance(value)` function on the variant c
 
 The new `applicativeFn.apply(applicativeValue)` method is the recommended way of using applicative functors now, which is standardised across Folktale and independent of Fantasy-Land changes.
 
-`.apply` and `.ap` still have the same semantics, but those semantics are different from the new `fantasy-land/ap` function! In order to write functions that are generic over different Fantasy-Land implementations and versions, the new [fantasy-land](/api/v2.0.0/en/folktale.fantasy-land.html) module should be used instead.
+`.apply` and `.ap` still have the same semantics, but those semantics are different from the new `fantasy-land/ap` function! In order to write functions that are generic over different Fantasy-Land implementations and versions, the new [fantasy-land](/api/v2.1.0/en/folktale.fantasy-land.html) module should be used instead.
 
 
 ## Equality testing
@@ -120,7 +120,7 @@ Validation.Success([1]).equals(Validation.Success([1]));
 {% endhighlight %}
 
 
-More details can be found on the [Equality derivation](/api/v2.0.0/en/folktale.adt.union.derivations.equality.equality.html) documentation.
+More details can be found on the [Equality derivation](/api/v2.1.0/en/folktale.adt.union.derivations.equality.equality.html) documentation.
 
 
 ## Validation.get

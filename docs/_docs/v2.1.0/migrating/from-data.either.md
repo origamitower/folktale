@@ -4,7 +4,7 @@ prev_doc: v2.0.0/migrating/from-core.lambda
 next_doc: v2.0.0/migrating/from-data.maybe
 ---
 
-`Data.Either` provided a disjunction to model the result of functions that could fail. Folktale 2 has changed a few things around and this data structure is now called `Result`, with `Ok` and `Error` as its variant tags. This page explains how to migrate from the old `Data.Either` to the new `Result` object. You can look at the [full documentation for Result](/api/v2.0.0/en/folktale.result.html) for more detailed information.
+`Data.Either` provided a disjunction to model the result of functions that could fail. Folktale 2 has changed a few things around and this data structure is now called `Result`, with `Ok` and `Error` as its variant tags. This page explains how to migrate from the old `Data.Either` to the new `Result` object. You can look at the [full documentation for Result](/api/v2.1.0/en/folktale.result.html) for more detailed information.
 
 
 ## Contents
@@ -150,7 +150,7 @@ safeDivide(4, 0); // ==> Result.Error([Error: division by zero])
 
 The new `applicativeFn.apply(applicativeValue)` method is the recommended way of using applicative functors now, which is standardised across Folktale and independent of Fantasy-Land changes.
 
-`.apply` and `.ap` still have the same semantics, but those semantics are different from the new `fantasy-land/ap` function! In order to write functions that are generic over different Fantasy-Land implementations and versions, the new [fantasy-land](/api/v2.0.0/en/folktale.fantasy-land.html) module should be used instead.
+`.apply` and `.ap` still have the same semantics, but those semantics are different from the new `fantasy-land/ap` function! In order to write functions that are generic over different Fantasy-Land implementations and versions, the new [fantasy-land](/api/v2.1.0/en/folktale.fantasy-land.html) module should be used instead.
 
 
 ## Equality testing
@@ -179,7 +179,7 @@ Result.Ok([1]).equals(Result.Ok([1]));
 // ==> true
 {% endhighlight %}
 
-More details can be found on the [Equality derivation](/api/v2.0.0/en/folktale.adt.union.derivations.equality.equality.html) documentation.
+More details can be found on the [Equality derivation](/api/v2.1.0/en/folktale.adt.union.derivations.equality.equality.html) documentation.
 
 
 ## Either.get

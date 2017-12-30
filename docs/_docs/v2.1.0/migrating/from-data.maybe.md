@@ -4,7 +4,7 @@ prev_doc: v2.0.0/migrating/from-data.either
 next_doc: v2.0.0/migrating/from-data.task
 ---
 
-`Data.Maybe` provided a way of modelling computations that may provide a value or not. Folktale 2 keeps the same structure, but there're some changes in how you extract values out of Maybes and test them. You can look at the [full documentation for Maybe](/api/v2.0.0/en/folktale.maybe.html) for more detailed information.
+`Data.Maybe` provided a way of modelling computations that may provide a value or not. Folktale 2 keeps the same structure, but there're some changes in how you extract values out of Maybes and test them. You can look at the [full documentation for Maybe](/api/v2.1.0/en/folktale.maybe.html) for more detailed information.
 
 
 ## Contents
@@ -110,7 +110,7 @@ Maybe.hasInstance(null);  // ==> false
 
 The new `applicativeFn.apply(applicativeValue)` method is the recommended way of using applicative functors now, which is standardised across Folktale and independent of Fantasy-Land changes.
 
-`.apply` and `.ap` still have the same semantics, but those semantics are different from the new `fantasy-land/ap` function! In order to write functions that are generic over different Fantasy-Land implementations and versions, the new [fantasy-land](/api/v2.0.0/en/folktale.fantasy-land.html) module should be used instead.
+`.apply` and `.ap` still have the same semantics, but those semantics are different from the new `fantasy-land/ap` function! In order to write functions that are generic over different Fantasy-Land implementations and versions, the new [fantasy-land](/api/v2.1.0/en/folktale.fantasy-land.html) module should be used instead.
 
 
 ## Equality testing
@@ -139,7 +139,7 @@ Maybe.Just([1]).equals(Maybe.Just([1]));
 // ==> true
 {% endhighlight %}
 
-More details can be found on the [Equality derivation](/api/v2.0.0/en/folktale.adt.union.derivations.equality.equality.html) documentation.
+More details can be found on the [Equality derivation](/api/v2.1.0/en/folktale.adt.union.derivations.equality.equality.html) documentation.
 
 
 ## Maybe.get
@@ -200,4 +200,4 @@ Maybe.Just(1).toJSON();
 Maybe.fromJSON(Maybe.Just(1).toJSON());
 {% endhighlight %}
 
-More details can be found on the [Serialization derivation](/api/v2.0.0/en/folktale.adt.union.derivations.serialization.serialization.html) documentation.
+More details can be found on the [Serialization derivation](/api/v2.1.0/en/folktale.adt.union.derivations.serialization.serialization.html) documentation.
