@@ -313,6 +313,11 @@ declare namespace folktale {
 
   interface StaticTask {
     waitAll<E, V>(tasks: Task<E, V>[]): Task<E, V[]>
+    waitAll2<E, A, B>(a: Task<E, A>, b: Task<E, B>): Task<E, [A, B]>
+    waitAll3<E, A, B, C>(a: Task<E, A>, b: Task<E, B>, c: Task<E, C>): Task<E, [A, B, C]>
+    waitAll4<E, A, B, C, D>(a: Task<E, A>, b: Task<E, B>, c: Task<E, C>, d: Task<E, D>): Task<E, [A, B, C, D]>
+    waitAll5<E, A, B, C, D, F>(a: Task<E, A>, b: Task<E, B>, c: Task<E, C>, d: Task<E, D>, e: Task<E, F>): Task<E, [A, B, C, D, F]>
+    waitAll6<E, A, B, C, D, F, G>(a: Task<E, A>, b: Task<E, B>, c: Task<E, C>, d: Task<E, D>, e: Task<E, F>, f: Task<E, G>): Task<E, [A, B, C, D, F, G]>
     waitAny<E, V>(tasks: Task<E, V>[]): Task<E, V>
 
     of<E, V>(value: V): Task<E, V>

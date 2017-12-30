@@ -273,6 +273,41 @@ import { Maybe, Validation, Result, Future, Task } from './index';
   const ex20: Task<{}, string> = task.of(1).chain(x => task.of(x.toFixed()));
   const ex21: Task<{}, string> = task.of(1).map(x => x.toFixed());
   const ex22: Task<string, {}> = task.rejected(1).mapRejected(x => x.toFixed());
+
+  const ex23: Task<string, [1, 2]> = task.waitAll2(
+    task.rejected<string, 1>('hello'),
+    task.of(<2>2)
+  );
+
+  const ex24: Task<{}, [1, 2, 3]> = task.waitAll3(
+    task.of(<1>1),
+    task.of(<2>2),
+    task.of(<3>3)
+  );
+
+  const ex25: Task<{}, [1, 2, 3, 4]> = task.waitAll4(
+    task.of(<1>1),
+    task.of(<2>2),
+    task.of(<3>3),
+    task.of(<4>4)
+  );
+
+  const ex26: Task<{}, [1, 2, 3, 4, 5]> = task.waitAll5(
+    task.of(<1>1),
+    task.of(<2>2),
+    task.of(<3>3),
+    task.of(<4>4),
+    task.of(<5>5)
+  );
+
+  const ex27: Task<{}, [1, 2, 3, 4, 5, 6]> = task.waitAll6(
+    task.of(<1>1),
+    task.of(<2>2),
+    task.of(<3>3),
+    task.of(<4>4),
+    task.of(<5>5),
+    task.of(<6>6)
+  );
 }
 //#endregion
 
