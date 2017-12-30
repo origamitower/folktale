@@ -11,6 +11,7 @@ npm-debug.log
 /docs/api/master/
 /docs/_site/
 /docs/.jekyll-metadata
+/docs/vendor/
 /test/build/
 /tools/static-docs/lib/
 /tools/static-docs/resources/html/*.css
