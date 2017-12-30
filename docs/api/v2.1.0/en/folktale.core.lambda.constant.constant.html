@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>constant</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.1.0-rc1</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">constant</h1><div class="highlight-summary"><div><p>The constant combinator; always returns the first argument given.</p>
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">constant(value)</div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="guides.type-notation-used-in-signatures.html">(what is this?)</a></div><pre class="type"><code class="language-haskell">('a) =&gt; ('b) =&gt; 'a</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>The constant combinator; always returns the first argument given.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const constant = require(&#39;folktale/core/lambda/constant&#39;);
+
+[1, 2, 3].map(constant(0));
+// ==&gt; [0, 0, 0]
+</code></pre><h2 id="why-">Why?</h2>
+<p>Constant combinators can be passed to higher-order operations if you
+want to provide a plain value, but the operation expects a function
+providing a value:</p>
+<pre><code>const constant = require(&#39;folktale/core/lambda/constant&#39;);
+
+[1, 2, 3].map(constant(0));
+// ==&gt; [0, 0, 0]
+</code></pre><p>For a primitive, there&#39;s usually not much of a difference between
+using the <code>constant</code> combinator or an arrow function. In fact, for
+most cases, using the arrow function is preferred:</p>
+<pre><code>[1, 2, 3].map(() =&gt; 0);
+// ==&gt; [0, 0, 0]
+</code></pre><p>The problem with using arrows is that the value is computed lazily.
+That is, it&#39;s computed only when the arrow is evaluated, and recomputed
+many times if the arrow is evaluated many times. The <code>constant</code> combinator
+lets you evaluate something eagerly instead.</p>
+<p>You can see the importance of this when effects are involved:</p>
+<pre><code>let counter = 0;
+const next = () =&gt; ++counter;
+
+[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;].map(constant(next()));
+// ==&gt; [1, 1, 1]
+
+counter = 0;
+[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;].map(_ =&gt; next());
+// ==&gt; [1, 2, 3]
+</code></pre><p>Expensive pure computations are another place where <code>constant</code> is desirable
+over plain arrows, given that one&#39;d rather avoid re-evaluating the
+computation unnecessarily.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/core/lambda/constant.js at line 18, column 0</div><pre class="source-code"><code class="language-javascript">(value) =&gt; (_) =&gt; value</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">stable</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/core/lambda/constant</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li><li class="toc-item"><a href="#why-" title="Why?"><div><p>Why?</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

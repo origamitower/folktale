@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.1.0-rc1</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">(Anonymous)</h1><div class="highlight-summary"><div><p>Cancels a task execution. Does nothing if the task has already been resolved.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Cancels a task execution. Does nothing if the task has already been resolved.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const { task } = require(&#39;folktale/concurrency/task&#39;);
+
+let message = &#39;world&#39;;
+const helloIn50 = task(
+  resolver =&gt; {
+    const timerId = setTimeout(() =&gt; {
+      message = &#39;hello&#39;;
+      resolver.resolve();
+    }, 50);
+    resolver.cleanup(() =&gt; clearTimeout(timerId));
+  }
+);
+
+const execution = helloIn50.run();
+execution.cancel();
+try {
+  const result = await execution.promise();
+  throw &#39;never happens&#39;;
+} catch (error) {
+  $ASSERT(message == &#39;world&#39;);
+}
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div></div><div id="meta-panel"><div class="meta-section"></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

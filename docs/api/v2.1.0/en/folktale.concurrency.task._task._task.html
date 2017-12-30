@@ -1,0 +1,405 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Task</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.1.0-rc1</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">Task</h1><div class="highlight-summary"><div><p>Tasks model asynchronous processes with automatic resource handling. They are generally constructed with the <code>task</code> function.</p>
+</div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">Task(computation)</div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="guides.type-notation-used-in-signatures.html">(what is this?)</a></div><pre class="type"><code class="language-haskell">forall value, reason:
+  new (
+    ({
+       resolve: (value) =&gt; Void,
+       reject: (reason) =&gt; Void,
+       cancel: () =&gt; Void,
+       cleanup: (() =&gt; Void) =&gt; Void,
+       onCancelled: (() =&gt; Void) =&gt; Void,
+       get isCancelled: Boolean
+     }) =&gt; Void
+  ) =&gt; Task value reason</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Tasks model asynchronous processes with automatic resource handling. They are generally constructed with the <code>task</code> function.</p>
+<p>See the documentation for <code>folktale/concurrency/task</code> for more details.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Static properties</h2><div class="member-category"><h4 class="category" id="cat-constructing">Constructing</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task._task.of.html">of(value)</a><div class="doc-summary"><div><p>Constructs a Task that resolves with a successful value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.concurrency.task._task.rejected.html">rejected(reason)</a><div class="doc-summary"><div><p>Constructs a Task that resolves with a rejected value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-fantasy-land">Fantasy Land</h4><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.concurrency.future._future.ap.html">ap(that)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 1.x. See the <code>apply</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.concurrency.future._future.fantasy-land-ap.html">fantasy-land/ap(that)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 2.x+. See the <code>apply</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.concurrency.future._future.fantasy-land-of.html">fantasy-land/of(value)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 2.x+. See the <code>of</code> method for details.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h4 class="category" id="cat-special-values">Special values</h4><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.concurrency.task._task.prototype.html">prototype</a><div class="doc-summary"><div><p>The container for instance methods for the Task structure.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><h2 class="section-title" id="instance-properties">Instance (prototype) properties</h2><div class="member-category"><h4 class="category" id="cat-combining-tasks">Combining tasks</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task._task.and.html">and: value(that)</a><div class="doc-summary"><div><p>Constructs a new task that awaits both tasks to resolve. The result of the new task is a tuple containing the results of the left and right tasks, if they all succeed, or the first failure if they fail.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.concurrency.task._task.or.html">or: value(that)</a><div class="doc-summary"><div><p>Combines two tasks such that the resulting task assimilates the result of the
+first one to resolve.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-executing-tasks">Executing tasks</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task._task.run.html">run: value()</a><div class="doc-summary"><div><p>Executes a Task and returns a <code>TaskExecution</code> object representing the execution.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-fantasy-land">Fantasy Land</h4><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.concurrency.future._future.ap.html">ap(that)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 1.x. See the <code>apply</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.concurrency.future._future.fantasy-land-ap.html">fantasy-land/ap(that)</a><div class="doc-summary"><div><p>Part of the Applicative instance for Fantasy Land 2.x+. See the <code>apply</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.concurrency.future._future.prototype.fantasy-land-bimap.html">fantasy-land/bimap(f, g)</a><div class="doc-summary"><div><p>Part of the Bifunctor instance for Fantasy Land 2.x+. See the <code>bimap</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.concurrency.future._future.prototype.fantasy-land-chain.html">fantasy-land/chain(transformation)</a><div class="doc-summary"><div><p>Part of the Monad instance for Fantasy Land 2.x+. See the <code>chain</code> method for details.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="-unknown-module-.folktale.concurrency.future._future.prototype.fantasy-land-map.html">fantasy-land/map(transformation)</a><div class="doc-summary"><div><p>Part of the Functor instance for Fantasy Land 2.x+. See the <code>map</code> method for details.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h4 class="category" id="cat-pattern-matching">Pattern matching</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task._task.willmatchwith.html">willMatchWith: value(pattern)</a><div class="doc-summary"><div><p>Chooses and executes a function for each variant in a Task. The function must
+return a new task, whose value and state will be assimilated.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-recovering-from-errors">Recovering from errors</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task._task.orelse.html">orElse: value(handler)</a><div class="doc-summary"><div><p>Transforms a failed task&#39;s value and state.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.concurrency.task._task.swap.html">swap: value()</a><div class="doc-summary"><div><p>Inverts the state of a Task. That is, turns successful tasks into failed ones, and failed tasks into successful ones.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-transforming-tasks">Transforming tasks</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task._task.apply.html">apply: value(task)</a><div class="doc-summary"><div><p>Applies the function in the left task to the value on the right task. The left
+task is ran to completion before the right task is started.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.concurrency.task._task.bimap.html">bimap: value(rejectionTransformation, successTransformation)</a><div class="doc-summary"><div><p>Transforms the rejected or resolved values of a Task with a function. The state of the task is not changed.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.concurrency.task._task.chain.html">chain: value(transformation)</a><div class="doc-summary"><div><p>Transforms the value and state of a Task.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.concurrency.task._task.map.html">map: value(transformation)</a><div class="doc-summary"><div><p>Transforms the value of a successful task.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.concurrency.task._task.maprejected.html">mapRejected: value(transformation)</a><div class="doc-summary"><div><p>Transforms the value of a failed task.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h4 class="category" id="cat-types">Types</h4><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task._task._task.html">constructor: Task(computation)</a><div class="doc-summary"><div><p>Tasks model asynchronous processes with automatic resource handling. They are generally constructed with the <code>task</code> function.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/concurrency/task/_task.js at line 20, column 0</div><pre class="source-code"><code class="language-javascript">class Task {
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall value, reason:
+   *     new (
+   *       ({
+   *          resolve: (value) =&gt; Void,
+   *          reject: (reason) =&gt; Void,
+   *          cancel: () =&gt; Void,
+   *          cleanup: (() =&gt; Void) =&gt; Void,
+   *          onCancelled: (() =&gt; Void) =&gt; Void,
+   *          get isCancelled: Boolean
+   *        }) =&gt; Void
+   *     ) =&gt; Task value reason
+   */
+  constructor(computation) {
+    this._computation = computation;
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v1, v2:
+   *     (Task e v1).((v1) =&gt; Task e v2) =&gt; Task e v2
+   */
+  chain(transformation) {
+    return new Task(resolver =&gt; {
+      const execution = this.run();
+      resolver.onCancelled(() =&gt; execution.cancel());
+
+      execution.listen({
+        onCancelled: resolver.cancel,
+        onRejected:  resolver.reject,
+        onResolved:  value =&gt; {
+          transformation(value).run().listen({
+            onCancelled: resolver.cancel,
+            onRejected:  resolver.reject,
+            onResolved:  resolver.resolve
+          });
+        }
+      });
+    });
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v1, v2:
+   *     (Task e v1).((v1) =&gt; v2) =&gt; Task e v2
+   */
+  map(transformation) {
+    return new Task(resolver =&gt; {
+      const execution = this.run();
+      resolver.onCancelled(() =&gt; execution.cancel());
+
+      execution.listen({
+        onCancelled: resolver.cancel,
+        onRejected:  resolver.reject,
+        onResolved:  value =&gt; resolver.resolve(transformation(value))
+      });
+    });
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e1, e2, v:
+   *     (Task e1 v).((e1) =&gt; e2) =&gt; Task e2 v
+   */
+  mapRejected(transformation) {
+    return new Task(resolver =&gt; {
+      const execution = this.run();
+      resolver.onCancelled(() =&gt; execution.cancel());
+
+      execution.listen({
+        onCancelled: resolver.cancel,
+        onRejected:  reason =&gt; resolver.reject(transformation(reason)),
+        onResolved:  resolver.resolve
+      });
+    });
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v1, v2:
+   *     (Task e ((v1) =&gt; v2)).(Task e v1) =&gt; Task e v2
+   */
+  apply(task) {
+    return this.chain(f =&gt; task.map(f));
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e1, e2, v1, v2:
+   *     (Task e1 v1).((e1) =&gt; e2, (v1) =&gt; v2) =&gt; Task e2 v2
+   */
+  bimap(rejectionTransformation, successTransformation) {
+    return new Task(resolver =&gt; {
+      const execution = this.run();
+      resolver.onCancelled(() =&gt; execution.cancel());
+
+      execution.listen({
+        onCancelled: resolver.cancel,
+        onRejected:  reason =&gt; resolver.reject(rejectionTransformation(reason)),
+        onResolved:  value =&gt; resolver.resolve(successTransformation(value))
+      });
+    });
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e1, e2, v1, v2:
+   *     type Pattern = { row |
+   *       Cancelled: ()  =&gt; Task e2 v2,
+   *       Resolved:  (b) =&gt; Task e2 v2,
+   *       Rejected:  (a) =&gt; Task e2 v2
+   *     }
+   *
+   *     (Task e1 v1).(Pattern) =&gt; Task e2 v2
+   */
+  willMatchWith(pattern) {
+    return new Task(resolver =&gt; {
+      const execution = this.run();
+      resolver.onCancelled(() =&gt; execution.cancel());
+      
+      const resolve = (handler) =&gt; (value) =&gt; handler(value).run().listen({
+        onCancelled: resolver.cancel,
+        onRejected:  resolver.reject,
+        onResolved:  resolver.resolve
+      });
+      execution.listen({
+        onCancelled: resolve(_ =&gt; pattern.Cancelled()),
+        onRejected:  resolve(pattern.Rejected),
+        onResolved:  resolve(pattern.Resolved)
+      });
+    });
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v: (Task e v).() =&gt; Task v e
+   */
+  swap() {
+    return new Task(resolver =&gt; {
+      let execution = this.run();   // eslint-disable-line prefer-const
+      resolver.onCancelled(() =&gt; execution.cancel());
+
+      execution.listen({
+        onCancelled: resolver.cancel,
+        onRejected:  resolver.resolve,
+        onResolved:  resolver.reject
+      });
+    });
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, e2, v:
+   *     (Task e v).((e) =&gt; Task e2 v) =&gt; Task e2 v
+   */
+  orElse(handler) {
+    return new Task(resolver =&gt; {
+      const execution = this.run();
+      resolver.onCancelled(() =&gt; execution.cancel());
+
+      execution.listen({
+        onCancelled: resolver.cancel,
+        onResolved:  resolver.resolve,
+        onRejected:  reason =&gt; {
+          handler(reason).run().listen({
+            onCancelled: resolver.cancel,
+            onRejected:  resolver.reject,
+            onResolved:  resolver.resolve
+          });
+        }
+      });
+    });
+  }
+
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v:
+   *     (Task e v).(Task e v) =&gt; Task e v
+   */
+  or(that) {
+    return new Task(resolver =&gt; {
+      let thisExecution = this.run();   // eslint-disable-line prefer-const
+      let thatExecution = that.run();   // eslint-disable-line prefer-const
+      let done = false;
+
+      resolver.onCancelled(() =&gt; {
+        thisExecution.cancel();
+        thatExecution.cancel();
+      });
+
+      const guard = (fn, execution) =&gt; (value) =&gt; {
+        if (!done) {
+          done = true;
+          execution.cancel();
+          fn(value);
+        }
+      };
+
+      thisExecution.listen({
+        onRejected:  guard(resolver.reject, thatExecution),
+        onCancelled: guard(resolver.cancel, thatExecution),
+        onResolved:  guard(resolver.resolve, thatExecution)
+      });
+
+      thatExecution.listen({
+        onRejected:  guard(resolver.reject, thisExecution),
+        onCancelled: guard(resolver.cancel, thisExecution),
+        onResolved:  guard(resolver.resolve, thisExecution)
+      });
+    });
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v1, v2:
+   *     (Task e v1).(Task e v2) =&gt; Task e (v1, v2)
+   */
+  and(that) {
+    return new Task(resolver =&gt; {   // eslint-disable-line max-statements
+      let thisExecution = this.run();   // eslint-disable-line prefer-const
+      let thatExecution = that.run();   // eslint-disable-line prefer-const
+      let valueLeft = null;
+      let valueRight = null;
+      let doneLeft = false;
+      let doneRight = false;
+      let cancelled = false;
+
+      resolver.onCancelled(() =&gt; {
+        thisExecution.cancel();
+        thatExecution.cancel();
+      });
+
+      const guardResolve = (setter) =&gt; (value) =&gt; {
+        if (cancelled)  return;
+
+        setter(value);
+        if (doneLeft &amp;&amp; doneRight) {
+          resolver.resolve([valueLeft, valueRight]);
+        }
+      };
+
+      const guardRejection = (fn, execution) =&gt; (value) =&gt; {
+        if (cancelled)  return;
+
+        cancelled = true;
+        execution.cancel();
+        fn(value);
+      };
+
+      thisExecution.listen({
+        onRejected:  guardRejection(resolver.reject, thatExecution),
+        onCancelled: guardRejection(resolver.cancel, thatExecution),
+        onResolved:  guardResolve(x =&gt; {
+          valueLeft = x;
+          doneLeft = true;
+        })
+      });
+
+      thatExecution.listen({
+        onRejected:  guardRejection(resolver.reject, thisExecution),
+        onCancelled: guardRejection(resolver.cancel, thisExecution),
+        onResolved:  guardResolve(x =&gt; {
+          valueRight = x;
+          doneRight = true;
+        })
+      });
+    });
+  }
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v: (Task e v).() =&gt; TaskExecution e v
+   */
+  run() {
+    let deferred = new Deferred();    // eslint-disable-line prefer-const
+    let cleanups      = [];
+    let cancellations = [];
+    let isCancelled   = false;
+    let done          = false;
+
+    deferred.listen({
+      onCancelled: _ =&gt; {
+        done = true;
+        isCancelled = true;
+        cancellations.forEach(f =&gt; f());
+        cleanups.forEach(f =&gt; f());
+        cancellations = [];
+        cleanups = [];
+      },
+
+      onResolved: _value =&gt; {
+        done = true;
+        cleanups.forEach(f =&gt; f());
+        cleanups = [];
+        cancellations = [];
+      },
+
+      onRejected: _reason =&gt; {
+        done = true;
+        cleanups.forEach(f =&gt; f());
+        cleanups = [];
+        cancellations = [];
+      }
+    });
+
+    const resources = this._computation({
+      reject:  error =&gt; { deferred.reject(error) },
+      resolve: value =&gt; { deferred.resolve(value) },
+      cancel:  _     =&gt; { deferred.maybeCancel() },
+
+      get isCancelled() { return isCancelled },
+      cleanup(f) {
+        if (done) {
+          throw new Error('Can\'t attach a cleanup handler after the task is settled.');
+        }
+        cleanups.push(f);
+      },
+      onCancelled(f) {
+        if (done) {
+          throw new Error('Can\'t attach a cancellation handler after the task is settled.');
+        }
+        cancellations.push(f);
+      }
+    });
+
+    return new TaskExecution(this, deferred);
+  }
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/concurrency/task/_task</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-constructing">Constructing</a></li><li class="toc-item"><a href="#cat-fantasy-land">Fantasy Land</a></li><li class="toc-item"><a href="#cat-special-values">Special values</a></li></ul></li><li class="toc-item"><a href="#instance-properties">Instance properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-combining-tasks">Combining tasks</a></li><li class="toc-item"><a href="#cat-executing-tasks">Executing tasks</a></li><li class="toc-item"><a href="#cat-fantasy-land">Fantasy Land</a></li><li class="toc-item"><a href="#cat-pattern-matching">Pattern matching</a></li><li class="toc-item"><a href="#cat-recovering-from-errors">Recovering from errors</a></li><li class="toc-item"><a href="#cat-transforming-tasks">Transforming tasks</a></li><li class="toc-item"><a href="#cat-types">Types</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>module folktale/concurrency/task</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.1.0-rc1</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/concurrency/task</h1><div class="highlight-summary"><div><p>A data structure that models asynchronous actions, supporting safe cancellation and automatic resource handling.</p>
+</div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>A data structure that models asynchronous actions, supporting safe cancellation and automatic resource handling.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const { task } = require(&#39;folktale/concurrency/task&#39;);
+
+const delay = (ms) =&gt; task(
+  (resolver) =&gt; {
+    const timerId = setTimeout(() =&gt; resolver.resolve(ms), ms);
+    resolver.cleanup(() =&gt; {
+      clearTimeout(timerId);
+    });
+  }
+);
+
+// waits 100ms
+const result = await delay(100).or(delay(2000)).run().promise();
+$ASSERT(result == 100);
+</code></pre><h2 id="why-use-task-">Why use Task?</h2>
+<p>Because JavaScript implementations are usually single-threaded, and there&#39;s no coroutine support, concurrent applications tend to use either callbacks (continuation-passing style) or Promise.</p>
+<p>Callbacks aren&#39;t very composable. In order to combine callbacks, a user has to write code specific to each place that will use them. While you can make code written using callbacks maintainable, their low-level nature forces you to deal with a fair amount of detail that could be resolved by a library, including optimal concurrency:</p>
+<pre><code>const map = (list, fn, done) =&gt; {
+  let result = [];
+  let pending = list.length;
+  let resolved = false;
+
+  list.forEach((item, index) =&gt; {
+    fn(item, (error, value) =&gt; {
+      if (!resolved) {
+        if (error) {
+          resolved = true;
+          done(error, null);
+        } else {
+          pending -= 1;
+          result[index] = value;
+          if (pending === 0) {
+            done(null, result);
+          }
+        }
+      }
+    });
+  });
+};
+
+map([1, 2], (x, c) =&gt; c(null, x + 1), (e, v) =&gt; {
+  $ASSERT(e == null);
+  $ASSERT(v == []);
+});
+
+map([1, 2], (x, c) =&gt; c(x), (e, v) =&gt; {
+  $ASSERT(e == 1);
+  $ASSERT(v == null);
+});
+</code></pre><p>Because functions using callbacks don&#39;t return a value to the caller, they&#39;re not composable. They are also, of course, not usable with JavaScript control-flow constructs either. So it&#39;s not possible to write something like:</p>
+<pre><code>if (someAsyncPredicate(...)) {
+  ...
+}
+</code></pre><p>Instead of returning a value, <code>someAsyncPredicate</code> passes the result of its computation to another function (the callback). Because of this, there&#39;s no value for the <code>if</code> statement to work with.</p>
+<p>Promises alleviate this a bit. Promises are first-class values, so regular synchronous functions may invoke functions yielding promises and get a value back. In some cases, that&#39;s not going to be the right value, but with <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await">async/await</a> you get a lot of the compositionality back, as you can mix promises and regular synchronous constructs freely in special (<code>async</code>) functions.</p>
+<p>Promises, however, do not support cancellations. Since they represent values, not computations, a Promise by itself has no concept of &quot;what to cancel&quot;. It only waits for an external process to provide a value to it. In JavaScript, promises also suffer from not being able to nest. This is not a problem for most common cases, but it makes writing some data structures much less convenient and more error-prone.</p>
+<p>Task, on the other hand, works at the <em>computation</em> level, so it knows which resources a computation has allocated to do the work, and can safely collect those resources automatically when the computation is cancelled. Very similar to how killing a thread or process allows you to clean things up. Because Tasks abstract computations, and not values, things that aren&#39;t possible with Promises, like running operations sequentially, is supported natively by the Task API.</p>
+<h2 id="constructing-tasks">Constructing tasks</h2>
+<p>The <code>task</code> function is how Tasks are generally created. It takes a computation (a function that will perform all of the work) and 
+provides that computation means of describing its result, cleaning up its allocated resources, and reacting to external cancellations.</p>
+<p>A task that simply resolves after a certain amount of time would look like this:</p>
+<pre><code>const { task } = require(&#39;folktale/concurrency/task&#39;);
+
+const delay = (time) =&gt; task(
+  (resolver) =&gt; {
+    const timerId = setTimeout(() =&gt; resolver.resolve(time), time);
+
+    resolver.cleanup(() =&gt; {
+      clearTimeout(timerId);
+    });
+
+    resolver.onCancelled(() =&gt; {
+      /* does nothing */
+    });
+  }
+);
+
+const result = await delay(100).run().promise();
+$ASSERT(result == 100);
+</code></pre><p>Here the computation takes a <code>resolver</code> argument, which contains methods to change the state of the task execution. <code>resolver.resolve(value)</code> signals that the execution succeeded, and provides a return value for it. <code>resolver.reject(reason)</code> signals that the execution failed, and provides the reason of its failure. <code>resolver.cancel()</code> cancels the exection of the task.</p>
+<blockquote>
+<p><strong>NOTE</strong><br>While <code>.cancel()</code> will cancel the execution of the Task, the processes started by the task computation will not be automatically stopped. The task computation must stop those itself, as we&#39;ll see later in the section about cancelling tasks.</p>
+</blockquote>
+<p>The <code>cleanup</code> function takes a callback to be invoked unconditionally once the Task finishes its execution or is cancelled. This gives the computation a chance of freeing the resources it has allocated while it was running. Resource handling with asynchronous exceptions and cancellations is difficult. While Task does help ensuring that the composition of asynchronous tasks will respect the proper resource lifecycles, it&#39;s limited to cases where a Task allocates a particular resource, and frees it at the end of its execution. Shared resources across different tasks are a bigger problem that this library does not try to solve.</p>
+<p>The <code>onCancelled</code> function takes a callback that&#39;ll be invoked when the task&#39;s execution is cancelled. The resolver also has an <code>isCancelled</code> boolean field that can be queried at any time to determine whether the task has been cancelled or not at that point in time.</p>
+<p>Sometimes Task functions expect a Task as input or result value, but you already have the value that should be computed. While you can always resolve a Task synchronously, like so:</p>
+<pre><code>const one = task(resolver =&gt; resolver.resolve(1));
+</code></pre><p>It&#39;s practical to use the <code>of()</code> and <code>rejected()</code> methods instead. The first creates a task that resolves successfuly with a value, whereas <code>rejected()</code> creates a task that resolves with a failure:</p>
+<pre><code>const { of, rejected } = require(&#39;folktale/concurrency/task&#39;);
+
+const one_ = of(1);
+const two_ = rejected(2);
+</code></pre><h2 id="running-tasks">Running tasks</h2>
+<p>Creating a Task does <strong>not</strong> start any computation, it only provides a description for how to do something. In a sense, they are similar to a function definition. In order to execute the operations a Task defines, one must run it:</p>
+<pre><code>const { task } = require(&#39;folktale/concurrency/task&#39;);
+
+const hello = task(resolver =&gt; resolver.resolve(&#39;hello&#39;));
+
+const helloExecution = hello.run();
+</code></pre><p>Running a Task with the <code>.run()</code> method returns a <code>TaskExecution</code> object. This object allows one to cancel the execution of the task, or query its eventual value either as JavaScript&#39;s Promise, or a Folktale&#39;s Future:</p>
+<pre><code>const value = await helloExecution.promise();
+$ASSERT(value === &#39;hello&#39;);
+
+helloExecution.future().map(value =&gt; {
+  $ASSERT(value === &#39;hello&#39;);
+});
+</code></pre><blockquote>
+<p><strong>NOTE</strong><br>While Promises let you use JavaScript&#39;s <code>async/await</code> feature, it does not support nested promises, and cancellations are handled as rejections. Future is a simpler structure, which models all three states of a Task&#39;s eventual value, but does not support <code>async/await</code>.</p>
+</blockquote>
+<p>TaskExecution also allows one to react to the result of running a task with the <code>listen()</code> method. This is useful for handling cancellations or rejections at the top level, where one doesn&#39;t need to combine the task with anything else:</p>
+<pre><code>helloExecution.listen({
+  onCancelled: () =&gt; &#39;task was cancelled&#39;,
+  onRejected:  (reason) =&gt; &#39;task was rejected&#39;,
+  onResolved:  (value) =&gt; $ASSERT(value == &#39;hello&#39;)
+});
+</code></pre><h2 id="combining-tasks-concurrently">Combining tasks concurrently</h2>
+<p>Task&#39;s primary goal is helping with concurrency, or the ordering of independent processes within an application. There are three primary categories of operations for this in Folktale:</p>
+<ul>
+<li><strong>Sequencing</strong>: when process A depends on process B, and thus must only be executed after A is done.</li>
+<li><strong>Choosing non-deterministically</strong>: A and B are independent processes that provide a similar answer. The program chooses the first process that finishes.</li>
+<li><strong>Waiting related processes</strong>: A and B are independent processes, but C depends on both, and thus must only be executed after A and B are done.</li>
+</ul>
+<h3 id="sequencing-tasks">Sequencing tasks</h3>
+<p>One task models and independent process that eventually computes a value. Sometimes one task depends on the result of another task, and as thus may only run if that task resolves successfully. In order to sequence tasks we use the <code>.chain()</code> method:</p>
+<pre><code>const { task, of } = require(&#39;folktale/concurrency/task&#39;);
+
+const concat = (a, b) =&gt; task(resolver =&gt; resolver.resolve(a + b));
+
+const taskA = of(&#39;hello&#39;);
+const taskB = of(&#39;world&#39;);
+
+const theTask = taskA.chain(x =&gt; taskB.chain(y =&gt; concat(x, y)));
+
+const result = await theTask.run().promise();
+$ASSERT(result == &#39;helloworld&#39;);
+</code></pre><p>In this case, <code>taskB</code> only starts after <code>taskA</code> finishes executing successfully, and <code>concat</code> only starts after both <code>taskA</code> and <code>taskB</code> finish executing. It makes sense for <code>concat</code> to wait on both <code>taskA</code> and <code>taskB</code>, as it needs the two tasks to finish successfully before it can be executed, but there&#39;s no reason for <code>taskA</code> and <code>taskB</code> to wait for each other.</p>
+<h3 id="choosing-the-first-of-n-tasks">Choosing the first of N tasks</h3>
+<p>Suppose you send a request to a server, but if you don&#39;t get a response in a couple of seconds the program should just give up. This scenario can be modelled as two independent processes: a request to a server, and a timer that fires after a couple of seconds. The program should pick whichever process resolves first. With Folktale&#39;s Task, this is done with the <code>.or()</code> method.</p>
+<p>The <code>.or()</code> method combines two tasks such that the resulting task assimilates the result of the first one to resolve:</p>
+<pre><code>const { task } = require(&#39;folktale/concurrency/task&#39;);
+
+const delay = (ms) =&gt; task(
+  resolver =&gt; {
+    const timerId = setTimeout(() =&gt; resolver.resolve(ms), ms);
+    resolver.cleanup(() =&gt; {
+      clearTimeout(timerId);
+    });
+  }
+);
+
+const timeout = (ms) =&gt; task(
+  resolver =&gt; {
+    const timerId = setTimeout(() =&gt; resolver.reject(ms), ms);
+    resolver.cleanup(() =&gt; {
+      clearTimeout(timerId);
+    })
+  }
+);
+
+const result = await delay(20).or(timeout(300))
+                 .run().promise();
+$ASSERT(result == 20);
+
+const result2 = await delay(200).or(timeout(100))
+                  .run().promise().catch(e =&gt; `timeout ${e}`);
+$ASSERT(result2 == &#39;timeout 100&#39;);
+</code></pre><p>As a convenience for combining a large or unknown amount of tasks, the <code>waitAny()</code> function receives an array of Tasks to &quot;or&quot; together:</p>
+<pre><code>const { waitAny } = require(&#39;folktale/concurrency/task&#39;);
+
+const result3 = await waitAny([
+  delay(10),
+  delay(20),
+  delay(30)
+]).run().promise(); // equivalent to `delay(10).or(delay(20).or(delay(30)))`
+$ASSERT(result3 == 10);
+</code></pre><h3 id="waiting-many-independent-processes">Waiting many independent processes</h3>
+<p>If some computation depends on the results of more than one process you could use a nested sequence of <code>.chain()</code> calls to describe these dependencies, but that could be inefficient. If you don&#39;t care about the ordering of these processes, <code>.chain()</code> would impose an order on them. In essence, you wouldn&#39;t be getting any concurrency performance out of it.</p>
+<p>Instead of sequencing unrelated tasks, you can combine them with the <code>.and()</code> operation. <code>a.and(b)</code> combines two tasks concurrently. That is, when you run this result, it&#39;ll start both <code>a</code> and <code>b</code> concurrently, and wait for their return without imposing any ordering on it. The result of the task will be a tuple containing the values of <code>a</code> and <code>b</code>:</p>
+<pre><code>const { task } = require(&#39;folktale/concurrency/task&#39;);
+
+const delay = (ms) =&gt; task(
+  resolver =&gt; {
+    const timerId = setTimeout(() =&gt; resolver.resolve(ms), ms);
+    resolver.cleanup(() =&gt; {
+      clearTimeout(timerId);
+    });
+  }
+);
+
+// This takes 100ms
+const result = await delay(60).chain(x =&gt; delay(40).map(y =&gt; [x, y])).run().promise();
+$ASSERT(result == [60, 40]);
+
+// This takes 60ms
+const result2 = await delay(60).and(delay(40)).run().promise();
+$ASSERT(result == [60, 40]);
+</code></pre><p>Because the tasks are started concurrently, and no ordering is imposed on them, the entire computation takes as long as the slowest of its processes. If you were to use <code>.chain()</code> to combine them, it would take the sum of all processes&#39; times.</p>
+<p>As a convenience for combining a large or unknown amount of tasks, the <code>waitAll()</code> function receives an array of Tasks to &quot;and&quot; together. <code>waitAll()</code> returns a normalised array of the results instead of nested tuples:</p>
+<pre><code>const { waitAll } = require(&#39;folktale/concurrency/task&#39;);
+
+const result3 = await delay(10).and(delay(20).and(delay(30))).run().promise();
+$ASSERT(result3 == [10, [20, 30]]);
+
+const result4 = await waitAll([
+  delay(10),
+  delay(20),
+  delay(30)
+]).run().promise();
+$ASSERT(result4 == [10, 20, 30]);
+</code></pre><h2 id="error-handling">Error handling</h2>
+<p>Sometimes processes will fail. You can recover from such failures using the <code>.orElse()</code> method. The method takes a function, passes to it the error value, if one happened, and expects it to return a new Task, whose state will be assimilated. In order to recover from the error you&#39;d return a successful task, so computations that depend on it may proceed.</p>
+<p>For example, this could be used to retry a particular computation:</p>
+<pre><code>const { task, of, rejected } = require(&#39;folktale/concurrency/task&#39;);
+
+let errors = [];
+
+
+const result = await rejected(&#39;nope&#39;).orElse(reason =&gt; {
+  errors.push(reason);
+  return of(&#39;yay&#39;);
+}).run().promise();
+
+$ASSERT(result == &#39;yay&#39;);
+$ASSERT(errors == [&#39;nope&#39;]);
+</code></pre><p><code>.orElse()</code> can also return rejected or cancelled tasks, and their state will be assimilated likewise:</p>
+<pre><code>errors = [];
+const retry = (task, times) =&gt; {
+  return task.orElse(reason =&gt; {
+    errors.push(reason);
+    if (times &gt; 1) {
+      return retry(task, times - 1)
+    } else {
+      return rejected(&#39;I give up&#39;);
+    }
+  });
+};
+
+let runs = 0;
+const ohNoes = task(r =&gt; {
+  runs += 1;
+  r.reject(&#39;fail&#39;);
+});
+
+try {
+  const result2 = await retry(ohNoes, 3).run().promise();
+  throw &#39;never happens&#39;;
+} catch (error) {
+  $ASSERT(runs == 3);
+  $ASSERT(errors == [&#39;fail&#39;, &#39;fail&#39;, &#39;fail&#39;]);
+  $ASSERT(error == &#39;I give up&#39;);
+}
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-combining-tasks">Combining tasks</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task.wait-all.waitall.html">waitAll(tasks)</a><div class="doc-summary"><div><p>Constructs a new task that waits all given tasks resolve. The result of the new
+task is an array with the results of the input tasks, if they all succeed, or
+the first failure if they fail.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.concurrency.task.wait-any.waitany.html">waitAny(tasks)</a><div class="doc-summary"><div><p>Constructs a new task that waits any of the given tasks resolve. The result of
+the first task to resolve is assimilated by the new task.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-constructing">Constructing</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task._task.of.html">of(value)</a><div class="doc-summary"><div><p>Constructs a Task that resolves with a successful value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.concurrency.task._task.rejected.html">rejected(reason)</a><div class="doc-summary"><div><p>Constructs a Task that resolves with a rejected value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.concurrency.task.task.task.html">task(computation)</a><div class="doc-summary"><div><p>Constructs a Task and associates a computation to it. The computation is executed every time the Task is ran, and should provide the result of the task: a success or failure along with its value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-function-with-node-style-callback">Converting from function with Node-style callback</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task.fromnodeback.html">fromNodeback(aNodeback)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/conversions/nodeback-to-task</code> module.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-other-types">Converting from other types</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task.frompromised.html">fromPromised(aPromiseFn)</a><div class="doc-summary"><div><p>Converts a Promise-yielding function to a Task-yielding function.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-sequencing-tasks">Sequencing tasks</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task.do.do.html">do: taskDo(generatorFn)</a><div class="doc-summary"><div><p>Allows using a direct style of programming (similar to <code>async/await</code> for Promises) to sequence Tasks. The function <strong>must</strong> return a Task.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-types">Types</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.concurrency.task._task._task.html">_Task: Task(computation)</a><div class="doc-summary"><div><p>Tasks model asynchronous processes with automatic resource handling. They are generally constructed with the <code>task</code> function.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.concurrency.task._task-execution._taskexecution.html">_TaskExecution()</a><div class="doc-summary"><div><p>Represents the execution of a Task, with methods to cancel it, react to its
+results, and retrieve its eventual value. TaskExecution objects aren&#39;t created
+directly by users, but instead returned as a result from Task&#39;s <code>run()</code> method.
+b</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/concurrency/task/index.js at line 17, column 0</div><pre class="source-code"><code class="language-javascript">{
+  of: Task.of,
+  rejected: Task.rejected,
+  task: require('./task'),
+  waitAny: require('./wait-any'),
+  waitAll: require('./wait-all'),
+  do: require('./do'),
+  _Task: Task,
+  _TaskExecution: require('./_task-execution'),
+
+  /*~
+   * stability: experimental
+   * type: |
+   *    forall s, e:
+   *      ((Any..., (e, s) =&gt; Void) =&gt; Void)
+   *      =&gt; (Any...)
+   *      =&gt; Task e s
+   */
+  fromNodeback(aNodeback) {
+    return require('folktale/conversions/nodeback-to-task')(aNodeback);
+  },
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall e, v:
+   *     ((Any...) =&gt; Promise v e) =&gt; (Any...) =&gt; Task e v
+   */
+  fromPromised(aPromiseFn) {
+    return require('folktale/conversions/promised-to-task')(aPromiseFn);
+  }
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/concurrency/task</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li><li class="toc-item"><a href="#why-use-task-" title="Why use Task?"><div><p>Why use Task?</p>
+</div></a></li><li class="toc-item"><a href="#constructing-tasks" title="Constructing tasks"><div><p>Constructing tasks</p>
+</div></a></li><li class="toc-item"><a href="#running-tasks" title="Running tasks"><div><p>Running tasks</p>
+</div></a></li><li class="toc-item"><a href="#combining-tasks-concurrently" title="Combining tasks concurrently"><div><p>Combining tasks concurrently</p>
+</div></a></li><li class="toc-item"><a href="#error-handling" title="Error handling"><div><p>Error handling</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-combining-tasks">Combining tasks</a></li><li class="toc-item"><a href="#cat-constructing">Constructing</a></li><li class="toc-item"><a href="#cat-converting-from-function-with-node-style-callback">Converting from function with Node-style callback</a></li><li class="toc-item"><a href="#cat-converting-from-other-types">Converting from other types</a></li><li class="toc-item"><a href="#cat-sequencing-tasks">Sequencing tasks</a></li><li class="toc-item"><a href="#cat-types">Types</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

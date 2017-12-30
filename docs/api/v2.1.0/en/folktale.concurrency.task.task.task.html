@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>task</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.1.0-rc1</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">task</h1><div class="highlight-summary"><div><p>Constructs a Task and associates a computation to it. The computation is executed every time the Task is ran, and should provide the result of the task: a success or failure along with its value.</p>
+</div></div><div class="deprecation-section"><strong class="deprecation-title">This feature is experimental!</strong><p>This API is still experimental, so it may change or be removed in future versions. You should not rely on it for production applications.</p></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">task(computation)</div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="guides.type-notation-used-in-signatures.html">(what is this?)</a></div><pre class="type"><code class="language-haskell">forall value, reason:
+  (
+    ({
+       resolve: (value) =&gt; Void,
+       reject: (reason) =&gt; Void,
+       cancel: () =&gt; Void,
+       cleanup: (() =&gt; Void) =&gt; Void,
+       onCancelled: (() =&gt; Void) =&gt; Void,
+       get isCancelled: Boolean
+     }) =&gt; Void
+  ) =&gt; Task reason value</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Constructs a Task and associates a computation to it. The computation is executed every time the Task is ran, and should provide the result of the task: a success or failure along with its value.</p>
+<p>A computation is required. For task, this is a function that receives one argument, the resolver, and does some work that may be asynchronous. Once done, the computation uses the resolver to <code>resolve()</code> a task succesfully, or <code>reject()</code> it with an error.</p>
+<p>Asynchronous computations that allocate some external resource (for example, starting an HTTP request) can provide a cleanup function. The <code>cleanup</code> function will be called with the resources returned, and will have the chance of disposing of them properly once the Task is finished, either properly, as a success or rejection, or eagerly, as a cancellation.</p>
+<p>Optionally, a Task may provide an <code>onCancelled</code> function that will be called if the Task is cancelled, before the cleanup.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const { task } = require(&#39;folktale/concurrency/task&#39;);
+</code></pre><p>A simple, successful task:</p>
+<pre><code>const hello = task(resolver =&gt; resolver.resolve(&#39;hello&#39;));
+
+const result1 = await hello.run().promise();
+$ASSERT(result1 == &#39;hello&#39;);
+</code></pre><p>A simple, failed task:</p>
+<pre><code>const nope = task(resolver =&gt; resolver.reject(&#39;hello&#39;));
+
+try {
+  await nope.run().promise();
+  throw &#39;never happens&#39;;
+} catch (error) {
+  $ASSERT(error == &#39;hello&#39;);
+}
+</code></pre><p>An asynchronous task that allocates and frees resources:</p>
+<pre><code>const delay50 = task(
+  resolver =&gt; {
+    const timerId = setTimeout(() =&gt; resolver.resolve(&#39;yay&#39;), 50);
+    resolver.cleanup(() =&gt; {
+      clearTimeout(timerId);
+    });
+  }
+);
+
+const result2 = await delay50.run().promise();
+$ASSERT(result2 == &#39;yay&#39;);
+</code></pre><p>A task with a cancellation handler:</p>
+<pre><code>let resolved = false;
+const cancelMe = task(
+  resolver =&gt; {
+    const timerId = setTimeout(() =&gt; {
+      resolved = true;
+      resolver.resolve(&#39;yay&#39;);
+    }, 50);
+
+    resolver.cleanup(() =&gt; {
+      clearTimeout(timerId);
+    });
+
+    resolver.onCancelled(() =&gt; {
+      /* task was cancelled */
+    });
+  }
+);
+
+try {
+  const execution = cancelMe.run();
+  execution.cancel();
+  const result3 = await execution.promise();
+  throw &#39;never happens&#39;;
+} catch (error) {
+  $ASSERT(resolved == false);
+}
+</code></pre></div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/concurrency/task/task.js at line 29, column 0</div><pre class="source-code"><code class="language-javascript">(computation) =&gt;
+  new Task(computation)</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">experimental</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/concurrency/task/task</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

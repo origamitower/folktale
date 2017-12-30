@@ -1,0 +1,611 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>module folktale/result</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.1.0-rc1</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="folktale.html#cat-2-support" title="">Support</a></li><li class="navigation-item"><a href="folktale.html#cat-3-contributing" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/result</h1><div class="highlight-summary"><div><p>A data structure that models the result of operations that may fail. A <code>Result</code>
+helps with representing errors and propagating them, giving users a more
+controllable form of sequencing operations than that offered by constructs like
+<code>try/catch</code>.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>A data structure that models the result of operations that may fail. A <code>Result</code>
+helps with representing errors and propagating them, giving users a more
+controllable form of sequencing operations than that offered by constructs like
+<code>try/catch</code>.</p>
+<p>A <code>Result</code> may be either an <code>Ok(value)</code>, which contains a successful value, or
+an <code>Error(value)</code>, which contains an error.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const Result = require(&#39;folktale/result&#39;);
+const { union, derivations } = require(&#39;folktale/adt/union&#39;);
+
+const DivisionErrors = union(&#39;division-errors&#39;, {
+  DivisionByZero(dividend) {
+    return { dividend };
+  }
+}).derive(
+  derivations.equality,
+  derivations.debugRepresentation
+);
+
+const { DivisionByZero } = DivisionErrors;
+
+
+const divideBy = (dividend, divisor) =&gt; 
+  divisor === 0 ?  Result.Error(DivisionByZero(dividend))
+: /* otherwise */  Result.Ok(Math.floor(dividend / divisor));
+
+divideBy(4, 2);
+// ==&gt; Result.Ok(2)
+
+divideBy(4, 0);
+// ==&gt; Result.Error(DivisionByZero(4))
+</code></pre><h2 id="why-use-result-">Why use Result?</h2>
+<p>Sometimes functions fail, for many reasons: someone might have provided an
+unexpected value to it, the internet connection might have gone down in the
+middle of an HTTP request, the database might have died. Regardless of which
+reason, we have to handle these failures. And, of course, we&#39;d like to handle
+failures in the simplest way possible.</p>
+<p>In JavaScript you&#39;re often left with two major ways of dealing with these
+failures: a branching instruction (like <code>if/else</code>), or throwing errors and
+catching them.</p>
+<p>To see how <code>Result</code> compares to these, we&#39;ll look at a function that needs to
+validate some information, and that incorporates some more complex validation
+rules. A person may sign-up for a service by providing the form they would
+prefer being contacted (email or phone), and the information related to that
+preference has to be provided, but any other info is optional:</p>
+<pre><code>// Functions to assert the format of each data
+const isValidName  = (name)  =&gt; name.trim() !== &#39;&#39;;
+const isValidEmail = (email) =&gt; /(.+)@(.+)/.test(email);
+const isValidPhone = (phone) =&gt; /^\d+$/.test(phone);
+
+// Objects representing each possible failure in the validation
+const { union, derivations } = require(&#39;folktale/adt/union&#39;);
+
+const ValidationErrors = union(&#39;validation-errors&#39;, {
+  Required(field) {
+    return { field };
+  },
+
+  InvalidEmail(email) {
+    return { email };
+  },
+
+  InvalidPhone(phone) {
+    return { phone };
+  },
+
+  InvalidType(type) {
+    return { type };
+  },
+
+  Optional(error) {
+    return { error };
+  }
+}).derive(derivations.equality);
+
+const { 
+  Required, 
+  InvalidEmail, 
+  InvalidPhone, 
+  InvalidType, 
+  Optional 
+} = ValidationErrors;
+</code></pre><p>Branching stops being a very feasible thing after a couple of cases. It&#39;s very
+simple to forget to handle failures (often with catastrophic effects, as can be
+seen in things like NullPointerException and the likes), and there&#39;s no error
+propagation, so every part of the code has to handle the same error over and
+over again:</p>
+<pre><code>const validateBranching = ({ name, type, email, phone }) =&gt; {
+  if (!isValidName(name)) {
+    return Required(&#39;name&#39;);
+  } else if (type === &#39;email&#39;) {
+    if (!isValidEmail(email)) {
+      return InvalidEmail(email);
+    } else if (phone &amp;&amp; !isValidPhone(phone)) {
+      return Optional(InvalidPhone(phone));
+    } else {
+      return { type, name, email, phone };
+    }
+  } else if (type === &#39;phone&#39;) {
+    if (!isValidPhone(phone)) {
+      return InvalidPhone(phone);
+    } else if (email &amp;&amp; !isValidEmail(email)) {
+      return Optional(InvalidEmail(email));
+    } else {
+      return { type, name, email, phone };
+    }
+  } else {
+    return InvalidType(type);
+  }
+};
+
+
+validateBranching({
+  name: &#39;Max&#39;,
+  type: &#39;email&#39;,
+  phone: &#39;11234456&#39;
+});
+// ==&gt; InvalidEmail(undefined)
+
+validateBranching({
+  name: &#39;Alissa&#39;,
+  type: &#39;email&#39;,
+  email: &#39;alissa@somedomain&#39;
+});
+// ==&gt; { type: &#39;email&#39;, name: &#39;Alissa&#39;, email: &#39;alissa@somedomain&#39;, phone: undefined }
+</code></pre><p>Exceptions (with the <code>throw</code> and <code>try/catch</code> constructs) alleviate this a bit.
+They don&#39;t solve the cases where you forget to handle a failure—although that
+often results in crashing the process, which is better than continuing but doing
+the wrong thing—, but they allow failures to propagate, so fewer places in the
+code need to really deal with the problem:</p>
+<pre><code>const id = (a) =&gt; a;
+
+const assertEmail = (email, wrapper=id) =&gt; {
+  if (!isValidEmail(email)) {
+    throw wrapper(InvalidEmail(email));
+  }
+};
+
+const assertPhone = (phone, wrapper=id) =&gt; {
+  if (!isValidPhone(phone)) {
+    throw wrapper(InvalidEmail(email));
+  }
+};
+
+const validateThrow = ({ name, type, email, phone }) =&gt; {
+  if (!isValidName(name)) {
+    throw Required(&#39;name&#39;);
+  }
+  switch (type) {
+    case &#39;email&#39;:
+      assertEmail(email);
+      if (phone)  assertPhone(phone, Optional);
+      return { type, name, email, phone };
+
+    case &#39;phone&#39;:
+      assertPhone(phone);
+      if (email)  assertEmail(email, Optional);
+      return { type, name, email, phone };
+
+    default:
+      throw InvalidType(type);
+  }
+};
+
+
+try {
+  validateThrow({
+    name: &#39;Max&#39;,
+    type: &#39;email&#39;,
+    phone: &#39;11234456&#39;
+  });
+} catch (e) {
+  e; // ==&gt; InvalidEmail(undefined)
+}
+
+validateThrow({
+  name: &#39;Alissa&#39;,
+  type: &#39;email&#39;,
+  email: &#39;alissa@somedomain&#39;
+});
+// ==&gt; { type: &#39;email&#39;, name: &#39;Alissa&#39;, email: &#39;alissa@somedomain&#39;, phone: undefined }
+</code></pre><p>On the other hand, the error propagation that we have with <code>throw</code> doesn&#39;t tell
+us much about how much of the code has actually been executed, and this is
+particularly problematic when you have side-effects. How are you supposed to
+recover from a failure when you don&#39;t know in which state your application is?</p>
+<p><code>Result</code> helps with both of these cases. With a <code>Result</code>, the user is forced to
+be aware of the failure, since they&#39;re not able to use the value at all without
+unwrapping the value first. At the same time, using a <code>Result</code> value will
+automatically propagate the errors when they&#39;re not handled, making error
+handling easier. Since <code>Result</code> runs one operation at a time when you use the
+value, and does not do any dynamic stack unwinding (as <code>throw</code> does), it&#39;s much
+easier to understand in which state your application should be.</p>
+<p>Using <code>Result</code>, the previous examples would look like this:</p>
+<pre><code>const Result = require(&#39;folktale/result&#39;);
+
+const checkName = (name) =&gt;
+  isValidName(name) ?  Result.Ok(name)
+: /* otherwise */      Result.Error(Required(&#39;name&#39;));
+
+const checkEmail = (email) =&gt;
+  isValidEmail(email) ?  Result.Ok(email)
+: /* otherwise */        Result.Error(InvalidEmail(email));
+
+const checkPhone = (phone) =&gt;
+  isValidPhone(phone) ?  Result.Ok(phone)
+: /* otherwise */        Result.Error(InvalidPhone(phone));
+
+const optional = (check) =&gt; (value) =&gt;
+  value           ?  check(value).mapError(Optional)
+: /* otherwise */    Result.Ok(value);
+
+const maybeCheckEmail = optional(checkEmail);
+const maybeCheckPhone = optional(checkPhone);
+
+
+const validateResult = ({ name, type, email, phone }) =&gt;
+  checkName(name).chain(_ =&gt; 
+    type === &#39;email&#39; ?  checkEmail(email).chain(_ =&gt;
+                          maybeCheckPhone(phone).map(_ =&gt; ({
+                            name, type, email, phone
+                          }))
+                        )
+
+  : type === &#39;phone&#39; ?  checkPhone(phone).chain(_ =&gt;
+                          maybeCheckEmail(email).map(_ =&gt; ({
+                            name, type, email, phone
+                          }))
+                        )
+
+  : /* otherwise */     Result.Error(InvalidType(type))
+  );
+
+
+validateResult({
+  name: &#39;Max&#39;,
+  type: &#39;email&#39;,
+  phone: &#39;11234456&#39;
+});
+// ==&gt; Result.Error(InvalidEmail(undefined))
+
+validateResult({
+  name: &#39;Alissa&#39;,
+  type: &#39;email&#39;,
+  email: &#39;alissa@somedomain&#39;
+});
+// ==&gt; Result.Ok({ name: &#39;Alissa&#39;, type: &#39;email&#39;, phone: undefined, email: &#39;alissa@somedomain&#39; })
+</code></pre><p>So, Results give you simpler and more predictable forms of error handling, that
+still allow error propagation and composition to happen, as with regular
+JavaScript exceptions, at the cost of some additional syntactical overhead,
+since JavaScript does not allow one to abstract over syntax.</p>
+<h2 id="working-with-result-values">Working with Result values</h2>
+<p>A Result value may be one of the following cases:</p>
+<ul>
+<li><p><code>Ok(value)</code> — represents a successful value (e.g.: the correct return value
+from a function).</p>
+</li>
+<li><p><code>Error(value)</code> — represents an unsuccessful value (e.g.: an error during the
+evaluation of a function).</p>
+</li>
+</ul>
+<p>Functions that may fail just return one of these two cases instead of failing.
+That is, instead of writing something like this:</p>
+<pre><code>//: (Number, Number) =&gt; Number throws DivisionByZero
+const divideBy1 = (dividend, divisor) =&gt; {
+  if (divisor === 0) {
+    throw new Error(&#39;Division by zero&#39;);
+  } else {
+    return dividend / divisor;
+  }
+}
+
+divideBy1(6, 3); // ==&gt; 2
+</code></pre><p>One would write something like this:</p>
+<pre><code>const Result = require(&#39;folktale/result&#39;);
+
+//: (Number, Number) =&gt; Result DivisionByZero Number
+const divideBy2 = (dividend, divisor) =&gt; {
+  if (divisor === 0) {
+    return Result.Error(&#39;Division by zero&#39;);
+  } else {
+    return Result.Ok(dividend / divisor);
+  }
+}
+
+divideBy2(6, 3); // ==&gt; Result.Ok(2)
+</code></pre><p>The function returns a value of the type <code>Result &lt;error-type&gt; &lt;success-type&gt;</code>,
+which is quite similar to the first version of the function, with the difference
+that the error is made into a real value that the function returns, and as such
+can be interacted with in the same way one interacts with any other object in
+the language.</p>
+<p>Because the value is wrapped in the <code>Result</code> structure, in order to use the
+value one must first unwrap it. Folktale&#39;s <code>Result</code> provides methods to help
+with this, and they can be divided roughly into 3 categories:</p>
+<ul>
+<li><p><strong>Sequencing computations</strong>: A <code>Result</code> is the result of a computation that
+can fail. Sometimes we want to run several computations that may fail in
+sequence, and these methods help with that. This is roughly the equivalent
+of <code>;</code> in imperative programming, where the next instruction is only
+executed if the previous instruction succeeds.</p>
+</li>
+<li><p><strong>Transforming values</strong>: Sometimes we get a <code>Result</code> value that isn&#39;t
+<em>quite</em> the value we&#39;re looking for. We don&#39;t really want to change the
+status of the computation (errors should continue to be errors, successes
+should continue to be successes), but we&#39;d like to tweak the resulting
+<em>value</em> a bit. This is the equivalent of applying functions in an
+expression.</p>
+</li>
+<li><p><strong>Extracting values</strong>: Sometimes we need to pass the value into things that
+don&#39;t really know what a <code>Result</code> is, so we have to somehow extract the
+value out of the structure. These methods help with that.</p>
+</li>
+</ul>
+<p>We&#39;ll see each of these categories in more details below.</p>
+<h3 id="sequencing-computations">Sequencing computations</h3>
+<p>Because <code>Result</code> is used for partial functions which may fail in, possibly, many
+different ways a common use case for the structure is combining all of these
+functions such that only successful values flow through.</p>
+<p>You can sequence computations in this manner with the <code>Result</code> structure by
+using the <code>.chain</code> method. The method takes as argument a single function that
+will receive the value in the <code>Result</code> structure, and must return a new <code>Result</code>
+structure, which then becomes the result of the method. Only successful values
+flow through the function argument, errors are just propagated to the result
+immediately.</p>
+<p>As an example, imagine we want to parse an integer. Integers are basically a
+sequence of many digits, but we can start smaller and try figuring out how we
+parse a single digit:</p>
+<pre><code>const Result = require(&#39;folktale/result&#39;);
+
+const isDigit = (character) =&gt;
+  &#39;0123456789&#39;.split(&#39;&#39;).includes(character);
+
+const digit = (input) =&gt; {
+  const character = input.slice(0, 1);
+  const rest = input.slice(1);
+
+  return isDigit(character) ?  Result.Ok([character, rest])
+  :      /* otherwise */       Result.Error(`Expected a digit (0..9), got &quot;${character}&quot;`);
+};
+
+digit(&#39;012&#39;); 
+// ==&gt; Result.Ok([&#39;0&#39;, &#39;12&#39;])
+
+digit(&#39;a12&#39;); 
+// ==&gt; Result.Error(&#39;Expected a digit (0..9), got &quot;a&quot;&#39;)
+</code></pre><p>So far our parser correctly recognises the first digit in a sequence of
+characters, but to parse integers we need it to recognise more than one digit.
+We can also only proceed to the next character if the first one succeeds
+(otherwise we already know it&#39;s not an integer!).</p>
+<p>If we have a fixed number of digits that would look like the following:</p>
+<pre><code>const twoDigits = (input) =&gt;
+  digit(input).chain(([char1, rest]) =&gt;
+    digit(rest).map(([char2, rest]) =&gt;
+      [char1 + char2, rest]
+    )
+  );
+
+twoDigits(&#39;012&#39;);
+// ==&gt; Result.Ok([&#39;01&#39;, &#39;2&#39;])
+
+twoDigits(&#39;a12&#39;);
+// ==&gt; Result.Error(&#39;Expected a digit (0..9), got &quot;a&quot;&#39;)
+
+twoDigits(&#39;0a2&#39;);
+// ==&gt; Result.Error(&#39;Expected a digit (0..9), got &quot;a&quot;&#39;)
+</code></pre><p>We can generalise this to arbitrary numbers of digits by writing a recursive
+function:</p>
+<pre><code>const digits = (input) =&gt;
+  input === &#39;&#39; ?   Result.Error(&#39;Expected a digit (0..9), but there was nothing to parse&#39;)
+: /* otherwise */  digit(input).chain(([character, rest]) =&gt;
+                     rest === &#39;&#39; ?  Result.Ok(character)
+                   : /* else */     digits(rest).chain(characters =&gt;
+                                      Result.Ok(character + characters)
+                                    )
+                   );
+
+digits(&#39;012&#39;);
+// ==&gt; Result.Ok(&#39;012&#39;)
+
+digits(&#39;a12&#39;);
+// ==&gt; Result.Error(&#39;Expected a digit (0..9), got &quot;a&quot;&#39;)
+
+digits(&#39;01a&#39;);
+// ==&gt; Result.Error(&#39;Expected a digit (0..9), got &quot;a&quot;&#39;)
+
+digits(&#39;&#39;);
+// ==&gt; Result.Error(&#39;Expected a digit (0..9), but there was nothing to parse&#39;)
+</code></pre><blockquote>
+<p><strong>NOTE</strong><br>While the recursive <code>.chain</code> can be used when performing an arbitrary number
+of computations, it should be noted that it may grow the stack of calls in a
+JavaScript implementation beyond what that implementation supports, resulting
+in a <code>Max Call Stack Size Exceeded</code> error.</p>
+</blockquote>
+<p>Finally, parsing should give us a number instead of a string, so that string
+needs to be converted. Since we already ensured that the resulting string only
+has digits, the conversion from String to Number can never fail, but we can
+still use <code>.chain</code> if we always return a <code>Result.Ok</code>:</p>
+<pre><code>const integer = (input) =&gt;
+  digits(input).chain(x =&gt; Result.Ok(Number(x)));
+
+integer(&#39;012&#39;);
+// ==&gt; Result.Ok(12)
+
+integer(&#39;01a&#39;)
+// ==&gt; Result.Error(&#39;Expected a digit (0..9), got &quot;a&quot;&#39;)
+</code></pre><h3 id="transforming-values">Transforming values</h3>
+<p>Sometimes we want to transform just the value that is inside of a <code>Result</code>,
+without touching the context of that value (whether the <code>Result</code> is a success or
+an error). In the previous section, the <code>integer</code> transformation is a good
+example of this. For these cases, the <code>.map</code> method can be used instead of the
+<code>.chain</code> method:</p>
+<pre><code>const Result = require(&#39;folktale/result&#39;);
+
+Result.Ok(&#39;012&#39;).map(Number);
+// ==&gt; Result.Ok(12)
+</code></pre><p>Note that, like <code>.chain</code>, the <code>.map</code> method only runs on successful values, thus
+it propagates failures as well:</p>
+<pre><code>Result.Error(&#39;012&#39;).map(Number);
+// ==&gt; Result.Error(&#39;012&#39;)
+</code></pre><h3 id="extracting-values">Extracting values</h3>
+<p>While one can always just put all the rest of a computation inside of a
+<code>.chain</code>, sometimes it may be preferrable to extract the value out of a <code>Result</code>
+structure instead. For these cases there&#39;s a <code>.getOrElse</code> method:</p>
+<pre><code>const Result = require(&#39;folktale/result&#39;);
+
+Result.Ok(1).getOrElse(&#39;not found&#39;);
+// ==&gt; 1
+
+Result.Error(1).getOrElse(&#39;not found&#39;);
+// ==&gt; &#39;not found&#39;
+</code></pre><p>Additionally, if one doesn&#39;t care about whether the value failed or succeeded,
+the <code>.merge</code> method just returns whatever value is wrapped in the <code>Result</code>:</p>
+<pre><code>Result.Ok(1).merge();
+// ==&gt; 1
+
+Result.Error(1).merge();
+// ==&gt; 1
+</code></pre><h2 id="error-handling">Error handling</h2>
+<p>Since the purpose of a <code>Result</code> structure is to represent failures, we need to
+be able to handle these failures in some way. The <code>.getOrElse</code> method gives us
+some very specific and limited form of error handling, but if we want to <em>do</em>
+something in order to recover from an error, this doesn&#39;t help us much.</p>
+<p>For a more general form of error handling, the <code>Result</code> structure provides the
+<code>.orElse</code> method. This works pretty much in the same way <code>.chain</code> does, except
+it invokes the function on errors (successes are propagated):</p>
+<pre><code>const Result = require(&#39;folktale/result&#39;);
+
+const parseNumber = (input) =&gt;
+  isNaN(input) ?   Result.Error(`Not a number: ${input}`) 
+: /* otherwise */  Result.Ok(Number(input));
+
+const parseBool = (input) =&gt;
+  input === &#39;true&#39;  ?  Result.Ok(true)
+: input === &#39;false&#39; ?  Result.Ok(false)
+: /* otherwise */      Result.Error(`Not a boolean: ${input}`);
+
+
+const parseNumberOrBool = (input) =&gt;
+  parseNumber(input)
+    .orElse(_ =&gt; parseBool(input));
+
+
+parseNumberOrBool(&#39;13&#39;);
+// ==&gt; Result.Ok(13)
+
+parseNumberOrBool(&#39;true&#39;);
+// ==&gt; Result.Ok(true)
+
+parseNumberOrBool(&#39;foo&#39;);
+// ==&gt; Result.Error(&#39;Not a boolean: foo&#39;)
+</code></pre><p>As with successes&#39; <code>.map</code>, one may also transform the failure value of a
+<code>Result</code> without changing the context of the computation by using the
+<code>.mapError</code> method:</p>
+<pre><code>const parseNumberOrBool2 = (input) =&gt;
+  parseNumber(input)
+    .orElse(_ =&gt; parseBool(input))
+    .mapError(_ =&gt; `Not a number or boolean: ${input}`);
+
+parseNumberOrBool2(&#39;foo&#39;);
+// ==&gt; Result.Error(&#39;Not a number or boolean: foo&#39;)
+</code></pre><h2 id="pattern-matching">Pattern matching</h2>
+<p>As with other union structures in Folktale, Result provides a <code>.matchWith()</code>
+method to perform a limited form of <em>pattern matching</em>. Pattern matching allows
+one to specify a piece of code for each case in a structure, like an <code>if/else</code>
+or <code>switch</code>, but specific to that structure.</p>
+<p>We could use <code>.matchWith()</code> to run different computations depending on whether a
+MResult value represents a success or a failure, for example, without the
+requirement of having to return a Result:</p>
+<pre><code>const Result = require(&#39;folktale/result&#39;);
+
+Result.Ok(1).matchWith({
+  Ok:    ({ value }) =&gt; `Ok: ${value}`,
+  Error: ({ value }) =&gt; `Error: ${value}`
+});
+// ==&gt; &#39;Ok: 1&#39;
+
+Result.Error(1).matchWith({
+  Ok:    ({ value }) =&gt; `Ok: ${value}`,
+  Error: ({ value }) =&gt; `Error: ${value}`
+});
+// ==&gt; &#39;Error: 1&#39;
+</code></pre><h2 id="how-does-result-compare-to-validation-">How does Result compare to Validation?</h2>
+<p>Result and Validation are pretty close structures. They both try to represent
+whether a particular thing has failed or succeeded, and even their vocabulary is
+very similar (<code>Error</code> vs. <code>Failure</code>, <code>Ok</code> vs. <code>Success</code>). The major difference
+is in some of their methods.</p>
+<p>A Result is a data structure that implements the Monad interface (<code>.chain</code>).
+This makes Result a pretty good structure to model a sequence of computations
+that may fail, where a computation may only run if the previous computation
+succeeded. In this sense, a Result&#39;s <code>.chain</code> method is very similar to
+JavaScript&#39;s <code>;</code> at the end of statements: the statement at the right of the
+semicolon only runs if the statement at the left did not throw an error.</p>
+<p>A Validation is a data structure that implements the Applicative interface
+(<code>.apply</code>), and does so in a way that if a failure is applied to another
+failure, then it results in a new validation that contains the failures of both
+validations. In other words, Validation is a data structure made for errors that
+can be aggregated, and it makes sense in the contexts of things like form
+validations, where you want to display to the user all of the fields that failed
+the validation rather than just stopping at the first failure.</p>
+<p>Validations can&#39;t be as easily used for sequencing operations because the
+<code>.apply</code> method takes two validations, so the operations that create them must
+have been executed already. While it is possible to use Validations in a
+sequential manner, it&#39;s better to leave the job to Result, a data structure made
+for that.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-comparing-and-testing">Comparing and testing</h3><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.result.hasinstance.html">hasInstance(value)</a><div class="doc-summary"><div><p>Tests if an arbitrary value is a Result instance.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-constructing">Constructing</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.result.result.of.html">of(value)</a><div class="doc-summary"><div><p>Constructs a Result holding an Ok value.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-other-types">Converting from other types</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.result.frommaybe.html">fromMaybe(aMaybe, failureValue)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/conversions/maybe-to-result</code> module.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.result.fromnullable.html">fromNullable(aNullable, fallbackValue)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/conversions/nullable-to-result</code>
+module.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.result.fromvalidation.html">fromValidation(aValidation)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/conversions/validation-to-result</code>
+module.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-handling-errors">Handling errors</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.result.try.try.html">try: _try(f)</a><div class="doc-summary"><div><p>Runs a function that may raise an exception, trapping it. Returns an <code>Ok</code> with
+the return value of the function, if it has finished successfully, or an <code>Error</code>
+with the raised exception.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-serialising">Serialising</h3><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.result.fromjson.html">fromJSON(value, parsers = {
+  [typeName]: adt
+}, keysIndicateType = false)</a><div class="doc-summary"><div><p>Parses a JavaScript object previously serialised as <code>aResult.toJSON()</code> into a proper Result structure.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-variants">Variants</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.result.result.error.html">Error(value)</a><div class="doc-summary"><div><p>Constructs a Result whose value represents a failure.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div><div class="member"><a class="member-name" href="folktale.result.result.1.html">Ok(value)</a><div class="doc-summary"><div><p>Constructs a Result whose value represents a success.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/result/index.js at line 18, column 0</div><pre class="source-code"><code class="language-javascript">{
+  Error: Result.Error,
+  Ok: Result.Ok,
+  hasInstance: Result.hasInstance,
+  of: Result.of,
+  fromJSON: Result.fromJSON,
+  [typeSymbol]: Result[typeSymbol],
+  try: require('./try'),
+
+  /*~
+   * type: |
+   *   forall a, b: (a or None, b) =&gt; Result b a
+   *   | (a or None) =&gt; Result None a
+   */
+  fromNullable(aNullable, fallbackValue) {
+    const nullableToResult = require('folktale/conversions/nullable-to-result');
+
+    if (arguments.length &gt; 1) {  // eslint-disable-line prefer-rest-params 
+      return nullableToResult(aNullable, fallbackValue);
+    } else {
+      return nullableToResult(aNullable);
+    }
+  },
+
+  /*~
+   * type: |
+   *   forall a, b: (Validation a b) =&gt; Result a b
+   */
+  fromValidation(aValidation) {
+    return require('folktale/conversions/validation-to-result')(aValidation);
+  },
+
+  /*~
+   * type: |
+   *   forall a, b: (Maybe b, a) =&gt; Result a b
+   */
+  fromMaybe(aMaybe, failureValue) {
+    return require('folktale/conversions/maybe-to-result')(aMaybe, failureValue);
+  }
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">stable</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/result</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li><li class="toc-item"><a href="#why-use-result-" title="Why use Result?"><div><p>Why use Result?</p>
+</div></a></li><li class="toc-item"><a href="#working-with-result-values" title="Working with Result values"><div><p>Working with Result values</p>
+</div></a></li><li class="toc-item"><a href="#error-handling" title="Error handling"><div><p>Error handling</p>
+</div></a></li><li class="toc-item"><a href="#pattern-matching" title="Pattern matching"><div><p>Pattern matching</p>
+</div></a></li><li class="toc-item"><a href="#how-does-result-compare-to-validation-" title="How does Result compare to Validation?"><div><p>How does Result compare to Validation?</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-comparing-and-testing">Comparing and testing</a></li><li class="toc-item"><a href="#cat-constructing">Constructing</a></li><li class="toc-item"><a href="#cat-converting-from-other-types">Converting from other types</a></li><li class="toc-item"><a href="#cat-handling-errors">Handling errors</a></li><li class="toc-item"><a href="#cat-serialising">Serialising</a></li><li class="toc-item"><a href="#cat-variants">Variants</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
