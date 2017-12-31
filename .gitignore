@@ -10,8 +10,10 @@ npm-debug.log
 /annotations/build/
 /docs/api/master/
 /docs/_site/
+/docs/vendor/
 /docs/.jekyll-metadata
 /test/build/
 /tools/static-docs/lib/
 /tools/static-docs/resources/html/*.css
 .nyc_output/
+.vscode/settings.json

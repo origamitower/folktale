@@ -7,13 +7,45 @@ Each version entry is written as a heading in the format `[<version number>] - Y
   - **New features** — Functionality that has been added from the previous version to the referred one;
   - **Bug fixes** — Incorrect behaviour that has been corrected from the previous version to the referred one;
   - **Optimisations** — Performance and memory improvements from the previous version to the referred one;
-  - **Documentation** — Improvements made to the documentation;
-  - **Miscellaneous** — Any other change worth mentioning that doesn't fall in the previous ones;
   - **DEPRECATED FEATURES** — Features that have been deprecated in the referred version, and should be avoided for new codebases;
   - **BREAKING CHANGES** — Backwards-incompatible changes that have been introduced by the version, along with the changes necessary to existing codebases. Upgrading from previous versions is not safe;
+  - **Documentation** — Improvements made to the documentation;
+  - **Miscellaneous** — Any other change worth mentioning that doesn't fall in the previous ones;
 
 
 ---
+
+
+## [2.1.0] - WIP
+
+### New features
+
+  - `nullableToResult` now takes a fallback value as argument ([PR #166](https://github.com/origamitower/folktale/pull/166) by @diasbruno)
+
+
+### Bug fixes
+
+  - Fixed handling objects without a `.toString` method in ADT's debug representation ([PR #169](https://github.com/origamitower/folktale/pull/169))
+
+
+### DEPRECATED FEATURES
+
+  - Renamed `Future.recover` to `Future.orElse`. `Future.recover` was deprecated. ([PR #146](https://github.com/origamitower/folktale/pull/146))
+  - Calling `nullableToResult` and `Result.fromNullable` with one argument is deprecated. An explicit fallback value should be provided.
+
+
+### Documentation
+
+  - Many typos were fixed ([PR #151](https://github.com/origamitower/folktale/pull/151) by @gvillalta99; [PR #165](https://github.com/origamitower/folktale/pull/165) by @MichaelQQ, [PR #145](https://github.com/origamitower/folktale/pull/145) by @stabbylambda, [PR #143](https://github.com/origamitower/folktale/pull/143) and [PR #144](https://github.com/origamitower/folktale/pull/144) by @floriansimon1)
+  - Migration documentation on Task has been improved, and examples fixed ([PR #160](https://github.com/origamitower/folktale/pull/160))
+  - Added notes on shims for older platforms ([PR #161](https://github.com/origamitower/folktale/pull/161))
+  - Fixed some Validation examples ([PR #154](https://github.com/origamitower/folktale/pull/154) by @scotttrinh)
+
+
+### Miscellaneous
+
+  - We've moved from Make to Furipota, so the build system is cross-platform now ([PR #148](https://github.com/origamitower/folktale/pull/148))
+
 
 ## [2.0.0] - 2017-07-15
 
@@ -72,12 +104,6 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 
 ## [2.0.0-beta1] - 2017-05-03
 
-### Documentation
-
-  - Documentation for Data.Future was added.
-  - Fixed some of the Data.Task documentation.
-
-
 ### New features
 
   - `nodebackToTask` (and `Task.fromNodeback`) allows converting callback-based functions in Node-style to Tasks automatically
@@ -103,19 +129,14 @@ Each version entry is written as a heading in the format `[<version number>] - Y
     ```
     
 
+### Documentation
+
+  - Documentation for Data.Future was added.
+  - Fixed some of the Data.Task documentation.
+
 
 
 ## [2.0.0-alpha4] - 2017-04-08
-
-### Documentation
-
-  - Guides for installing and contributing to Folktale were added.
-  - An annex describing the type annotation used in Folktale was added.
-  - Documentation for Data.Task was added.
-  - Other documentation improvements were made.
-  - Top-level async/await is now supported in Documentation examples.
-  - Experimental features now have a section noting such in their pages.
-
 
 ### New features
 
@@ -155,6 +176,17 @@ Each version entry is written as a heading in the format `[<version number>] - Y
     That said, you should keep your Failures as proper semigroups, so things like `.apply` and `.concat` will work correctly.
 
 
+### Documentation
+
+  - Guides for installing and contributing to Folktale were added.
+  - An annex describing the type annotation used in Folktale was added.
+  - Documentation for Data.Task was added.
+  - Other documentation improvements were made.
+  - Top-level async/await is now supported in Documentation examples.
+  - Experimental features now have a section noting such in their pages.
+
+
+
 ## [2.0.0-alpha3] - 2017-03-11
 
 ### New features
@@ -175,12 +207,6 @@ Each version entry is written as a heading in the format `[<version number>] - Y
     ([d761107](https://github.com/origamitower/folktale/commit/d761107a0f7847b3ae23800c3806cde0133a3e84));
   - Fixes a bunch of currying and argument order issues with the `core/fantasy-land` module
     ([d5b0c74](https://github.com/origamitower/folktale/commit/d5b0c7436717db442d3412b520e33339d9ad4002));
-
-
-### Miscellaneous
-
-  - Annotated files are now only generated for testing and documentation, which makes browser bundles much smaller
-    ([e0186fa](https://github.com/origamitower/folktale/commit/e0186fa3779b98c5760fed0bc7546bbf6356ea4f));
 
 
 ### DEPRECATED FEATURES
@@ -256,6 +282,12 @@ Each version entry is written as a heading in the format `[<version number>] - Y
       - The `Serialize` derivation (`core/adt/serialize.js`) is now called `Serialization` (`core/adt/derivations/serialization.js`);
       - The derivations are now provided in the `core/adt/derivations.js` file, and consequently in a `derivations` property of the `core/adt` module, rather than directly there;
       - The `partialise` function (`core/lambda/partialise.js`) is now called `partialize` (`core/lambda/partialize.js`).
+
+
+### Miscellaneous
+
+  - Annotated files are now only generated for testing and documentation, which makes browser bundles much smaller
+    ([e0186fa](https://github.com/origamitower/folktale/commit/e0186fa3779b98c5760fed0bc7546bbf6356ea4f));
 
 
 ## [2.0.0-alpha2] - 2016-12-05

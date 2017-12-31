@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------
 
 const Task = require('./_task');
-
+const waitAll = require('./wait-all');
 
 /*~ 
  * stability: experimental 
@@ -19,7 +19,12 @@ module.exports = {
   rejected: Task.rejected,
   task: require('./task'),
   waitAny: require('./wait-any'),
-  waitAll: require('./wait-all'),
+  waitAll: waitAll,
+  waitAll2: waitAll._2,
+  waitAll3: waitAll._3,
+  waitAll4: waitAll._4,
+  waitAll5: waitAll._5,
+  waitAll6: waitAll._6,
   do: require('./do'),
   _Task: Task,
   _TaskExecution: require('./_task-execution'),

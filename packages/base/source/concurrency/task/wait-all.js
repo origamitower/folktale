@@ -21,4 +21,12 @@ const waitAll = (tasks) => {
   );
 };
 
+
+waitAll._2 = (a, b) => waitAll([a, b]);
+waitAll._3 = (a, b, c) => waitAll([a, b, c]);
+waitAll._4 = (a, b, c, d) => waitAll([a, b, c, d]);
+waitAll._5 = (a, b, c, d, e) => waitAll([a, b, c, d, e]);
+waitAll._6 = (a, b, c, d, e, f) => waitAll([a, b, c, d, e, f]);
+
+
 module.exports = waitAll;
