@@ -206,3 +206,49 @@ body {
     content: "Next";
   }
 }
+
+#post-listing {
+  list-style: none;
+  margin: 0;
+
+  .post-title {
+    @extends .content .title;
+    font-size: 32px;
+    border-bottom: none;
+    padding-bottom: 0;
+
+    &:before {
+      display: none;
+    }
+  }
+
+  .published-date {
+    margin-top: -1em;
+    margin-bottom: 2em;
+  }
+
+  .post-item {
+    border-bottom: 1px solid clouds;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+  }
+}
+
+.published-date {
+  font-size: 80%;
+  font-family: sans-font;
+  text-transform: uppercase;
+  color: abestos;
+  font-style: italic;
+}
+
+#blogpost-contents {
+  .title {
+    font-size: 32px;
+  }
+
+  .published-date {
+    margin-top: -0.5em;
+    margin-bottom: 3em;
+  }
+}

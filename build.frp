@@ -205,3 +205,18 @@ export define documentation =
 export define lint =
   # Notifies about formatting problems and potential bugs in the source code.
   run-lint (root / ".eslintrc.json")
+
+
+export define release =
+  # Releases `base`
+  let release = root / "packages" / "base" / "releases" / "new" in
+  let pkg = root / "packages" / "base" in
+  let show-copy = show-file-operation "COPY" in
+  do action test
+     action lint
+     action bundle-source
+     action make-directory release | Debug.trace @ -prefix: "MKDIR"
+     action copy (pkg / "build") @ -to: release -overwrite: true |> show-copy
+     action copy (pkg / "CHANGELOG.md") @ -to: (release / "CHANGELOG.md") -overwrite: true |> show-copy
+     action copy (pkg / "package.json") @ -to: (release / "package.json") -overwrite: true |> show-copy
+     action copy (pkg / "CONTRIBUTORS") @ -to: (release / "CONTRIBUTORS") -overwrite: true |> show-copy

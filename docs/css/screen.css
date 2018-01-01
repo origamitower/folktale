@@ -34,7 +34,8 @@ body {
   max-width: 800px;
   margin: 2em auto;
 }
-.content .title {
+.content .title,
+#post-listing .post-title {
   font-family: "Libre Baskerville", Georgia, serif;
   color: #34495e;
   font-weight: 400;
@@ -43,7 +44,8 @@ body {
   letter-spacing: -0.02em;
   margin-bottom: 0.5em;
 }
-.content .title:before {
+.content .title:before,
+#post-listing .post-title:before {
   content: ' ';
   width: 1.5em;
   height: 1px;
@@ -382,6 +384,41 @@ body {
 }
 .page-navigation .page-navigation-next a::before {
   content: "Next";
+}
+#post-listing {
+  list-style: none;
+  margin: 0;
+}
+#post-listing .post-title {
+  font-size: 32px;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+#post-listing .post-title:before {
+  display: none;
+}
+#post-listing .published-date {
+  margin-top: -1em;
+  margin-bottom: 2em;
+}
+#post-listing .post-item {
+  border-bottom: 1px solid #ecf0f1;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+}
+.published-date {
+  font-size: 80%;
+  font-family: "Helvetica", "Verdana", sans-serif;
+  text-transform: uppercase;
+  color: #7f8c8d;
+  font-style: italic;
+}
+#blogpost-contents .title {
+  font-size: 32px;
+}
+#blogpost-contents .published-date {
+  margin-top: -0.5em;
+  margin-bottom: 3em;
 }
 header {
   display: flex;

@@ -4,6 +4,9 @@
 - text: Support
   url: /docs/support/
   group: support
+- text: Blog
+  url: /blog/
+  group: blog
 - text: Projects
   url: /code/
   group: code

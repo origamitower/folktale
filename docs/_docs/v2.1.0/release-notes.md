@@ -41,7 +41,7 @@ The big issue with `.toString` is that too many things in JavaScript will invoke
 you don't want that. So, yeah, this will hopefully be addressed soon.
 
 
-## Acnowledgements
+## Acknowledgements
 
 As always, a huge thank you to everyone who contributed to improving Folktale, by reporting errors, sending feedback, talking about it, sending patches, etc.
 

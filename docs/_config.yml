@@ -2,6 +2,11 @@ name: Folktale
 highlighter: 'rouge'
 markdown: kramdown
 
+paginate: 5
+paginate_path: "/blog/:num/"
+
+excerpt_separator: <!--more-->
+
 version:
   package: https://github.com/origamitower/folktale/releases/download/release%2F2.0.0-beta1/folktale-2.0.0-beta1.zip
 
@@ -57,3 +62,4 @@ defaults:
     values:
       breadcrumb:
         - v2.0.0
+

@@ -1,0 +1,33 @@
+---
+layout: content-page
+group:  blog
+title:  Blog
+---
+
+<ul id="post-listing">
+  {% for post in paginator.posts %}
+    <li class="post-item">
+      <h2 class="post-title">
+        <a href="{{ post.url }}">{{ post.title }}</a>
+      </h2>
+      <div class="published-date">{{ post.date | date_to_long_string }}</div>
+
+      {{ post.excerpt }}
+
+      <p><a href="{{ post.url }}">(Read more)</a></p>
+    </li>
+  {% endfor %}
+</ul>
+
+<div class="page-navigation">
+  {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path }}" class="page-navigation-prev">
+      Newer posts
+    </a>
+  {% endif %}
+  {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path }}" class="page-navigation-next">
+      Older posts
+    </a>
+  {% endif %}
+</div>

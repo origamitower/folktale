@@ -1,0 +1,12 @@
+--- 
+layout: page
+---
+
+<article class="content" id="blogpost-contents">
+  <h2 class="title">{{ page.title }}</h2>
+  <div class="meta published-date">{{ page.date | date_to_long_string }}</div>
+
+  <div class="content-area">
+    {{ content | markdownify }}
+  </div>
+</article>
