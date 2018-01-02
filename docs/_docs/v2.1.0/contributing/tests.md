@@ -1,7 +1,7 @@
 ---
 title: Contributing tests
-prev_doc: v2.0.0/contributing/documentation
-next_doc: v2.0.0/contributing/git-guidelines
+prev_doc: v2.1.0/contributing/documentation
+next_doc: v2.1.0/contributing/git-guidelines
 ---
 
 Folktale uses [Mocha](https://mochajs.org/) and

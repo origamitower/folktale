@@ -1,7 +1,7 @@
 ---
 title: …from Data.Validation
-prev_doc: v2.0.0/migrating/from-data.task
-next_doc: v2.0.0/migrating/from-early-v2.0.0
+prev_doc: v2.1.0/migrating/from-data.task
+next_doc: v2.1.0/migrating/from-early-v2.0.0
 ---
 
 `Data.Validation` provided a way of modelling composable validations. Folktale 2 keeps the same structure and semantics, but there's some changes in how you extract values out of Validations and test them. You can look at the [full documentation for Validation](/api/v2.1.0/en/folktale.validation.html) for more detailed information.

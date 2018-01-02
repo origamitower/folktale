@@ -1,6 +1,6 @@
 ---
 title: Type notation
-prev_doc: v2.0.0/misc/design-principles
+prev_doc: v2.1.0/misc/design-principles
 ---
 
 JavaScript is a dynamically typed language, meaning that we generally have no way of adding type annotation to functionality, and there's also no way of checking them. Tools like TypeScript and Flow help by adding their own type system, so that information can be provided and checked, but ultimately they're not powerful enough to describe some of the features Folktale uses.

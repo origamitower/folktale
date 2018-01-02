@@ -1,7 +1,7 @@
 ---
 title: Overview
-prev_doc: v2.0.0/download
-next_doc: v2.0.0/changelog
+prev_doc: v2.1.0/download
+next_doc: v2.1.0/changelog
 ---
 
 Folktale is a library to support a functional style of programming in JavaScript.

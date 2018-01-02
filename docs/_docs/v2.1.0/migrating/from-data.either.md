@@ -1,7 +1,7 @@
 ---
 title: …from Data.Either
-prev_doc: v2.0.0/migrating/from-core.lambda
-next_doc: v2.0.0/migrating/from-data.maybe
+prev_doc: v2.1.0/migrating/from-core.lambda
+next_doc: v2.1.0/migrating/from-data.maybe
 ---
 
 `Data.Either` provided a disjunction to model the result of functions that could fail. Folktale 2 has changed a few things around and this data structure is now called `Result`, with `Ok` and `Error` as its variant tags. This page explains how to migrate from the old `Data.Either` to the new `Result` object. You can look at the [full documentation for Result](/api/v2.1.0/en/folktale.result.html) for more detailed information.

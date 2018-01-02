@@ -1,7 +1,7 @@
 ---
 title: Installing
-prev_doc: v2.0.0/release-notes
-next_doc: v2.0.0/overview
+prev_doc: v2.1.0/release-notes
+next_doc: v2.1.0/overview
 ---
 
 The recommended way of getting Folktale is through [npm][]. If you don't have Node installed yet, you should [download a binary from the official website](https://nodejs.org/en/) or use an installer like [nvm](https://github.com/creationix/nvm).

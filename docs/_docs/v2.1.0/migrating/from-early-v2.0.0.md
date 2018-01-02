@@ -1,6 +1,6 @@
 ---
 title: …from v2.0.0 pre-releases
-prev_doc: v2.0.0/migrating/from-data.validation
+prev_doc: v2.1.0/migrating/from-data.validation
 ---
 
 Several breaking changes happened during the pre-releases of Folktale 2, these ensure that the future versions don't need to break anything or live with things that turned out to be bad design decisions. This lists these changes, and how to migrate.

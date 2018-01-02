@@ -1,7 +1,7 @@
 ---
 title: "…from Data.Task"
-prev_doc: v2.0.0/migrating/from-data.maybe
-next_doc: v2.0.0/migrating/from-data.validation
+prev_doc: v2.1.0/migrating/from-data.maybe
+next_doc: v2.1.0/migrating/from-data.validation
 ---
 
 The `Task` structure went through many changes in Folktale 2 to make automatic resource management of asynchronous computations safer and more robust. It also removes the need for the external `control.async` module, by natively supporting combining tasks in the object itself. This page explains how to migrate from the old `Data.Task` to the new `Task` module. You can look at the [full documentation for the concurrency module](/api/v2.1.0/en/folktale.concurrency.html) for more detailed information.

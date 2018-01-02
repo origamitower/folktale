@@ -1,7 +1,7 @@
 ---
 title: …from Core.Lambda
-prev_doc: v2.0.0/migrating/from-core.arity
-next_doc: v2.0.0/migrating/from-data.either
+prev_doc: v2.1.0/migrating/from-core.arity
+next_doc: v2.1.0/migrating/from-data.either
 ---
 
 `Core.Lambda` provided basic operations to combine and transform functions. Most of the important ones are still available in Folktale 2, but under a different module. This page provides migration instructions for each function in `Core.Lambda`. You can look at the [full documentation for `core/lambda`](/api/v2.1.0/en/folktale.core.lambda.html) for more detailed information.

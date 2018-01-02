@@ -1,7 +1,7 @@
 ---
 title: …from Core.Arity
-prev_doc: v2.0.0/migrating
-next_doc: v2.0.0/migrating/from-core.lambda
+prev_doc: v2.1.0/migrating
+next_doc: v2.1.0/migrating/from-core.lambda
 ---
 
 Folktale's early versions made heavy use of [currying](https://en.wikipedia.org/wiki/Currying) to make it easy to configure some functions partially. This interacted poorly with JavaScript's curried functions, often resulting in [confusing bugs due to application unrolling](https://github.com/origamitower/folktale/issues/38).

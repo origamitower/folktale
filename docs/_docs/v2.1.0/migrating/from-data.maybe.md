@@ -1,7 +1,7 @@
 ---
 title: …from Data.Maybe
-prev_doc: v2.0.0/migrating/from-data.either
-next_doc: v2.0.0/migrating/from-data.task
+prev_doc: v2.1.0/migrating/from-data.either
+next_doc: v2.1.0/migrating/from-data.task
 ---
 
 `Data.Maybe` provided a way of modelling computations that may provide a value or not. Folktale 2 keeps the same structure, but there're some changes in how you extract values out of Maybes and test them. You can look at the [full documentation for Maybe](/api/v2.1.0/en/folktale.maybe.html) for more detailed information.

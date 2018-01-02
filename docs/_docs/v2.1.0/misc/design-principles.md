@@ -1,7 +1,7 @@
 ---
 title: Design principles
-prev_doc: v2.0.0/misc/stability-index
-next_doc: v2.0.0/misc/type-notation
+prev_doc: v2.1.0/misc/stability-index
+next_doc: v2.1.0/misc/type-notation
 ---
 
 There are some principles that guide the design of Folktale 2. This document describes these principles.

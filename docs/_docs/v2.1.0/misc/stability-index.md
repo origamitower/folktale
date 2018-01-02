@@ -1,6 +1,6 @@
 ---
 title: Stability index
-next_doc: v2.0.0/misc/design-principles
+next_doc: v2.1.0/misc/design-principles
 ---
 
 
