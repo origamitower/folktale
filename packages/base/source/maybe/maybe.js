@@ -202,7 +202,7 @@ adtMethods(Maybe, {
    * deprecated:
    *   since: 2.0.0
    *   replacedBy: .matchWith(pattern)
-   * 
+   *
    * type: |
    *   forall a, b:
    *     (Maybe a).({
@@ -261,6 +261,26 @@ adtMethods(Maybe, {
       assertFunction('Maybe.Just#filter', predicate);
       return predicate(this.value) ? this : Nothing();
     }
+  },
+
+  /*~
+   * authors:
+   *   - "@joshmili"
+   * type: |
+   *   forall a: (Maybe a).(Maybe a) => Maybe a
+   */
+  alt: {
+    /*~*/
+    Nothing: function alt(aMaybe) {
+      assertMaybe('Maybe.Nothing#alt', aMaybe);
+      return aMaybe;
+    },
+
+    /*~*/
+    Just: function alt(aMaybe) {
+      assertMaybe('Maybe.Just#alt', aMaybe);
+      return this;
+    }
   }
 });
 
@@ -306,7 +326,7 @@ Object.assign(Maybe, {
    *   forall a, b: (Maybe a).(b) => Result b a
    */
   toResult(fallbackValue) {
-    return require('folktale/conversions/maybe-to-result')(this, fallbackValue);  
+    return require('folktale/conversions/maybe-to-result')(this, fallbackValue);
   },
 
   /*~
