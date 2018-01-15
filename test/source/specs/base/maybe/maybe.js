@@ -118,7 +118,7 @@ describe('Maybe', () => {
 
   describe('#toResult(b)', () => {
     const { Error, Ok } = require('folktale/result');
-    
+
     property('Just(a).toResult(b) = Right(a)', 'json', 'json', (a, b) => {
       return Just(a).toResult(b).equals(Ok(a));
     });
@@ -161,6 +161,17 @@ describe('Maybe', () => {
 
     property('Just(a).concat(Just(b)) = Just(c)', 'string', 'string', (a, b) => {
       return Just(a).concat(Just(b)).equals(Just(a.concat(b)));
+    });
+  });
+
+  describe('#alt(f)', () => {
+    property('Nothing().alt(Just(a)).alt(Just(b)) = Nothing().alt(Just(a).alt(Just(b)))', 'nat', 'nat', (a, b) => {
+      return Nothing().alt(Just(a)).alt(Just(b)).equals(Nothing().alt(Just(a).alt(Just(b))));
+    });
+
+    property('Just(a).alt(Just(b)).map(f) = Just(a).map(f).alt(Just(b).map(f))', 'nat', 'nat', (a, b) => {
+      const f = x => x + 1;
+      return Just(a).alt(Just(b)).map(f).equals(Just(a).map(f).alt(Just(b).map(f)));
     });
   });
 
