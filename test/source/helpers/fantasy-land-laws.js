@@ -1,3 +1,5 @@
+import { equal } from 'assert';
+
 //----------------------------------------------------------------------
 //
 // This source file is part of the Folktale project.
@@ -14,7 +16,7 @@ const defaultEquals = require('./equals');
 
 // This file implements reusable property tests for a fantasy-land
 // data structure. Each function takes two arguments:
-// 
+//
 //   - A function that takes one argument, and constructs a value
 //     from some fantasy-land algebra;
 //   - An equality function, that takes two algebras and compares them.
@@ -41,8 +43,8 @@ const Setoid = (type) => {
 
       return SA[equals](SB)
       &&     SB[equals](SC)
-      &&     SA[equals](SC)  
-    });    
+      &&     SA[equals](SC)
+    });
   });
 };
 
@@ -136,6 +138,27 @@ const Applicative = (type, equals = defaultEquals) => {
 };
 
 
+const Alt = (type, equals = defaultEquals) => {
+  const { alt, map } = fl;
+
+  describe('Alt instance', _ => {
+    property('associativity', 'nat', 'nat', 'nat', (a, b, c) =>
+      equals(
+        type(a)[alt](type(b))[alt](type(c)),
+        type(a)[alt](type(b)[alt](type(c)))
+      )
+    );
+
+    property('distributive', 'nat', 'nat', 'nat -> nat', (a, b, f) =>
+      equals(
+        type(a)[alt](type(b))[map](f),
+        type(a)[map](f)[alt](type(b)[map](f))
+      )
+    );
+  })
+};
+
+
 const Chain = (type, equals = defaultEquals) => {
   const { chain } = fl;
 
@@ -166,7 +189,7 @@ const Monad = (type, equals = defaultEquals) => {
       )
     });
 
-    property('right identity', 'nat', (a) => 
+    property('right identity', 'nat', (a) =>
       equals(
         type(a)[chain](x => type()[of](x)),
         type(a)
@@ -180,7 +203,7 @@ const Bifunctor = (type, equals = defaultEquals) => {
   const { bimap } = fl;
 
   describe('Bifunctor instance', _ => {
-    property('identity', 'nat', 'nat', (a, b) => 
+    property('identity', 'nat', 'nat', (a, b) =>
       equals(
         type(a, b)[bimap](a => a, b => b),
         type(a, b)
@@ -207,6 +230,7 @@ module.exports = {
   Functor,
   Apply,
   Applicative,
+  Alt,
   Chain,
   Monad,
   Bifunctor

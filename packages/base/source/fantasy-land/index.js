@@ -21,5 +21,6 @@ module.exports = {
   equals: require('./equals'),
   bimap: require('./bimap'),
   curried: require('./curried'),
-  infix: require('./infix')
+  infix: require('./infix'),
+  alt: require('./alt'),
 };

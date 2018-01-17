@@ -85,10 +85,23 @@ const aliases = {
      * type: |
      *   forall F, a:
      *     (F).(a) => F a
-     *   where F is Applicative 
+     *   where F is Applicative
      */
     'fantasy-land/of'(value) {
       return this.of(value);
+    }
+  },
+
+  alt: {
+    /*~
+     * module: null
+     * type: |
+     *   forall F, a:
+     *     (F a).(F a) => F a
+     *   where F is Functor, Alt
+     */
+    'fantasy-land/alt'(value) {
+      return this.alt(value);
     }
   },
 
@@ -98,7 +111,7 @@ const aliases = {
      * type: |
      *   forall F, a, b:
      *     (F a).((b, a) => b, b) => b
-     *   where F is Foldable  
+     *   where F is Foldable
      */
     'fantasy-land/reduce'(combinator, initial) {
       return this.reduce(combinator, initial);
@@ -140,7 +153,7 @@ const aliases = {
      *       Step:    ((a) => c, (b) => c, a) => M c,
      *       Initial: a
      *     ) => M b
-     *   where M is ChainRec 
+     *   where M is ChainRec
      */
     chainRec(step, initial) {
       return this.chainRecursively(step, initial);
@@ -154,7 +167,7 @@ const aliases = {
      *       Step:    ((a) => c, (b) => c, a) => M c,
      *       Initial: a
      *     ) => M b
-     *   where M is ChainRec 
+     *   where M is ChainRec
      */
     'fantasy-land/chainRec'(step, initial) {
       return this.chainRecursively(step, initial);
