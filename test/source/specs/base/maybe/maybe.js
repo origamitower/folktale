@@ -194,6 +194,9 @@ describe('Maybe', () => {
     laws.Applicative(Maybe.Just);
     laws.Applicative(Maybe.Nothing);
 
+    laws.Alt(Maybe.Just);
+    laws.Alt(Maybe.Nothing);
+
     laws.Chain(Maybe.Just);
     laws.Chain(Maybe.Nothing);
 
