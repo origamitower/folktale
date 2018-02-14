@@ -41,7 +41,7 @@
     "karma-mocha": "^1.2.0",
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-sauce-launcher": "^1.0.0",
-    "marked": "^0.3.6",
+    "marked": "^0.3.12",
     "metamagical-interface": "^3.5.0",
     "metamagical-mocha-bridge": "^0.4.0",
     "metamagical-static-docs": "^0.3.0",
