@@ -13,11 +13,13 @@ class TaskExecution {
   constructor(task, deferred) {
     this._task = task;
     this._deferred = deferred;
+    this._links = [];
   }
 
   /*~*/
   cancel() {
     this._deferred.maybeCancel();
+    this._links.forEach(link => link.cancel());
     return this;
   }
 
@@ -35,6 +37,12 @@ class TaskExecution {
   /*~*/
   future() {
     return this._deferred.future();
+  }
+
+  /*~*/
+  link(execution) {
+    this._links.push(execution);
+    return this;
   }
 }
 
