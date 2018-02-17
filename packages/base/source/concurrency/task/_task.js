@@ -342,7 +342,7 @@ class Task {
     const resources = this._computation({
       reject:  error => { deferred.reject(error) },
       resolve: value => { deferred.resolve(value) },
-      cancel:  _     => { deferred.maybeCancel(); },
+      cancel:  _     => { deferred.maybeCancel() },
 
       get isCancelled() { return isCancelled },
       cleanup(f) {
