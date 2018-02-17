@@ -52,11 +52,11 @@ class Task {
         onCancelled: resolver.cancel,
         onRejected:  resolver.reject,
         onResolved:  value => {
-          transformation(value).run().listen({
+          execution.link(transformation(value).run().listen({
             onCancelled: resolver.cancel,
             onRejected:  resolver.reject,
             onResolved:  resolver.resolve
-          });
+          }));
         }
       });
     });
@@ -146,11 +146,11 @@ class Task {
       const execution = this.run();
       resolver.onCancelled(() => execution.cancel());
       
-      const resolve = (handler) => (value) => handler(value).run().listen({
+      const resolve = (handler) => (value) => execution.link(handler(value).run().listen({
         onCancelled: resolver.cancel,
         onRejected:  resolver.reject,
         onResolved:  resolver.resolve
-      });
+      }));
       execution.listen({
         onCancelled: resolve(_ => pattern.Cancelled()),
         onRejected:  resolve(pattern.Rejected),
@@ -192,11 +192,11 @@ class Task {
         onCancelled: resolver.cancel,
         onResolved:  resolver.resolve,
         onRejected:  reason => {
-          handler(reason).run().listen({
+          execution.link(handler(reason).run().listen({
             onCancelled: resolver.cancel,
             onRejected:  resolver.reject,
             onResolved:  resolver.resolve
-          });
+          }));
         }
       });
     });
@@ -337,10 +337,12 @@ class Task {
       }
     });
 
+    const execution = new TaskExecution(this, deferred);
+
     const resources = this._computation({
       reject:  error => { deferred.reject(error) },
       resolve: value => { deferred.resolve(value) },
-      cancel:  _     => { deferred.maybeCancel() },
+      cancel:  _     => { deferred.maybeCancel(); },
 
       get isCancelled() { return isCancelled },
       cleanup(f) {
@@ -357,7 +359,7 @@ class Task {
       }
     });
 
-    return new TaskExecution(this, deferred);
+    return execution;
   }
 }
 
