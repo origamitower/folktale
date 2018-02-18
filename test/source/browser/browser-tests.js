@@ -16,6 +16,7 @@ process.env.FOLKTALE_ASSERTIONS = 'none';
 require('../specs/base/adt/union');
 require('../specs/base/concurrency/future');
 require('../specs/base/concurrency/task');
+require('../specs/base/concurrency/regression/task-cancellation-174');
 require('../specs/base/core/lambda');
 require('../specs/base/core/object');
 require('../specs/base/fantasy-land/fantasy-land');
