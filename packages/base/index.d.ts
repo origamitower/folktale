@@ -56,7 +56,7 @@ declare namespace folktale {
     toString(): string;
     equals(that: Maybe<A>): boolean;
     unsafeGet(): A;
-    fold<B>(onJust: (_: A) => B, onNothing: () => B): B;
+    fold<B>(onNothing: () => B, onJust: (_: A) => B): B;
   }
 
   interface Nothing<A> {
@@ -79,7 +79,7 @@ declare namespace folktale {
     toString(): string;
     equals(that: Maybe<A>): boolean;
     unsafeGet(): A;
-    fold<B>(onJust: (_: A) => B, onNothing: () => B): B;
+    fold<B>(onNothing: () => B, onJust: (_: A) => B): B;
   }
 
   interface StaticMaybe {
