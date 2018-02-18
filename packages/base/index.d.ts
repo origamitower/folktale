@@ -88,7 +88,7 @@ declare namespace folktale {
     Just<A>(value: A): Maybe<A>;
     Nothing<A>(): Maybe<A>;
     hasInstance(value: any): boolean;
-    fromNullable<A>(_: A | null): Maybe<A>;
+    fromNullable<A>(_: A | null | undefined): Maybe<A>;
     fromResult<A, B>(_: Result<A, B>): Maybe<B>;
     fromValidation<A, B>(_: Validation<A, B>): Maybe<B>;
   }
