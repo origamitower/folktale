@@ -119,7 +119,7 @@ const compose = require('folktale/core/lambda/compose');
 const inc = (x) => x + 1;
 const double = (x) => x * 2;
 
-Maybe.Just(1).map(compose(inc, double));
+Maybe.Just(1).map(compose(double, inc));
 // ==> Maybe.Just(4)
 ```
 
