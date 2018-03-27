@@ -1,15 +1,18 @@
-//----------------------------------------------------------------------
-//
-// This source file is part of the Folktale project.
-//
-// Licensed under MIT. See LICENCE for full licence information.
-// See CONTRIBUTORS for the list of contributors to the project.
-//
-//----------------------------------------------------------------------
+/*
+----------------------------------------------------------------------
 
-const { typeSymbol } = require('folktale/adt/union/union');
+ This source file is part of the Folktale project.
 
-module.exports = (type) => (method, value) => {
+ Licensed under MIT. See LICENCE for full licence information.
+ See CONTRIBUTORS for the list of contributors to the project.
+
+----------------------------------------------------------------------
+*/
+
+import {typeSymbol} from '../abstract/symbols';
+
+// ToDo: Replace any types here.
+export const assertType = (type: any) => (method: any, value: any) => {
   const typeName = type[typeSymbol];
   if (process.env.FOLKTALE_ASSERTIONS !== 'none' && !(type.isPrototypeOf(value))) {
     console.warn(`${typeName}.${method} expects a value of the same type, but was given ${value}.`);
