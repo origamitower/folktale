@@ -40,7 +40,7 @@ providing an answer is the equivalent of throwing an exception.
 
 In most languages, things like “find an item in this list” will return `null`
 (or the equivalent “not an object”) when the item can't be found, but what if
-you had a `null` in th list? In others, you can only ask the question “find me
+you had a `null` in the list? In others, you can only ask the question “find me
 the index of this item in that list”, and when one index can't be found it
 answers `-1`, assuming a 0-based indexed structure. But, again, what if I have
 an indexed structure where `-1` is a valid index?
