@@ -343,7 +343,7 @@ Previously it was possible to choose between one of many tasks by using the `non
 const Task = require('data.task');
 const Async = require('control.async')(Task);
 
-Async.nondeterministicChoice(Task.of(1), Task.of(2)).chain(
+Async.nondeterministicChoice([Task.of(1), Task.of(2)]).chain(
   (firstValue) => ...
 )
 {% endhighlight %}
