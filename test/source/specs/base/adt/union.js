@@ -196,6 +196,12 @@ describe('ADT: union', () => {
     property('Primitive Values have a string representation', () => {
       return AB.A(1).toString()  === 'AB.A({ value: 1 })';
     })
+    property('Special IEEE 754 values have a correct string representation', () => {
+      return AB.A(NaN).toString() === 'AB.A({ value: NaN })'
+      &&     AB.A(Infinity).toString() === 'AB.A({ value: Infinity })'
+      &&     AB.A(-Infinity).toString() === 'AB.A({ value: -Infinity })'
+      &&     AB.A(-0).toString() === 'AB.A({ value: -0 })'
+    })
     property('Complex Values have a string representation', () => {
       return AB.A({foo: "bar"}).toString()  === 'AB.A({ value: { foo: "bar" } })';
     })
