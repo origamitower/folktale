@@ -71,6 +71,8 @@ const objectToString = (object) =>
 const showValue = (value) =>
     typeof value === 'undefined' ?  'undefined'
   : typeof value === 'function'  ?  functionToString(value)
+  : Object.is(value, -0)         ?  '-0'
+  : typeof value === 'number'    ?  value
   : typeof value === 'symbol'    ?  value.toString()
   : typeof value === 'object'    ?  objectToString(value).call(value)
   : /* otherwise */                 JSON.stringify(value);
