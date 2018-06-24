@@ -220,3 +220,4 @@ export define release =
      action copy (pkg / "CHANGELOG.md") @ -to: (release / "CHANGELOG.md") -overwrite: true |> show-copy
      action copy (pkg / "package.json") @ -to: (release / "package.json") -overwrite: true |> show-copy
      action copy (pkg / "CONTRIBUTORS") @ -to: (release / "CONTRIBUTORS") -overwrite: true |> show-copy
+     action $(npm pack @ -working-directory: release)
