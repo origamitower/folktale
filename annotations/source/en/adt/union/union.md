@@ -289,13 +289,16 @@ those situations, we can use the special value `any`.
 Let's say we want to verify an _Authorization_ header is present and
 has an acceptable value. There are 3 acceptable values. Anything else
 is considered an error. The below is a Node Restify request example
-that defines the 3 acceptable header values:
+that defines the 3 acceptable header values::
+
+
+    const union = require('folktale/adt/union/union');
 
     const AuthHeader = union('AuthHeader', {
-      None() { return { 'None' }; },
-      JWT() { return { 'JWT' }; },
-      Session() { return { 'Session' }; },
-      Unknown() { return { 'Unknown' }; }
+      None() { return { value: 'None' }; },
+      JWT() { return { value: 'JWT' }; },
+      Session() { return { value: 'Session' }; },
+      Unknown() { return { value: 'Unknown' }; }
     });
 
     function hasAcceptableAuthHeader(authHeader) {
@@ -306,6 +309,8 @@ that defines the 3 acceptable header values:
         Session: ()  => true
       })
     }
+
+An API method may use this data structure as follows:
 
     api.method(response => {
       // ... parse AuthHeader from response
