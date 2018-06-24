@@ -37,6 +37,18 @@ describe('Validation', () => {
     });
   });
 
+  describe('chain(validation, fn)', () => {
+    const lift = (f) => a => _.of(f(a));
+
+    property('chain', 'json', 'json -> json', (a, f) => {
+      return _.chain(_.Success(x), lift(f)).equals(lift(f)(a));
+    });
+
+    property('chain Failure', 'json', 'json -> json', (a, f) => {
+      return _.chain(_.Failure(x), lift(f)).equals(_.Failure(x));
+    });
+  });
+
   describe('Functor', () => {
     property('map', 'json', 'json -> json', (a, f) => {
       return _.of(f(a)).equals(_.of(a).map(f))

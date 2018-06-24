@@ -23,6 +23,7 @@ module.exports = {
   fromJSON: Validation.fromJSON,
   [typeSymbol]: Validation[typeSymbol],
   collect: require('./collect'),
+  chain: require('./chain'),
 
   /*~
    * type: |
