@@ -108,7 +108,7 @@ instead to check if a value belongs to the ADT variant.`);
        *   where 'b = 'a[`@@folktale:adt:tag]
        */
       matchWith(pattern) {
-        assertObject(`${name}#matchWith`, pattern);
+        assertObject(`${typeId}'s ${name}#matchWith`, pattern);
         if (name in pattern) {
           return pattern[name](this);
         } else if (ANY in pattern) {
