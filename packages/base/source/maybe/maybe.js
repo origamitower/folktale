@@ -269,16 +269,16 @@ adtMethods(Maybe, {
    * type: |
    *   forall a: (Maybe a).(Maybe a) => Maybe a
    */
-  alt: {
+  or: {
     /*~*/
     Nothing: function alt(aMaybe) {
-      assertMaybe('Maybe.Nothing#alt', aMaybe);
+      assertMaybe('Maybe.Nothing#or', aMaybe);
       return aMaybe;
     },
 
     /*~*/
     Just: function alt(aMaybe) {
-      assertMaybe('Maybe.Just#alt', aMaybe);
+      assertMaybe('Maybe.Just#or', aMaybe);
       return this;
     }
   }

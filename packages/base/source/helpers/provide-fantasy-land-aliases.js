@@ -92,7 +92,7 @@ const aliases = {
     }
   },
 
-  alt: {
+  or: {
     /*~
      * module: null
      * type: |
@@ -101,7 +101,18 @@ const aliases = {
      *   where F is Functor, Alt
      */
     'fantasy-land/alt'(value) {
-      return this.alt(value);
+      return this.or(value);
+    },
+    
+    /*~
+     * module: null
+     * type: |
+     *   forall F, a:
+     *     (F a).(F a) => F a
+     *   where F is Functor, Alt
+     */
+    alt(value) {
+      return this.or(value);
     }
   },
 
