@@ -14,6 +14,20 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 
 ---
 
+## [2.3.0] - 2018-06-24
+
+### New features
+
+* A `chain` function for Validation allows sequencing successes in a simpler way ([PR #194](https://github.com/origamitower/folktale/pull/194))
+* The `Alt` algebraic structure is now implemented for Maybe ([PR #171](https://github.com/origamitower/folktale/pull/171) by @Josh-Miller)
+* Unions have a new `any` special value, and better error reporting ([PR #142](https://github.com/origamitower/folktale/pull/142) by @JesterXL)
+
+### Fixes
+
+* A lot of documentation fixes ([PR #179](https://github.com/origamitower/folktale/pull/179) by @blackwindforce, [PR #188](https://github.com/origamitower/folktale/pull/188) by @andys8, [PR #189](https://github.com/origamitower/folktale/pull/189) by @pernas)
+* Derived debug representation now handles numbers correctly (including -0) ([PR #193](https://github.com/origamitower/folktale/pull/193))
+* Cancellation now should propagate a little less incorrectly in Tasks ([PR #177](https://github.com/origamitower/folktale/pull/177))
+
 ## [2.1.0-rc1] - 2017-12-31
 
 ### New features
