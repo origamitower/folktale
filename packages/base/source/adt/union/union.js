@@ -10,11 +10,13 @@
 // --[ Dependencies ]---------------------------------------------------
 const warnDeprecation = require('folktale/helpers/warn-deprecation');
 const extend = require('folktale/helpers/extend');
+const assertObject = require('folktale/helpers/assert-object');
 
 
 // --[ Constants and Aliases ]------------------------------------------
 const TYPE = Symbol.for('@@folktale:adt:type');
 const TAG  = Symbol.for('@@folktale:adt:tag');
+const ANY  = Symbol.for('@@folktale:adt:default');
 const META = Symbol.for('@@meta:magical');
 
 const keys = Object.keys;
@@ -40,6 +42,30 @@ function mapObject(object, transform) {
   }, {});
 }
 
+//
+// Gets a custom error message for the matchWith function.
+// 
+function getMatchWithErrorMessage(method, property) {
+  return `Variant "${property}" not covered in pattern.
+This could mean you did not include all variants in your Union's matchWith function.
+
+For example, if you had this Union:
+
+const Operation = union({
+    Add: (a, b) => ({ a, b }),
+    Subtract: (a, b) => ({ a, b }),
+})
+
+But wrote this matchWith:
+
+op.matchWith({
+    Add: ({ a, b }) => a + b
+    // Subtract not implemented!
+})
+
+It would throw this error because we need to check against 'Subtract'. Check your matchWith function's argument, 
+it's possibly missing the '${property}' method in the object you've passed.`
+}
 
 // --[ Variant implementation ]-----------------------------------------
 
@@ -82,8 +108,15 @@ instead to check if a value belongs to the ADT variant.`);
        *   where 'b = 'a[`@@folktale:adt:tag]
        */
       matchWith(pattern) {
-        return pattern[name](this);
-      } 
+        assertObject(`${name}#matchWith`, pattern);
+        if (name in pattern) {
+          return pattern[name](this);
+        } else if (ANY in pattern) {
+          return pattern[ANY]();
+        } else {
+          throw new Error(getMatchWithErrorMessage(pattern, name));
+        } 
+      }
     });
 
     function makeInstance(...args) {
@@ -204,5 +237,6 @@ const Union = {
 union.Union      = Union;
 union.typeSymbol = TYPE;
 union.tagSymbol  = TAG;
+union.any        = ANY;
 
 module.exports = union;

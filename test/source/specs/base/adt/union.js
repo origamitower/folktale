@@ -9,8 +9,20 @@
 
 const { property } = require('jsverify');
 const { union, derivations } = require('folktale/adt/union');
+const { any } = union;
 
 const { serialization, equality, debugRepresentation } = derivations;
+
+// --[ Helpers ]--------------------------------------------------------
+const methodThrowsError = method => () => {
+    try {
+        method();
+        return false;
+    }
+    catch(err) {
+        return true;
+    }
+};
 
 describe('ADT: union', () => {
   describe('union(typeId, patterns)', () => {
@@ -123,6 +135,63 @@ describe('ADT: union', () => {
             B: ({ a, b }) => a + b
           })
           == 3
+        );
+      });
+
+      it('Blows up with a customer error message if you are missing a variant', () => {
+        const { A, B } = union('', { 
+          A(a) { return { a } },
+          B() { return {} }
+        });
+        
+        const matchWrapper = ()=>
+            A(1).matchWith({
+              B: ({ a }) => a
+            }) == 'cow';
+
+        $ASSERT(methodThrowsError(matchWrapper)() === true);
+      });
+
+      it('works with any if you do not care and just want a default match', ()=> {
+        const { Red, Green, Blue } = union('', { 
+          Red() { return { } },
+          Green() { return { } },
+          Blue() { return { } }
+        });
+
+        $ASSERT(
+          Red().matchWith({
+            Red: () => 'red',
+            Green: () => 'green',
+            Blue: () => 'blue'
+          })
+          == 'red'
+        );
+
+         $ASSERT(
+          Red().matchWith({
+            Green: () => 'green',
+            Blue: () => 'blue',
+            [any]: ()=> 'black'
+          })
+          == 'black'
+        );
+      });
+
+      it('any works with all nested variants', ()=> {
+        const { Miss, Hit, Attack } = union('', { 
+          Miss() { return { } },
+          Hit(damage, critical) { return { damage, critical } },
+          Attack(attackResult) { return { attackResult } }
+        });
+
+         $ASSERT(
+           Attack(Hit(1, false)).matchWith({
+            Miss: ()=> 'miss',
+            Hit: ({damage, critical}) => 'damage',
+            [any]: () => 'nothing'
+          })
+          == 'nothing'
         );
       });
 
