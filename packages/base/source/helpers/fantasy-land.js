@@ -14,6 +14,7 @@ module.exports = {
   map: 'fantasy-land/map',
   ap: 'fantasy-land/ap',
   of: 'fantasy-land/of',
+  alt: 'fantasy-land/alt',
   reduce: 'fantasy-land/reduce',
   traverse: 'fantasy-land/traverse',
   chain: 'fantasy-land/chain',
