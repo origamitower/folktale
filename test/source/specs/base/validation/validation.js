@@ -41,11 +41,11 @@ describe('Validation', () => {
     const lift = (f) => a => _.of(f(a));
 
     property('chain', 'json', 'json -> json', (a, f) => {
-      return _.chain(_.Success(x), lift(f)).equals(lift(f)(a));
+      return _.chain(_.Success(a), lift(f)).equals(lift(f)(a));
     });
 
     property('chain Failure', 'json', 'json -> json', (a, f) => {
-      return _.chain(_.Failure(x), lift(f)).equals(_.Failure(x));
+      return _.chain(_.Failure(a), lift(f)).equals(_.Failure(a));
     });
   });
 
