@@ -64,7 +64,7 @@ op.matchWith({
 })
 
 It would throw this error because we need to check against 'Subtract'. Check your matchWith function's argument, 
-it's possibly missing the '${property}' method in the object you've passed.`
+it's possibly missing the '${property}' method in the object you've passed.`;
 }
 
 // --[ Variant implementation ]-----------------------------------------
