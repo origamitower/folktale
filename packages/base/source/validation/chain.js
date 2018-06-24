@@ -18,7 +18,7 @@ const chain = (validation, fn) =>
   validation.matchWith({
     Success: ({ value }) => fn(value),
     Failure: ({ value }) => Failure(value)
-  })
+  });
 
 
 module.exports = chain;
