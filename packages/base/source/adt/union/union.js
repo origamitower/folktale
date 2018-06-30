@@ -84,7 +84,7 @@ function defineVariants(typeId, patterns, adt) {
 
       /*~ ~inheritsMeta: constructor */
       get constructor() {
-        return constructor;
+        return InternalConstructor;
       },
 
       /*~
@@ -151,7 +151,7 @@ instead to check if a value belongs to the ADT variant.`);
        * module: null
        */
       get constructor() {
-        return constructor;
+        return InternalConstructor;
       },
 
       /*~ ~belongsTo: makeInstance */
