@@ -123,7 +123,7 @@ define run-tests reporter @ options =
      action compile-test
      action compile-annotations
      action bundle-test
-     action show-shell-output (mocha reporter [] @ -environment: (-FOLKTALE_ASSERTIONS: options.assertions))
+     action show-shell-output (mocha reporter [] @ -environment: (-FOLKTALE_ASSERTIONS: options.assertions -ES_VERSION: "2015"))
      action show-shell-output (karma (root / "test" / "karma-local.js"))
      action Terminal.display-line "---"
      action Terminal.display-line "All good!"

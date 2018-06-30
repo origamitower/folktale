@@ -115,6 +115,21 @@ describe('ADT: union', () => {
         $ASSERT(!(A() instanceof B));
       });
 
+      if (Number(process.env.ES_VERSION || 0) >= 2015) {
+        it('Shorthand methods should work properly as variant initialisers', () => {
+          const adt = eval(`union('', { 
+            A() { 
+              return { value: 1 } 
+            } 
+          })`);
+
+          $ASSERT(adt.A.constructor.prototype !== undefined);
+          $ASSERT(adt.A(1) == { value: 1, ..._ });
+          $ASSERT(adt.A(1) instanceof adt.A);
+        });
+      }
+
+
       it('Gets a matchWith method for pattern matching', () => {
         const { A, B } = union('', { 
           A(a) { return { a } },
@@ -304,7 +319,7 @@ describe('ADT: union', () => {
       return AB.A(a).toString() === 'AB.A({ value: { foo: 1 } })'
     });
 
-    // Issue https://github.com/origamitower/folktale/issues/167
+    // TODO: Issue https://github.com/origamitower/folktale/issues/167
     xit('Circular objects get serialised properly', () => {
       const a = Object.create(null);
       a.a = a;

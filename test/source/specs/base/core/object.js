@@ -56,7 +56,7 @@ describe('Core.Object', () => {
   });
 
   // This is only true in an ES6 VM, so we don't run it outside of Node
-  if (!process.browser) {
+  if (Number(process.env.ES_VERSION || 0) >= 2015) {
     property('fromPairs(toPairs(o)) = o', 'dict nat', (o) => {
       $ASSERT(_.fromPairs(_.toPairs(o)) == o);
       return true
