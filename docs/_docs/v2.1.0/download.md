@@ -53,8 +53,11 @@ Folktale is written for ECMAScript 2015 platforms, but it uses a subset of featu
 be safely backported to platforms as old as ECMAScript 3. If you're running your program in
 an older platform, you'll need [es6-shim][], and you might need [es5-shim][].
 
+Because Folktale also uses ES2015 Symbols you'll need to load [babel-polyfill][]. We're probably going to remove this dependency in future versions of the library.
+
 [es5-shim]: https://github.com/es-shims/es5-shim
 [es6-shim]: https://github.com/es-shims/es6-shim
+[babel-polyfill]: https://babeljs.io/docs/en/babel-polyfill.html
 
 
 ### Using Browserify
