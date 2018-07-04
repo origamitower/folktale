@@ -55,11 +55,6 @@ an older platform, you'll need [es5-shim][] and [es6-shim][].
   - iOS 8.3+
 
 
-The following table summarises tests executed on each supported Browser platform for the current version:
-
-[![Build Status](https://saucelabs.com/browser-matrix/robotlolita.svg)](https://saucelabs.com/u/robotlolita)
-
-
 ## Support
 
 > Note that all interactions in this project are subject to Origami Tower's
