@@ -109,7 +109,8 @@ describe('Core.Object', () => {
 
   describe('mapEntries(o, f, define)', () => {
     property('returns what define returns', 'dict nat', (a) => {
-      $ASSERT(_.mapEntries(a, ([k, v]) => [k, v], (o, k, v) => ({ ...o, [k]: v })) == a);
+      const x = _.mapEntries(a, ([k, v]) => [k, v], (o, k, v) => ({ ...o, [k]: v }));
+      $ASSERT(x == a);
       return true
     });
 
