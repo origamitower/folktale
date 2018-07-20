@@ -58,6 +58,24 @@ describe('Maybe', () => {
     });
   });
 
+  describe('#fromNullable(a)', () => {
+    property('Maybe.fromNullable(a) = Just(a)', 'string', (a) => {
+      return Maybe.fromNullable(a).equals(Just(a));
+    });
+
+    property('Maybe.fromNullable(bool) = Just(bool)', 'bool', (a) => {
+      return Maybe.fromNullable(a).equals(Just(a));
+    });
+
+    property('Maybe.fromNullable(a) = Nothing()', () => {
+      return Maybe.fromNullable(undefined).equals(Nothing());
+    });
+
+    property('Maybe.fromNullable(a) = Nothing()', () => {
+      return Maybe.fromNullable(null).equals(Nothing());
+    });
+  });
+
   describe('#chain(f)', () => {
     property('Just(a).chain(f) = f(a)', 'json', 'json -> json', (a, f) => {
       return Just(a).chain(x => Just(f(x))).equals(Just(f(a)));

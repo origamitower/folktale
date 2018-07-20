@@ -319,7 +319,6 @@ Object.assign(Maybe, {
     return this.unsafeGet();
   },
 
-
   /*~
    * stability: experimental
    * type: |
@@ -327,6 +326,15 @@ Object.assign(Maybe, {
    */
   toResult(fallbackValue) {
     return require('folktale/conversions/maybe-to-result')(this, fallbackValue);
+  },
+
+  /*~
+   * stability: experimental
+   * type: |
+   *   forall a: (a) => Maybe a
+   */
+  fromNullable(value) {
+    return value === undefined || value === null ? Nothing() : Just(value);
   },
 
   /*~
