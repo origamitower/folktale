@@ -50,15 +50,15 @@ const files = staticDocs.formatters.html(entities, {
     },
     {
       text: 'Support',
-      url: 'folktale.html#cat-2-support'
+      url: '/docs/support/'
     },
     {
       text: 'Contributing',
-      url: 'folktale.html#cat-3-contributing'
+      url: '/docs/v2.1.0/contributing/'
     }
   ],
   links: {
-    typeNotation: 'guides.type-notation-used-in-signatures.html'
+    typeNotation: '/docs/v2.1.0/misc/type-notation/'
   }
 });
 staticDocs.generate(files, {
