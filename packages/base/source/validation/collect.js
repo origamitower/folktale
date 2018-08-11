@@ -12,7 +12,7 @@ const { Success } = require('./validation');
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * type: |
  *   forall a, b: (Array (Validation a b)) => Validation a b
  *   where a is Semigroup

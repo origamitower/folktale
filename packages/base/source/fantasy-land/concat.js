@@ -17,7 +17,7 @@ const isOldSemigroup = (a) => typeof a.concat === 'function';
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta
@@ -34,7 +34,7 @@ const concat = (semigroupLeft, semigroupRight) =>
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta

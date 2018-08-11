@@ -18,10 +18,10 @@ const warnDeprecation = require('folktale/helpers/warn-deprecation');
 const { equality, debugRepresentation, serialization } = derivations;
 
 
-/*~ stability: experimental */
+/*~ stability: stable */
 const Result = union('folktale:Result', {
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b: (a) => Result a b
    */
@@ -30,7 +30,7 @@ const Result = union('folktale:Result', {
   },
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b: (b) => Result a b
    */
@@ -74,7 +74,7 @@ extend(Ok.prototype, {
  */
 adtMethods(Result, {
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b, c:
    *     (Result a b).((b) => c) => Result a c
@@ -95,7 +95,7 @@ adtMethods(Result, {
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b, c:
    *     (Result a ((b) => c)).(Result a b) => Result a c
@@ -116,7 +116,7 @@ adtMethods(Result, {
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b, c:
    *     (Result a b).((b) => Result a c) => Result a c
@@ -136,7 +136,7 @@ adtMethods(Result, {
   },
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b: (Result a b).() => b :: throws TypeError
    */
@@ -159,7 +159,7 @@ or some other method that is not partial.
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b: (Result a b).(b) => b
    */
@@ -177,7 +177,7 @@ or some other method that is not partial.
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b, c:
    *     (Result a b).((a) => Result c b) => Result c b
@@ -220,7 +220,7 @@ or some other method that is not partial.
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b, c:
    *     (Result a b).((a) => c, (b) => c) => c
@@ -243,7 +243,7 @@ or some other method that is not partial.
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b: (Result a b).() => Result b a
    */
@@ -261,7 +261,7 @@ or some other method that is not partial.
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   (Result a b).((a) => c, (b) => d) => Result c d
    */
@@ -283,7 +283,7 @@ or some other method that is not partial.
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b, c:
    *     (Result a b).((a) => c) => Result c b
@@ -304,7 +304,7 @@ or some other method that is not partial.
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a: (Maybe a).((a) => Boolean) => Maybe a
    */
@@ -326,7 +326,7 @@ or some other method that is not partial.
 
 Object.assign(Result, {
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b: (b) => Result a b
    */
@@ -347,7 +347,7 @@ Object.assign(Result, {
   },
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b: (Result a b).() => a or b
    */
@@ -356,7 +356,7 @@ Object.assign(Result, {
   },
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b: (Result a b).() => Validation a b
    */
@@ -366,7 +366,7 @@ Object.assign(Result, {
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b: (Result a b).() => Maybe b
    */

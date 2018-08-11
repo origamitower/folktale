@@ -11,7 +11,7 @@ const { Cancelled } = require('folktale/concurrency/future/_execution-state');
 const Deferred = require('folktale/concurrency/future/_deferred');
 
 /*~
- * stability: experimental
+ * stability: stable
  * type: |
  *   forall e, v:
  *     (Promise v e) => Future e v

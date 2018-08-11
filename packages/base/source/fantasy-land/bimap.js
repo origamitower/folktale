@@ -18,7 +18,7 @@ const isOld = (a) => typeof a.bimap === 'function';
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta
@@ -35,7 +35,7 @@ const bimap = (bifunctor, transformLeft, transformRight) =>
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta

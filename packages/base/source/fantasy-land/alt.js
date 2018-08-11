@@ -16,7 +16,7 @@ const isNew = (a) => typeof a[flAlt] === 'function';
 const isOld = (a) => typeof a.alt === 'function';
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@joshmili"
  *
@@ -32,7 +32,7 @@ const alt = (aAlt, bAlt) =>
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@joshmili"
  *

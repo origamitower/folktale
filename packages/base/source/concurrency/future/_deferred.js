@@ -47,7 +47,7 @@ const moveToState = (deferred, newState) => {
 
 // --[ Implementation ]------------------------------------------------
 /*~
- * stability: experimental
+ * stability: stable
  */
 function Deferred() {
   define(this, '_state', Pending());

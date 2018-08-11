@@ -10,7 +10,7 @@
 const { Failure } = require('./validation');
 
 /*~
- * stability: experimental
+ * stability: stable
  * type: |
  *   forall a, b, c: (Validation a b, (b) => Validation a c) => Validation a c
  */

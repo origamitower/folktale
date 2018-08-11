@@ -245,7 +245,7 @@ adtMethods(Maybe, {
   },
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a: (Maybe a).((a) => Boolean) => Maybe a
    */
@@ -321,7 +321,7 @@ Object.assign(Maybe, {
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b: (Maybe a).(b) => Result b a
    */
@@ -330,7 +330,7 @@ Object.assign(Maybe, {
   },
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b: (Maybe a).(b) => Result b a
    */
