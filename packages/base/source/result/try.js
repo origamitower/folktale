@@ -10,7 +10,7 @@
 const { Error, Ok } = require('./result');
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  * 

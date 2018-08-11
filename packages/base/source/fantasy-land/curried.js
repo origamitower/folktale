@@ -9,7 +9,7 @@
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * name: module folktale/fantasy-land/curried
  */
 module.exports = {

@@ -16,7 +16,7 @@ const isNew = (a) => typeof a[ap] === 'function';
 const isOld = (a) => typeof a.ap === 'function';
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta
@@ -33,7 +33,7 @@ const apply = (applicativeFunction, applicativeValue) =>
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta

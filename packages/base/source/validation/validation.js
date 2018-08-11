@@ -18,7 +18,7 @@ const warnDeprecation = require('folktale/helpers/warn-deprecation');
 const { equality, debugRepresentation, serialization } = derivations;
 
 
-/*~ stability: experimental */
+/*~ stability: stable */
 const Validation = union('folktale:Validation', {
   /*~
    * type: |

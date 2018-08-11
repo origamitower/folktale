@@ -18,7 +18,7 @@ const isOld = (a) => typeof a.equals === 'function';
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta
@@ -35,7 +35,7 @@ const equals = (setoidLeft, setoidRight) =>
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta

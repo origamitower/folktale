@@ -20,7 +20,7 @@ const isCtorOld = (a) => typeof a.constructor.of === 'function';
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta
@@ -39,7 +39,7 @@ const of = (applicative, value) =>
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta

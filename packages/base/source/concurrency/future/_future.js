@@ -19,7 +19,7 @@ const warnDeprecation = require('folktale/helpers/warn-deprecation');
 // --[ Implementation ]------------------------------------------------
 
 /*~
- * stability: experimental
+ * stability: stable
  */
 class Future {
   constructor() {
@@ -50,7 +50,7 @@ class Future {
 
   // ---[ Reacting to Future events ]----------------------------------
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   (Future 'f 's).(DeferredListener 'f 's) => Future 'f 's
    */
@@ -67,7 +67,7 @@ class Future {
 
   // --[ Transforming Futures ]----------------------------------------
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   (Future 'f 's).(('s) => Future 's2) => Future 'f 's2
    */
@@ -89,7 +89,7 @@ class Future {
   }
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   (Future 'f 's).(('s) => 's2) => Future 'f 's2
    */
@@ -98,7 +98,7 @@ class Future {
   }
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   (Future 'f 's).(Future 'f (('s) => 's2)) => Future 'f 's2
    */
@@ -107,7 +107,7 @@ class Future {
   }
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   (Future 'f 's).(('f) => 'f2, ('s) => 's2) => Future 'f2 's2
    */
@@ -123,7 +123,7 @@ class Future {
   }
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   (Future 'f 's).(('f) => 'f2) => Future 'f2 's
    */
@@ -147,7 +147,7 @@ class Future {
   }
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   (Future 'f 's).(('f) => Future 'f2 's2) => Future 'f2 's
    */
@@ -170,7 +170,7 @@ class Future {
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b, c, d:
    *     type Pattern = { r |
@@ -198,7 +198,7 @@ class Future {
   }
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   (Future 'f 's).() => Future 's 'f
    */
@@ -238,7 +238,7 @@ class Future {
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall e, v:
    *     (Future e v).() => Promise v e
@@ -252,7 +252,7 @@ class Future {
 // ---[ Constructing futures ]-----------------------------------------
 Object.assign(Future, {
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b:
    *     (Future).(b) => Future a b
@@ -264,7 +264,7 @@ Object.assign(Future, {
   },
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall a, b: (Future).(a) => Future a b
    */
@@ -276,7 +276,7 @@ Object.assign(Future, {
 
 
   /*~
-   * stability: experimental
+   * stability: stable
    * type: |
    *   forall e, v: (Promise v e) => Future e v
    */

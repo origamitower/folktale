@@ -17,7 +17,7 @@ const isOld = (a) => typeof a.chain === 'function';
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta
@@ -34,7 +34,7 @@ const chain = (monad, transformation) =>
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta

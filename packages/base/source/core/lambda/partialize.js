@@ -11,7 +11,7 @@ const hole = {};
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  *
@@ -57,7 +57,7 @@ const partialize = (arity, fn) => (...args) => {    //  eslint-disable-line max-
 
 
 // ---[ Special Values ]-----------------------------------------------
-/*~ stability: experimental */
+/*~ stability: stable */
 partialize.hole = hole;
 
 

@@ -17,7 +17,7 @@ const isNew = (a) => typeof a[flMap] === 'function';
 const isOld = (a) => typeof a.map === 'function';
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta
@@ -34,7 +34,7 @@ const map = (functor, transformation) =>
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta

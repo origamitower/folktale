@@ -20,7 +20,7 @@ const isCtorOld = (a) => typeof a.constructor.empty === 'function';
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta
@@ -39,7 +39,7 @@ const empty = (monoid) =>
 
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - "@boris-marinov"
  *   - Quildreen Motta

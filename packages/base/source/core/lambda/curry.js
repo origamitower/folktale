@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------
 
 /*~
- * stability: experimental
+ * stability: stable
  * authors:
  *   - Quildreen Motta
  *
