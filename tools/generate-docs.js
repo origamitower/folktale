@@ -54,11 +54,11 @@ const files = staticDocs.formatters.html(entities, {
     },
     {
       text: 'Contributing',
-      url: '/docs/v2.1.0/contributing/'
+      url: '/docs/v2.3.0/contributing/'
     }
   ],
   links: {
-    typeNotation: '/docs/v2.1.0/misc/type-notation/'
+    typeNotation: '/docs/v2.3.0/misc/type-notation/'
   }
 });
 staticDocs.generate(files, {
