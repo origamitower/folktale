@@ -14,6 +14,17 @@ This document provides answers to some common questions people have when using F
 {:toc}
 
 
+## Design decisions
+
+### Why does Folktale have `Result` instead of `Either`?
+
+The name `Either`, which is used by Haskell, is far more general then the name `Result`. However, because `Either` is biased — the Monad/Functor/etc instances only consider the `Right` case —, it ends up being used mostly as a way of modelling failures. Within this particular use case, the names `Left` and `Right` aren't particularly useful to help people figure out what they're supposed to be modelling.
+
+Languages like Rust provide a [Result](https://doc.rust-lang.org/std/result/) type that has a vocabulary that's closer to the intention of the data structure. Meanwhile, languages like Scala don't provide a monad instance for its `Either` type, making it actually general-purpose.
+
+The way Folktale does instances doesn't allow multiple instances to be defined, so we have to specialise the types anyway. And if we're doing that, it's better to use terms that are more useful for people who're trying to figure out what a particular piece of code does.
+
+
 ## Common mistakes
 
 ### Why do I get an error saying "`.apply` is not a function"?
