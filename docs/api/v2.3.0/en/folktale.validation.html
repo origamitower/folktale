@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>module folktale/validation</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.3.0</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="/docs/support/" title="">Support</a></li><li class="navigation-item"><a href="/docs/v2.1.0/contributing/" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/validation</h1><div class="highlight-summary"><div><p>A data structure that typically models form validations, and other scenarios where
+you want to aggregate <strong>all</strong> failures, rather than short-circuit if an error
+happens (for which <code>Result</code> is better suited).</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>A data structure that typically models form validations, and other scenarios where
+you want to aggregate <strong>all</strong> failures, rather than short-circuit if an error
+happens (for which <code>Result</code> is better suited).</p>
+<p>A <code>Validation</code> may either be a <code>Success(value)</code>, which contains a successful value,
+or a <code>Failure(value)</code>, which contains an error.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const Validation = require(&#39;folktale/validation&#39;);
+const { Success, Failure } = Validation;
+
+const isPasswordLongEnough = (password) =&gt;
+  password.length &gt; 6 ?   Success(password)
+: /* otherwise */         Failure([&#39;Password must have more than 6 characters.&#39;]);
+
+const isPasswordStrongEnough = (password) =&gt;
+  /[\W]/.test(password) ?  Success(password)
+: /* otherwise */          Failure([&#39;Password must contain a special character.&#39;]);
+
+const isPasswordValid = (password) =&gt;
+  Success().concat(isPasswordLongEnough(password))
+           .concat(isPasswordStrongEnough(password))
+           .map(_ =&gt; password);
+
+isPasswordValid(&#39;foo&#39;);
+// ==&gt; Failure([&#39;Password must have more than 6 characters.&#39;, &#39;Password must contain a special character.&#39;])
+
+isPasswordValid(&#39;rosesarered&#39;);
+// ==&gt; Failure([&#39;Password must contain a special character.&#39;])
+
+isPasswordValid(&#39;rosesarered$andstuff&#39;)
+// ==&gt; Success(&#39;rosesarered$andstuff&#39;)
+</code></pre><h2 id="why-use-validation-">Why use Validation?</h2>
+<p>Things like form and schema validation are pretty common in programming, but we end up either using branching or designing very specific solutions for each case.</p>
+<p>With branching, things get quickly out of hand, because it&#39;s difficult to abstract over it, and it&#39;s thus difficult to understand the resulting program:</p>
+<pre><code>function validateForm(data) {
+  const errors = [];
+
+  if (!data.name.trim()) {
+    errors.push(&#39;Name is required&#39;);
+  }
+  if (data.password.length &lt; 6) {
+    errors.push(&#39;Password must have at least 6 characters&#39;);
+  }
+  if (!/\W/.test(data.password)) {
+    errors.push(&#39;Password must contain a special character&#39;);
+  }
+
+  return errors;
+}
+
+validateForm({
+  name: &#39;&#39;,
+  password: &#39;roses$are$red&#39;
+});
+// ==&gt; [&#39;Name is required&#39;]
+
+validateForm({
+  name: &#39;Alissa&#39;,
+  password: &#39;alis&#39;
+});
+// ==&gt; [&#39;Password must have at least 6 characters&#39;, &#39;Password must contain a special character&#39;]
+
+
+validateForm({
+  name: &#39;Alissa&#39;,
+  password: &#39;roses$are$red&#39;
+});
+// ==&gt; []
+</code></pre><p>Because this function uses <code>if</code> conditions and modifies a local variable it&#39;s not very modular. This means it&#39;s not possible to split these checks in smaller pieces that can be entirely understood by themselves — they modify something, and so you have to understand how they modify that thing, in which context, etc. For very simple things it&#39;s not too bad, but as complexity grows it becomes unmanageable.</p>
+<p>You can manage this complexity by designing a special function for verifying if an object passes some tests. This is common in validation libraries (like <a href="https://jqueryvalidation.org/">jquery-validation</a>) and schema libraries (like <a href="https://www.npmjs.com/package/jsonschema">jsonschema</a>), but they&#39;re ultimately incompatible with other validation routines, and uncomposable:</p>
+<pre><code>const validators = {
+  notEmpty(object, { property }) {
+    return !object[property].trim() ?  [`${property} can&#39;t be empty`]
+    :      /* else */                  [];
+  },
+
+  minLength(object, { property, min }) {
+    const value = object[property];
+    return value.length &lt; min ?  [`${property} must have at least ${min} characters`]
+    :      /* else */            [];
+  },
+
+  regexp(object, { property, regexp, message }) {
+    return !regexp.test(object[property]) ?  [message]
+    :      /* else */                       [];
+  }
+};
+
+const validate = (rules) =&gt; (object) =&gt;
+  rules.reduce((result, rule) =&gt; 
+    [...result, ...validators[rule.rule](object, rule)], 
+    []
+  );
+
+function validateForm2(data) {
+  return validate([
+    {
+      rule: &#39;notEmpty&#39;,
+      property: &#39;name&#39;
+    },
+    {
+      rule: &#39;minLength&#39;,
+      property: &#39;password&#39;,
+      min: 6
+    },
+    {
+      rule: &#39;regexp&#39;,
+      property: &#39;password&#39;,
+      regexp: /\W/,
+      message: &#39;password must contain a special character&#39;
+    }
+  ])(data);
+}
+
+validateForm2({
+  name: &#39;&#39;,
+  password: &#39;roses$are$red&#39;
+});
+// ==&gt; [&#39;name can\&#39;t be empty&#39;]
+
+validateForm2({
+  name: &#39;Alissa&#39;,
+  password: &#39;alis&#39;
+});
+// ==&gt; [&#39;password must have at least 6 characters&#39;, &#39;password must contain a special character&#39;]
+
+validateForm2({
+  name: &#39;Alissa&#39;,
+  password: &#39;roses$are$red&#39;
+});
+// ==&gt; []
+</code></pre><p>Now, while you can understand validations on their own, and share validations between different methods (if they fit the specific use case of the validation library), it&#39;s hard to extend it to support new validations (as you can&#39;t reuse existing validations), and it&#39;s hard to compose validations, because the library defines its own little language for that.</p>
+<p>Neither of those are very compelling. The Validation structure gives you a tool for basing validation libraries and functions on in a way that&#39;s reusable and composable:</p>
+<pre><code>const Validation = require(&#39;folktale/validation&#39;);
+const { Success, Failure } = Validation;
+
+const notEmpty = (field, value) =&gt;
+  value.trim() ?   Success(value)
+: /* else */       Failure([`${field} can&#39;t be empty`]);
+
+const minLength = (field, min, value) =&gt;
+  value.length &gt; min ?   Success(value)
+: /* otherwise */        Failure([`${field} must have at least ${min} characters`]);
+
+const matches = (field, regexp, value, message = &#39;&#39;) =&gt;
+  regexp.test(value) ?  Success(value)
+: /* otherwise */       Failure([message || `${field} must match ${regexp}`]);
+
+const isPasswordValid = (password) =&gt;
+  Success().concat(minLength(&#39;password&#39;, 6, password))
+           .concat(matches(&#39;password&#39;, /\W/, password, &#39;password must contain a special character&#39;))
+           .map(_ =&gt; password);
+
+const isNameValid = (name) =&gt;
+  notEmpty(&#39;name&#39;, name);
+
+const validateForm3 = (data) =&gt;
+  Success().concat(isPasswordValid(data.password))
+           .concat(isNameValid(data.name))
+           .map(_ =&gt; data);
+
+validateForm3({
+  name: &#39;&#39;,
+  password: &#39;roses$are$red&#39;
+});
+// ==&gt; Failure([&#39;name can\&#39;t be empty&#39;])
+
+validateForm3({
+  name: &#39;Alissa&#39;,
+  password: &#39;alis&#39;
+});
+// ==&gt; Failure([&#39;password must have at least 6 characters&#39;, &#39;password must contain a special character&#39;])
+
+
+validateForm3({
+  name: &#39;Alissa&#39;,
+  password: &#39;roses$are$red&#39;
+});
+// ==&gt; Success({ name: &#39;Alissa&#39;, password: &#39;roses$are$red&#39; })
+</code></pre><h2 id="working-with-validation-values">Working with Validation values</h2>
+<p>A validation m ay be one of the following cases:</p>
+<ul>
+<li><code>Success(value)</code> — represents a successful value (e.g.: the result of passing a validator);</li>
+<li><code>Failure(value)</code> — represents an unsuccessful value (e.g.: the result of failing a validation rule);</li>
+</ul>
+<p>Validation functions just return one of these two cases instead of throwing errors or mutating other variables. Working with Validation values typically falls into one of the following categories:</p>
+<ul>
+<li><p><strong>Combining validations</strong>: Sometimes we want to create more complex validation rules that reuse simpler ones. These functions let us take the result of those rules and put them together into a single Validation value.</p>
+</li>
+<li><p><strong>Transforming values</strong>: Sometimes we get a <code>Validation</code> value that isn&#39;t quite what we&#39;re looking for. We don&#39;t really want to change anything about the status of the validation (whether it passed or failed), but we&#39;d like to tweak the <em>value</em> a little bit. This is the equivalent of applying functions in an expression.</p>
+</li>
+<li><p><strong>Reacting to results</strong>: Once we have a Validation value, we must be able to run pieces of code depending on whether the validation succeeded or failed, with access to the failure reason in the later case.</p>
+</li>
+</ul>
+<p>We&#39;ll see each of these categories in more details below.</p>
+<h3 id="combining-validations">Combining validations</h3>
+<p>Combining validations is the most common thing to do with the Validation structure once you have some more complex validations in place. There are a few options that may be more or less convenient for you.</p>
+<p>The simplest way of combining validations is through the <code>.concat</code> method. When concatenating validations, failures are themselves concatenated, but concatenating two successes just yields the latter one:</p>
+<pre><code>const { Success, Failure } = require(&#39;folktale/validation&#39;);
+
+Failure(&#39;a&#39;).concat(Failure(&#39;b&#39;));
+// ==&gt; Failure(&#39;ab&#39;)
+
+Failure(&#39;a&#39;).concat(Success(&#39;b&#39;));
+// ==&gt; Failure(&#39;a&#39;)
+
+Success(&#39;a&#39;).concat(Success(&#39;b&#39;));
+// ==&gt; Success(&#39;b&#39;)
+</code></pre><p>If you have a constructor for a data structure that can be curried, it&#39;s often more convenient to use the <code>.apply</code> method instead:</p>
+<pre><code>const curry = require(&#39;folktale/core/lambda/curry&#39;);
+
+const Language = (name, compiler) =&gt; ({ name, compiler });
+
+Success(curry(2, Language))
+  .apply(Success(&#39;Rust&#39;))
+  .apply(Success(&#39;rustc&#39;));
+// ==&gt; Success({ name: &#39;Rust&#39;, compiler: &#39;rustc&#39; })
+</code></pre><p>Finally, if you have an array of validations, it&#39;s convenient to use the module-level <code>collect</code> function:</p>
+<pre><code>const { collect } = require(&#39;folktale/validation&#39;);
+
+collect([Failure(&#39;a&#39;), Failure(&#39;b&#39;), Success(&#39;c&#39;)]);
+// ==&gt; Failure(&#39;ab&#39;)
+</code></pre><p><code>collect</code> uses <code>.concat</code> internally, so you end up with the last success if all validations succeed:</p>
+<pre><code>collect([Success(&#39;a&#39;), Success(&#39;b&#39;)]);
+// ==&gt; Success(&#39;b&#39;)
+</code></pre><h3 id="transforming-values">Transforming values</h3>
+<p>It&#39;s usually more convenient to use <code>.apply</code> when possible to get transformed values in one go, but sometimes you want to discard some of the values, or you may not know how many values you&#39;re getting in the validation. Sometimes you don&#39;t even want any of the success values in your resulting structure. For all of these cases, <code>.apply</code> makes less sense, and you have to transform the result after combining the validations. That&#39;s what <code>.map</code> is for:</p>
+<pre><code>const { Success, Failure } = require(&#39;folktale/validation&#39;);
+
+Success(1).map(x =&gt; x + 1);
+// ==&gt; Success(2)
+
+Failure(&#39;a&#39;).map(x =&gt; x + 1);
+// ==&gt; Failure(&#39;a&#39;)
+
+Success(1).concat(Success(2)).map(_ =&gt; &#39;hello&#39;);
+// ==&gt; Success(&#39;hello&#39;)
+</code></pre><p>It&#39;s also possible to transform the failure values through the <code>.mapFailure</code> function:</p>
+<pre><code>Failure(&#39;a&#39;).mapFailure(x =&gt; x.toUpperCase());
+// ==&gt; Failure(&#39;A&#39;)
+
+Success(&#39;a&#39;).mapFailure(x =&gt; x.toUpperCase());
+// ==&gt; Success(&#39;a&#39;)
+</code></pre><h3 id="reacting-to-results">Reacting to results</h3>
+<p>Once you&#39;ve combined all of the validations, you usually want to see if the overall validation succeeded or failed, and then take the appropriate path in your code for each case. The <code>.matchWith</code> function helps with this. <code>.matchWith</code> is a function provided for every union structure in Foltkale, and it lets you select a piece of code to run based on how the value you&#39;re interacting with is tagged. In the case of Validations, it lets you select a piece of code for failures, and a piece of code for successes:</p>
+<pre><code>const { Success, Failure } = require(&#39;folktale/validation&#39;);
+
+Success(1).matchWith({
+  Success: ({ value }) =&gt; `Success: ${value}`,
+  Failure: ({ value }) =&gt; `Failure: ${value}`
+});
+// ==&gt; &#39;Success: 1&#39;
+
+Failure(1).matchWith({
+  Success: ({ value }) =&gt; `Success: ${value}`,
+  Failure: ({ value }) =&gt; `Failure: ${value}`
+});
+// ==&gt; &#39;Failure: 1&#39;
+</code></pre><h2 id="how-does-validation-compare-to-result-">How does Validation compare to Result?</h2>
+<p>Result and Validation are pretty close structures. They both try to represent
+whether a particular thing has failed or succeeded, and even their vocabulary is
+very similar (<code>Error</code> vs. <code>Failure</code>, <code>Ok</code> vs. <code>Success</code>). The major difference
+is in some of their methods.</p>
+<p>A Result is a data structure that implements the Monad interface (<code>.chain</code>).
+This makes Result a pretty good structure to model a sequence of computations
+that may fail, where a computation may only run if the previous computation
+succeeded. In this sense, a Result&#39;s <code>.chain</code> method is very similar to
+JavaScript&#39;s <code>;</code> at the end of statements: the statement at the right of the
+semicolon only runs if the statement at the left did not throw an error.</p>
+<p>A Validation is a data structure that implements the Applicative interface
+(<code>.apply</code>), and does so in a way that if a failure is applied to another
+failure, then it results in a new validation that contains the failures of both
+validations. In other words, Validation is a data structure made for errors that
+can be aggregated, and it makes sense in the contexts of things like form
+validations, where you want to display to the user all of the fields that failed
+the validation rather than just stopping at the first failure.</p>
+<p>Validations can&#39;t be as easily used for sequencing operations because the
+<code>.apply</code> method takes two validations, so the operations that create them must
+have been executed already. While it is possible to use Validations in a
+sequential manner, it&#39;s better to leave the job to Result, a data structure made
+for that.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-combining-validations">Combining validations</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.validation.collect.collect.html">collect(validations)</a><div class="doc-summary"><div><p>Combines all validation values from an array of them.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-comparing-and-testing">Comparing and testing</h3><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.validation.hasinstance.html">hasInstance(value)</a><div class="doc-summary"><div><p>Tests if an arbitrary value is a Validation instance.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-constructing">Constructing</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.validation.validation.of.html">of(value)</a><div class="doc-summary"><div><p>Constructs a Validation holding a Success value.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-other-types">Converting from other types</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.validation.frommaybe.html">fromMaybe(aMaybe, fallbackValue)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/conversions/maybe-to-validation</code> module.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.validation.fromnullable.html">fromNullable(aNullable, fallbackValue)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/conversions/nullable-to-validation</code> module.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.validation.fromresult.html">fromResult(aResult)</a><div class="doc-summary"><div><p>A convenience method for the <code>folktale/conversions/result-to-validation</code> module.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-serialising">Serialising</h3><div class="member-list"><div class="member"><a class="member-name" href="-unknown-module-.folktale.validation.fromjson.html">fromJSON(value, parsers = {
+  [typeName]: adt
+}, keysIndicateType = false)</a><div class="doc-summary"><div><p>Parses a JavaScript object previously serialised as <code>aValidation.toJSON()</code> into a proper Validation structure.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-transforming">Transforming</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.validation.chain.chain.html">chain(validation, fn)</a><div class="doc-summary"><div><p>Transforms the value and context of a Validation computation with an unary function.
+As with <code>.map()</code>, the transformation is only applied if the value is a <code>Success</code>,
+but the transformation is expected a new <code>Validation</code> value, which then becomes the
+result of the function.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-variants">Variants</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.validation.validation.failure.html">Failure(value)</a><div class="doc-summary"><div><p>Constructs a Validation whose value represents a failure.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.validation.validation.1.html">Success(value)</a><div class="doc-summary"><div><p>Constructs a Validation whose value represents a success.</p>
+</div></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/validation/index.js at line 18, column 0</div><pre class="source-code"><code class="language-javascript">{
+  Success: Validation.Success,
+  Failure: Validation.Failure,
+  hasInstance: Validation.hasInstance,
+  of: Validation.of,
+  fromJSON: Validation.fromJSON,
+  [typeSymbol]: Validation[typeSymbol],
+  collect: require('./collect'),
+  chain: require('./chain'),
+
+  /*~
+   * type: |
+   *   forall a, b: (a or None, b) =&gt; Validation b a
+   */
+  fromNullable(aNullable, fallbackValue) {
+    return require('folktale/conversions/nullable-to-validation')(aNullable, fallbackValue);
+  },
+
+  /*~
+   * type: |
+   *   forall a, b: (Result a b) =&gt; Validation a b
+   */
+  fromResult(aResult) {
+    return require('folktale/conversions/result-to-validation')(aResult);
+  },
+
+  /*~
+   * type: |
+   *   forall a, b: (Maybe b, a) =&gt; Validation a b
+   */
+  fromMaybe(aMaybe, fallbackValue) {
+    return require('folktale/conversions/maybe-to-validation')(aMaybe, fallbackValue);
+  }
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">stable</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/validation</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li><li class="toc-item"><a href="#why-use-validation-" title="Why use Validation?"><div><p>Why use Validation?</p>
+</div></a></li><li class="toc-item"><a href="#working-with-validation-values" title="Working with Validation values"><div><p>Working with Validation values</p>
+</div></a></li><li class="toc-item"><a href="#how-does-validation-compare-to-result-" title="How does Validation compare to Result?"><div><p>How does Validation compare to Result?</p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-combining-validations">Combining validations</a></li><li class="toc-item"><a href="#cat-comparing-and-testing">Comparing and testing</a></li><li class="toc-item"><a href="#cat-constructing">Constructing</a></li><li class="toc-item"><a href="#cat-converting-from-other-types">Converting from other types</a></li><li class="toc-item"><a href="#cat-serialising">Serialising</a></li><li class="toc-item"><a href="#cat-transforming">Transforming</a></li><li class="toc-item"><a href="#cat-variants">Variants</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

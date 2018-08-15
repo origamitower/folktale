@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>module folktale/conversions</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.3.0</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="/docs/support/" title="">Support</a></li><li class="navigation-item"><a href="/docs/v2.1.0/contributing/" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">module folktale/conversions</h1><div class="highlight-summary"><div><p>Allows converting between the different data structures provided by Folktale and JavaScript.</p>
+</div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Allows converting between the different data structures provided by Folktale and JavaScript.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-converting-from-futures">Converting from Futures</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.conversions.future-to-promise.futuretopromise.html">futureToPromise(aFuture)</a><div class="doc-summary"><div><p>Converts a Future into a Promise.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-maybe">Converting from Maybe</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.conversions.maybe-to-result.maybetoresult.html">maybeToResult(aMaybe, failureValue)</a><div class="doc-summary"><div><p>Converts a <code>Maybe</code> to an <code>Result</code>. <code>Nothing</code>s map to <code>Error</code>s, <code>Just</code>s map to
+<code>Ok</code>s.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.conversions.maybe-to-validation.maybetovalidation.html">maybeToValidation(aMaybe, failureValue)</a><div class="doc-summary"><div><p>Converts a <code>Maybe</code> to a <code>Validation</code>. <code>Nothing</code>s map to <code>Failure</code>s, <code>Just</code>s map
+to <code>Success</code>es.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-promises">Converting from Promises</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.conversions.promise-to-future.promisetofuture.html">promiseToFuture(aPromise)</a><div class="doc-summary"><div><p>Converts a Promise to a folktale Future.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.conversions.promised-to-task.promisedtotask.html">promisedToTask(aPromiseFn)</a><div class="doc-summary"><div><p>Converts a Promise-yielding function to a Task-yielding function.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-result">Converting from Result</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.conversions.result-to-maybe.resulttomaybe.html">resultToMaybe(aResult)</a><div class="doc-summary"><div><p>Converts an <code>Result</code> structure to a Maybe structure. <code>Error</code>s map to <code>Nothing</code>s,
+<code>Ok</code>s map to <code>Just</code>s.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.conversions.result-to-validation.resulttovalidation.html">resultToValidation(aResult)</a><div class="doc-summary"><div><p>Converts an <code>Result</code> to a <code>Validation</code>. <code>Error</code>s map to <code>Failure</code>s, <code>Ok</code>s map
+to <code>Success</code>es.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-validation">Converting from Validation</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.conversions.validation-to-maybe.validationtomaybe.html">validationToMaybe(aValidation)</a><div class="doc-summary"><div><p>Converts a <code>Validation</code> to a <code>Maybe</code>. <code>Failure</code>s map to <code>Nothing</code>s,
+<code>Success</code>es map to <code>Just</code>s.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.conversions.validation-to-result.validationtoresult.html">validationToResult(aValidation)</a><div class="doc-summary"><div><p>Converts a <code>Validation</code> to an <code>Result</code>. <code>Failure</code>s map to <code>Error</code>s,
+<code>Success</code>es map to <code>Ok</code>s.</p>
+</div></div><div class="special-tags"></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-function-with-node-style-callback">Converting from function with Node-style callback</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.conversions.nodeback-to-task.nodebacktotask.html">nodebackToTask(fn)</a><div class="doc-summary"><div><p>Converts a function with a Node-style callback to a <code>Task</code>.</p>
+</div></div><div class="special-tags"><span class="tagged experimental">Experimental</span></div></div></div></div><div class="member-category"><h3 class="category" id="cat-converting-from-nullables">Converting from nullables</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.conversions.nullable-to-maybe.nullabletomaybe.html">nullableToMaybe(a)</a><div class="doc-summary"><div><p>Converts a nullable value to a maybe. <code>null</code> and <code>undefined</code> map to
+<code>Nothing</code>, any other value maps to <code>Just</code>s.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.conversions.nullable-to-result.nullabletoresult.html">nullableToResult(a, givenFallback)</a><div class="doc-summary"><div><p>Converts a nullable value to a <code>Result</code>. <code>null</code> and <code>undefined</code> map to
+<code>Error</code>s, any other value maps to <code>Ok</code>s.</p>
+</div></div><div class="special-tags"></div></div><div class="member"><a class="member-name" href="folktale.conversions.nullable-to-validation.nullabletovalidation.html">nullableToValidation(a, fallbackValue)</a><div class="doc-summary"><div><p>Converts a nullable value to a <code>Validation</code>. <code>null</code> and <code>undefined</code>
+map to <code>Failure</code>s, any other type maps to <code>Success</code>es.</p>
+</div></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/conversions/index.js at line 14, column 0</div><pre class="source-code"><code class="language-javascript">{
+  resultToValidation: require('./result-to-validation'),
+  resultToMaybe: require('./result-to-maybe'),
+  validationToResult: require('./validation-to-result'),
+  validationToMaybe: require('./validation-to-maybe'),
+  maybeToValidation: require('./maybe-to-validation'),
+  maybeToResult: require('./maybe-to-result'),
+  nullableToValidation: require('./nullable-to-validation'),
+  nullableToResult: require('./nullable-to-result'),
+  nullableToMaybe: require('./nullable-to-maybe'),
+  nodebackToTask: require('./nodeback-to-task'),
+  futureToPromise: require('./future-to-promise'),
+  promiseToFuture: require('./promise-to-future'),
+  promisedToTask: require('./promised-to-task')
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">stable</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/conversions</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-converting-from-futures">Converting from Futures</a></li><li class="toc-item"><a href="#cat-converting-from-maybe">Converting from Maybe</a></li><li class="toc-item"><a href="#cat-converting-from-promises">Converting from Promises</a></li><li class="toc-item"><a href="#cat-converting-from-result">Converting from Result</a></li><li class="toc-item"><a href="#cat-converting-from-validation">Converting from Validation</a></li><li class="toc-item"><a href="#cat-converting-from-function-with-node-style-callback">Converting from function with Node-style callback</a></li><li class="toc-item"><a href="#cat-converting-from-nullables">Converting from nullables</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>

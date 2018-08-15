@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>partialize</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="header">
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.3.0</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="/docs/support/" title="">Support</a></li><li class="navigation-item"><a href="/docs/v2.1.0/contributing/" title="">Contributing</a></li></ul></div>
+    </div>
+    <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">partialize</h1><div class="highlight-summary"><div><p>Creates a new function where some of the arguments are specified.</p>
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature">partialize(arity, fn)</div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="/docs/v2.1.0/misc/type-notation/">(what is this?)</a></div><pre class="type"><code class="language-haskell">(Number, (Any... =&gt; Any)) =&gt; ((hole | Any)...) =&gt; Any :: (throw TypeError)</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Creates a new function where some of the arguments are specified.</p>
+<h2 id="example-">Example:</h2>
+<pre><code>const partialize = require(&#39;folktale/core/lambda/partialize&#39;);
+
+const clamp = (min, max, number) =&gt;
+  number &lt; min ?  min
+: number &gt; max ?  max
+:                 number;
+
+const _      = partialize.hole;
+const clamp_ = partialize(3, clamp);
+
+const atLeast = clamp_(_, Infinity, _);
+const atMost  = clamp_(-Infinity, _, _);
+
+atLeast(3, 2); // ==&gt; 3
+atLeast(3, 5); // ==&gt; 5
+
+atMost(5, 3);  // ==&gt; 3
+atMost(5, 10); // ==&gt; 5
+</code></pre><h2 id="why-partialisation">Why Partialisation</h2>
+<p>With higher-order programming, one often wants to specialise some of
+the arguments of a function before passing it to another function.
+This kind of configuration is often done by creating a new function
+manually:</p>
+<pre><code>const plus = (a, b) =&gt; a + b;
+const add5 = (x) =&gt; plus(5, x);
+
+[1, 2, 3].map(add5);
+// ==&gt; [6, 7, 8]
+</code></pre><p>And for most cases this is reasonable. For functions that take more
+parameters, this can be cumbersome, however. The <code>partialize</code> function
+allows creating a new function by specialising some of the arguments,
+and filling the remaining ones when the function is called.</p>
+<p>Places where the caller of the function should fill are specified as
+<code>hole</code>, which is a special constant used by <code>partialize</code>:</p>
+<pre><code>const partialize = require(&#39;folktale/core/lambda/partialize&#39;);
+
+const _ = partialize.hole;
+const partialAdd5 = partialize(2, plus)(5, _);
+[1, 2, 3].map(partialAdd5);
+// ==&gt; [6, 7, 8]
+</code></pre><h2 id="relation-to-currying">Relation to Currying</h2>
+<p>Partial application and currying are related concepts. Currying
+refers to transforming a function of arity N, into N functions of
+arity 1. Partial application, on the other hand, refers to
+fixing some (but not all) arguments of a function.</p>
+<p>Both concepts are used to improve function composition, where the
+shape of the function you have does not reflect the shape of the
+function expected by function you&#39;re calling. So, in essence, these
+techniques transform the shape of your function to make them &quot;fit&quot;
+some API.</p>
+<p><code>partialize</code> and <code>curry</code> differ on how they achieve this, however.
+While <code>curry</code> creates N functions, and lets you specify arguments
+one by one, <code>partialize</code> requires you to specify all arguments at
+once, distinguishing which ones are fixed, and which ones have to
+be provided (using &quot;holes&quot;).</p>
+<p>Because of this, <code>curry</code> can be more natural, but it requires that
+the APIs be designed thinking about currying before hand, and it
+often interacts poorly with JavaScript, due to the use of variadic
+functions. <code>partialize</code> does not have such problems.</p>
+<h2 id="how-partialize-works-">How <code>partialize</code> Works?</h2>
+<p>The <code>partialize</code> function transforms regular functions into
+functions that can accept holes for arguments that are not
+defined yet. Whenever a partial function receives a hole as
+an argument, it constructs a new function so the holes can
+be filled later:</p>
+<pre><code>const partialize = require(&#39;folktale/core/lambda/partialize&#39;);
+
+const clamp = (min, max, number) =&gt;
+  number &lt; min ?  min
+: number &gt; max ?  max
+:                 number
+
+const partialClamp = partialize(3, clamp);
+</code></pre><p>In the example above, <code>partialClamp</code> is a function that takes
+arguments that may or may not be holes. A hole is a special
+constant defined by <code>partialize</code> itself. It&#39;s convenient to
+bind such constant to the <code>_</code> binding:</p>
+<pre><code>const _ = partialize.hole;
+</code></pre><p>A partial function is considered saturated when, among the
+arguments provided to it, no hole exists. When a partial function
+is saturated, its original behaviour is executed:</p>
+<pre><code>partialClamp(3, 5, 6);  // ==&gt; 5
+</code></pre><p>If a partial function is not saturated, then it its execution
+results in a new partial function:</p>
+<pre><code>const atLeast = partialClamp(_, Infinity, _);
+atLeast(5, 3); // ==&gt; 5
+
+const atLeast5 = atLeast(5, _);
+atLeast5(3); // ==&gt; 5
+</code></pre><p>Note that to prevent confusing behaviour, Folktale&#39;s <code>partialize</code>
+forces you to always pass the exact number of arguments that the
+partial function expects. Passing more or less arguments to a
+partial function is a TypeError. This ensures that all new partial
+functions can properly invoke the original behaviour when saturated,
+rather than returning previous unsaturated functions.</p>
+<h2 id="drawbacks-of-using-partialize-">Drawbacks of Using <code>partialize</code></h2>
+<p><code>partialize</code> is a convenience function for transforming the shape
+of functions, and it relies on variadic application, as well as
+doing a fair bit of processing before each call to determine
+saturation. Combined, these make <code>partialize</code> a poor choice for
+any code that needs to be performant.</p>
+</div></div><div class="members"><h2 class="section-title" id="properties">Properties</h2><div class="member-category"><h3 class="category" id="cat-special-values">Special values</h3><div class="member-list"><div class="member"><a class="member-name" href="folktale.core.lambda.partialize.hole.html">hole</a><div class="doc-summary"><div><p>Represents a place in an argument list that needs to be filled.</p>
+</div></div><div class="special-tags"></div></div></div></div></div><div class="source-code"><h2 class="section-title" id="source-code">Source Code</h2><div class="source-location">Defined in source/core/lambda/partialize.js at line 21, column 0</div><pre class="source-code"><code class="language-javascript">(arity, fn) =&gt; (...args) =&gt; {    //  eslint-disable-line max-statements
+  /* eslint-disable no-magic-numbers */
+  if (args.length &lt; arity) {
+    throw new TypeError(`The partial function takes at least ${arity} arguments, but was given ${args.length}.`);
+  }
+
+  // Figure out if we have holes
+  let holes = 0;
+  for (let i = 0; i &lt; args.length; ++i) {
+    if (args[i] === hole) {
+      holes += 1;
+    }
+  }
+
+
+  if (holes &gt; 0) {
+    return partialize(holes, (...newArgs) =&gt; {    // eslint-disable-line max-statements
+      let realArgs = [];    // eslint-disable-line prefer-const
+      let argIndex = 0;
+
+      for (let i = 0; i &lt; args.length; ++i) {
+        const arg = args[i];
+        if (arg === hole) {
+          realArgs.push(newArgs[argIndex]);
+          argIndex += 1;
+        } else {
+          realArgs.push(arg);
+        }
+      }
+
+      return fn(...realArgs);
+    });
+  } else {
+    return fn(...args);
+  }
+}</code></pre></div></div><div id="meta-panel"><div class="meta-section"><div class="meta-field"><strong class="meta-field-title">Stability</strong><div class="meta-field-value">stable</div></div><div class="meta-field"><strong class="meta-field-title">Licence</strong><div class="meta-field-value">MIT</div></div><div class="meta-field"><strong class="meta-field-title">Module</strong><div class="meta-field-value">folktale/core/lambda/partialize</div></div></div><div class="table-of-contents"><div class="meta-section-title">On This Page</div><ul class="toc-list level-1"><li class="toc-item"><a href="#signature">Signature</a></li><li class="toc-item"><span class="no-anchor">Documentation</span><ul class="toc-list level-2"><li class="toc-item"><a href="#example-" title="Example:"><div><p>Example:</p>
+</div></a></li><li class="toc-item"><a href="#why-partialisation" title="Why Partialisation"><div><p>Why Partialisation</p>
+</div></a></li><li class="toc-item"><a href="#relation-to-currying" title="Relation to Currying"><div><p>Relation to Currying</p>
+</div></a></li><li class="toc-item"><a href="#how-partialize-works-" title="How `partialize` Works?"><div><p>How <code>partialize</code> Works?</p>
+</div></a></li><li class="toc-item"><a href="#drawbacks-of-using-partialize-" title="Drawbacks of Using `partialize`"><div><p>Drawbacks of Using <code>partialize</code></p>
+</div></a></li></ul></li><li class="toc-item"><a href="#properties">Properties</a><ul class="toc-list level-2"><li class="toc-item"><a href="#cat-special-values">Special values</a></li></ul></li><li class="toc-item"><a href="#source-code">Source Code</a></li></ul></div><div class="meta-section"><strong class="meta-section-title">Authors</strong><div class="meta-field"><strong class="meta-field-title">Copyright</strong><div class="meta-field-value">(c) 2013-2017 Quildreen Motta, and CONTRIBUTORS</div></div><div class="meta-field"><strong class="meta-field-title">Authors</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta</li></ul></div></div><div class="meta-field"><strong class="meta-field-title">Maintainers</strong><div class="meta-field-value"><ul class="meta-list"><li>Quildreen Motta &lt;queen@robotlolita.me&gt; (http://robotlolita.me/)</li></ul></div></div></div></div></div>
+    <script>
+void function() {
+  var xs = document.querySelectorAll('.documentation pre code');
+  for (var i = 0; i < xs.length; ++i) {
+    xs[i].className = 'language-javascript code-block';
+  }
+}()
+    </script>
+    <script src="prism.js"></script>
+  </body>
+</html>
