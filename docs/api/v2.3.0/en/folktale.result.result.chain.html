@@ -8,13 +8,13 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.3.0</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="/docs/support/" title="">Support</a></li><li class="navigation-item"><a href="/docs/v2.1.0/contributing/" title="">Contributing</a></li></ul></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.3.0</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="/docs/support/" title="">Support</a></li><li class="navigation-item"><a href="/docs/v2.3.0/contributing/" title="">Contributing</a></li></ul></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">chain</h1><div class="highlight-summary"><div><p>Transforms the value and context of a Result computation with an unary function.
 As with <code>.map()</code>, the transformation is only applied if the value is an <code>Ok</code>,
 but the transformation is expected a new <code>Result</code> value, which then becomes the
 result of the method.</p>
-</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature"></div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="/docs/v2.1.0/misc/type-notation/">(what is this?)</a></div><pre class="type"><code class="language-haskell">forall a, b, c:
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature"></div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="/docs/v2.3.0/misc/type-notation/">(what is this?)</a></div><pre class="type"><code class="language-haskell">forall a, b, c:
   (Result a b).((b) =&gt; Result a c) =&gt; Result a c</code></pre></div></div></div><h2 class="section-title">Documentation</h2><div class="documentation"><div><p>Transforms the value and context of a Result computation with an unary function.
 As with <code>.map()</code>, the transformation is only applied if the value is an <code>Ok</code>,
 but the transformation is expected a new <code>Result</code> value, which then becomes the

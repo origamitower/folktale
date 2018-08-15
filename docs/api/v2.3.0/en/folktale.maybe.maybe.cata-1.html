@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="header">
-      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.3.0</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="/docs/support/" title="">Support</a></li><li class="navigation-item"><a href="/docs/v2.1.0/contributing/" title="">Contributing</a></li></ul></div>
+      <div class="doc-title"><a href="folktale.html"><span class="doc-title"><span class="product-name">Folktale</span><span class="version">v2.3.0</span></span></a><ul class="navigation"><li class="navigation-item"><a href="https://github.com/origamitower/folktale" title="">GitHub</a></li><li class="navigation-item"><a href="/docs/support/" title="">Support</a></li><li class="navigation-item"><a href="/docs/v2.3.0/contributing/" title="">Contributing</a></li></ul></div>
     </div>
     <div id="content-wrapper"><div id="content-panel"><h1 class="entity-title">cata</h1><div class="highlight-summary"><div><p>This method has been replaced by <code>matchWith(pattern)</code>. <code>cata</code>(morphism) selects
 and executes a function for each variant of the Maybe structure.</p>
@@ -18,7 +18,7 @@ In addition to that, due to the design of Folktale&#39;s 2 <code>union</code> co
 it&#39;s not possible to provide the same interface as Folktale 1&#39;s <code>.cata()</code>
 method, so changing the name while deprecating the old functionality
 allows people to move to Folktale 2 without breaking their code.</p>
-</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature"></div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="/docs/v2.1.0/misc/type-notation/">(what is this?)</a></div><pre class="type"><code class="language-haskell">forall a, b:
+</div></div><div class="definition"><h2 class="section-title" id="signature">Signature</h2><div class="signature"></div><div class="type-definition"><div class="type-definition-container"><div class="type-title-container"><strong class="type-title">Type</strong><a class="info" href="/docs/v2.3.0/misc/type-notation/">(what is this?)</a></div><pre class="type"><code class="language-haskell">forall a, b:
   (Maybe a).({
     Nothing: () =&gt; b,
     Just: (a) =&gt; b
