@@ -4,47 +4,87 @@ prev_doc: v2.3.0
 next_doc: v2.3.0/download
 ---
 
-Folktale v2.3.0 is a very modest release, mostly with documentation fixes.
+Folktale v2.3.0 is another small iteration.
 
 You can look at the [full changelog]({% link _docs/v2.3.0/changelog.md %}) for details.
 
 
-## Making things more consistent
+## Improving the documentation
 
-There were two inconsistent functions in Folktale 2:
-
-  - `Future.recover` was called `.orElse` in every other data structure. A new `.orElse`
-    method was added to `Future`, and consequently `.recover` has been deprecated.
-
-  - `nullableToResult` and `Result.fromNullable` only received a nullable as a parameter,
-    but the `Validation` equivalent let people define the value to use in case of null or
-    undefined. These functions now optionally take a fallback value.
-
-    The number of arguments provided to the function defines which behaviour will be used.
-    This should be backwards compatible, unless you've been passing more than one argument
-    to that function (which can happen in, for example, `xs.map(nullableToResult)`).
+Besides the occasional typos, there were incorrect code examples in the documentation. For most code examples we do actually run them as part of the test cases to ensure that they work and didn't get out of sync with the code, but there are places where this isn't possible yet. Thanks to everyone who spotted these mistakes and sent PRs to fix them :>
 
 
-## Addressing some of the problems with `.toString`
+## More useful errors in ADTs
 
-The ADT module is still pretty experimental, and so are derivations. The derived `.toString`
-method turned out to be more trouble, however:
+Again, the ADT module is still pretty experimental, and there are a fair bit of problems that need to be fixed in it. This release brings better error messages for the `.matchWith` method. In previous versions, forgetting to provide a case for a `.matchWith` call could be very frustrating.
 
-  - If you tried serialising an object that contained objects without a `.toString` method,
-    things would fail. This release fixes this problem.
+```js
+const { union } = require('folktale@2.1.0/adt/union');
+const Optional = union('optional', {
+  Some(value) { return { value } },
+  None() { return {} }
+});
 
-  - If you try serialising an object that contains circular objects, `.toString` will recurse
-    forever. This is still an open issue. [You can work around it by giving the circular object
-    a custom `.toString` representation](https://github.com/origamitower/folktale/issues/167).
+function getValue(optional) {
+  return optional.matchWith({
+    Some(value) { return value }
+  });
+}
 
-The big issue with `.toString` is that too many things in JavaScript will invoke it even when
-you don't want that. So, yeah, this will hopefully be addressed soon.
+getValue(Optional.Some(1));  // => 1
+getValue(Optional.None());   // => TypeError: pattern[name] is not a function
+```
+
+In Folktale 2.3 you get a more descriptive error message:
+
+    Error: Variant "None" is not covered in pattern.
+    This could mean you did not include all variants in 
+    your Union's matchWith function.
+
+    For example, if you had this Union:
+
+    const Operation = union({
+      Add: (a, b) => ({ a, b }),
+      Subtract: (a, b) => ({ a, b }),
+    })
+
+    But wrote this matchWith:
+
+    op.matchWith({
+      Add: ({ a, b }) => a + b
+      // Subtract not implemented!
+    })
+
+    It would throw this error because we need to check against 'Subtract'. 
+    Check your matchWith function's argument, it's possibly missing the 
+    'None' method in the object you've passed.
+
+We've also added a special `any` value that matches any variant in a `.matchWith`. This can be helpful in variants that have a large amount of cases that you're not really interested in handling separately for a particular function.
+
+```js
+const { union } = require('folktale/adt/union');
+
+const Optional = union('optional', {
+  Some(value) { return { value } },
+  None() { return {} }
+});
+
+function getValue(optional) {
+  return optional.matchWith({
+    Some(value) { return value },
+    [union.any]() { return null }
+  });
+}
+
+getValue(Optional.Some(1));  // => 1
+getValue(Optional.None());   // => null
+```
 
 
 ## Acknowledgements
 
 As always, a huge thank you to everyone who contributed to improving Folktale, by reporting errors, sending feedback, talking about it, sending patches, etc.
 
-A special thank you to [@diasbruno](https://github.com/diasbruno), [@gvillalta99](https://github.com/gvillalta99), [@MichaelQQ](https://github.com/MichaelQQ), [@stabbylambda](https://github.com/stabbylambda), [@floriansimon1](https://github.com/floriansimon1), and [@scotttrinh](https://github.com/scotttrinh)
+This release wouldn't be possible without the contributions of @Josh-Miller, @JesterXL, @andys8, and @pernas. Really, thank you :>
 
 
