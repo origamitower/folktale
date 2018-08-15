@@ -16,7 +16,7 @@ This page describes how several parts of the Folktale project are organised.
 ## Issue tracker
 
 Ideas and bugs live in the [Github Issue tracker](https://github.com/origamitower/folktale/issues), and can be
-visualised as a Kanban board in [Waffle.io](waffle.io/origamitower/folktale).
+visualised as a Kanban board in [Waffle.io](https://waffle.io/origamitower/folktale).
 If you're not sure where to start, there's a selection of [good first
 issues](https://waffle.io/origamitower/folktale?label=e:Good%20First%20Issue)
 which you may want to try.
