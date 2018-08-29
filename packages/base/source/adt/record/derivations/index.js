@@ -8,10 +8,11 @@
 //----------------------------------------------------------------------
 
 /*~
- * stability: experimental
- * name: module folktale/adt
+ * stability: proposal
+ * name: module folktale/adt/record/derivations
  */
 module.exports = {
-  union: require('./union'),
-  record: require('./record')
+  serialization: require('./serialization'),
+  equality: require('./equality'),
+  debugRepresentation: require('./debug-representation')
 };
