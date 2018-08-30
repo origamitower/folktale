@@ -22,6 +22,8 @@ const debugRepresentation = (constructor, adt) => {
    *   () => String
    */
   updatedConstructor.toString = () => typeName;
+
+  return updatedConstructor;
 }; 
 
 
