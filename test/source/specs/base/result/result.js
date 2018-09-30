@@ -48,15 +48,15 @@ describe('Result', function() {
     });
 
     property('Ok(a).filter(() => false) = Error()', 'json', 'json -> json', (a, f) => {
-      return _.Ok(a).filter(() => false).equals(_.Error());
+      return _.Ok(a).filter(() => false).equals(_.Error(a));
     });
 
     property('Error().filter(() => true) = Error()', 'json', 'json -> json', (a, f) => {
-      return _.Error().filter(() => true).equals(_.Error());
+      return _.Error(a).filter(() => true).equals(_.Error(a));
     });
 
     property('Error().filter(() => false) = Error()', 'json', 'json -> json', (a, f) => {
-      return _.Error().filter(() => false).equals(_.Error());
+      return _.Error(a).filter(() => false).equals(_.Error(a));
     });
   });
 

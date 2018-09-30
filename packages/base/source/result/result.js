@@ -318,7 +318,7 @@ or some other method that is not partial.
     /*~*/
     Ok: function filter(predicate) {
       assertFunction('Result.Ok#filter', predicate);
-      return predicate(this.value) ? this : Error();
+      return predicate(this.value) ? this : Error(this.value);
     }
   }
 });
