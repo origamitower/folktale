@@ -14,6 +14,15 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 
 ---
 
+## [2.3.1] - 2018-10-02
+
+### Fixes
+
+* Fixes `Result.filter` discarding the error value ([Issue #209](https://github.com/origamitower/folktale/issues/209))
+
+* Previous version was missing the README file in the package ([Issue #208](https://github.com/origamitower/folktale/issues/208))
+
+
 ## [2.3.0] - 2018-06-24
 
 ### New features
