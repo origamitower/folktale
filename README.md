@@ -83,7 +83,7 @@ an older platform, you'll need [es5-shim][] and [es6-shim][].
 
 ## Licence
 
-Folktale is copyright (c) Quildreen Motta 2015-2017, and released under the MIT licence.
+Folktale is copyright (c) Quildreen Motta 2015-2018, and released under the MIT licence.
 See the `LICENCE` file in this repository for detailed information.
 
 [npm]: https://www.npmjs.com
