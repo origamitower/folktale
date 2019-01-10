@@ -17,18 +17,21 @@ const { Pending, Cancelled, Rejected, Resolved } = require('./_execution-state')
 
 // --[ Helpers ]-------------------------------------------------------
 
+const describeState = (state) => {
+  return state.matchWith({
+    Resolved:  _ => 'resolved',
+    Rejected:  _ => 'rejected',
+    Cancelled: _ => 'cancelled'
+  });
+}
+
 /*~
  * type: |
  *   ('a: Deferred 'f 's, ExecutionState 'f 's) => Void :: mutates 'a
  */
 const moveToState = (deferred, newState) => {
   if (!Pending.hasInstance(deferred._state)) {
-    const description = newState.matchWith({
-      Resolved:  _ => 'resolved',
-      Rejected:  _ => 'rejected',
-      Cancelled: _ => 'cancelled'
-    });
-    throw new Error(`Only pending deferreds can be ${description}, this deferred is already ${description}.`);
+    throw new Error(`Only pending deferreds can be ${describeState(newState)}, this deferred is already ${describeState(deferred._state)}.`);
   }
 
   deferred._state = newState;
