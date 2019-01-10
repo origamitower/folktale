@@ -23,7 +23,7 @@ const describeState = (state) => {
     Rejected:  _ => 'rejected',
     Cancelled: _ => 'cancelled'
   });
-}
+};
 
 /*~
  * type: |
