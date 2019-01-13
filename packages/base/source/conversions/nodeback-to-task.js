@@ -22,7 +22,15 @@ const { task } = require('folktale/concurrency/task');
 
 const nodebackToTask = fn => (...args) => (
   task(r =>
-    fn(...args, (err, data) => r.isCancelled ? undefined : err ? r.reject(err) : r.resolve(data))
+    fn(...args, (err, data) => {
+      if (!r.isCancelled) {
+        if (err) {
+          r.reject(err)
+        } else {
+          r.resolve(data)
+        }
+      }
+    })
   )
 );
 
