@@ -18,9 +18,13 @@ const { task } = require('folktale/concurrency/task');
  */
 const promisedToTask = (aPromiseFn) => {
   return (...args) => task(resolver => {
+    const guard = (fn) => (value) => {
+      if (!resolver.isCancelled) fn(value);
+    };
+
     aPromiseFn(...args).then(
-      (value) => resolver.resolve(value),
-      (error) => resolver.reject(error)
+      guard((value) => resolver.resolve(value)),
+      guard((error) => resolver.reject(error))
     );
   });
 };

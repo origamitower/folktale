@@ -8,6 +8,7 @@
 //----------------------------------------------------------------------
 
 const assert = require('assert');
+const assertAsync = require('../../../helpers/assert-async');
 const { property } = require('jsverify');
 const env = require('../environment');
 
@@ -576,13 +577,30 @@ describe('Data.Task', () => {
       await task.run().promise().catch(e => $ASSERT(e === error));
     });
 
-    it('Should allow rejecting more than once', async () => {
-        const error = 'failed';
-        const fn = (str, cb) => setTimeout(() => cb(error, ''), 0);
+    it('Shouldn\'t fail if one of the tasks is cancelled.', async () => {
+        const error = '<expected-error>'
+        const fn = (cb) => cb(error);
         const convertedFn = Task.fromNodeback(fn);
-        const task1 = convertedFn('test');
-        const task2 = convertedFn('test');
-        assert.doesNotThrow(async () => await task1.and(task2).run().promise());
+        const task1 = convertedFn();
+        const task2 = convertedFn();
+        await assertAsync.throws(
+          () => task1.and(task2).run().promise(),
+          /^<expected-error>$/
+        );
     });
   });
+
+  describe('promisedToTask', () => {
+    it('Shouldn\'t fail if one of the tasks is cancelled.', async () => {
+      const error = '<expected-error>'
+      const fn = (str) => new Promise((_, rej) => rej(error));
+      const convertedFn = Task.fromPromised(fn);
+      const task1 = convertedFn();
+      const task2 = convertedFn();
+      await assertAsync.throws(
+        () => task1.and(task2).run().promise(),
+        /^<expected-error>$/
+      );
+    });    
+  })
 });
