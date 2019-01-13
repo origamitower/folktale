@@ -29,6 +29,7 @@ define mocha reporter flags @ options =
     '--ui 'bdd
     '--recursive
     (root / "test" / "build" / "specs")
+    '--require "./test/source/helpers/promise-rejections.js"
     ...flags
     @ -environment: (get-or-else (Record.get options "environment") Record.empty)
   )
