@@ -25,9 +25,9 @@ const nodebackToTask = fn => (...args) => (
     fn(...args, (err, data) => {
       if (!r.isCancelled) {
         if (err) {
-          r.reject(err)
+          r.reject(err);
         } else {
-          r.resolve(data)
+          r.resolve(data);
         }
       }
     })
