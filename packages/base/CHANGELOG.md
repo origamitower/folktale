@@ -14,6 +14,13 @@ Each version entry is written as a heading in the format `[<version number>] - Y
 
 ---
 
+## [2.3.2] - 2019-01-21
+
+### Fixes
+
+* Fixes automatic conversions from Nodebacks/Promises to Tasks, taking into account cancellations ([Issue #215](https://github.com/origamitower/folktale/issues/215), [PR #216](https://github.com/origamitower/folktale/pull/216) by @cdoublev)
+
+
 ## [2.3.1] - 2018-10-02
 
 ### Fixes
