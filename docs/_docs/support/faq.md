@@ -18,7 +18,7 @@ This document provides answers to some common questions people have when using F
 
 ### Why does Folktale have `Result` instead of `Either`?
 
-The name `Either`, which is used by Haskell, is far more general then the name `Result`. However, because `Either` is biased — the Monad/Functor/etc instances only consider the `Right` case —, it ends up being used mostly as a way of modelling failures. Within this particular use case, the names `Left` and `Right` aren't particularly useful to help people figure out what they're supposed to be modelling.
+The name `Either`, which is used by Haskell, is far more general than the name `Result`. However, because `Either` is biased — the Monad/Functor/etc instances only consider the `Right` case —, it ends up being used mostly as a way of modelling failures. Within this particular use case, the names `Left` and `Right` aren't particularly useful to help people figure out what they're supposed to be modelling.
 
 Languages like Rust provide a [Result](https://doc.rust-lang.org/std/result/) type that has a vocabulary that's closer to the intention of the data structure. Meanwhile, languages like Scala don't provide a monad instance for its `Either` type, making it actually general-purpose.
 
