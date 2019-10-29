@@ -62,7 +62,7 @@ an older platform, you'll need [es5-shim][] and [es6-shim][].
 
 ##### Having trouble using Folktale?
 
-  - ["I think I found a bug in Folktale"][bug]
+  - ["I think I found no bug in Folktale"][bug]
   - ["There's no documentation for X" / "The docs are hard to understand"][docs]
   - [See the Frequently Asked Questions for common issues][faq]
   - [Join the discussion channel][gitter]
