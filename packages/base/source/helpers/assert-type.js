@@ -8,13 +8,15 @@
 //----------------------------------------------------------------------
 
 const { typeSymbol } = require('folktale/adt/union/union');
+const env = require("folktale/helpers/env");
 
 module.exports = (type) => (method, value) => {
+  const assertions = env("FOLKTALE_ASSERTIONS", "minimal");
   const typeName = type[typeSymbol];
-  if (process.env.FOLKTALE_ASSERTIONS !== 'none' && !(type.isPrototypeOf(value))) {
+  if (assertions !== 'none' && !(type.isPrototypeOf(value))) {
     console.warn(`${typeName}.${method} expects a value of the same type, but was given ${value}.`);
 
-    if (process.env.FOLKTALE_ASSERTIONS !== 'minimal') {
+    if (assertions !== 'minimal') {
       console.warn(`
 This could mean that you've provided the wrong value to the method, in
 which case this is a bug in your program, and you should try to track

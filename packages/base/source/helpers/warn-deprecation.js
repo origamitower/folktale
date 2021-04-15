@@ -7,10 +7,12 @@
 //
 //----------------------------------------------------------------------
 
+const env = require("folktale/env/helpers");
 const BLAME_FUNCTION_INDEX = 3; // [current, parent, *error*, caller to blame, …]
 
 function warnDeprecation(reason) {    // eslint-disable-line max-statements
-  if (process.env.FOLKTALE_ASSERTIONS !== 'none') { 
+  const assertions = env("FOLKTALE_ASSERTIONS", "minimal");
+  if (assertions !== 'none') { 
     const stack = new Error('').stack;
     let offender;
     if (stack) {

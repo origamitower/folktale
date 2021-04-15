@@ -7,14 +7,10 @@
 //
 //----------------------------------------------------------------------
 
-const mm = Symbol.for('@@meta:magical');
-const env = require("folktale/helpers/env");
-
-const copyDocumentation = (source, target, extensions = {}) => {
-  const docs = env("FOLKTALE_DOCS", "false");
-  if (docs !== 'false') {
-    target[mm] = Object.assign({}, source[mm] || {}, extensions);
+module.exports = (name, defaultValue) => {
+  try {
+    return process.env[name];
+  } catch (_) {
+    return defaultValue;
   }
 };
-
-module.exports = copyDocumentation;
