@@ -3,6 +3,10 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "travis": "furipota run test-on-travis"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/origamitower/folktale.git"
+  },
   "dependencies": {},
   "devDependencies": {
     "babel-cli": "^6.26.0",
