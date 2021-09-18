@@ -1,13 +1,14 @@
 Folktale
 =======
 
-[![Ready to work on~!](https://img.shields.io/waffle/label/origamitower/folktale/ready.svg?style=flat-square)](http://waffle.io/origamitower/folktale)
 [![Chat on Gitter](https://img.shields.io/gitter/room/folktale/discussion.svg?style=flat-square)](https://gitter.im/folktale/discussion)
-[![Build status](https://img.shields.io/travis/origamitower/folktale/master.svg?style=flat-square)](https://travis-ci.org/origamitower/folktale)
-[![Coverage Status](https://coveralls.io/repos/github/origamitower/folktale/badge.svg?branch=patch%2Fcoverage)](https://coveralls.io/github/origamitower/folktale?branch=patch%2Fcoverage)
 [![NPM version](https://img.shields.io/npm/v/folktale.svg?style=flat-square)](https://npmjs.org/package/folktale)
-[![Dependencies status](https://img.shields.io/david/origamitower/folktale.svg?style=flat-square)](https://david-dm.org/origamitower/folktale)
 ![Licence](https://img.shields.io/npm/l/folktale.svg?style=flat-square&label=licence)
+
+> **NOTE**: This package is not actively maintained anymore, because the
+> maintainer stopped working with JavaScript. If you use this
+> library and would like to take over maintaining it, reach out to
+> [@robotlolita](https://twitter.com/robotlolita) on Twitter.
 
 
 Folktale is a standard library for functional programming in JavaScript.
