@@ -157,7 +157,7 @@ For more information about WebPack, [check WebPack's website](https://webpack.js
 
 While the recommended way of using Folktale is with a module system, it's possible to use it without one as well. The drawback of not using a module system is that your website will have to ship the entire Folktale library to your users, even if you don't use all of its features.
 
-To use a prebuilt version, first, download one of the [prebuilt releases](https://github.com/origamitower/folktale/releases) on GitHub. Unpack the distribution file and add the `dist/folktale.min.js` or `dist/folktale.js` file to your website. Reference this file in your HTML like any other JavaScript file:
+To use a prebuilt version, first, download one of the [prebuilt releases](https://github.com/origamitower/folktale/releases) on GitHub. Compile with Webpack a file folktale.js (already minified and provided with source maps) according to the indications provided in [this Github repository](https://github.com/Muzietto/compiling-folktale). Reference this file in your HTML like any other JavaScript file:
 
 ```html
 <!DOCTYPE html>
@@ -165,7 +165,7 @@ To use a prebuilt version, first, download one of the [prebuilt releases](https:
   <head>(...)</head>
   <body>
     (...)
-    <script src="/path/to/folktale.min.js"></script>
+    <script src="/path/to/folktale.js"></script>
   </body>
 </html>
 ```
