@@ -8,10 +8,10 @@
 //----------------------------------------------------------------------
 
 /*~
- * stability: experimental
- * name: module folktale/adt
+ * stability: proposal
+ * name: module folktale/adt/record
  */
-module.exports = {
-  union: require('./union'),
-  record: require('./record')
-};
+  module.exports = {
+    record: require('./record'),
+    derivations: require('./derivations')
+  };

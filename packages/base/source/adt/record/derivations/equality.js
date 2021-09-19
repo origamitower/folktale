@@ -7,11 +7,8 @@
 //
 //----------------------------------------------------------------------
 
-/*~
- * stability: experimental
- * name: module folktale/adt
- */
-module.exports = {
-  union: require('./union'),
-  record: require('./record')
-};
+// --[ Dependencies ]---------------------------------------------------
+const Equality = require('folktale/adt/union/derivations/equality');
+
+// --[ Exports ]-------------------------------------------------------
+module.exports = Equality;

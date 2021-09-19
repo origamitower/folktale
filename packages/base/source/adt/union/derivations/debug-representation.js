@@ -128,7 +128,7 @@ const debugRepresentation = (variant, adt) => {  // eslint-disable-line max-stat
    *   (Union).() => String
    */
   variant.prototype.toString = function() {
-    return `${variantName}(${plainObjectToString.call(this)})`;
+    return `${variant.toString()}(${plainObjectToString.call(this)})`;
   };
 
   // (Node REPL representations)
