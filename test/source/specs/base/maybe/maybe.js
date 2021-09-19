@@ -58,6 +58,16 @@ describe('Maybe', () => {
     });
   });
 
+  describe('#fromNullable(a)', () => {
+    property('Maybe.fromNullable(a)', 'number | string | bool | array nat', (a) => {
+      return Maybe.fromNullable(a).equals(Just(a));
+    });
+
+    property('Maybe.fromNullable(a)', () => {
+      return Maybe.fromNullable().equals(Nothing());
+    });
+  });
+
   describe('#chain(f)', () => {
     property('Just(a).chain(f) = f(a)', 'json', 'json -> json', (a, f) => {
       return Just(a).chain(x => Just(f(x))).equals(Just(f(a)));
